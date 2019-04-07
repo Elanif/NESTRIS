@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="nestris" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/nestris" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+					<Add directory="include" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/nestris" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add directory="include" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add directory="../../CodeBlocks-EP/MinGW/SDL2-2.0.9/i686-w64-mingw32/include/SDL2" />
+			<Add directory="src" />
+			<Add directory="include" />
+			<Add directory="../nestris" />
+		</Compiler>
+		<ResourceCompiler>
+			<Add directory="include" />
+			<Add directory="src" />
+			<Add directory="../nestris" />
+		</ResourceCompiler>
+		<Linker>
+			<Add option="-lmingw32 -lSDL2main -lSDL2 -lSDL2_image" />
+			<Add directory="../../CodeBlocks-EP/MinGW/SDL2-2.0.9/i686-w64-mingw32/lib" />
+			<Add directory="G:/CodeBlocks-EP/MinGW/SDL2-2.0.9/i686-w64-mingw32/bin" />
+		</Linker>
+		<Unit filename="include/ActiveInputs.h" />
+		<Unit filename="include/BlockRenderer.h" />
+		<Unit filename="include/Engine.h" />
+		<Unit filename="include/GameState.h" />
+		<Unit filename="include/ImageLoader.h" />
+		<Unit filename="include/Input.h" />
+		<Unit filename="include/Menu.h" />
+		<Unit filename="include/PlayField.h" />
+		<Unit filename="include/RenderLevelSelect.h" />
+		<Unit filename="include/RenderPlayField.h" />
+		<Unit filename="include/Renderer.h" />
+		<Unit filename="include/SquareRenderer.h" />
+		<Unit filename="include/Statistics.h" />
+		<Unit filename="include/Window.h" />
+		<Unit filename="include/random.h" />
+		<Unit filename="nestris.cpp" />
+		<Unit filename="src/ActiveInputs.cpp" />
+		<Unit filename="src/BlockRenderer.cpp" />
+		<Unit filename="src/Engine.cpp" />
+		<Unit filename="src/GameState.cpp" />
+		<Unit filename="src/ImageLoader.cpp" />
+		<Unit filename="src/Input.cpp" />
+		<Unit filename="src/Menu.cpp" />
+		<Unit filename="src/PlayField.cpp" />
+		<Unit filename="src/RenderLevelSelect.cpp" />
+		<Unit filename="src/RenderPlayField.cpp" />
+		<Unit filename="src/Renderer.cpp" />
+		<Unit filename="src/SquareRenderer.cpp" />
+		<Unit filename="src/Statistics.cpp" />
+		<Unit filename="src/Window.cpp" />
+		<Unit filename="src/random.cpp" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+			<lib_finder disable_auto="1" />
+			<DoxyBlocks>
+				<comment_style block="0" line="0" />
+				<doxyfile_project />
+				<doxyfile_build />
+				<doxyfile_warnings />
+				<doxyfile_output />
+				<doxyfile_dot />
+				<general />
+			</DoxyBlocks>
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
