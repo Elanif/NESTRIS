@@ -12,3 +12,4 @@
 - lack of a pause function
 - sound
 - game modes
+- crt filter
