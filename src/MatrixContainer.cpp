@@ -3,7 +3,7 @@
 #include<utility>
 #include<cstdio>
 
-MatrixContainer::MatrixContainer(SDL_Window * _window, const size_t& _frameappearance)
+MatrixContainer::MatrixContainer(SDL_Window * _window, const nes_ushort& _frameappearance)
     :Renderer(_window, _frameappearance)
 {
     for (size_t i=0; i<10; ++i) {
@@ -13,14 +13,14 @@ MatrixContainer::MatrixContainer(SDL_Window * _window, const size_t& _frameappea
     }
 }
 
-int MatrixContainer::getBlock(const char& x, const char& y) const {
+nes_uchar MatrixContainer::getBlock(const nes_uchar& x, const nes_uchar& y) const {
     return matrix[x][y];
 }
 
 bool MatrixContainer::collision(const Piece& _piece) const {
     bool collision = false;
-    std::vector<std::pair<char, char> > piecepositions = _piece.getPos();
-    for (size_t i=0; i<piecepositions.size(); ++i) {
+    std::vector<std::pair<nes_uchar, nes_uchar> > piecepositions = _piece.getPos();
+    for (std::vector<std::pair<nes_uchar, nes_uchar> >::size_type i=0; i<piecepositions.size(); ++i) {
         size_t _xx=piecepositions[i].first;
         size_t _yy=piecepositions[i].second;
         if (_xx<0||_xx>9||_yy>21||_yy<0) {
@@ -36,9 +36,9 @@ bool MatrixContainer::collision(const Piece& _piece) const {
     return collision;
 }
 
-char MatrixContainer::lockpiece(const Piece& _piece) {
-    std::vector<std::pair<char, char> > piecepositions = _piece.getPos();
-    for (size_t i=0; i<piecepositions.size(); ++i) {
+nes_uchar MatrixContainer::lockpiece(const Piece& _piece) {
+    std::vector<std::pair<nes_uchar, nes_uchar> > piecepositions = _piece.getPos();
+    for (std::vector<std::pair<nes_uchar, nes_uchar> >::size_type i=0; i<piecepositions.size(); ++i) {
         size_t _xx=piecepositions[i].first;
         size_t _yy=piecepositions[i].second;
         matrix[_xx][_yy]=_piece.color;
@@ -52,10 +52,10 @@ char MatrixContainer::lockpiece(const Piece& _piece) {
 }
 
 
-char MatrixContainer::clearlines() {
+nes_uchar MatrixContainer::clearlines() {
     bool whichlines[22];
     size_t lowestline=0;
-    char linescleared=0;
+    nes_uchar linescleared=0;
     for (size_t row=0; row<22; ++row) {
         bool clearedline=true;
         for (size_t column=0; column<10; ++column) {

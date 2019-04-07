@@ -1,10 +1,10 @@
 #include "Score.h"
 
 #if __cplusplus >= 199711L
-Score::Score(SDL_Window * _window, const size_t& _frameappearance):Score(_window, _frameappearance, true){
+Score::Score(SDL_Window * _window, const nes_ushort& _frameappearance):Score(_window, _frameappearance, true){
 };
 #else
-Score::Score(SDL_Window * _window, const size_t& _frameappearance)
+Score::Score(SDL_Window * _window, const nes_ushort& _frameappearance)
     :Renderer(_window, _frameappearance), maxout(true)
 {
     score[0]=score[1]=score[2]=0;
@@ -16,7 +16,7 @@ Score::Score(SDL_Window * _window, const size_t& _frameappearance)
 }
 #endif
 
-Score::Score(SDL_Window * _window, const size_t& _frameappearance, const bool& _maxout)
+Score::Score(SDL_Window * _window, const nes_ushort& _frameappearance, const bool& _maxout)
     :Renderer(_window, _frameappearance),  maxout(_maxout)
 {
     score[0]=score[1]=score[2]=0;
@@ -38,19 +38,19 @@ unsigned int Score::getscore() {
 
 void Score::lastdigitcheck() {
     if (maxout) {
-        unsigned char A=score[2]&0xF0;
+        nes_uchar A=score[2]&0xF0;
         if (A-0xA0>=0) score[0]=score[1]=score[2]=0x99;
     }
 }
 
-void Score::bytechecklowdigit(size_t byte, bool andop) {
-    unsigned char A=score[byte];
+void Score::bytechecklowdigit(const size_t& byte, const bool& andop) {
+    nes_uchar A=score[byte];
     if (andop) A=A&0x0f;
     if (A-0x0A>=0) score[byte]+=0x06;
 }
 
-void Score::bytecheckhighdigit(size_t byte, bool andop) {
-    unsigned char A=score[byte];
+void Score::bytecheckhighdigit(const size_t& byte, const bool& andop) {
+    nes_uchar A=score[byte];
     if (andop) A=A&0xf0;
     if (A-0xA0>=0) {
         score[byte]+=0x60;
@@ -58,7 +58,7 @@ void Score::bytecheckhighdigit(size_t byte, bool andop) {
     }
 }
 
-void Score::sofdrop(unsigned char helddownpoints) {
+void Score::sofdrop(nes_uchar helddownpoints) { //helddownpoints used in calculations so value
     if (helddownpoints>=2) {
         --helddownpoints; //it should add heldpoints-1 to the score
         score[0]+=helddownpoints;
@@ -68,7 +68,7 @@ void Score::sofdrop(unsigned char helddownpoints) {
         bytecheckhighdigit(0,true);
     }
 }
-void Score::lineclear(unsigned char level, unsigned char linescleared) {
+void Score::lineclear(const nes_uchar& level, const nes_uchar& linescleared) {
     for (size_t i=0; i<=level; ++i) {
         score[0]+=pointsarray[linescleared*2];
         bytecheckhighdigit(0,false); //for some reason it doesn't do &0xf0

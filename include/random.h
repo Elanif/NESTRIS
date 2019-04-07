@@ -1,19 +1,19 @@
 #pragma once
 #ifndef RANDOM_H
 #define RANDOM_H
-
+#include"enums.h"
 
 class random
 {
     public:
         random();
-    static unsigned short prng(unsigned short value);
-    static unsigned short prng();
-    static unsigned short get();
+    static nes_ushort prng(const nes_ushort& value);
+    static nes_ushort prng();
+    static nes_ushort get();
     protected:
 
     private:
-        static unsigned short randomvalue;
+        static nes_ushort randomvalue;
 };
 
 #endif // RANDOM_H

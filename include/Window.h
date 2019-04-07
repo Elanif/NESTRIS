@@ -9,11 +9,11 @@
 class Window
 {
     public:
-        Window(const int& width, const int& height);
+        Window(const size_t& width, const size_t& height);
         virtual ~Window();
     protected:
     private:
-        SDL_Window* initWindow(const int& _width, const int& _height);
+        SDL_Window* initWindow(const size_t& _width, const size_t& _height);
         Input* initInput();
         Input* inputManager;
         SDL_Window* window;

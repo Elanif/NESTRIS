@@ -4,15 +4,16 @@
 #include<vector>
 #include<utility>
 #include"ActiveInputs.h"
+#include"enums.h"
 
 class Piece
 {
     public:
         Piece();
-        char x, y, piecetype, rotation, color;
-        std::vector<std::pair<char,char> > getPos() const;
+        nes_uchar x, y, piecetype, rotation, color;
+        std::vector<std::pair<nes_uchar, nes_uchar> > getPos() const;
 
-    static char rotationmatrix[28][4][2];
+    static nes_schar rotationmatrix[28][4][2];
     protected:
 
     private:
@@ -23,29 +24,29 @@ class PieceContainer : public Renderer
 {
 public:
     PieceContainer(){};
-    PieceContainer(SDL_Window * _window, const size_t& _frameappearance);
+    PieceContainer(SDL_Window * _window, const nes_ushort& _frameappearance);
     Piece tryMove(const ActiveInputs& _inputs);
     Piece tryRotate(const ActiveInputs& _inputs);
-    Piece tryDrop(const ActiveInputs& _inputs, const unsigned char& _gravity);
+    Piece tryDrop(const ActiveInputs& _inputs, const nes_uchar& _gravity);
     void doMove(const bool& _collision);
     void doRotate(const bool& _collision);
     void doDrop();
-    void lockpiece(const char& _lockheight);
+    void lockpiece(const nes_uchar& _lockheight);
     const Piece& getPiece() const;
     void deletepiece() ;
-    void render(const size_t& _framecounter, const char& _level);
+    void render(const nes_ushort& _framecounter, const nes_uchar& _level);
 private:
 
-    std::vector<std::pair<char, char> > lastrenderedpos;
+    std::vector<std::pair<nes_uchar, nes_uchar> > lastrenderedpos;
     size_t spawncount;
-    unsigned char spawnpiececounter;
-    void spawnPiece(const char& _spawndelay);
+    nes_uchar spawnpiececounter;
+    void spawnPiece(const nes_uchar& _spawndelay);
 
     bool downinterrupted;
-    unsigned char das, downcounter, holddowncounter;
+    nes_uchar das, downcounter, holddowncounter;
     Piece currentpiece, nextpiece;
 
-    unsigned char tempdas, tempholddowncounter, tempdowncounter;
+    nes_uchar tempdas, tempholddowncounter, tempdowncounter;
     Piece temppiece;
 };
 #endif // PIECE_H

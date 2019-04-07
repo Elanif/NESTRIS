@@ -3,14 +3,15 @@
 
 #include"stddef.h"
 #include "SDL.h"
+#include"enums.h"
 
 class Renderer
 {
     public:
         Renderer();
-        Renderer(SDL_Window * _window, const size_t& _frameappearance);
+        Renderer(SDL_Window * _window, const nes_ushort& _frameappearance);
     protected:
-        unsigned long long frameappearance;
+        nes_ushort frameappearance;
         SDL_Window * window;
         SDL_Surface * renderSurface;
 };

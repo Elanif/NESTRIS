@@ -1,6 +1,6 @@
 #include"Window.h"
 
-Window::Window(const int& _width, const int& _height)
+Window::Window(const size_t& _width, const size_t& _height)
 {
     window=initWindow(_width,_height);
     inputManager=initInput();
@@ -21,7 +21,7 @@ Input* Window::initInput() {
     return new Input();
 }
 
-SDL_Window* Window::initWindow(const int& _width, const int& _height) {
+SDL_Window* Window::initWindow(const size_t& _width, const size_t& _height) {
     SDL_Window* _window=NULL;
     SDL_Surface* _windowSurface=NULL;
     _window = SDL_CreateWindow( "Nestris", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, _width, _height, SDL_WINDOW_SHOWN );

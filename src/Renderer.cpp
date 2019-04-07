@@ -1,6 +1,6 @@
 #include "Renderer.h"
 
-Renderer::Renderer(SDL_Window * _window, const size_t& _frameappearance)
+Renderer::Renderer(SDL_Window * _window, const nes_ushort& _frameappearance)
     :window(_window), frameappearance(_frameappearance)
 {
     renderSurface=SDL_GetWindowSurface(window);

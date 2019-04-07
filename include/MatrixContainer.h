@@ -3,22 +3,23 @@
 #include"SDL.h"
 #include"Renderer.h"
 #include"PieceContainer.h"
+#include"enums.h"
 
 class MatrixContainer : public Renderer
 {
     public:
         MatrixContainer() {};
-        MatrixContainer(SDL_Window * _window, const size_t& _frameappearance);
+        MatrixContainer(SDL_Window * _window, const nes_ushort& _frameappearance);
         bool collision(const Piece& _piece) const;
-        char lockpiece(const Piece& _piece);
-        char clearlines();
-        int getBlock(const char& x, const char& y) const;
+        nes_uchar lockpiece(const Piece& _piece);
+        nes_uchar clearlines();
+        nes_uchar getBlock(const nes_uchar& x, const nes_uchar& y) const;
     protected:
 
     private:
-        int linesclearedarray[22];
-        int newmatrix[10][22];
-        int matrix[10][22];
+        nes_uchar linesclearedarray[22];
+        nes_uchar newmatrix[10][22];
+        nes_uchar matrix[10][22];
 };
 
 #endif // MATRIXCONTAINER_H

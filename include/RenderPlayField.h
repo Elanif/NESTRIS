@@ -8,22 +8,23 @@
 #include"PieceContainer.h"
 #include"MatrixContainer.h"
 #include"LevelLines.h"
+#include"enums.h"
 
 class RenderPlayField : public Renderer
 {
     public:
-        RenderPlayField(SDL_Window * _window, const size_t& _frameappearance, size_t _level);
+        RenderPlayField(SDL_Window * _window, const nes_ushort& _frameappearance, nes_uchar _level);
         void update(const ActiveInputs& _input) ;
-        void render(const unsigned long long& framecounter) ;
-        void resetPlayField(const size_t& _level);
+        void render(const nes_ushort& framecounter) ;
+        void resetPlayField(const nes_uchar& _level);
     private:
 
         MatrixContainer matrixhandler;
         PieceContainer piecehandler;
         Score scorehandler;
         LevelLines levellineshandler;
-        size_t level;
-        char gravity[255];
+        nes_uchar level;
+        nes_uchar gravity[255];
         /*
         int lockpiece();
         int updatePlayField(const ActiveInputs& _input) ;

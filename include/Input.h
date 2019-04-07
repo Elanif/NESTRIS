@@ -2,17 +2,7 @@
 #define INPUT_H
 #include<SDL.h>
 #include "ActiveInputs.h"
-
-enum BUTTONS {
-    LEFT,
-    UP,
-    RIGHT,
-    DOWN,
-    SELECT,
-    START,
-    B,
-    A
-};
+#include"enums.h"
 
 class Input
 {

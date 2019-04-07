@@ -5,16 +5,16 @@
 #include"BlockRenderer.h"
 #include<cstdio>
 
-PieceContainer::PieceContainer(SDL_Window * _window, const size_t& _frameappearance)
+PieceContainer::PieceContainer(SDL_Window * _window, const nes_ushort& _frameappearance)
     :Renderer(_window, _frameappearance), downinterrupted(false), das(0), downcounter(0), spawncount(0)
 {
     spawnPiece(0);
     spawnPiece(0);
 }
 
-Piece PieceContainer::tryDrop(const ActiveInputs& _inputs, const unsigned char& _gravity){
+Piece PieceContainer::tryDrop(const ActiveInputs& _inputs, const nes_uchar& _gravity){
     //TODO holding down to be checked here?
-    printf("gravity=%d\n",_gravity);
+
     temppiece=currentpiece;
     tempdowncounter=++downcounter;
     tempholddowncounter=holddowncounter;
@@ -25,13 +25,13 @@ Piece PieceContainer::tryDrop(const ActiveInputs& _inputs, const unsigned char& 
                 ++temppiece.y;
                 tempholddowncounter-=2;
             }
-            else if (tempdowncounter>=_gravity) {
-                ++temppiece.y;
-                tempdowncounter=0;
-            }
             //if holddowncounter>=3 > move down, holddowncounte-=2;
             //else if downcounter>=gravity > move down, downcounter=0;
         }
+    }
+    else if (tempdowncounter>=_gravity) {
+        ++temppiece.y;
+        tempdowncounter=0;
     }
     return temppiece;
 }
@@ -42,13 +42,11 @@ Piece PieceContainer::tryMove(const ActiveInputs& _inputs){
     tempdas=das;
     if (_inputs.getHold(DOWN)) return temppiece;
     if (_inputs.getPress(RIGHT)) {
-    printf("pressed %s\n","RIGHT");
         tempdas=0;
         temppiece.x++;
         return temppiece;
     }
     if (_inputs.getPress(LEFT)) {
-    printf("pressed %s\n","LEFT");
         tempdas=0;
         temppiece.x--;
         return temppiece;
@@ -115,17 +113,17 @@ const Piece& PieceContainer::getPiece() const{
 }
 
 void PieceContainer::deletepiece() {
-    for (size_t i=0; i<lastrenderedpos.size(); ++i) {
+    for (size_t i=0; i<lastrenderedpos.size(); ++i) { //TODO size:type
         BlockRenderer::block(renderSurface, 0, 0, lastrenderedpos[i].first*8,lastrenderedpos[i].second*8);
     }
 }
 
-void PieceContainer::render(const size_t& _framecounter, const char& _level) {
+void PieceContainer::render(const nes_ushort& _framecounter, const nes_uchar& _level) {
     printf(" x=%d, y=%d, type=%d, nexttype=%d\n",currentpiece.x,currentpiece.y,currentpiece.piecetype,nextpiece.piecetype);
     lastrenderedpos.clear();
     for (size_t i=0; i<4; ++i) {
-        size_t _xx=currentpiece.x+Piece::rotationmatrix[currentpiece.piecetype*4+currentpiece.rotation][i][0];
-        size_t _yy=currentpiece.y+Piece::rotationmatrix[currentpiece.piecetype*4+currentpiece.rotation][i][1];
+        nes_uchar _xx=currentpiece.x+Piece::rotationmatrix[currentpiece.piecetype*4+currentpiece.rotation][i][0];
+        nes_uchar _yy=currentpiece.y+Piece::rotationmatrix[currentpiece.piecetype*4+currentpiece.rotation][i][1];
         if (_xx>0&&_xx<10&&_yy>0&&_yy<20) {
             BlockRenderer::block(renderSurface, currentpiece.color, _level, _xx*8,_yy*8);
             lastrenderedpos.push_back(std::make_pair(currentpiece.x+Piece::rotationmatrix[currentpiece.piecetype*4+currentpiece.rotation][i][0],currentpiece.y+Piece::rotationmatrix[currentpiece.piecetype*4+currentpiece.rotation][i][1]));
@@ -134,14 +132,14 @@ void PieceContainer::render(const size_t& _framecounter, const char& _level) {
 }
 
 
-void PieceContainer::spawnPiece(const char& _spawndelay) {
+void PieceContainer::spawnPiece(const nes_uchar& _spawndelay) {
     currentpiece=nextpiece;
-    char spawnID=nextpiece.piecetype; //creates a piece next to nextpiece
+    nes_uchar spawnID=nextpiece.piecetype; //creates a piece next to nextpiece
     ++spawncount;
-    char index=random::prng()>>8;
+    nes_uchar index=random::prng()>>8;
     index+=spawncount;
     index&=7;
-    char newSpawnID;
+    nes_uchar newSpawnID;
     if (index!=7) {
         newSpawnID = index;
         if (newSpawnID == spawnID) {
@@ -169,8 +167,8 @@ void PieceContainer::spawnPiece(const char& _spawndelay) {
     spawnpiececounter=_spawndelay; //10~18 TODO
 }
 
-void PieceContainer::lockpiece(const char& _lockheight) {
-    char _spawndelay=22-_lockheight/4; //TODO
+void PieceContainer::lockpiece(const nes_uchar& _lockheight) {
+    nes_uchar _spawndelay=22-_lockheight/4; //TODO
     //spawnPiece();
 }
 
@@ -183,16 +181,16 @@ Piece::Piece()
     color=2; //TODO
 }
 
-std::vector<std::pair<char,char> > Piece::getPos() const {
-    std::vector<std::pair<char,char> > result;
+std::vector<std::pair<nes_uchar, nes_uchar> > Piece::getPos() const {
+    std::vector<std::pair<nes_uchar,nes_uchar> > result;
     if (piecetype<0 || piecetype>6) return result;
-    for (size_t i=0; i< 4; ++i) {
+    for (std::vector<std::pair<nes_uchar,nes_uchar> >::size_type i=0; i< 4; ++i) {
         result.push_back(std::make_pair(rotationmatrix[piecetype*4+rotation][i][0]+x,rotationmatrix[piecetype*4+rotation][i][1]+y));
     }
     return result;
 }
 
-char Piece::rotationmatrix[28][4][2]={
+nes_schar Piece::rotationmatrix[28][4][2]={
    { { -1,  0 }, {  0,  0 }, {  1,  0 }, {  0,  1 }, },  // 02: T down (spawn)
    { {  0, -1 }, { -1,  0 }, {  0,  0 }, {  0,  1 }, },  // 03: T left
     { { -1,  0 }, {  0,  0 }, {  1,  0 }, {  0, -1 }, },  // 00: T up
