@@ -36,6 +36,7 @@
 			<Add directory="src" />
 			<Add directory="include" />
 			<Add directory="../nestris" />
+			<Add directory="SDL2/SDL2/lib" />
 		</Compiler>
 		<ResourceCompiler>
 			<Add directory="include" />
@@ -46,6 +47,8 @@
 			<Add option="-lmingw32 -lSDL2main -lSDL2 -lSDL2_image" />
 			<Add directory="../../CodeBlocks-EP/MinGW/SDL2-2.0.9/i686-w64-mingw32/lib" />
 			<Add directory="G:/CodeBlocks-EP/MinGW/SDL2-2.0.9/i686-w64-mingw32/bin" />
+			<Add directory="SDL2/SDL2/bin" />
+			<Add directory="SDL2/SDL2/lib" />
 		</Linker>
 		<Unit filename="include/ActiveInputs.h" />
 		<Unit filename="include/BlockRenderer.h" />
@@ -58,6 +61,7 @@
 		<Unit filename="include/RenderLevelSelect.h" />
 		<Unit filename="include/RenderPlayField.h" />
 		<Unit filename="include/Renderer.h" />
+		<Unit filename="include/Score.h" />
 		<Unit filename="include/SquareRenderer.h" />
 		<Unit filename="include/Statistics.h" />
 		<Unit filename="include/Window.h" />
@@ -74,6 +78,7 @@
 		<Unit filename="src/RenderLevelSelect.cpp" />
 		<Unit filename="src/RenderPlayField.cpp" />
 		<Unit filename="src/Renderer.cpp" />
+		<Unit filename="src/Score.cpp" />
 		<Unit filename="src/SquareRenderer.cpp" />
 		<Unit filename="src/Statistics.cpp" />
 		<Unit filename="src/Window.cpp" />
