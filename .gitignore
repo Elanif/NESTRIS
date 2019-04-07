@@ -44,3 +44,4 @@ obj/
 *.nes
 doxygen/
 SDL2/
+error_log.txt
