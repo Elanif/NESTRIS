@@ -6,34 +6,34 @@
 #include"ActiveInputs.h"
 #include "Score.h"
 //#include"PieceContainer.h"
-//#include"MatrixContainer.h"
+#include"MatrixContainer.h"
 //#include"LevelLines.h"
 #include"enums.h"
 
 class RenderPlayField : public Renderer
 {
     public:
-        RenderPlayField(TileContainer* _tilecont, const size_t& _frameappearance, nes_uchar _level);
+        RenderPlayField(TileContainer* _tilecont, const nes_ushort& _frameappearance, nes_uchar _level);
         void update(const ActiveInputs& _input, const nes_ushort& _framecounter) ;
         void render(const nes_ushort& framecounter) ;
         void resetPlayField(const nes_uchar& _level);
         void renderPlayField(const unsigned long long& framecounter);
     private:
         void renderimage(bool blink);
-        /*MatrixContainer matrixhandler;
-        bool tetris;
+        MatrixContainer matrixhandler;
+        bool tetris;/*
         PieceContainer piecehandler;
 
         Score scorehandler;
 
         LevelLines levellineshandler;
-
+*/
         nes_uchar level;
         nes_uchar gravity[255];
 
         bool firstframeis4;
         bool paused;
-        nes_uchar pausecounter;*/
+        nes_uchar pausecounter;/*
 
 
         /*

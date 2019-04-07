@@ -3,23 +3,16 @@
 #include<vector>
 #include<utility>
 #include<cstdio>
-#include"BlockRenderer.h"
-#include"SDL_Image.h"
 
-MatrixContainer::MatrixContainer(SDL_Window * _window, const nes_ushort& _frameappearance)
-    :Renderer(_window, _frameappearance)
+MatrixContainer::MatrixContainer(TileContainer * _tilecont, const nes_ushort& _frameappearance)
+    :Renderer(_tilecont, _frameappearance)
 {
     updatingmatrix=0;
-    int imgFlags = IMG_INIT_PNG;
-    if( !( IMG_Init( imgFlags ) & imgFlags ) )
-    {
-        printf( "SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError() );
-    }
     hidecounter=sleepcounter=0;
     linescleared=0;
     for (int i=0; i<9;++i) {
         for (int j=18; j<22; ++j) {
-            matrix(i,j)=1;
+            matrix(i,j)=1; //staring wtih a tetris
         }
     }
 }
@@ -33,6 +26,8 @@ void MatrixContainer::render(const nes_uchar& _level) {
         --hidecounter;
         return;
     }
+    const size_t playfieldx=5;
+    const size_t playfieldy=5;
     if (glb::lineclearframecounter>0) {    //TODO how does pause interact with the clear animation?
         if (getframemod4()==0) {
             for (size_t i=0; i<linescleared; ++i ){
@@ -46,17 +41,19 @@ void MatrixContainer::render(const nes_uchar& _level) {
     else if (updatingmatrix>0) {
         for (nes_uchar y=2+(5-updatingmatrix)*4; y<2+(5-(updatingmatrix-1))*4; ++y)
             for (nes_uchar x=0; x<10; ++x)
-                BlockRenderer::block(renderSurface,newmatrix(x,y),_level,PLAYFIELDX+x*8,PLAYFIELDY+(y-2)*8);
+                tilecont->at(playfieldx+x,playfieldy+y)=tiletype(_level,newmatrix(x,y));
+                //BlockRenderer::block(renderSurface,newmatrix(x,y),_level,PLAYFIELDX+x*8,PLAYFIELDY+(y-2)*8);
         for (nes_uchar y=2+(5-(updatingmatrix-1))*4; y<22; ++y)
             for (nes_uchar x=0; x<10; ++x)
-                BlockRenderer::block(renderSurface,matrix(x,y),_level,PLAYFIELDX+x*8,PLAYFIELDY+(y-2)*8);
+                tilecont->at(playfieldx+x,playfieldy+y)=tiletype(_level,matrix(x,y));
+                //BlockRenderer::block(renderSurface,matrix(x,y),_level,PLAYFIELDX+x*8,PLAYFIELDY+(y-2)*8);
         --updatingmatrix;
         if (updatingmatrix==0) matrix=newmatrix;
         return;
     }
     for (nes_uchar x=0; x<10; ++x) { //TODO maybe optimize to render only new stuff around piece
         for (nes_uchar y=2; y<22; ++y) {
-            BlockRenderer::block(renderSurface,matrix(x,y),_level,PLAYFIELDX+x*8,PLAYFIELDY+(y-2)*8);
+            tilecont->at(playfieldx+x,playfieldy+y)=tiletype(_level,newmatrix(x,y));
         }
     }
     //TODO
@@ -133,16 +130,13 @@ nes_uchar MatrixContainer::clearlines() {
     return linescleared;
 }
 
-/*void RenderPlayField::resetPlayField(const size_t& _level){
-    //todo next piece
-    level=_level;
-    spawnCount=0;
+void MatrixContainer::reset(){
     for (size_t i=0; i<10; ++i) {
         for (size_t j=0; j< 22;++j) {
             matrix(i,j)=0;
         }
     }
-}*/
+}
 
 /*void RenderPlayField::renderPlayField(const unsigned long long& framecounter) {
     //TODO blinking clear delay

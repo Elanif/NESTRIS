@@ -17,8 +17,8 @@ class Engine
         void frame(const ActiveInputs& _inputs);
     protected:
     private:
-        TileContainer* tilecont;
         RenderLevelSelect RLS;
+        TileContainer* tilecont;
         RenderPlayField RPF;
         enum MenuType {
             LEVELSELECT=10,

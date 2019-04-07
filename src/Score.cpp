@@ -1,23 +1,8 @@
 #include "Score.h"
 
-/*#if __cplusplus >= 199711L
-Score::Score(SDL_Window * _window, const nes_ushort& _frameappearance):Score(_window, _frameappearance, true){
-};
-#else*/
-Score::Score(SDL_Window * _window, const nes_ushort& _frameappearance)
-    :Renderer(_window, _frameappearance), maxout(true)
-{
-    score[0]=score[1]=score[2]=0;
-    pointsarray[0]=00; pointsarray[1]=00;
-    pointsarray[2]=40; pointsarray[3]=00;
-    pointsarray[4]=00; pointsarray[5]=01;
-    pointsarray[6]=00; pointsarray[7]=03;
-    pointsarray[8]=00; pointsarray[9]=12;
-}
-//#endif
-
-Score::Score(SDL_Window * _window, const nes_ushort& _frameappearance, const bool& _maxout)
-    :Renderer(_window, _frameappearance),  maxout(_maxout)
+Score::Score(TileContainer *_tilecont, const nes_ushort& _frameappearance)
+:Renderer(_tilecont, _frameappearance),
+maxout(true)
 {
     score[0]=score[1]=score[2]=0;
     pointsarray[0]=00; pointsarray[1]=00;
@@ -27,7 +12,13 @@ Score::Score(SDL_Window * _window, const nes_ushort& _frameappearance, const boo
     pointsarray[8]=00; pointsarray[9]=12;
 }
 
-void Score::render() {
+Score::Score(TileContainer *_tilecont, const nes_ushort& _frameappearance, const bool& _maxout)
+:Score(_tilecont,_frameappearance)
+{
+    maxout=false;
+}
+
+/*void Score::render() {
     if (hidecounter>0) {
         --hidecounter;
         return;
@@ -35,7 +26,7 @@ void Score::render() {
     else {
 
     }
-}
+}*/
 
 
 unsigned int Score::getscore() {

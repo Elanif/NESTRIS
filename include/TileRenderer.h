@@ -78,41 +78,49 @@ public:
     size_t height;
     void drawmod(sf::RenderTarget& target, sf::RenderStates states)
     {
+        sf::Clock trclock;
         for (size_t x=0; x<width; ++x) {
             for (size_t y=0; y<height; ++y) {
-                const int primacifra[4]={
-                    tilecont.at(x,y).palette_color[0]/16,
-                    tilecont.at(x,y).palette_color[1]/16,
-                    tilecont.at(x,y).palette_color[2]/16,
-                    tilecont.at(x,y).palette_color[3]/16
-                };
-                const int secondacifra[4]={
-                    tilecont.at(x,y).palette_color[0]%16,
-                    tilecont.at(x,y).palette_color[1]%16,
-                    tilecont.at(x,y).palette_color[2]%16,
-                    tilecont.at(x,y).palette_color[3]%16
-                };
-                const unsigned int color[4]={
-                    palette[primacifra[0]][secondacifra[0]],
-                    palette[primacifra[1]][secondacifra[1]],
-                    palette[primacifra[2]][secondacifra[2]],
-                    palette[primacifra[3]][secondacifra[3]]
-                };
-                sprite spritetemp=spritevector[tilecont.at(x,y).tilenumber];
-                for (size_t pixelx=0; pixelx<8; ++pixelx) {
-                    for (size_t pixely=0; pixely<8; ++pixely) {
-                            //printf("tilenumber=%d \n",tilecont.at(x,y).tilenumber);
-                        nes_uchar tiletypetemp=spritetemp.arr[pixelx][pixely];
-                        sf::Color colortemp=sf::Color(color[tiletypetemp]);
-                        if (colortemp.a!=0)
-                        finalimageclass.setPixel(x*8+pixelx,y*8+pixely,colortemp); //sf::Color(color[spritevector[tilecont(x,y).tilenumber].arr[pixelx][pixely]]
+                if (tilecont.updated(x,y)) {
+                    const int primacifra[4]={
+                        tilecont.atconst(x,y).palette_color[0]/16,
+                        tilecont.atconst(x,y).palette_color[1]/16,
+                        tilecont.atconst(x,y).palette_color[2]/16,
+                        tilecont.atconst(x,y).palette_color[3]/16
+                    };
+                    const int secondacifra[4]={
+                        tilecont.atconst(x,y).palette_color[0]%16,
+                        tilecont.atconst(x,y).palette_color[1]%16,
+                        tilecont.atconst(x,y).palette_color[2]%16,
+                        tilecont.atconst(x,y).palette_color[3]%16
+                    };
+                    const unsigned int color[4]={
+                        palette[primacifra[0]][secondacifra[0]],
+                        palette[primacifra[1]][secondacifra[1]],
+                        palette[primacifra[2]][secondacifra[2]],
+                        palette[primacifra[3]][secondacifra[3]]
+                    };
+                    sprite spritetemp=spritevector[tilecont.atconst(x,y).tilenumber];
+                    for (size_t pixelx=0; pixelx<8; ++pixelx) {
+                        for (size_t pixely=0; pixely<8; ++pixely) {
+                                //printf("tilenumber=%d \n",tilecont.at(x,y).tilenumber);
+                            nes_uchar tiletypetemp=spritetemp.arr[pixelx][pixely];
+                            sf::Color colortemp=sf::Color(color[tiletypetemp]);
+                            if (colortemp.a!=0)
+                            finalimageclass.setPixel(x*8+pixelx,y*8+pixely,colortemp); //sf::Color(color[spritevector[tilecont(x,y).tilenumber].arr[pixelx][pixely]]
+                        }
                     }
                 }
             }
         }
+        printf("after update matrix =%I64d\n",trclock.getElapsedTime().asMicroseconds());
         temptexclass.loadFromImage(finalimageclass);
+        printf("after textureLoadFromImage =%I64d\n",trclock.getElapsedTime().asMicroseconds());
         tempspriteclass.setTexture(temptexclass, true);
+        printf("after setTexture =%I64d\n",trclock.getElapsedTime().asMicroseconds());
         target.draw(tempspriteclass,states);
+        printf("after draw =%I64d\n",trclock.getElapsedTime().asMicroseconds());
+        tilecont.resetupdated();
     }
 
 private:
@@ -121,6 +129,7 @@ private:
 
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const
     {
+        sf::Clock trclock;
         sf::Image finalimage;
         finalimage.create(width*8,height*8);
         for (size_t x=0; x<width; ++x) {

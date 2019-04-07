@@ -7,13 +7,14 @@
 #include<vector>
 #include<utility>
 #include"ActiveInputs.h"
+#include"TileContainer.h"
 
 
 class PieceContainer : public Renderer
 {
 public:
     PieceContainer(){};
-    PieceContainer(SDL_Window * _window, const nes_ushort& _frameappearance);
+    PieceContainer(TileContainer * _tilecont, const nes_ushort& _frameappearance);
     Piece tryMove(const ActiveInputs& _inputs);
     Piece tryRotate(const ActiveInputs& _inputs);
     Piece tryDrop(const ActiveInputs& _inputs, const nes_uchar& _gravity);

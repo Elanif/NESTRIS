@@ -8,13 +8,13 @@ Window::Window(const size_t& _width, const size_t& _height, sf::RenderStates _st
 
     TileRenderer tilerend(_width/8,_height/8);
     tilerend.load("sprites.txt");
-
+    printf("sizeof long long=%d\n",sizeof(long long));
     Engine _engine= Engine(tilerend.getTileContainer(),10); //TODO change 10
     sf::Event event;
     sf::Int64 smallesttimeunit=sf::Int64(0);
     sf::Clock onesecondinit;
     sf::Clock elapsedtime=sf::Clock();
-    while (onesecondinit.getElapsedTime()<sf::Time(sf::milliseconds(1000))) {
+    while (onesecondinit.getElapsedTime()<sf::Time(sf::milliseconds(100))) {
         elapsedtime.restart();
         sf::sleep(sf::microseconds(1));
         sf::Int64 _timetemp=elapsedtime.getElapsedTime().asMicroseconds();
@@ -23,15 +23,14 @@ Window::Window(const size_t& _width, const size_t& _height, sf::RenderStates _st
     sf::Int64 microsecondsperframe=1000000.L/60.0988L;
     printf("%d\n",(int)smallesttimeunit);
     elapsedtime.restart();
-    //while I can't do a proper algorithm ill do this
-    smallesttimeunit*=5;
+    //while I can't do a proper algorithm ill do this    smallesttimeunit*=5;
     while (window.isOpen()) {
         if (elapsedtime.getElapsedTime().asMicroseconds()>=microsecondsperframe) {
             printf("fps=%f\n",(double)sf::Int64(1000000)/(double)elapsedtime.getElapsedTime().asMicroseconds());
             elapsedtime.restart();
             _engine.frame(inputManager.getInput());
             //SFML update window
-            window.clear();
+            //window.clear();
             tilerend.drawmod(window, _state);
             window.display();
             while (window.pollEvent(event))
@@ -41,21 +40,27 @@ Window::Window(const size_t& _width, const size_t& _height, sf::RenderStates _st
             }
         }
         else {
-
-        if (optimized) {
-            sf::Int64 sleeptime=microsecondsperframe-elapsedtime.getElapsedTime().asMicroseconds();
-            sleeptime-=smallesttimeunit;
-            sf::sleep(sf::microseconds(sleeptime));
-            //if (elapsedtime.getElapsedTime().asMicroseconds()>microsecondsperframe) smallesttimeunit+=initialsmallesttimeunit;
-        }
-        else {
-            sf::Int64 cycleduration=(microsecondsperframe-elapsedtime.getElapsedTime().asMicroseconds())/smallesttimeunit;
-            for (sf::Int64 i=0; i<cycleduration; ++i)
-                sf::sleep(sf::microseconds(1));
-            //if (elapsedtime.getElapsedTime().asMicroseconds()>microsecondsperframe) smallesttimeunit+=initialsmallesttimeunit;
-            /*if (microsecondsperframe-elapsedtime.getElapsedTime().asMicroseconds()<smallesttimeunit)
-                sf::sleep(sf::microseconds(1));*/
-        }
+            sf::Int64 delaystart=elapsedtime.getElapsedTime().asMicroseconds();
+            if (optimized) {
+                sf::Int64 sleeptime=microsecondsperframe-delaystart;
+                sleeptime-=smallesttimeunit;
+                sf::sleep(sf::microseconds(sleeptime));
+                delaystart=elapsedtime.getElapsedTime().asMicroseconds()-delaystart;
+                if (delaystart>smallesttimeunit) smallesttimeunit=delaystart;
+                //if (elapsedtime.getElapsedTime().asMicroseconds()>microsecondsperframe) smallesttimeunit+=initialsmallesttimeunit;
+            }
+            else {
+                sf::Int64 cycleduration=(microsecondsperframe-delaystart)/smallesttimeunit-1;
+                for (sf::Int64 i=0; i<cycleduration&&(elapsedtime.getElapsedTime().asMicroseconds()+smallesttimeunit<microsecondsperframe); ++i) {
+                    sf::sleep(sf::microseconds(1));
+                    delaystart=elapsedtime.getElapsedTime().asMicroseconds()-delaystart;
+                    if (delaystart>smallesttimeunit) smallesttimeunit=delaystart;
+                    delaystart=elapsedtime.getElapsedTime().asMicroseconds();
+                }
+                //if (elapsedtime.getElapsedTime().asMicroseconds()>microsecondsperframe) smallesttimeunit+=initialsmallesttimeunit;
+                /*if (microsecondsperframe-elapsedtime.getElapsedTime().asMicroseconds()<smallesttimeunit)
+                    sf::sleep(sf::microseconds(1));*/
+            }
         }
     }
     printf("hello\n");

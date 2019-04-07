@@ -1,6 +1,8 @@
 #include "RenderLevelSelect.h"
 #include<cstdio>
-RenderLevelSelect::RenderLevelSelect(TileContainer *_tilecont, const size_t& _frameappearance, const size_t& _currentlevel):Renderer(_tilecont,_frameappearance), currentlevel(_currentlevel)
+RenderLevelSelect::RenderLevelSelect(TileContainer *_tilecont, const size_t& _frameappearance, const size_t& _currentlevel):
+Renderer(_tilecont,_frameappearance),
+currentlevel(_currentlevel)
 {
     blink=0;
     lastrenderedlevel=0;

@@ -11,13 +11,13 @@ class Renderer
     public:
         Renderer();
         Renderer(TileContainer* _tilegrid);
-        Renderer(TileContainer* _tilegrid, const nes_ushort& _frameappearance);
+        Renderer(TileContainer* _tilegrid, const size_t& _frameappearance);
         void sleep(const nes_uchar& _sleepcounter);
         void hide(const nes_uchar& _hidecounter);
     protected:
         nes_uchar sleepcounter;
         nes_uchar hidecounter;
-        nes_ushort frameappearance;
+        size_t frameappearance;
         TileContainer* tilecont;
 };
 #endif

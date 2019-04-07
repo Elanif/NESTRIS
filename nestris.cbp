@@ -45,6 +45,7 @@
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
+			<Add option="-std=c++11" />
 			<Add directory="src" />
 			<Add directory="include" />
 			<Add directory="../nestris" />
@@ -61,9 +62,13 @@
 		<Unit filename="include/ActiveInputs.h" />
 		<Unit filename="include/Engine.h" />
 		<Unit filename="include/Input.h" />
+		<Unit filename="include/MatrixContainer.h" />
+		<Unit filename="include/PFMatrix.h" />
+		<Unit filename="include/Piece.h" />
 		<Unit filename="include/RenderLevelSelect.h" />
 		<Unit filename="include/RenderPlayField.h" />
 		<Unit filename="include/Renderer.h" />
+		<Unit filename="include/Score.h" />
 		<Unit filename="include/TileContainer.h" />
 		<Unit filename="include/TileRenderer.h" />
 		<Unit filename="include/Window.h" />
@@ -73,9 +78,13 @@
 		<Unit filename="src/ActiveInputs.cpp" />
 		<Unit filename="src/Engine.cpp" />
 		<Unit filename="src/Input.cpp" />
+		<Unit filename="src/MatrixContainer.cpp" />
+		<Unit filename="src/PFMatrix.cpp" />
+		<Unit filename="src/Piece.cpp" />
 		<Unit filename="src/RenderLevelSelect.cpp" />
 		<Unit filename="src/RenderPlayField.cpp" />
 		<Unit filename="src/Renderer.cpp" />
+		<Unit filename="src/Score.cpp" />
 		<Unit filename="src/TileContainer.cpp" />
 		<Unit filename="src/TileRenderer.cpp" />
 		<Unit filename="src/Window.cpp" />
