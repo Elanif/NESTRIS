@@ -47,8 +47,34 @@ const bool& TileContainer::updated(const std::size_t& x, const std::size_t& y) {
     return _upd[y*width+x];
 }
 
-TileContainer::TileContainer(const std::size_t& _width, const std::size_t& _height)
-    :width(_width), height(_height)
+void TileContainer::renderExtra(const std::size_t pixelx, const std::size_t pixely, const tiletype& t, const double& priority) {
+    if (priority<0.5) {
+        if (previous_tiles.size()>=extra_render) {
+            std::stringstream errorstream;
+            errorstream<<"Too many extra previous tiles, pixelx,pixely="<<pixelx<<","<<pixely<<" tiletype="<<t.tilenumber;
+            glb::cm.update<std::string>("error",errorstream.str());
+        }
+        else {
+            previous_tiles.insert(std::make_pair(priority,glb::triple(pixelx,pixely,t)));
+        }
+    }
+    if (priority>=0.5) {
+        if (following_tiles.size()>=extra_render) {
+            std::stringstream errorstream;
+            errorstream<<"Too many extra following tiles, pixelx,pixely="<<pixelx<<","<<pixely<<" tiletype="<<t.tilenumber;
+            glb::cm.update<std::string>("error",errorstream.str());
+        }
+        else{
+            following_tiles.insert(std::make_pair(priority,glb::triple(pixelx,pixely,t)));
+        }
+    }
+
+}
+
+TileContainer::TileContainer(const std::size_t& _width, const std::size_t& _height, const std::size_t& _extra_render)
+    :width(_width),
+    height(_height),
+    extra_render(_extra_render)
 {
     if (_width*_height==0) {
         tilegrid=NULL;
@@ -57,15 +83,6 @@ TileContainer::TileContainer(const std::size_t& _width, const std::size_t& _heig
     else {
         tilegrid=new tiletype[width*height];
         _upd=new bool[width*height];
-        /*
-        for (std::size_t i=0; i<width; ++i) {
-            for (std::size_t j=0; j<height; ++j) {
-                this->at(i,j).tilenumber=0;
-                for (std::size_t k=0; k<4; ++k) {
-                    this->at(i,j).palette_color[k]=0;
-                }
-            }
-        }*/
         for (std::size_t i=0; i<width*height; ++i) {
             tilegrid[i]=tiletype();
             _upd[i]=true;
@@ -80,6 +97,8 @@ TileContainer::TileContainer()
 {}
 
 TileContainer::~TileContainer() {
-    delete[] tilegrid;
-    delete[] _upd;
+    if (width*height>0) {
+        delete[] tilegrid;
+        delete[] _upd;
+    }
 }

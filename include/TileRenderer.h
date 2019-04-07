@@ -14,7 +14,7 @@ class TileRenderer : public sf::Transformable, public sf::NonCopyable
 
     //bool load(const std::string& tileset, sf::Vector2u tileSize, const TileContainer& tiles, const nes_uchar& width, const nes_uchar& height)
 public:
-    TileRenderer(const std::size_t& _width, const std::size_t& _height, sf::Vector2u tilesize, const int& _drawmethod);
+    TileRenderer(const std::size_t& _width, const std::size_t& _height, sf::Vector2u _tilesize, const int& _drawmethod, const std::size_t& _extra_render=0);
     ~TileRenderer();
     bool load(const std::string& tilefile);
 
@@ -46,6 +46,7 @@ private:
     sf::Texture temptexclass;
     sf::Sprite tempspriteclass;
     sf::VertexArray verteximage;
+    std::size_t extra_render;
     sf::Vector2u tilesize;
     uint8container* quadretti;
     std::unordered_map<tiletype, std::size_t> texturemap;
@@ -56,7 +57,7 @@ private:
     std::size_t add_or_find_texture(const tiletype& newtile, sf::Image* prerendering) ;
     void load_palette(const std::string& path);
     FILE*newtextures;
-
+    void renderExtraTiles(std::size_t offset, const decltype(tilecont.previous_tiles)& extra_tiles);
 };
 
 #endif // TILERENDERER_H

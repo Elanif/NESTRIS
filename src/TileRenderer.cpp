@@ -3,6 +3,7 @@
 #include"enums.h"
 #include<string>
 #include<fstream>
+#include<sstream>
 constexpr std::size_t itox(const std::size_t& i, const std::size_t& width, const std::size_t& height) {
     return i%width;
 }
@@ -23,14 +24,15 @@ constexpr std::size_t xytoi(const std::size_t& x, const std::size_t& y, const st
 constexpr std::size_t xytoi(const std::size_t& x, const std::size_t& y, const std::size_t& width, const std::size_t& height, const std::size_t& rectwidth, const std::size_t& rectheight) {
     return x+y*width;
 }
-TileRenderer::TileRenderer(const std::size_t& _width, const std::size_t& _height, sf::Vector2u _tilesize, const int& _drawmethod)
-:tilecont(_width,_height),
+TileRenderer::TileRenderer(const std::size_t& _width, const std::size_t& _height, sf::Vector2u _tilesize, const int& _drawmethod, const std::size_t& _extra_render)
+:tilecont(_width,_height,_extra_render),
 width(_width),
 height(_height),
 drawmethod(_drawmethod),
 quadretti(NULL),
 tilesize(_tilesize),
-texturenumber(0)
+texturenumber(0),
+extra_render(_extra_render) //TODO EXTRA RENDER FOR MORE STUFF THAN DRAWTEXTUR
 {
     if (drawmethod==DRAWSPRITE) {
         quadretti=new uint8container[width*height];
@@ -59,11 +61,11 @@ texturenumber(0)
         if (!tiletexture.create(texturesize,texturesize)) {
             //TODO ERROR
         }
-        verteximage=sf::VertexArray(sf::Quads,width*height*4);
+        verteximage=sf::VertexArray(sf::Quads,width*height*4+extra_render*2*4);
         for (std::size_t i=0; i<width; ++i) {
             for (std::size_t j=0; j<height; ++j) {
 
-                sf::Vertex* quad = &verteximage[(i + j * width) * 4];
+                sf::Vertex* quad = &verteximage[(i + j * width) * 4+4*extra_render];
 
                 quad[0].position = sf::Vector2f(i * tilesize.x, j * tilesize.y);
                 quad[1].position = sf::Vector2f((i + 1) * tilesize.x, j * tilesize.y);
@@ -95,6 +97,8 @@ void TileRenderer::load_palette(const std::string& path) {
         ++counter;
         if (counter>=16*4) break;
     }
+    //TODO CARE FOR TRANSPARENCY
+    //palette_temp[0][0xd]=(palette_temp[0][0xd]>>8)<<8;
     if (counter>=64) {
         for (std::size_t i=0; i<4;++i) {
             for (std::size_t j=0; j<16;++j) {
@@ -241,6 +245,34 @@ std::size_t TileRenderer::add_or_find_texture(const tiletype& newtile, sf::Image
     return whereisthistexture;
 }
 
+void TileRenderer::renderExtraTiles(std::size_t offset, const decltype(tilecont.previous_tiles)& extra_tiles) {
+    std::size_t extra_render_counter=0; //TODO separate function
+    for (const auto&i: extra_tiles) {
+        const glb::triple& triple_it=std::get<1>(i);
+        const std::size_t& x=std::get<0>(triple_it);
+        const std::size_t& y=std::get<1>(triple_it);
+        const tiletype& t=std::get<2>(triple_it);
+        std::stringstream errorstream;
+        errorstream<<x<<" "<<y<<" "<<t.tilenumber<<" "<<(std::size_t)t.palette_color[0]<<"           ";
+        glb::cm.update<std::string>("system",errorstream.str());
+        std::size_t whereisthistexture=add_or_find_texture(t);
+        const std::size_t tempi=offset+extra_render_counter*4;
+        const sf::Vector2u texturesize=tiletexture.getSize();
+        std::size_t tu = whereisthistexture % (texturesize.x / tilesize.x);
+        std::size_t tv = whereisthistexture / (texturesize.x / tilesize.x);
+        verteximage[tempi].position=sf::Vector2f(x,y);
+        verteximage[tempi+1].position=sf::Vector2f(x+tilesize.x,y);
+        verteximage[tempi+2].position=sf::Vector2f(x+tilesize.x,y+tilesize.y);
+        verteximage[tempi+3].position=sf::Vector2f(x,y+tilesize.y);
+
+        verteximage[tempi].texCoords=sf::Vector2f(tu*tilesize.x,tv*tilesize.x);
+        verteximage[tempi+1].texCoords=sf::Vector2f((tu+1)*tilesize.x,tv*tilesize.x);
+        verteximage[tempi+2].texCoords=sf::Vector2f((tu+1)*tilesize.x,(tv+1)*tilesize.x);
+        verteximage[tempi+3].texCoords=sf::Vector2f(tu*tilesize.x,(tv+1)*tilesize.x);
+        extra_render_counter++;
+    }
+}
+
 void TileRenderer::drawtexture(sf::RenderTarget& target, sf::RenderStates states){
 
     sf::Clock trclock;
@@ -248,7 +280,7 @@ void TileRenderer::drawtexture(sf::RenderTarget& target, sf::RenderStates states
         for (std::size_t y=0; y<height; ++y) {
             if (tilecont.updated(x,y)) {
                 std::size_t whereisthistexture=add_or_find_texture(tilecont.atconst(x,y));
-                const std::size_t tempi=xytoi(x,y,width,height)*4;
+                const std::size_t tempi=xytoi(x,y,width,height)*4+extra_render*4;
                 const sf::Vector2u texturesize=tiletexture.getSize();
                 std::size_t tu = whereisthistexture % (texturesize.x / tilesize.x);
                 std::size_t tv = whereisthistexture / (texturesize.x / tilesize.x);
@@ -260,9 +292,28 @@ void TileRenderer::drawtexture(sf::RenderTarget& target, sf::RenderStates states
             }
         }
     }
+    tilecont.renderExtra(5,5,tiletype(678,0x0d,0x30,0x20,0x10),0.4);
+    tilecont.renderExtra(25,25,tiletype(679,0x0d,0x30,0x30,0x30),0.6);
+    tilecont.renderExtra(5,5,tiletype(87,0x30,0x30,0x20,0x10),0.4);
+    tilecont.renderExtra(25,25,tiletype(87,0x30,0x30,0x30,0x30),0.6);
+    tilecont.renderExtra(5,5,tiletype(10,0x0d,0x30,0x20,0x10),0.4);
+    tilecont.renderExtra(25,25,tiletype(10,0x0d,0x30,0x30,0x30),0.6);
+    tilecont.renderExtra(60,60,tiletype(10,0x0d,0x30,0x30,0x30),0.6);
+    renderExtraTiles(0,tilecont.previous_tiles);
+    renderExtraTiles(4*width*height,tilecont.following_tiles);
     states.transform *= getTransform();
     states.texture = &tiletexture;
     target.draw(verteximage,states);
+    for (std::size_t i=0; i<4*tilecont.previous_tiles.size(); ++i) {
+        verteximage[i]=sf::Vector2f(0,0);
+        verteximage[i].texCoords=sf::Vector2f(0,0);
+    }
+    tilecont.previous_tiles.clear();
+    for (std::size_t i=0; i<4*tilecont.following_tiles.size(); ++i) {
+        verteximage[i+4*width*height]=sf::Vector2f(0,0);
+        verteximage[i+4*width*height].texCoords=sf::Vector2f(0,0);
+    }
+    tilecont.following_tiles.clear();
     tilecont.resetupdated();
 }
 

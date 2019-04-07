@@ -8,7 +8,7 @@ Window::Window(const std::size_t& _width, const std::size_t& _height, sf::Render
     sf::Vector2f windowtransformation(4.0f,4.0f);//_state.transform().
     sf::RenderWindow window(sf::VideoMode(_width*4, _height*4), "Nestris");
     sf::Vector2u tilesize(8,8);
-    TileRenderer tilerend(_width/8,_height/8,tilesize,TileRenderer::DRAWTEXTURE);
+    TileRenderer tilerend(_width/8,_height/8,tilesize,TileRenderer::DRAWTEXTURE,64);
     tilerend.load("sprites.txt");
     //tilerend.load("sprites.txtupdated");
     Engine _engine= Engine(tilerend.getTileContainer(),10); //TODO change 10
@@ -32,13 +32,13 @@ Window::Window(const std::size_t& _width, const std::size_t& _height, sf::Render
             glb::cm.update<double>("fps",(double)sf::Int64(1000000)/(double)elapsedtime.getElapsedTime().asMicroseconds());
 
             elapsedtime.restart();
-
             sf::Int64 delaycalc=0;
             _engine.frame(inputManager.getInput());
 
             glb::cm.update<sf::Int64>("input delay",elapsedtime.getElapsedTime().asMicroseconds()-delaycalc);
             delaycalc=elapsedtime.getElapsedTime().asMicroseconds();
 
+            window.clear();//adds 30microseconds
             tilerend.drawmod(window, _state);
 
             glb::cm.update<sf::Int64>("draw delay",elapsedtime.getElapsedTime().asMicroseconds()-delaycalc);

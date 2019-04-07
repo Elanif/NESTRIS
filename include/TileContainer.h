@@ -4,6 +4,7 @@
 #include"stddef.h"
 #include<SFML/System/NonCopyable.hpp>
 #include<functional>
+#include<map>
 
 class tiletype {
     public:
@@ -69,17 +70,21 @@ namespace std {
     };
 }
 
-class TileContainer : sf::NonCopyable //TODO CHANGE WHEN CLONE
+class TileContainer : sf::NonCopyable
 {
     private:
+        const std::size_t extra_render=0;
     public:
-        //TODO COPY ETC
+        //TODO make private
+        std::multimap<double, glb::triple> previous_tiles;
+        std::multimap<double, glb::triple> following_tiles;
         const tiletype& at(const std::size_t& x, const std::size_t& y) const;
         tiletype& at(const std::size_t& x, const std::size_t& y);
         const tiletype& atconst(const std::size_t& x, const std::size_t& y) const {return at(x,y);}
+        void renderExtra(const std::size_t pixelx, const std::size_t pixely, const tiletype& t, const double& priority) ;
         void resetupdated() ;
         const bool& updated(const std::size_t& x, const std::size_t& y);
-        TileContainer(const std::size_t& _width, const std::size_t& _height);
+        TileContainer(const std::size_t& _width, const std::size_t& _height, const std::size_t& _extra_render=0);
         TileContainer();
         ~TileContainer();
         tiletype* tilegrid;

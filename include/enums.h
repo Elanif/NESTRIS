@@ -32,7 +32,7 @@
 #endif // incframe
 #include <cstddef>
 #include"ConsoleManager.h"
-
+class tiletype;
 namespace glb {
     enum BTN {
         LEFT,
@@ -76,6 +76,8 @@ namespace glb {
     const sf::Vector2u tilesize={8,8};
     constexpr int spritemode=1;
     constexpr std::size_t maxcolor=4;
+
+    typedef std::tuple<std::size_t, std::size_t, tiletype> triple;
 }
 
 #endif // ENUMS_H
