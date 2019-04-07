@@ -23,7 +23,45 @@ template<>
 std::string set_value_priv(const string_literal& t){
     return std::string(t);
 }*/
+class OutputInfo
+{
+public:
+    std::string name;
+    std::string value;
+    std::string unit;
+    size_t last_render_length;
+    sf::Vector2u outputposition;
+    OutputInfo();
+    virtual ~OutputInfo();
+    OutputInfo(const std::string& _name,const std::string &_unit);
+    void set_value(const std::__cxx11::basic_string<char>& t);
+    template<typename T>
+    void set_value(const T& t)
+    {
+        value=std::to_string(t);
+    }
 
+    void set_position(const sf::Vector2u& _position);
+    virtual sf::Vector2u print(sf::Vector2u currentposition, int conwidth);
+
+};
+
+template<>
+inline void OutputInfo::set_value<std::string>(const std::string& t) {
+    value=t;
+}
+
+typedef const char* const_string_literal;
+template<>
+inline void OutputInfo::set_value<const_string_literal>(const const_string_literal& t) {
+    value=std::string(t);
+}
+
+typedef char* string_literal;
+template<>
+inline void OutputInfo::set_value<string_literal>(const string_literal& t) {
+    value=std::string(t);
+}
 
 class ConsoleManager : public sf::NonCopyable
 {
@@ -42,55 +80,9 @@ class ConsoleManager : public sf::NonCopyable
 
     private:
         unsigned char framecounter=0;
-        class OutputInfo{
-        public:
-            std::string name;
-            std::string value;
-            std::string unit;
-            size_t last_render_length;
-            sf::Vector2u outputposition;
-            OutputInfo():name(""),value(""),unit(""),last_render_length(0){}
-            ~OutputInfo(){}
-            OutputInfo(const std::string& _name,const std::string &_unit)
-            :name(_name),
-            unit(_unit),
-            last_render_length(0)
-            {}
-            void set_value(const std::__cxx11::basic_string<char>& t){
-                value=std::string(t);
-            }
-            template<typename T>
-            void set_value(const T& t){
-                value=std::to_string(t);
-            }
 
-            void set_position(const sf::Vector2u& _position) {
-                outputposition=_position;
-            }
-            virtual void print() {
-                gotoxy(outputposition.x+1,outputposition.y+1);
-                std::cout<<name<<"="<<value<<unit;
-                //todo printf version?
-            }
-
-        };
         OutputInfo& add_value(std::string info, std::string unit);
+        OutputInfo& add_value(const OutputInfo& outputinfo);
         std::unordered_map<std::string, OutputInfo> CMmap;
 };
-template<>
-inline void ConsoleManager::OutputInfo::set_value<std::string>(const std::string& t) {
-    value=t;
-}
-
-typedef const char* const_string_literal;
-template<>
-inline void ConsoleManager::OutputInfo::set_value<const_string_literal>(const const_string_literal& t) {
-    value=std::string(t);
-}
-
-typedef char* string_literal;
-template<>
-inline void ConsoleManager::OutputInfo::set_value<string_literal>(const string_literal& t) {
-    value=std::string(t);
-}
 #endif // CONSOLEMANAGER_H

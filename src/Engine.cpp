@@ -13,7 +13,7 @@ RPF(_tilecont, framecounter, 0)
     levelselectreload=true;
 
     framecounter=0;
-    glb::cm.update<std::string>("error",std::string("Engine init"));
+    glb::cm.update<std::string>("system",std::string("Engine init"));
 }
 
 

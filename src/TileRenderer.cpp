@@ -1,5 +1,7 @@
 #include "TileRenderer.h"
-
+#include"ConsoleManager.h"
+#include"enums.h"
+#include<string>
 size_t itox(const size_t& i, const size_t& width, const size_t& height) {
     return i%width;
 }
@@ -56,7 +58,6 @@ texturenumber(0)
     }
     else if (drawmethod==DRAWTEXTURE) { //TODO DYNAMICALLY CHOOSE SIZE && check if size<8
         texturesize=sf::Texture::getMaximumSize()<512?sf::Texture::getMaximumSize():512;
-        newtextures=fopen("Pre-rendered textures.txt","a");
         if (!tiletexture.create(texturesize,texturesize)) {
             //TODO ERROR
         }
@@ -110,19 +111,27 @@ bool TileRenderer::load(const std::string& tilefile){
     return true;
 }
 
-size_t TileRenderer::add_or_find_texture(const tiletype& newtile, const bool& prerendering) {
+size_t TileRenderer::add_or_find_texture(const tiletype& newtile, sf::Image* prerendering=NULL) {
     size_t whereisthistexture=0;
     tiletype temptile=newtile;
     if ((temptile.palette_color[0]&0x0F)>=0x0D) temptile.palette_color[0]=0x0D;
     if ((temptile.palette_color[1]&0x0F)>=0x0D) temptile.palette_color[1]=0x0D;
     if ((temptile.palette_color[2]&0x0F)>=0x0D) temptile.palette_color[2]=0x0D;
     if ((temptile.palette_color[3]&0x0F)>=0x0D) temptile.palette_color[3]=0x0D;
-    //std::unordered_map<tiletype, size_t>::const_iterator itposition=texturemap.find(temptile);
+
     if (texturemap.find(temptile)==texturemap.end()) { //new texture
-        printf("creating new texture %d\n",temptile.tilenumber);
+
+        if (itoyrect(texturenumber,texturesize,texturesize,tilesize.x,tilesize.x)>texturesize) {
+            glb::cm.update("error",std::string("Too many textures"));
+            throw texturenumber; //TODOBETTER
+        }
+
+        glb::cm.update("system",std::string("Creating new texture"));
+
         if (!prerendering) {
             fprintf(newtextures,"%d %x %x %x %x\n",temptile.tilenumber,temptile.palette_color[0],temptile.palette_color[1],temptile.palette_color[2],temptile.palette_color[3]);
         }
+
         uint8container newtexture;
         const int primacifra[4]={
             temptile.palette_color[0]/16,
@@ -151,22 +160,38 @@ size_t TileRenderer::add_or_find_texture(const tiletype& newtile, const bool& pr
             }
         }
         sprite* spritetemp=&spritevector[temptile.tilenumber];
-        sf::Uint8* tempquadretto=newtexture.getQuadretto();
-        for (size_t pixelx=0; pixelx<tilesize.x; ++pixelx) {
-            for (size_t pixely=0; pixely<tilesize.y; ++pixely) {
-                size_t tempi=xytoi(pixelx,pixely,tilesize.x,tilesize.y)*4;
-                nes_uchar tiletypetemp=spritetemp->arr[pixelx][pixely];
-                tempquadretto[tempi]=rgba[tiletypetemp][0];
-                tempquadretto[tempi+1]=rgba[tiletypetemp][1];
-                tempquadretto[tempi+2]=rgba[tiletypetemp][2];
-                tempquadretto[tempi+3]=rgba[tiletypetemp][3];
+        if (!prerendering) {
+            sf::Uint8* tempquadretto=newtexture.getQuadretto();
+            for (size_t pixelx=0; pixelx<tilesize.x; ++pixelx) {
+                for (size_t pixely=0; pixely<tilesize.y; ++pixely) {
+                    size_t tempi=xytoi(pixelx,pixely,tilesize.x,tilesize.y)*4;
+                    nes_uchar tiletypetemp=spritetemp->arr[pixelx][pixely];
+                    tempquadretto[tempi]=rgba[tiletypetemp][0];
+                    tempquadretto[tempi+1]=rgba[tiletypetemp][1];
+                    tempquadretto[tempi+2]=rgba[tiletypetemp][2];
+                    tempquadretto[tempi+3]=rgba[tiletypetemp][3];
+                }
+            }
+            tiletexture.update(tempquadretto,
+                               tilesize.x,
+                               tilesize.y,
+                               itoxrect(texturenumber,texturesize,texturesize,tilesize.x,tilesize.y),
+                               itoyrect(texturenumber,texturesize,texturesize,tilesize.x,tilesize.y));
+        }
+        else {
+            for (size_t pixelx=0; pixelx<tilesize.x; ++pixelx) {
+                for (size_t pixely=0; pixely<tilesize.y; ++pixely) {
+                    size_t tempi=xytoi(pixelx,pixely,tilesize.x,tilesize.y)*4;
+                    nes_uchar tiletypetemp=spritetemp->arr[pixelx][pixely];
+                    prerendering->setPixel(pixelx+itoxrect(texturenumber,texturesize,texturesize,tilesize.x,tilesize.y),
+                                        pixely+itoyrect(texturenumber,texturesize,texturesize,tilesize.x,tilesize.y),
+                                        sf::Color(rgba[tiletypetemp][0],
+                                                  rgba[tiletypetemp][1],
+                                                  rgba[tiletypetemp][2],
+                                                  rgba[tiletypetemp][3]));
+                }
             }
         }
-        if (itoyrect(texturenumber,texturesize,texturesize,tilesize.x,tilesize.x)>texturesize) {
-            printf("Error, too many textures: %d\n",texturenumber);
-            throw texturenumber; //TODOBETTER
-        }
-        tiletexture.update(tempquadretto,tilesize.x,tilesize.y,itoxrect(texturenumber,texturesize,texturesize,tilesize.x,tilesize.y),itoyrect(texturenumber,texturesize,texturesize,tilesize.x,tilesize.y));
         whereisthistexture=texturenumber;
         texturemap[temptile]=whereisthistexture;
         ++texturenumber;
@@ -346,18 +371,24 @@ void TileRenderer::drawimage(sf::RenderTarget& target, sf::RenderStates states){
 }
 
 void TileRenderer::add_frequent_textures() {
+    newtextures=fopen("Pre-rendered textures.txt","r");
+    sf::Image texture_image;
+    texture_image.create(texturesize, texturesize);
     tiletype block;
-    add_or_find_texture(block);
+    add_or_find_texture(block, &texture_image);
     block=tiletype(0,0);
-    add_or_find_texture(block);
+    add_or_find_texture(block, &texture_image);
     for (size_t level=0; level<10; ++level) {
         block=tiletype(level,1);
-        add_or_find_texture(block);
+        add_or_find_texture(block, &texture_image);
         block=tiletype(level,2);
-        add_or_find_texture(block);
+        add_or_find_texture(block, &texture_image);
         block=tiletype(level,3);
-        add_or_find_texture(block);
+        add_or_find_texture(block, &texture_image);
     }
+    tiletexture.loadFromImage(texture_image);
+    fclose(newtextures);
+    newtextures=fopen("Pre-rendered textures.txt","a");
 }
 
 void TileRenderer::drawmod(sf::RenderTarget& target, sf::RenderStates states)
