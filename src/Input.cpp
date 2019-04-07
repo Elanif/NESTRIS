@@ -42,7 +42,7 @@ void Input::setup() { //fix parameters
     glb::BTN btn_arr[]={glb::Left,glb::Right,glb::Down,glb::Up,glb::Start,glb::Select,glb::A,glb::B};
     using namespace std::string_literals;
     std::string s_btn_arr[]={"left_button"s,"right_button"s,"down_button"s,"up_button"s,"start_button"s,"select_button"s,"a_button"s,"b_button"s};
-    ConfigReader keybinds("keybinds.ini");
+    ConfigReader keybinds("settings/keybinds.ini");
 
     initMap();
     for (std::size_t i=0; i<glb::maxbuttons; ++i) {

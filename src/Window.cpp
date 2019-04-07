@@ -14,8 +14,8 @@ Window::Window(const std::size_t& _width, const std::size_t& _height, sf::Vector
     sf::Vector2u tilesize(8,8);
     const sf::Vector3<std::size_t> extra_render(16,16,64);
     TileRenderer tilerend(_width/8,_height/8,tilesize,TileRenderer::DRAWTEXTURE,extra_render);
-    tilerend.load("sprites.txt");
-    //tilerend.load("sprites.txtupdated");
+    tilerend.load("texturesprite/sprites.txt");
+    //tilerend.load("texturesprite/sprites.txtupdated");
     Engine _engine= Engine(tilerend.getTileContainer(),10); //TODO change 10
 
     sf::Event event;

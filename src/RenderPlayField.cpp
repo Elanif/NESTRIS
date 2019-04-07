@@ -4,6 +4,7 @@
 #include<cstdio>
 #include"TextWriter.h"
 #include<string>
+#include"Sound.hpp"
 RenderPlayField::RenderPlayField(TileContainer * _tilecont, const nes_ushort& _frameappearance, nes_uchar _level):Renderer(_tilecont, _frameappearance), level(_level){
     init_assets();
     piecehandler = PieceContainer(_tilecont, frameappearance);
@@ -98,6 +99,8 @@ void RenderPlayField::render(const nes_ushort& _framecounter) {
     scorehandler.render(); //shown score and real score are handled internally by scorehandler for now
     //if it's clear lines time and !(by coincidence the first frame it fell the frame was dividible by 4)
     if (glb::lineclearframecounter>0 && !firstframeis4 && getframemod4()==0) {
+        if (tetris) Sound::play(Sound::tetris);
+        else Sound::play(Sound::clear_line);
         glb::lineclearframecounter--; //TODO pause interaction
         if (glb::lineclearframecounter==0) glb::updatingmatrix=5;
     }

@@ -4,6 +4,7 @@
 #include"random.h"
 #include<cstdio>
 #include<sstream>
+#include"Sound.hpp"
 
 PieceContainer::PieceContainer(TileContainer * _tilecont, const nes_ushort& _frameappearance)
 :Renderer(_tilecont, _frameappearance),
@@ -38,6 +39,7 @@ bool collision(const PFMatrix& _pfmatrix, const Piece& _piece) {
 //TODO change nes_uchar in slower game modes
 void PieceContainer::inputManager(const ActiveInputs& _inputs, const PFMatrix& pfmatrix, const nes_uchar& _gravity) {
     dropped_event=false;
+    bool piece_changed=false;
     if (init_delay>0) {
         init_delay--; //TODO before or after, frame discrepancy?
     }
@@ -61,16 +63,19 @@ void PieceContainer::inputManager(const ActiveInputs& _inputs, const PFMatrix& p
     else {
         holddowncounter=holddownpoints=0;
         if (_inputs.getPress(glb::Right)) {
+            piece_changed=true;
             das=0;
             ++temppiece.x;
         }
         else if (_inputs.getPress(glb::Left)) {
+            piece_changed=true;
             das=0;
             --temppiece.x;
         }
         else if (_inputs.getHold(glb::Right)) {
             ++das;
             if (das>=16) {
+                piece_changed=true;
                 ++temppiece.x;
                 das=10;
             }
@@ -78,22 +83,32 @@ void PieceContainer::inputManager(const ActiveInputs& _inputs, const PFMatrix& p
         else if (_inputs.getHold(glb::Left)) {
             ++das;
             if (das>=16) {
+                piece_changed=true;
                 --temppiece.x;
                 das=10;
             }
         }
     }
     if (collision(pfmatrix,temppiece)) das=16;
-    else currentpiece=temppiece;
+    else {
+        if (piece_changed) Sound::play(Sound::move_piece);
+        currentpiece=temppiece;
+    }
     //ROTglb::ATE
     temppiece=currentpiece;
+    piece_changed=false;
     if (_inputs.getPress(glb::A)) {
-        temppiece.rotation=(temppiece.rotation-1)%4;
-    }
-    else if (_inputs.getPress(glb::B)) {
+        piece_changed=true;
         temppiece.rotation=(temppiece.rotation+1)%4;
     }
-    if (!collision(pfmatrix,temppiece)) currentpiece=temppiece;
+    else if (_inputs.getPress(glb::B)) {
+        piece_changed=true;
+        temppiece.rotation=(temppiece.rotation-1)%4;
+    }
+    if (!collision(pfmatrix,temppiece)) {
+        currentpiece=temppiece;
+        if (piece_changed) Sound::play(Sound::rotate_piece);
+    }
 
     //ifnot holding down or have been holding down
     //DROP
@@ -107,6 +122,7 @@ void PieceContainer::inputManager(const ActiveInputs& _inputs, const PFMatrix& p
             ++temppiece.y;
             holddowncounter-=2;
             if (collision(pfmatrix,temppiece)) {
+                Sound::play(Sound::drop_piece);
                 dropped_event=true;
                 lastdroppedpiece=currentpiece;
             }
@@ -117,6 +133,7 @@ void PieceContainer::inputManager(const ActiveInputs& _inputs, const PFMatrix& p
         ++temppiece.y;
         downcounter=0;
         if (collision(pfmatrix,temppiece)) {
+            Sound::play(Sound::drop_piece);
             dropped_event=true;
             lastdroppedpiece=currentpiece;
         }

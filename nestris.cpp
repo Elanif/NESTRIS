@@ -6,14 +6,16 @@
 #include"TextWriter.h"
 #include<SFML/Window/Joystick.hpp>
 #include<cstdlib>
+#include"Sound.hpp"
 const int SCREEN_WIDTH = 256;
 const int SCREEN_HEIGHT = 224;
 
 
 int main(int argc, char** args) {
     TextWriter::init();
+    Sound::init();
     sf::Vector2f scale(5,4);
-    while(false) {
+    while(false) { //joystick testing
         sf::Joystick::update();
         std::cout<<"X"<<sf::Joystick::getAxisPosition(0,sf::Joystick::X)<<" ";
         std::cout<<"Y"<<sf::Joystick::getAxisPosition(0,sf::Joystick::Y)<<" ";

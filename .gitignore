@@ -8,6 +8,8 @@
 # generated directories
 bin/
 obj/
+doxygen/
+*.nes
 
 # End of https://www.gitignore.io/api/codeblocks
 
@@ -41,7 +43,5 @@ obj/
 *.app
 
 #My stuff
-*.nes
-doxygen/
 SDL2/
 error_log.txt
