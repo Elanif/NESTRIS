@@ -15,6 +15,7 @@ class PieceContainer : public Renderer
 public:
     PieceContainer(){};
     PieceContainer(TileContainer * _tilecont, const nes_ushort& _frameappearance);
+
     Piece tryMove(const ActiveInputs& _inputs);
     Piece tryRotate(const ActiveInputs& _inputs);
     Piece tryDrop(const ActiveInputs& _inputs, const nes_uchar& _gravity);
@@ -23,13 +24,17 @@ public:
     void doRotate(const bool& _collision);
     void doDrop();
     void lockpiece();
+    void spawnPiece();
+
     const Piece& getPiece() const;
     void render(const nes_ushort& _framecounter, const nes_uchar& _level);
     void rendernextpiece(const nes_uchar& _level);
-    void spawnPiece();
-    bool dropped;
+
     Piece lastdroppedpiece;
     nes_uchar holddownpoints;
+
+    bool dropped_event=false;
+    bool spawned_event=false;
 
 private:
 

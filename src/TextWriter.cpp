@@ -21,20 +21,20 @@ void TextWriter::init() {
     char_lookup[(unsigned char)',']=38;
     char_lookup[(unsigned char)'\'']=39;
 }
-void TextWriter::write(const std::string& text, TileContainer *_tilecont, sf::Vector2u _position) {
+void TextWriter::write(const std::string& text, TileContainer *_tilecont, sf::Vector2u _position, nes_uchar color) {
     for (std::size_t i=0; i<text.length(); ++i) {
         const char ith_char=std::tolower(text[i]);
         if (_position.x<_tilecont->width && _position.y<_tilecont->height) {
-            _tilecont->at(_position.x,_position.y) = tiletype(char_lookup[(unsigned char)ith_char], 0x0d,0x30,0,0);
+            _tilecont->at(_position.x,_position.y) = tiletype(char_lookup[(unsigned char)ith_char], 0x0d,color,color,color);
             _position.x++;
         }
         else break;
     }
 }
-void TextWriter::write_hex(unsigned int _hex_number, TileContainer *_tilecont, sf::Vector2u _position, unsigned int fill_zeros) {
+void TextWriter::write_hex(unsigned int _hex_number, TileContainer *_tilecont, sf::Vector2u _position, unsigned int fill_zeros, nes_uchar color) {
     std::stringstream _tmpstream;
     _tmpstream<<std::setfill('0')<<std::setw(fill_zeros)<<std::hex<<_hex_number<<std::dec;
-    TextWriter::write(_tmpstream.str(),_tilecont,_position);
+    TextWriter::write(_tmpstream.str(),_tilecont,_position, color);
 }
 void TextWriter::write_int(unsigned int _int_number, TileContainer *_tilecont, sf::Vector2u _position, unsigned int fill_zeros) {
     std::stringstream _tmpstream;

@@ -8,6 +8,7 @@
 #include"PieceContainer.h"
 #include"MatrixContainer.h"
 #include"LevelLines.h"
+#include"Statistics.h"
 #include"enums.h"
 
 class RenderPlayField : public Renderer
@@ -20,6 +21,7 @@ class RenderPlayField : public Renderer
         void renderPlayField(const unsigned long long& framecounter);
     private:
         void renderimage(bool blink);
+        void renderBackground(const nes_uchar& _color1, const nes_uchar& _color2);
         MatrixContainer matrixhandler;
         bool tetris;
         PieceContainer piecehandler;
@@ -27,6 +29,8 @@ class RenderPlayField : public Renderer
         Score scorehandler;
 
         LevelLines levellineshandler;
+
+        Statistics statisticshandler;
 
         nes_uchar level;
         nes_uchar gravity[255];

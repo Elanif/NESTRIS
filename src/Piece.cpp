@@ -1,18 +1,17 @@
 #include "Piece.h"
 
 Piece::Piece()
+:
+    x(5),
+    y(2),
+    piecetype(-1),
+    rotation(0)
 {
-    x=5;
-    y=2;
-    piecetype=-1;
-    rotation=0;
 }
 
 Piece::Piece(const char& charpiecetype)
+    :Piece()
 {
-    x=5;
-    y=2;
-    rotation=0;
     switch(charpiecetype) {
     case 'T':
     case 't':

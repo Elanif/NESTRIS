@@ -87,6 +87,7 @@
 		<Unit filename="include/Renderer.h" />
 		<Unit filename="include/Score.h" />
 		<Unit filename="include/Sprite.h" />
+		<Unit filename="include/Statistics.h" />
 		<Unit filename="include/TextWriter.h" />
 		<Unit filename="include/TileContainer.h" />
 		<Unit filename="include/TileRenderer.h" />
@@ -109,6 +110,7 @@
 		<Unit filename="src/Renderer.cpp" />
 		<Unit filename="src/Score.cpp" />
 		<Unit filename="src/Sprite.cpp" />
+		<Unit filename="src/Statistics.cpp" />
 		<Unit filename="src/TextWriter.cpp" />
 		<Unit filename="src/TileContainer.cpp" />
 		<Unit filename="src/TileRenderer.cpp" />

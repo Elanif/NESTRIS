@@ -37,8 +37,10 @@ bool collision(const PFMatrix& _pfmatrix, const Piece& _piece) {
 
 //TODO change nes_uchar in slower game modes
 void PieceContainer::inputManager(const ActiveInputs& _inputs, const PFMatrix& pfmatrix, const nes_uchar& _gravity) {
-    if (init_delay>0) init_delay--; //TODO before or after, frame discrepancy?
-    dropped=false;
+    dropped_event=false;
+    if (init_delay>0) {
+        init_delay--; //TODO before or after, frame discrepancy?
+    }
     if (_inputs.getPress(glb::SELECT)) hidenextpiece=!hidenextpiece;
     if (sleepcounter>0) {
         --sleepcounter;
@@ -53,6 +55,7 @@ void PieceContainer::inputManager(const ActiveInputs& _inputs, const PFMatrix& p
         init_delay=0;
     }
     if (_inputs.getHold(glb::DOWN)) {
+        init_delay=0;
         if (_inputs.getPress(glb::RIGHT)||_inputs.getPress(glb::LEFT)||_inputs.getHold(glb::RIGHT)||_inputs.getHold(glb::LEFT)) downinterrupted=true;
     }
     else {
@@ -104,7 +107,7 @@ void PieceContainer::inputManager(const ActiveInputs& _inputs, const PFMatrix& p
             ++temppiece.y;
             holddowncounter-=2;
             if (collision(pfmatrix,temppiece)) {
-                dropped=true;
+                dropped_event=true;
                 lastdroppedpiece=currentpiece;
             }
             else currentpiece=temppiece;
@@ -114,7 +117,7 @@ void PieceContainer::inputManager(const ActiveInputs& _inputs, const PFMatrix& p
         ++temppiece.y;
         downcounter=0;
         if (collision(pfmatrix,temppiece)) {
-            dropped=true;
+            dropped_event=true;
             lastdroppedpiece=currentpiece;
         }
         else currentpiece=temppiece;
@@ -158,6 +161,7 @@ void PieceContainer::render(const nes_ushort& _framecounter, const nes_uchar& _l
 
 //TODO can keep unsigned char, unless we decide to add many pieces
 void PieceContainer::spawnPiece() {
+    spawned_event=true;
     currentpiece=nextpiece;
     nes_uchar spawnID=spawn_table[nextpiece.piecetype]; //creates a piece next to nextpiece
     ++spawncount;

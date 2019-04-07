@@ -68,6 +68,8 @@ namespace glb { //todo make into ntris
     extern nes_uchar lineclearframecounter;
     extern nes_uchar updatingmatrix;
     extern nes_uchar ARE;
+    extern nes_uchar real_level; //level that sometimes isn't shown e.g. while lines are being cleared
+    extern nes_uchar shown_level; //level that is shown by the game
     constexpr std::size_t playfieldx=12;
     constexpr std::size_t playfieldy=5;
     const sf::Vector2u nextpiece_coords[7]={{204,112},{204,112},{204,112},{208,112},{204,112},{204,112},{208,112}};
@@ -81,11 +83,26 @@ namespace glb { //todo make into ntris
     constexpr std::size_t scorey=7;
     constexpr std::size_t nextx=24;
     constexpr std::size_t nexty=12;
+    constexpr std::size_t typex=3;
+    constexpr std::size_t typey=3;
     const sf::Vector2u tilesize={8,8};
     constexpr int spritemode=1;
     constexpr std::size_t maxcolor=4;
     constexpr nes_uchar trnspr=0x1d;
     typedef std::tuple<std::size_t, std::size_t, tiletype> triple;
+
+    constexpr nes_uchar block_colors[10][4]={
+    {0x0D ,0x30 ,0x21 ,0x12},
+    {0x0D ,0x30 ,0x29 ,0x1A},
+    {0x0D ,0x30 ,0x24 ,0x14},
+    {0x0D ,0x30 ,0x2A ,0x12},
+    {0x0D ,0x30 ,0x2B ,0x15},
+    {0x0D ,0x30 ,0x22 ,0x2B},
+    {0x0D ,0x30 ,0x00 ,0x16},
+    {0x0D ,0x30 ,0x05 ,0x13},
+    {0x0D ,0x30 ,0x16 ,0x12},
+    {0x0D ,0x30 ,0x27 ,0x16}
+};
 }
 
 #endif // ENUMS_H

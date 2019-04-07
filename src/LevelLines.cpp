@@ -2,15 +2,16 @@
 #include"TextWriter.h"
 #include<string>
 LevelLines::LevelLines(TileContainer * _tilecont, const nes_ushort& _frameappearance, const nes_uchar& _level)
-    :Renderer(_tilecont, _frameappearance), level(_level), lines(0u)
+    :Renderer(_tilecont, _frameappearance), real_level(_level), lines(0u)
 {
-    linestolevelup=(level+1)/16*100;
-    if ((level+1)%16>=10) linestolevelup+=100;
-    else linestolevelup+=((level+1)%16)*10;
+    linestolevelup=(real_level+1)/16*100;
+    if ((real_level+1)%16>=10) linestolevelup+=100;
+    else linestolevelup+=((real_level+1)%16)*10;
 }
 
 void LevelLines::render() {
-if (hidecounter>0) {
+    if (glb::updatingmatrix<=0 && glb::lineclearframecounter <=0) shown_level=real_level;
+    if (hidecounter>0) {
         --hidecounter;
         return;
     }
@@ -19,27 +20,31 @@ if (hidecounter>0) {
             TextWriter::write_hex(linestemp[0], tilecont, {glb::linesx+1,glb::linesy},2);
             TextWriter::write_hex(linestemp[1], tilecont, {glb::linesx,glb::linesy},1);
 
-            TextWriter::write_hex(level_hex[leveltemp],tilecont,{glb::levelx+2,glb::levely+1},2);
+            TextWriter::write_hex(level_hex[shown_level],tilecont,{glb::levelx+2,glb::levely+1},2);
         }
         else {
             TextWriter::write_hex(lines[0], tilecont, {glb::linesx+1,glb::linesy},2);
             TextWriter::write_hex(lines[1], tilecont, {glb::linesx,glb::linesy},1);
 
-            TextWriter::write_hex(level_hex[level],tilecont,{glb::levelx+2,glb::levely+1},2);
+            TextWriter::write_hex(level_hex[real_level],tilecont,{glb::levelx+2,glb::levely+1},2);
         }
     }
 }
 
-const nes_uchar& LevelLines::getlevel() const {
-    return level;
+const nes_uchar& LevelLines::get_real_level() const {
+    return real_level;
+}
+
+const nes_uchar& LevelLines::get_shown_level() const {
+    return shown_level;
 }
 
 void LevelLines::addlines(const nes_uchar& _clearedlines) {
     linestemp=lines;
-    leveltemp=level;
+    shown_level=real_level;
     lines.addLines(_clearedlines);
     if (lines.reallines()>=linestolevelup) {
-        ++level;
+        ++real_level;
         linestolevelup+=10;
     }
 }

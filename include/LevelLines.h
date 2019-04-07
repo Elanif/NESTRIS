@@ -54,14 +54,15 @@ class LevelLines : public Renderer //DOESN'T WORK LIKE THE NES AFTER LEVEL 137
     public:
         LevelLines() {};
         LevelLines(TileContainer * _tilecont, const nes_ushort& _frameappearance, const nes_uchar& _level);
-        const nes_uchar& getlevel() const;
+        const nes_uchar& get_real_level() const;
+        const nes_uchar& get_shown_level() const;
         void addlines(const nes_uchar& _clearedlines);
         void render();
     private:
         LinesContainer lines{};
         LinesContainer linestemp{};
-        nes_uchar level=0;
-        nes_uchar leveltemp=0;
+        nes_uchar real_level=0;
+        nes_uchar shown_level=0;
         nes_ushort linestolevelup=0;
         static nes_uchar level_hex[256]; //TODO
 };
