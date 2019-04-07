@@ -3,24 +3,16 @@
 #include"SDL.h"
 class ActiveInputs {
     public:
-        ActiveInputs(const size_t& _buttons, bool *_prevactiveinputs, bool *_activeinputs);
+        ActiveInputs(const size_t& _buttons, bool *_prevactiveinputs, bool *_activeinputs, bool _leftandright=false);
         bool getPress(const size_t& _button) const;
         bool getHold(const size_t& _button) const;
+        bool getLAR() const;
 
-        enum BUTTONS {
-            LEFT,
-            UP,
-            RIGHT,
-            DOWN,
-            SELECT,
-            START,
-            B,
-            A
-        };
     private:
+        size_t maxbuttons;
+        bool leftandright;
         bool prevactiveinputs[8];
         bool activeinputs[8];
-        size_t maxbuttons;
 };
 
 #endif

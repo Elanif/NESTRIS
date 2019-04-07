@@ -2,9 +2,10 @@
 #include"BlockRenderer.h"
 #include"SquareRenderer.h"
 #include"random.h"
+#include"PieceContainer.h"
 #include<cstdio>
 
-char RenderPlayField::spawnTable[7]={0x02, 0x07, 0x08, 0x0A, 0x0B, 0x0E, 0x12};
+/*char RenderPlayField::spawnTable[7]={0x02, 0x07, 0x08, 0x0A, 0x0B, 0x0E, 0x12};
 
 int RenderPlayField::rotationmatrix[28][4][2]={
    { { -1,  0 }, {  0,  0 }, {  1,  0 }, {  0,  1 }, },  // 02: T down (spawn)
@@ -41,11 +42,22 @@ int RenderPlayField::rotationmatrix[28][4][2]={
    { {  0, -2 }, {  0, -1 }, {  0,  0 }, {  0,  1 }, },  // 11: I vertical
    { { -2,  0 }, { -1,  0 }, {  0,  0 }, {  1,  0 }, },  // 12: I horizontal (spawn)
    { {  0, -2 }, {  0, -1 }, {  0,  0 }, {  0,  1 }, },  // 11: I vertical
-    };
+    };*/
 
-RenderPlayField::RenderPlayField(SDL_Window * _window, size_t _level):Renderer(_window), level(_level){
+RenderPlayField::RenderPlayField(SDL_Window * _window, const size_t& _frameappearance, size_t _level):Renderer(_window, _frameappearance), level(_level){
+    piecehandler = PieceContainer(_window, frameappearance);
+    matrixhandler = MatrixContainer(_window, frameappearance);
+    scorehandler = Score(_window, frameappearance, true);
+    levellineshandler = LevelLines(_window, frameappearance, _level);
+    //statistics
+    //level
+    //lines
+    int _tempgravity[19]={48,43,38,33,28,23,18,13,8,6,5,5,5,4,4,4,3,3,3};
+    for (size_t i=0; i<19; ++i) gravity[i]=_tempgravity[i];
+    for (size_t i=19; i<29; ++i) gravity[i]=2;
+    for (size_t i=29; i<255; ++i) gravity[i]=1;
 
-    pfmatrix= new int*[10];
+    /*pfmatrix= new int*[10];
     for (size_t i=0; i<10; ++i) {
         pfmatrix[i]=new int[22];
         for (size_t j=0; j< 22;++j) {
@@ -57,43 +69,33 @@ RenderPlayField::RenderPlayField(SDL_Window * _window, size_t _level):Renderer(_
     fallcounter=0;
     prevpiece=piece;
     blinkscreencounter=spawnpiececounter=0;
-    spawnPiece();
-    int _tempgravity[19]={48,43,38,33,28,23,18,13,8,6,5,5,5,4,4,4,3,3,3};
-    for (size_t i=0; i<19; ++i) gravity[i]=_tempgravity[i];
-    for (size_t i=19; i<29; ++i) gravity[i]=2;
-    for (size_t i=29; i<255; ++i) gravity[i]=1;
+    spawnPiece();;*/
 }
 
-bool RenderPlayField::checkcollision(PieceDetails& _piece, PieceDetails& _lastgoodpos) {
-    bool collision = false;
-    for (size_t i=0; i<4; ++i) {
-        size_t _xx=_piece.x+rotationmatrix[_piece.currentpiece*4+_piece.rotation][i][0];
-        size_t _yy=_piece.y+rotationmatrix[_piece.currentpiece*4+_piece.rotation][i][1];
-        if (_xx<0||_xx>9||_yy>21||_yy<0) {
-            collision = true;
-            break;
-        }
-        if (pfmatrix[_xx][_yy]) {
-            collision = true;
-            break;
-        }
+void RenderPlayField::update(const ActiveInputs& _input) {
+    //printf("renderplayfield::update\n");
+    piecehandler.doMove(matrixhandler.collision(piecehandler.tryMove(_input)));
+
+    piecehandler.doRotate(matrixhandler.collision(piecehandler.tryRotate(_input)));
+
+    if (matrixhandler.collision(piecehandler.tryDrop(_input,gravity[level]))) {
+            printf("drop down collision\n");
+        char _lockheight=piecehandler.getPiece().y;
+        matrixhandler.lockpiece(piecehandler.getPiece());
+        piecehandler.lockpiece(_lockheight);//TODO
     }
-    if (collision) _piece=_lastgoodpos;
-    else _lastgoodpos=_piece;
-    return collision;
+    else piecehandler.doDrop();
 }
 
-int RenderPlayField::renderandupdate(const ActiveInputs& _input, const unsigned long long& framecounter) {
-    updatePlayField(_input);
-    renderPlayField(framecounter);
-    return 0;
+void RenderPlayField::render(const unsigned long long& _framecounter) {
+    //levellineshandler.render(_framecounter);
+    piecehandler.deletepiece();
+    //matrixhandler.render(_framecounter);
+    piecehandler.render(_framecounter,levellineshandler.getlevel());
+    //scorehandler.render(_framecounter);
 }
+/*
 
-int RenderPlayField::lockpiece() {
-    clearlines();
-    spawnPiece();
-    return 0;
-}
 
 int RenderPlayField::updatePlayField(const ActiveInputs& _input) {
     if (spawnpiececounter>0||blinkscreencounter>0) return 0;
@@ -159,112 +161,11 @@ int RenderPlayField::updatePlayField(const ActiveInputs& _input) {
     return 0;
 }
 
-void RenderPlayField::renderPlayField(const unsigned long long& framecounter) {
-    //TODO blinking clear delay
-    if (blinkscreencounter-->0) {//postfix or prefix?
-        for (size_t i=0; i<linescleared; ++i ){
-            pfmatrix[blinkscreencounter/4][linesclearedarray[i]]=0;
-            pfmatrix[9-blinkscreencounter/4][linesclearedarray[i]]=0;
-        }
-        if (blinkscreencounter==0) {
-            for (size_t i=0; i<10; ++i)
-                for (size_t j=0; j<22; ++j)
-                    pfmatrix[i][j]=newmatrix[i][j];
-        }
-    }
-    for (size_t x=0; x<10; ++x) { //TODO maybe optimize to render only new stuff around piece
-        for (size_t y=3 ; y<22; ++y) {
-            if ((blinkscreencounter%4>1)&&pfmatrix[x][y]==0) //TODO wht if it just became 0
-                BlockRenderer::block(renderSurface,pfmatrix[x][y],10, x*8,y*8);
-            BlockRenderer::block(renderSurface,pfmatrix[x][y],level, x*8,y*8);
-        }
-    }
-    //TODO
-    if (spawnpiececounter--<=0) renderPiece(piece);//postfix or prefix?
-}
-
-void RenderPlayField::renderPiece(PieceDetails _piece) {
-    for (size_t i=0; i<4; ++i) {
-        size_t _xx=_piece.x+rotationmatrix[_piece.currentpiece*4+_piece.rotation][i][0];
-        size_t _yy=_piece.y+rotationmatrix[_piece.currentpiece*4+_piece.rotation][i][1];
-        BlockRenderer::block(renderSurface, _piece.color, level, _xx*8,_yy*8);
-    }
-}
 
 
 
-void RenderPlayField::spawnPiece() {
-    char spawnID=piece.currentpiece;
-    ++spawnCount;
-    piece.x=5;
-    piece.y=3;
-    char index=random::prng()>>8;
-    index+=spawnCount;
-    index&=7;
-    char newSpawnID;
-    if (index!=7) {
-        newSpawnID = index;
-        if (newSpawnID == spawnID) {
-            random::prng();
-            index=random::prng()>>8;
-            index&=7;
-            index+=spawnCount;
-            index%=7;
-            newSpawnID = index;
-        }
-    }
-    else {
-        random::prng();
-        index=random::prng()>>8;
-        index&=7;
-        index+=spawnCount;
-        index%=7;
-        newSpawnID = index;
-    }
-    spawnID = newSpawnID;
-    printf("spawnid=%d\n",spawnID);
-    piece.currentpiece=spawnID;
-    piece.rotation=0;
-    prevpiece=piece;
-    fallcounter=0;
-    spawnpiececounter=15; //10~18
-}
 
-int RenderPlayField::clearlines() {
-    bool whichlines[22];
-    size_t lowestline=0;
-    linescleared=0;
-    for (size_t row=0; row<22; ++row) {
-        bool clearedline=true;
-        for (size_t column=0; column<10; ++column) {
-            if (pfmatrix[column][row]==0) {
-                clearedline=false;
-                column=10;
-            }
-        }
-        if(whichlines[row]=clearedline) { //no == intentional
-            lowestline=row;
-            blinkscreencounter=19;
-            linesclearedarray[linescleared++]=row;
-        }
-    }
-    //TODO clearanimation
-    if (newmatrix) delete[] newmatrix;
-    newmatrix=new int*[10];
-    for (size_t i=0; i<10; ++i) {
-        newmatrix[i]=new int[22];
-        for (size_t j=0; j<22; ++j) {
-            newmatrix[i][j]=pfmatrix[i][j];
-        }
-    }
-    for (size_t i=lowestline, rowcounter=lowestline; i>=1&&rowcounter>=1; --i,--rowcounter) { //20 because playfield isn't saved over 20
-        while(rowcounter>=1&&whichlines[rowcounter]) --rowcounter;
-        for (size_t j=0; j<10; ++j) {
-            newmatrix[j][i]=pfmatrix[j][rowcounter];
-        }
-    }
-    return linescleared;
-}
+
 
 void RenderPlayField::resetPlayField(const size_t& _level){
     //todo next piece
@@ -275,4 +176,4 @@ void RenderPlayField::resetPlayField(const size_t& _level){
             pfmatrix[i][j]=0;
         }
     }
-}
+}*/

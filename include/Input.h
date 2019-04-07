@@ -37,6 +37,7 @@ class Input
         };
         bool* prevactiveinputs;
         bool* activeinputs;
+        bool leftandright;
         int* inputdependancies;
         int maxbuttons;
 };

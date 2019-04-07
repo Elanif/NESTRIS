@@ -4,12 +4,12 @@
 Engine::Engine(SDL_Window *_window, size_t _startingmenu)
     :window(_window), currentmenu(_startingmenu)
 {
-    renderer=new Renderer(_window);
-    RLS = new RenderLevelSelect(_window, 0);
+    //renderer=new Renderer(_window);
+    RLS = new RenderLevelSelect(_window, framecounter, 0);
 
     levelselectreload=true;
 
-    RPF = new RenderPlayField(_window, 0);
+    RPF = new RenderPlayField(_window, framecounter, 0);
     framecounter=0;
     printf("Engine init\n");
 }
@@ -22,6 +22,7 @@ Engine::~Engine()
 void Engine::frame(const ActiveInputs& _inputs) {
     ++framecounter;
     random::prng();
+    //printf("engine::frame, currentmenu=%d\n",currentmenu);
     switch(currentmenu) {
     case LEVELSELECT:
         RLS->renderLevelSelect(levelselectreload);
@@ -29,11 +30,13 @@ void Engine::frame(const ActiveInputs& _inputs) {
         levelselect=RLS->updateLevelSelect(_inputs);
         if (levelselect>=0) {
             currentmenu=PLAYFIELD;
-            RPF->resetPlayField(levelselect);
+            //RPF->resetPlayField(levelselect);
         }
         break;
     case PLAYFIELD:
-        RPF->renderandupdate(_inputs,framecounter);
+
+        RPF->update(_inputs);
+        RPF->render(framecounter);
         break;
     }
 }

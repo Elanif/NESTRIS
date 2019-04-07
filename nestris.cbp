@@ -13,6 +13,7 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
+					<Add option="-Wno-reorder" />
 					<Add directory="include" />
 				</Compiler>
 			</Target>
@@ -37,6 +38,7 @@
 			<Add directory="include" />
 			<Add directory="../nestris" />
 			<Add directory="SDL2/SDL2/lib" />
+			<Add directory="SDL2" />
 		</Compiler>
 		<ResourceCompiler>
 			<Add directory="include" />
@@ -56,7 +58,10 @@
 		<Unit filename="include/GameState.h" />
 		<Unit filename="include/ImageLoader.h" />
 		<Unit filename="include/Input.h" />
+		<Unit filename="include/LevelLines.h" />
+		<Unit filename="include/MatrixContainer.h" />
 		<Unit filename="include/Menu.h" />
+		<Unit filename="include/PieceContainer.h" />
 		<Unit filename="include/PlayField.h" />
 		<Unit filename="include/RenderLevelSelect.h" />
 		<Unit filename="include/RenderPlayField.h" />
@@ -65,6 +70,7 @@
 		<Unit filename="include/SquareRenderer.h" />
 		<Unit filename="include/Statistics.h" />
 		<Unit filename="include/Window.h" />
+		<Unit filename="include/enums.h" />
 		<Unit filename="include/random.h" />
 		<Unit filename="nestris.cpp" />
 		<Unit filename="src/ActiveInputs.cpp" />
@@ -73,7 +79,10 @@
 		<Unit filename="src/GameState.cpp" />
 		<Unit filename="src/ImageLoader.cpp" />
 		<Unit filename="src/Input.cpp" />
+		<Unit filename="src/LevelLines.cpp" />
+		<Unit filename="src/MatrixContainer.cpp" />
 		<Unit filename="src/Menu.cpp" />
+		<Unit filename="src/PieceContainer.cpp" />
 		<Unit filename="src/PlayField.cpp" />
 		<Unit filename="src/RenderLevelSelect.cpp" />
 		<Unit filename="src/RenderPlayField.cpp" />
@@ -82,6 +91,7 @@
 		<Unit filename="src/SquareRenderer.cpp" />
 		<Unit filename="src/Statistics.cpp" />
 		<Unit filename="src/Window.cpp" />
+		<Unit filename="src/enums.cpp" />
 		<Unit filename="src/random.cpp" />
 		<Extensions>
 			<code_completion />

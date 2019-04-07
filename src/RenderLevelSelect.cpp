@@ -2,7 +2,7 @@
 #include<SDL_image.h>
 #include<cstdio>
 #include"SquareRenderer.h"
-RenderLevelSelect::RenderLevelSelect(SDL_Window * _window, const size_t& _currentlevel):Renderer(_window), currentlevel(_currentlevel)
+RenderLevelSelect::RenderLevelSelect(SDL_Window * _window, const size_t& _frameappearance, const size_t& _currentlevel):Renderer(_window,_frameappearance), currentlevel(_currentlevel)
 {
     blink=0;
     lastrenderedlevel=0;

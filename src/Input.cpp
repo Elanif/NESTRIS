@@ -1,7 +1,9 @@
 #include "Input.h"
 #define MAXBUTTONS 8
 #include<cstdio>
-Input::Input() {
+Input::Input()
+    :leftandright(false)
+{
     inputevent = new SDL_Event();
     activeinputs=new bool[MAXBUTTONS];
     prevactiveinputs=new bool[MAXBUTTONS];
@@ -20,12 +22,25 @@ void Input::update(const Uint8* _keyboardstate, int*_inputdependancies, const si
             //printf("keycode active = %d\n",keycode);
         }
     activeinputs=_activeinputs;
+    //axis handling?
+    if (activeinputs[RIGHT]) {
+        if (activeinputs[LEFT]) {
+            activeinputs[LEFT]=false;
+            leftandright=true;
+        }
+    }
+    #ifdef DEBUG
+    for (size_t i=0; i<MAXBUTTONS; ++i)
+        printf("%d ",activeinputs[i]);
+    printf("\n");
+    #endif
+    if (activeinputs[DOWN]&&activeinputs[UP]); //up and down stop working until both are held up
 }
 
 ActiveInputs Input::getInput() {
     const Uint8* keyboardstate=SDL_GetKeyboardState(NULL);
     this->update(keyboardstate, inputdependancies, 255, MAXBUTTONS);
-    return ActiveInputs(MAXBUTTONS, prevactiveinputs, activeinputs);
+    return ActiveInputs(MAXBUTTONS, prevactiveinputs, activeinputs,leftandright);
 }
 
 void Input::setup(const size_t& joypadbuttons) { //fix parameters

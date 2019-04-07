@@ -1,10 +1,12 @@
 #include "Score.h"
 
-#ifdef c11date
-Score::Score():Score(true){
+#if __cplusplus >= 199711L
+Score::Score(SDL_Window * _window, const size_t& _frameappearance):Score(_window, _frameappearance, true){
 };
 #else
-Score::Score():maxout(true){
+Score::Score(SDL_Window * _window, const size_t& _frameappearance)
+    :Renderer(_window, _frameappearance), maxout(true)
+{
     score[0]=score[1]=score[2]=0;
     pointsarray[0]=00; pointsarray[1]=00;
     pointsarray[2]=40; pointsarray[3]=00;
@@ -14,7 +16,9 @@ Score::Score():maxout(true){
 }
 #endif
 
-Score::Score(bool _maxout):maxout(_maxout){
+Score::Score(SDL_Window * _window, const size_t& _frameappearance, const bool& _maxout)
+    :Renderer(_window, _frameappearance),  maxout(_maxout)
+{
     score[0]=score[1]=score[2]=0;
     pointsarray[0]=00; pointsarray[1]=00;
     pointsarray[2]=40; pointsarray[3]=00;
@@ -23,33 +27,12 @@ Score::Score(bool _maxout):maxout(_maxout){
     pointsarray[8]=00; pointsarray[9]=12;
 }
 
-void Score::sofdrop(unsigned char helddownpoints) {
-    if (helddownpoints>=2) {
-        unsigned char A;
-        --helddownpoints; //it should add heldpoints-1 to the score
-        score[0]+=helddownpoints;
-        //lowbytecheck();
-        bytechecklowdigit(0,true);
-        //lowbytecheck2();
-        bytecheckhighdigit(0,true);
-    }
-}
-void Score::lineclear(unsigned char level, unsigned char linescleared) {
-    for (size_t i=0; i<=level; ++i) {
-        score[0]+=pointsarray[linescleared*2];
-        bytecheckhighdigit(0,false); //for some reason it doesn't do &0xf0
-        score[1]+=pointsarray[linescleared*2+1];
-        bytechecklowdigit(1,true);
-        bytecheckhighdigit(1,true);
-        bytechecklowdigit(2,true);
-        lastdigitcheck();
-    }
-}
 
-unsigned int getscore() {
-    unsigned int result=score[0]&0x0f+score[0]&0xf0/0x0f*10;
-    result+=score[1]&0x0f*100+score[1]&0xf0/0x0f*1000;
-    result+=score[2]&0x0f*10000+score[2]&0xf0/0x0f*100000;
+
+unsigned int Score::getscore() {
+    unsigned int result=(score[0]&0x0f)+((score[0]&0xf0)/0x0f)*10;
+    result+=(score[1]&0x0f)*100+((score[1]&0xf0)/0x0f)*1000;
+    result+=(score[2]&0x0f)*10000+((score[2]&0xf0)/0x0f)*100000;
     return result;
 }
 
@@ -75,6 +58,27 @@ void Score::bytecheckhighdigit(size_t byte, bool andop) {
     }
 }
 
+void Score::sofdrop(unsigned char helddownpoints) {
+    if (helddownpoints>=2) {
+        --helddownpoints; //it should add heldpoints-1 to the score
+        score[0]+=helddownpoints;
+        //lowbytecheck();
+        bytechecklowdigit(0,true);
+        //lowbytecheck2();
+        bytecheckhighdigit(0,true);
+    }
+}
+void Score::lineclear(unsigned char level, unsigned char linescleared) {
+    for (size_t i=0; i<=level; ++i) {
+        score[0]+=pointsarray[linescleared*2];
+        bytecheckhighdigit(0,false); //for some reason it doesn't do &0xf0
+        score[1]+=pointsarray[linescleared*2+1];
+        bytechecklowdigit(1,true);
+        bytecheckhighdigit(1,true);
+        bytechecklowdigit(2,true);
+        lastdigitcheck();
+    }
+}
 /*void Score::lowbytecheck() {
     unsigned char A=lowbyte&0x0f; //but the score is stored in 3 bytes and each of the numbers in the byte's hex rappresentation is used as a decimal unit
     if (A-0x0A>=0) { //checks if last digit overflows and adds 6 to "fix" it

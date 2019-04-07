@@ -7,7 +7,7 @@
 class RenderLevelSelect: public Renderer
 {
     public:
-        RenderLevelSelect(SDL_Window * _window, const size_t& _currentlevel);
+        RenderLevelSelect(SDL_Window * _window, const size_t& _frameappearance, const size_t& _currentlevel);
         int update(ActiveInputs* activeinputs);
         void renderLevelSelect(const bool& _reload);
         int updateLevelSelect(const ActiveInputs& _input);

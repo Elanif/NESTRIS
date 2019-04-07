@@ -1,13 +1,12 @@
 #include "Renderer.h"
 
-Renderer::Renderer(SDL_Window *_window)
-    :window(_window)
+Renderer::Renderer(SDL_Window * _window, const size_t& _frameappearance)
+    :window(_window), frameappearance(_frameappearance)
 {
     renderSurface=SDL_GetWindowSurface(window);
 }
-
-Renderer::~Renderer()
+Renderer::Renderer()
 {
-    //delete renderSurface; //?
+    window=NULL;
+    renderSurface=NULL;
 }
-
