@@ -16850,3 +16850,304 @@
 	<cstdio>
 	<SFML/Window/Keyboard.hpp>
 
+1554593040 source:f:\nestris\project_versions\20190405config\nestris.cpp
+	"enums.h"
+	"ConsoleManager.h"
+	<cstdio>
+	"Window.h"
+	<SFML/Graphics.hpp>
+	"TextWriter.h"
+	<SFML/Window/Joystick.hpp>
+	<cstdlib>
+
+1554585792 f:\nestris\project_versions\20190405config\include\enums.h
+	<cstddef>
+	<SFML/System/Vector2.hpp>
+	"ConsoleManager.h"
+
+1553502302 f:\nestris\project_versions\20190405config\include\consolemanager.h
+	<vector>
+	<unordered_map>
+	<string>
+	<SFML/System/NonCopyable.hpp>
+	<SFML/System/Vector2.hpp>
+	<utility>
+	<memory>
+	"rlutil.h"
+	"OutputInfo.h"
+
+1464936568 f:\nestris\project_versions\20190405config\include\rlutil.h
+	<iostream>
+	<string>
+	<cstdio>
+	<stdio.h>
+	<string.h>
+	<windows.h>
+	<conio.h>
+	<termios.h>
+	<unistd.h>
+	<sys/ioctl.h>
+	<sys/types.h>
+	<sys/time.h>
+
+1553868416 f:\nestris\project_versions\20190405config\include\outputinfo.h
+	<string>
+	<list>
+	<SFML/System/Vector2.hpp>
+	<SFML/System/Time.hpp>
+
+1552039570 f:\nestris\project_versions\20190405config\include\window.h
+	"Input.h"
+	<SFML/Graphics.hpp>
+	"Engine.h"
+	<cstdio>
+
+1554592112 f:\nestris\project_versions\20190405config\include\input.h
+	"ActiveInputs.h"
+	"enums.h"
+	<vector>
+	<array>
+	<utility>
+	<SFML/Window/Event.hpp>
+	<SFML/Window/Keyboard.hpp>
+	<SFML/Window/Joystick.hpp>
+
+1551714630 f:\nestris\project_versions\20190405config\include\activeinputs.h
+	"enums.h"
+
+1551714592 f:\nestris\project_versions\20190405config\include\engine.h
+	"Input.h"
+	"ActiveInputs.h"
+	<SFML/Graphics.hpp>
+	"TileContainer.h"
+	"TileRenderer.h"
+	"RenderLevelSelect.h"
+	"RenderPlayField.h"
+
+1552396000 f:\nestris\project_versions\20190405config\include\tilecontainer.h
+	"enums.h"
+	"stddef.h"
+	<SFML/System/NonCopyable.hpp>
+	<functional>
+	<map>
+	<SFML/System/Vector3.hpp>
+
+1552293358 f:\nestris\project_versions\20190405config\include\tilerenderer.h
+	"TileContainer.h"
+	<SFML/Graphics.hpp>
+	"enums.h"
+	<vector>
+	<string>
+	<cstdio>
+	<unordered_map>
+	"Sprite.h"
+
+1551714714 f:\nestris\project_versions\20190405config\include\sprite.h
+	"enums.h"
+	<SFML/System/Utf.hpp>
+	<SFML/Graphics.hpp>
+	<climits>
+
+1554456574 f:\nestris\project_versions\20190405config\include\renderlevelselect.h
+	"ActiveInputs.h"
+	<SFML/Graphics.hpp>
+	"TileContainer.h"
+	"Renderer.h"
+
+1551714608 f:\nestris\project_versions\20190405config\include\renderer.h
+	"stddef.h"
+	<SFML/Graphics.hpp>
+	"TileContainer.h"
+	"enums.h"
+
+1554456564 f:\nestris\project_versions\20190405config\include\renderplayfield.h
+	"TileContainer.h"
+	"Renderer.h"
+	"ActiveInputs.h"
+	"Score.h"
+	"PieceContainer.h"
+	"MatrixContainer.h"
+	"LevelLines.h"
+	"Statistics.h"
+	"enums.h"
+
+1554132234 f:\nestris\project_versions\20190405config\include\score.h
+	<cstdio>
+	"Renderer.h"
+	"enums.h"
+	"TileContainer.h"
+
+1554217464 f:\nestris\project_versions\20190405config\include\piececontainer.h
+	"enums.h"
+	"PFMatrix.h"
+	"Piece.h"
+	"Renderer.h"
+	<vector>
+	<utility>
+	"ActiveInputs.h"
+	"TileContainer.h"
+
+1551714608 f:\nestris\project_versions\20190405config\include\pfmatrix.h
+	<cstdio>
+
+1552038464 f:\nestris\project_versions\20190405config\include\piece.h
+	"enums.h"
+	"TileContainer.h"
+	<vector>
+	<utility>
+
+1550588352 f:\nestris\project_versions\20190405config\include\matrixcontainer.h
+	"enums.h"
+	"Renderer.h"
+	"PieceContainer.h"
+	"PFMatrix.h"
+	"Piece.h"
+	<cstdio>
+
+1554213262 f:\nestris\project_versions\20190405config\include\levellines.h
+	"Renderer.h"
+	"TileContainer.h"
+	"enums.h"
+
+1554217492 f:\nestris\project_versions\20190405config\include\statistics.h
+	"Renderer.h"
+	"enums.h"
+
+1554220250 f:\nestris\project_versions\20190405config\include\textwriter.h
+	"enums.h"
+
+1551714618 source:f:\nestris\project_versions\20190405config\src\activeinputs.cpp
+	"ActiveInputs.h"
+	<cstdio>
+	"enums.h"
+
+1553879164 source:f:\nestris\project_versions\20190405config\src\consolemanager.cpp
+	"ConsoleManager.h"
+	<chrono>
+	<ctime>
+	<iostream>
+	<SFML/System/Sleep.hpp>
+	<sstream>
+	<limits>
+
+1553100958 source:f:\nestris\project_versions\20190405config\src\engine.cpp
+	"Engine.h"
+	<cstdio>
+	"random.h"
+	"ConsoleManager.h"
+	<string>
+
+1548932828 f:\nestris\project_versions\20190405config\include\random.h
+	"enums.h"
+
+1554212094 source:f:\nestris\project_versions\20190405config\src\enums.cpp
+	"enums.h"
+
+1554214144 source:f:\nestris\project_versions\20190405config\src\levellines.cpp
+	"LevelLines.h"
+	"TextWriter.h"
+	<string>
+
+1554126768 source:f:\nestris\project_versions\20190405config\src\matrixcontainer.cpp
+	"MatrixContainer.h"
+	"enums.h"
+	<vector>
+	<utility>
+	<cstdio>
+
+1553878762 source:f:\nestris\project_versions\20190405config\src\outputinfo.cpp
+	"OutputInfo.h"
+	<rlutil.h>
+	<algorithm>
+
+1549030012 source:f:\nestris\project_versions\20190405config\src\pfmatrix.cpp
+
+1554217508 source:f:\nestris\project_versions\20190405config\src\piece.cpp
+	"Piece.h"
+
+1554456572 source:f:\nestris\project_versions\20190405config\src\piececontainer.cpp
+	"PieceContainer.h"
+	<stddef.h>
+	"enums.h"
+	"random.h"
+	<cstdio>
+	<sstream>
+
+1550076996 source:f:\nestris\project_versions\20190405config\src\random.cpp
+	"random.h"
+	<cstdio>
+
+1551714598 source:f:\nestris\project_versions\20190405config\src\renderer.cpp
+	"Renderer.h"
+
+1554456574 source:f:\nestris\project_versions\20190405config\src\renderlevelselect.cpp
+	"RenderLevelSelect.h"
+	<cstdio>
+
+1554218900 source:f:\nestris\project_versions\20190405config\src\renderplayfield.cpp
+	"RenderPlayField.h"
+	"random.h"
+	"PieceContainer.h"
+	<cstdio>
+	"TextWriter.h"
+	<string>
+
+1554134318 source:f:\nestris\project_versions\20190405config\src\score.cpp
+	"Score.h"
+	"TextWriter.h"
+
+1551714606 source:f:\nestris\project_versions\20190405config\src\sprite.cpp
+	"Sprite.h"
+
+1554220568 source:f:\nestris\project_versions\20190405config\src\statistics.cpp
+	"Statistics.h"
+	"TextWriter.h"
+
+1554220248 source:f:\nestris\project_versions\20190405config\src\textwriter.cpp
+	"TextWriter.h"
+	<string>
+	<sstream>
+	"TileContainer.h"
+	<SFML/System/Vector2.hpp>
+	<iomanip>
+
+1553100448 source:f:\nestris\project_versions\20190405config\src\tilecontainer.cpp
+	"TileContainer.h"
+	<cstdio>
+	"ConsoleManager.h"
+	<string>
+	<sstream>
+
+1553100458 source:f:\nestris\project_versions\20190405config\src\tilerenderer.cpp
+	"TileRenderer.h"
+	"ConsoleManager.h"
+	"enums.h"
+	<string>
+	<fstream>
+	<sstream>
+
+1554588946 source:f:\nestris\project_versions\20190405config\src\window.cpp
+	"Window.h"
+	<cmath>
+	"ConsoleManager.h"
+	<string>
+
+1554577976 source:f:\nestris\project_versions\20190405config\src\configreader.cpp
+	"ConfigReader.hpp"
+	<functional>
+	<iostream>
+	<regex>
+
+1554574636 f:\nestris\project_versions\20190405config\include\configreader.hpp
+	<string>
+	<unordered_map>
+	<vector>
+	<tuple>
+	<fstream>
+
+1554593182 source:f:\nestris\project_versions\20190405config\src\input.cpp
+	"Input.h"
+	<cstdio>
+	<SFML/Window/Keyboard.hpp>
+	"ConfigReader.hpp"
+

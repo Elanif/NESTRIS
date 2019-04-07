@@ -4,13 +4,32 @@
 #include"Window.h"
 #include<SFML/Graphics.hpp>
 #include"TextWriter.h"
+#include<SFML/Window/Joystick.hpp>
+#include<cstdlib>
 const int SCREEN_WIDTH = 256;
 const int SCREEN_HEIGHT = 224;
 
 
 int main(int argc, char** args) {
     TextWriter::init();
-    sf::Vector2f scale(3,3);
+    sf::Vector2f scale(5,4);
+    while(false) {
+        sf::Joystick::update();
+        std::cout<<"X"<<sf::Joystick::getAxisPosition(0,sf::Joystick::X)<<" ";
+        std::cout<<"Y"<<sf::Joystick::getAxisPosition(0,sf::Joystick::Y)<<" ";
+        std::cout<<"Z"<<sf::Joystick::getAxisPosition(0,sf::Joystick::Z)<<" ";
+        std::cout<<"R"<<sf::Joystick::getAxisPosition(0,sf::Joystick::R)<<" ";
+        std::cout<<"U"<<sf::Joystick::getAxisPosition(0,sf::Joystick::U)<<" ";
+        std::cout<<"V"<<sf::Joystick::getAxisPosition(0,sf::Joystick::V)<<" ";
+        std::cout<<"PovX"<<sf::Joystick::getAxisPosition(0,sf::Joystick::PovX)<<" ";
+        std::cout<<"PovY"<<sf::Joystick::getAxisPosition(0,sf::Joystick::PovY)<<" \n";
+        for (int i=0; i<sf::Joystick::ButtonCount; ++i) {
+            for (int joy=0; joy<sf::Joystick::Count; ++joy)
+            if (sf::Joystick::isButtonPressed(joy,i)) std::cout<<joy<<","<<i<<" ";
+        }
+        sf::sleep(sf::milliseconds(1000));
+        system("CLS");
+    }
     Window finestra(SCREEN_WIDTH,SCREEN_HEIGHT,scale,true);
 }
 

@@ -21,6 +21,7 @@ struct input_union {
         JOYSTICK_BUTTON,
         JOYSTICK_AXIS
     } tag;
+    double axis_sign;
 };
 
 class Input
@@ -31,6 +32,7 @@ class Input
     private:
         void update(const std::size_t& _buttons);
         void setup();
+        void initMap();
         sf::Event event;
         bool prevactiveinputs[MAXBUTTONS];
         bool activeinputs[MAXBUTTONS];
@@ -40,6 +42,7 @@ class Input
         std::size_t maxbuttons;
         std::vector<unsigned int> active_joysticks;
         std::array<std::array<float, sf::Joystick::AxisCount>, sf::Joystick::Count > joystick_axis_deadzone;
+        std::unordered_map<std::string, input_union> keybinds_lookup_table;
 };
 #endif
 
@@ -78,4 +81,4 @@ enum  	Key {
 //
 //  /([A-Za-z_]\w*)[\s\,]*/g
 //
-//  KEYBOARD_$1,\r
+//  insertion.keyboard_input=sf::Keyboard::$1;\nkeybinds_lookup_table["KEYBOARD_$1"s]=insertion;\n
