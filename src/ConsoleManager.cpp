@@ -1,8 +1,19 @@
 #include "ConsoleManager.h"
+#include<chrono>
+#include<ctime>
 #include<iostream>
 #include<SFML/System/Sleep.hpp>
 #include<sstream>
 #include<limits>
+
+template <typename Duration>
+void print_time(FILE* output, tm t, Duration fraction) {
+    using namespace std::chrono;
+    std::fprintf(output,"%04u-%02u-%02u %02u:%02u:%02u.%03u ", t.tm_year + 1900,
+                t.tm_mon + 1, t.tm_mday, t.tm_hour, t.tm_min, t.tm_sec,
+                static_cast<unsigned>(fraction / milliseconds(1)));
+}
+
 void lowercase_str(std::string& str) { //TODO make it portable with 16bitchar
     for(auto& c : str)
     {
@@ -35,8 +46,8 @@ void ConsoleManager::update_error(const T& t) {
         fflush(error_log);
     }
     else {
-            //TODO ERROR REPORTING
-         /*if (to_string(t).length()>0) {
+        std::string error_string=ntris::to_string(t);
+        if (error_string.length()>0 && error_string!="0") {
             auto clock = std::chrono::system_clock::now();
             std::time_t current_time = std::chrono::system_clock::to_time_t(clock);
             using namespace std::chrono;
@@ -44,10 +55,10 @@ void ConsoleManager::update_error(const T& t) {
             system_clock::duration tp = now.time_since_epoch();
             tp -= duration_cast<seconds>(tp);
             print_time(error_log,*localtime(&current_time), tp);
-            fprintf(error_log,"%s\n",outputstring.c_str());
+            fprintf(error_log,"%s\n",error_string.c_str());
             fflush(error_log);
-        }*/
-        CMvector[CMmap["error"]]->set_value(ntris::to_string(t));
+        }
+        CMvector[CMmap["error"]]->set_value(error_string);
     }
 }
 void ConsoleManager::update_error(const char* t) {
@@ -89,7 +100,7 @@ ConsoleManager::ConsoleManager()
     std::unique_ptr<OutputInfo>& system=CMvector[add_value("system","")];
     system->set_value("");
 
-    std::unique_ptr<OutputInfo> _error(new OutputInfoError("error",3));
+    std::unique_ptr<OutputInfo> _error(new OutputInfoError("error",8));
     add_value(std::move(_error));
     //OutputInfoError error("error", 3);
     //add_value(error);

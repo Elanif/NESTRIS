@@ -2,8 +2,8 @@
 #include"random.h"
 #include"PieceContainer.h"
 #include<cstdio>
-
-
+#include"TextWriter.h"
+#include<string>
 RenderPlayField::RenderPlayField(TileContainer * _tilecont, const nes_ushort& _frameappearance, nes_uchar _level):Renderer(_tilecont, _frameappearance), level(_level){
     init_assets();
     piecehandler = PieceContainer(_tilecont, frameappearance);
@@ -68,7 +68,6 @@ void RenderPlayField::update(const ActiveInputs& _input, const nes_ushort& _fram
 
 
 void RenderPlayField::render(const nes_ushort& _framecounter) {
-    glb::cm.update_error(15231);
     //renderimage(false); more optimization to be done
     if (glb::lineclearframecounter>0) {
         if (tetris) {
@@ -116,19 +115,10 @@ void RenderPlayField::resetPlayField(const nes_uchar& _level){
 }
 
 void RenderPlayField::renderimage(bool blink) {
-    //NEXT
-    tilecont->at(glb::nextx,glb::nexty)=tiletype(24,0x0d,0x30,0x30,0x30);
-    tilecont->at(glb::nextx+1,glb::nexty)=tiletype(15,0x0d,0x30,0x30,0x30);
-    tilecont->at(glb::nextx+2,glb::nexty)=tiletype(34,0x0d,0x30,0x30,0x30);
-    tilecont->at(glb::nextx+3,glb::nexty)=tiletype(30,0x0d,0x30,0x30,0x30);
-    //TOP SCORE
-    tilecont->at(25,3)=tilecont->at(26,6)=tiletype(25,0x0d,0x30,0x00,0x00);
-    tilecont->at(27,6)=tiletype(28,0x0d,0x30,0x00,0x00);
-    tilecont->at(24,3)=tiletype(30,0x0d,0x30,0x00,0x00);
-    tilecont->at(24,6)=tiletype(29,0x0d,0x30,0x00,0x00);
-    tilecont->at(25,6)=tiletype(13,0x0d,0x30,0x00,0x00);
-    tilecont->at(28,6)=tiletype(15,0x0d,0x30,0x00,0x00);
-    tilecont->at(26,3)=tiletype(26,0x0d,0x30,0x00,0x00);
+    using namespace std::string_literals;
+    TextWriter::write("NEXT"s ,tilecont,{glb::nextx,glb::nexty});
+    TextWriter::write("TOP"s ,tilecont,{24,3}); //TODO USECONSTEXPR
+    TextWriter::write("SCORE"s ,tilecont,{24,6});
     if (blink) {
         playfield_blink=true;
         tilecont->at(30,23)=tiletype(65,0x0d,0x3c,0x00,0x20);

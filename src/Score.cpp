@@ -1,5 +1,5 @@
 #include "Score.h"
-
+#include"TextWriter.h"
 Score::Score(TileContainer *_tilecont, const nes_ushort& _frameappearance)
 :Renderer(_tilecont, _frameappearance),
 maxout(true)
@@ -24,6 +24,7 @@ void Score::render() {
     }
     else {
         for (std::size_t i=0; i<3; i++) {
+            TextWriter::write_hex(score[i],tilecont,{glb::topscorex-i*2,glb::topscorey});
             tilecont->at(glb::topscorex-i*2,glb::topscorey)=tiletype(1+(score[i]&0x0f),0x0d,0x30,0x00,0x00);
             tilecont->at(glb::topscorex-i*2-1,glb::topscorey)=tiletype(1+((score[i]>>4)&0x0f),0x0d,0x30,0x00,0x00);
         }

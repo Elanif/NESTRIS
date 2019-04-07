@@ -1,8 +1,5 @@
 #include "OutputInfo.h"
-#include<chrono>
-#include<ctime>
 #include<rlutil.h>
-#include<SFML/System/Sleep.hpp>
 #include<algorithm>
 void gotoxycm(std::size_t x, std::size_t y) {
     gotoxy(x+1,y+1);
@@ -47,13 +44,6 @@ void OutputInfo::set_value(const double& t)
 {
     value=ntris::to_string(t);
 }
-template <typename Duration>
-void print_time(FILE* output, tm t, Duration fraction) {
-    using namespace std::chrono;
-    std::fprintf(output,"%04u-%02u-%02u %02u:%02u:%02u.%03u ", t.tm_year + 1900,
-                t.tm_mon + 1, t.tm_mday, t.tm_hour, t.tm_min, t.tm_sec,
-                static_cast<unsigned>(fraction / milliseconds(1)));
-}
 sf::Vector2u OutputInfo::print(sf::Vector2u currentposition, unsigned int conwidth)
 {
     if (currentposition.x>0) {
@@ -64,18 +54,6 @@ sf::Vector2u OutputInfo::print(sf::Vector2u currentposition, unsigned int conwid
     std::string outputstring=name+"="+value+unit;
     currentposition.x+=outputstring.size();
     std::cout<<outputstring;
-    //TODO REMOVE
-    /*if (name==std::string("error")&&value!=std::string("0")&&value.length()>0) {
-        auto clock = std::chrono::system_clock::now();
-        std::time_t current_time = std::chrono::system_clock::to_time_t(clock);
-        using namespace std::chrono;
-        system_clock::time_point now = system_clock::now();
-        system_clock::duration tp = now.time_since_epoch();
-        tp -= duration_cast<seconds>(tp);
-        print_time(error_log,*localtime(&current_time), tp);
-        fprintf(error_log,"%s\n",outputstring.c_str());
-        fflush(error_log);
-    }*/
     value="";
     return sf::Vector2u(currentposition.x%conwidth,currentposition.y+currentposition.x/conwidth);
 }

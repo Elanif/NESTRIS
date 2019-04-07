@@ -15457,3 +15457,273 @@
 	<sstream>
 	<limits>
 
+1553875266 source:g:\nestris\project_versions\20190328textwriter\nestris.cpp
+	"enums.h"
+	"ConsoleManager.h"
+	<cstdio>
+	"Window.h"
+	<SFML/Graphics.hpp>
+	"TextWriter.h"
+
+1553872142 g:\nestris\project_versions\20190328textwriter\include\enums.h
+	<cstddef>
+	<SFML/System/Vector2.hpp>
+	"ConsoleManager.h"
+
+1553502302 g:\nestris\project_versions\20190328textwriter\include\consolemanager.h
+	<vector>
+	<unordered_map>
+	<string>
+	<SFML/System/NonCopyable.hpp>
+	<SFML/System/Vector2.hpp>
+	<utility>
+	<memory>
+	"rlutil.h"
+	"OutputInfo.h"
+
+1464932968 g:\nestris\project_versions\20190328textwriter\include\rlutil.h
+	<iostream>
+	<string>
+	<cstdio>
+	<stdio.h>
+	<string.h>
+	<windows.h>
+	<conio.h>
+	<termios.h>
+	<unistd.h>
+	<sys/ioctl.h>
+	<sys/types.h>
+	<sys/time.h>
+
+1553868416 g:\nestris\project_versions\20190328textwriter\include\outputinfo.h
+	<string>
+	<list>
+	<SFML/System/Vector2.hpp>
+	<SFML/System/Time.hpp>
+
+1552039570 g:\nestris\project_versions\20190328textwriter\include\window.h
+	"Input.h"
+	<SFML/Graphics.hpp>
+	"Engine.h"
+	<cstdio>
+
+1551714616 g:\nestris\project_versions\20190328textwriter\include\input.h
+	"ActiveInputs.h"
+	"enums.h"
+	<vector>
+	<utility>
+	<SFML/Window/Event.hpp>
+
+1551714630 g:\nestris\project_versions\20190328textwriter\include\activeinputs.h
+	"enums.h"
+
+1551714592 g:\nestris\project_versions\20190328textwriter\include\engine.h
+	"Input.h"
+	"ActiveInputs.h"
+	<SFML/Graphics.hpp>
+	"TileContainer.h"
+	"TileRenderer.h"
+	"RenderLevelSelect.h"
+	"RenderPlayField.h"
+
+1552396000 g:\nestris\project_versions\20190328textwriter\include\tilecontainer.h
+	"enums.h"
+	"stddef.h"
+	<SFML/System/NonCopyable.hpp>
+	<functional>
+	<map>
+	<SFML/System/Vector3.hpp>
+
+1552293358 g:\nestris\project_versions\20190328textwriter\include\tilerenderer.h
+	"TileContainer.h"
+	<SFML/Graphics.hpp>
+	"enums.h"
+	<vector>
+	<string>
+	<cstdio>
+	<unordered_map>
+	"Sprite.h"
+
+1551714714 g:\nestris\project_versions\20190328textwriter\include\sprite.h
+	"enums.h"
+	<SFML/System/Utf.hpp>
+	<SFML/Graphics.hpp>
+	<climits>
+
+1551714608 g:\nestris\project_versions\20190328textwriter\include\renderlevelselect.h
+	"ActiveInputs.h"
+	<SFML/Graphics.hpp>
+	"TileContainer.h"
+	"Renderer.h"
+
+1551714608 g:\nestris\project_versions\20190328textwriter\include\renderer.h
+	"stddef.h"
+	<SFML/Graphics.hpp>
+	"TileContainer.h"
+	"enums.h"
+
+1551714608 g:\nestris\project_versions\20190328textwriter\include\renderplayfield.h
+	"TileContainer.h"
+	"Renderer.h"
+	"ActiveInputs.h"
+	"Score.h"
+	"PieceContainer.h"
+	"MatrixContainer.h"
+	"LevelLines.h"
+	"enums.h"
+
+1552063772 g:\nestris\project_versions\20190328textwriter\include\score.h
+	<cstdio>
+	"Renderer.h"
+	"enums.h"
+	"TileContainer.h"
+
+1552404054 g:\nestris\project_versions\20190328textwriter\include\piececontainer.h
+	"enums.h"
+	"PFMatrix.h"
+	"Piece.h"
+	"Renderer.h"
+	<vector>
+	<utility>
+	"ActiveInputs.h"
+	"TileContainer.h"
+
+1551714608 g:\nestris\project_versions\20190328textwriter\include\pfmatrix.h
+	<cstdio>
+
+1552038464 g:\nestris\project_versions\20190328textwriter\include\piece.h
+	"enums.h"
+	"TileContainer.h"
+	<vector>
+	<utility>
+
+1550588352 g:\nestris\project_versions\20190328textwriter\include\matrixcontainer.h
+	"enums.h"
+	"Renderer.h"
+	"PieceContainer.h"
+	"PFMatrix.h"
+	"Piece.h"
+	<cstdio>
+
+1552931262 g:\nestris\project_versions\20190328textwriter\include\levellines.h
+	"Renderer.h"
+	"TileContainer.h"
+	"enums.h"
+
+1551714618 source:g:\nestris\project_versions\20190328textwriter\src\activeinputs.cpp
+	"ActiveInputs.h"
+	<cstdio>
+	"enums.h"
+
+1553878688 source:g:\nestris\project_versions\20190328textwriter\src\consolemanager.cpp
+	"ConsoleManager.h"
+	<chrono>
+	<ctime>
+	<iostream>
+	<SFML/System/Sleep.hpp>
+	<sstream>
+	<limits>
+
+1553100958 source:g:\nestris\project_versions\20190328textwriter\src\engine.cpp
+	"Engine.h"
+	<cstdio>
+	"random.h"
+	"ConsoleManager.h"
+	<string>
+
+1548932828 g:\nestris\project_versions\20190328textwriter\include\random.h
+	"enums.h"
+
+1553167274 source:g:\nestris\project_versions\20190328textwriter\src\enums.cpp
+	"enums.h"
+
+1551714618 source:g:\nestris\project_versions\20190328textwriter\src\input.cpp
+	"Input.h"
+	<cstdio>
+	<SFML/Window/Keyboard.hpp>
+
+1552931262 source:g:\nestris\project_versions\20190328textwriter\src\levellines.cpp
+	"LevelLines.h"
+
+1553167824 source:g:\nestris\project_versions\20190328textwriter\src\matrixcontainer.cpp
+	"MatrixContainer.h"
+	"enums.h"
+	<vector>
+	<utility>
+	<cstdio>
+
+1553878762 source:g:\nestris\project_versions\20190328textwriter\src\outputinfo.cpp
+	"OutputInfo.h"
+	<rlutil.h>
+	<algorithm>
+
+1549030012 source:g:\nestris\project_versions\20190328textwriter\src\pfmatrix.cpp
+
+1552056570 source:g:\nestris\project_versions\20190328textwriter\src\piece.cpp
+	"Piece.h"
+
+1552923360 source:g:\nestris\project_versions\20190328textwriter\src\piececontainer.cpp
+	"PieceContainer.h"
+	<stddef.h>
+	"enums.h"
+	"random.h"
+	<cstdio>
+	<sstream>
+
+1550076996 source:g:\nestris\project_versions\20190328textwriter\src\random.cpp
+	"random.h"
+	<cstdio>
+
+1551714598 source:g:\nestris\project_versions\20190328textwriter\src\renderer.cpp
+	"Renderer.h"
+
+1552390448 source:g:\nestris\project_versions\20190328textwriter\src\renderlevelselect.cpp
+	"RenderLevelSelect.h"
+	<cstdio>
+
+1553878120 source:g:\nestris\project_versions\20190328textwriter\src\renderplayfield.cpp
+	"RenderPlayField.h"
+	"random.h"
+	"PieceContainer.h"
+	<cstdio>
+	"TextWriter.h"
+	<string>
+
+1553877808 source:g:\nestris\project_versions\20190328textwriter\src\score.cpp
+	"Score.h"
+	"TextWriter.h"
+
+1551714606 source:g:\nestris\project_versions\20190328textwriter\src\sprite.cpp
+	"Sprite.h"
+
+1553100448 source:g:\nestris\project_versions\20190328textwriter\src\tilecontainer.cpp
+	"TileContainer.h"
+	<cstdio>
+	"ConsoleManager.h"
+	<string>
+	<sstream>
+
+1553100458 source:g:\nestris\project_versions\20190328textwriter\src\tilerenderer.cpp
+	"TileRenderer.h"
+	"ConsoleManager.h"
+	"enums.h"
+	<string>
+	<fstream>
+	<sstream>
+
+1552402962 source:g:\nestris\project_versions\20190328textwriter\src\window.cpp
+	"Window.h"
+	<cmath>
+	"ConsoleManager.h"
+	<string>
+
+1553877634 source:g:\nestris\project_versions\20190328textwriter\src\textwriter.cpp
+	"TextWriter.h"
+	<string>
+	<sstream>
+	"TileContainer.h"
+	<SFML/System/Vector2.hpp>
+
+1553874872 g:\nestris\project_versions\20190328textwriter\include\textwriter.h
+	"enums.h"
+
