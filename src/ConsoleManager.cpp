@@ -2,7 +2,7 @@
 #include<iostream>
 #include<SFML/System/Sleep.hpp>
 #include<sstream>
-
+#include<limits>
 void lowercase_str(std::string& str) { //TODO make it portable with 16bitchar
     for(auto& c : str)
     {
@@ -16,18 +16,11 @@ void ConsoleManager::update(std::string info, const T& t) {
         //error message somewhere
     }
     else {
-        CMvector[CMmap[info]]->set_value<T>(t);
-    }
-}
-void ConsoleManager::update(std::string info, const char* const& t) {
-    if (CMmap.find(info)==CMmap.end()) {
-        //error message somewhere
-    }
-    else {
         CMvector[CMmap[info]]->set_value(t);
     }
 }
 template void ConsoleManager::update(std::string info, const std::string& t);
+template void ConsoleManager::update(std::string info, char const* const& t);
 template void ConsoleManager::update(std::string info, const int& t);
 template void ConsoleManager::update(std::string info, const std::size_t& t);
 template void ConsoleManager::update(std::string info, const unsigned long long& t);
@@ -54,7 +47,7 @@ void ConsoleManager::update_error(const T& t) {
             fprintf(error_log,"%s\n",outputstring.c_str());
             fflush(error_log);
         }*/
-        CMvector[CMmap["error"]]->set_value<T>(t);
+        CMvector[CMmap["error"]]->set_value(ntris::to_string(t));
     }
 }
 void ConsoleManager::update_error(const char* t) {
@@ -73,31 +66,31 @@ ConsoleManager::ConsoleManager()
     error_log=fopen("error_log.txt","a");
     rlutil::cls();
     //std::cout.sync_with_stdio(false); messes up with rlutil
-    std::unique_ptr<OutputInfo> _fps(new OutputInfoLow<double>("fps","hz",true));
-    std::unique_ptr<OutputInfo>& fps=CMvector[add_value(_fps)];
-    fps->set_value<double>(0);
+    std::unique_ptr<OutputInfo> _fps(new OutputInfoLowDouble("fps","hz",true));
+    std::unique_ptr<OutputInfo>& fps=CMvector[add_value(std::move(_fps))];
+    fps->set_value(0);
 
-    std::unique_ptr<OutputInfo> _input(new OutputInfoLow<sf::Int64>("input delay","microseconds",false));
-    std::unique_ptr<OutputInfo>& input_delay=CMvector[add_value(_input)];
-    input_delay->set_value<sf::Int64>(0);
+    std::unique_ptr<OutputInfo> _input(new OutputInfoLowI64("input delay","microseconds",false));
+    std::unique_ptr<OutputInfo>& input_delay=CMvector[add_value(std::move(_input))];
+    input_delay->set_value(0);
 
-    std::unique_ptr<OutputInfo> _render(new OutputInfoLow<sf::Int64>("render delay","microseconds",false));
-    std::unique_ptr<OutputInfo>& render_delay=CMvector[add_value(_render)];
-    render_delay->set_value<sf::Int64>(0);
+    std::unique_ptr<OutputInfo> _render(new OutputInfoLowI64("render delay","microseconds",false));
+    std::unique_ptr<OutputInfo>& render_delay=CMvector[add_value(std::move(_render))];
+    render_delay->set_value(0);
 
-    std::unique_ptr<OutputInfo> _draw(new OutputInfoLow<sf::Int64>("draw delay","microseconds",false));
-    std::unique_ptr<OutputInfo>& draw_delay=CMvector[add_value(_draw)];
-    draw_delay->set_value<sf::Int64>(0);
+    std::unique_ptr<OutputInfo> _draw(new OutputInfoLowI64("draw delay","microseconds",false));
+    std::unique_ptr<OutputInfo>& draw_delay=CMvector[add_value(std::move(_draw))];
+    draw_delay->set_value(0);
 
-    std::unique_ptr<OutputInfo> _display(new OutputInfoLow<sf::Int64> ("display delay","microseconds",false));
-    std::unique_ptr<OutputInfo>& display_delay=CMvector[add_value(_display)];
-    display_delay->set_value<sf::Int64>(0);
+    std::unique_ptr<OutputInfo> _display(new OutputInfoLowI64("display delay","microseconds",false));
+    std::unique_ptr<OutputInfo>& display_delay=CMvector[add_value(std::move(_display))];
+    display_delay->set_value(0);
 
     std::unique_ptr<OutputInfo>& system=CMvector[add_value("system","")];
-    system->set_value<int>(0);
+    system->set_value("");
 
     std::unique_ptr<OutputInfo> _error(new OutputInfoError("error",3));
-    add_value(_error);
+    add_value(std::move(_error));
     //OutputInfoError error("error", 3);
     //add_value(error);
 
@@ -107,10 +100,10 @@ std::size_t ConsoleManager::add_value(std::string info, std::string unit) {
     lowercase_str(info);
     lowercase_str(unit);
     std::unique_ptr<OutputInfo> fpsinfo=std::make_unique<OutputInfo>(info,unit);
-    return add_value(fpsinfo);
+    return add_value(std::move(fpsinfo));
 }
 
-std::size_t ConsoleManager::add_value(std::unique_ptr<OutputInfo>& outputinfo) {
+std::size_t ConsoleManager::add_value(std::unique_ptr<OutputInfo>&& outputinfo) {
     lowercase_str(outputinfo->name);
     std::size_t CMvector_size=CMvector.size();
     bool push_back_error=false;
@@ -144,10 +137,9 @@ void ConsoleManager::print(bool always_print) {
                 pos.x=0;
                 pos.y++;
             }
-            /*if (info.name=="error") {
-                pos=static_cast<OutputInfoError&>(info).print(pos,rlutil::tcols());
-            }
-            else*/ pos=info->print(pos,rlutil::tcols());
+            int conwidth=rlutil::tcols();
+            if (conwidth<0) conwidth=std::numeric_limits<int>::max();
+            pos=info->print(pos,conwidth);
 
         }
         error_print=false;

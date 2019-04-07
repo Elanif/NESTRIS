@@ -68,6 +68,7 @@ void RenderPlayField::update(const ActiveInputs& _input, const nes_ushort& _fram
 
 
 void RenderPlayField::render(const nes_ushort& _framecounter) {
+    glb::cm.update_error(15231);
     //renderimage(false); more optimization to be done
     if (glb::lineclearframecounter>0) {
         if (tetris) {
@@ -89,7 +90,7 @@ void RenderPlayField::render(const nes_ushort& _framecounter) {
     scorehandler.render();
     //if it's clear lines time and !(by coincidence the first frame it fell the frame was dividible by 4)
     if (glb::lineclearframecounter>0 && !firstframeis4 && getframemod4()==0) {
-        glb::lineclearframecounter--; //TODO pause itneraction
+        glb::lineclearframecounter--; //TODO pause interaction
         if (glb::lineclearframecounter==0) glb::updatingmatrix=5;
     }
     else if (glb::updatingmatrix>0) { //doesnt happen in the same frame as lineclearedframecounter--

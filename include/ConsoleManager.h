@@ -27,7 +27,7 @@ class ConsoleManager : public sf::NonCopyable
         unsigned char framecounter=0;
         bool error_print=false;
         std::size_t add_value(std::string info, std::string unit);
-        std::size_t add_value(std::unique_ptr<OutputInfo>& outputinfo);
+        std::size_t add_value(std::unique_ptr<OutputInfo>&& outputinfo);
         std::vector<std::unique_ptr<OutputInfo> > CMvector;
         std::unordered_map<std::string, std::size_t> CMmap;
         FILE* error_log;

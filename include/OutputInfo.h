@@ -3,6 +3,7 @@
 #include<string>
 #include<list>
 #include<SFML/System/Vector2.hpp>
+#include<SFML/System/Time.hpp>
 
 class OutputInfo
 {
@@ -15,47 +16,45 @@ public:
     virtual ~OutputInfo();
     OutputInfo(const std::string& _name,const std::string &_unit);
     virtual void set_value(const char* const& t);
-    virtual sf::Vector2u print(sf::Vector2u currentposition, int conwidth);
-
+    virtual void set_value(const std::string& t);
+    virtual void set_value(const unsigned int& t);
+    virtual void set_value(const unsigned long long& t);
+    virtual void set_value(const sf::Int64& t);
+    virtual void set_value(const int& t);
+    virtual void set_value(const double& t);
+    virtual sf::Vector2u print(sf::Vector2u currentposition, unsigned int conwidth);
 };
-
-template<>
-inline void OutputInfo::set_value<std::string>(const std::string& t) {
-    value=t;
-}
-
-template<>
-inline void OutputInfo::set_value<const char*>(const char* const& t) {
-    value=std::string(t);
-}
-
-template<>
-inline void OutputInfo::set_value<char*>(char* const& t) {
-    value=std::string(t);
-}
 
 //OUTPUTINFOLOW
-template<typename T>
-class OutputInfoLow: public OutputInfo {
+class OutputInfoLowDouble: public OutputInfo {
 public:
-    ~OutputInfoLow();
-    OutputInfoLow(const std::string& _name,const std::string &_unit, const bool& _low); //if _low==true stores the lowest only
-    void set_value(const T& t);
-    //virtual void set_value(const char* t);
-    sf::Vector2u print(sf::Vector2u currentposition, int conwidth);
+    ~OutputInfoLowDouble();
+    OutputInfoLowDouble(const std::string& _name,const std::string &_unit, const bool& _low); //if _low==true stores the lowest only
+    void set_value(const double& t);
+    sf::Vector2u print(sf::Vector2u currentposition, unsigned int conwidth);
 private:
-    T lowest_value={};
-    T highest_value={};
     bool low;
-
+    std::list<double> value_list;
 };
 
+class OutputInfoLowI64: public OutputInfo {
+public:
+    ~OutputInfoLowI64();
+    OutputInfoLowI64(const std::string& _name,const std::string &_unit, const bool& _low); //if _low==true stores the lowest only
+    void set_value(const sf::Int64& t);
+    sf::Vector2u print(sf::Vector2u currentposition, unsigned int conwidth);
+private:
+    bool low;
+    std::list<sf::Int64> value_list;
+};
+//OUTPUTINFOERROR
 class OutputInfoError: public OutputInfo {
 public:
     ~OutputInfoError();
     OutputInfoError(const std::string& _name, const std::size_t& _max_error_number=1); //if _low==true stores the lowest only
-    virtual void set_value(const char* t);
-    virtual sf::Vector2u print(sf::Vector2u currentposition, int conwidth);
+    void set_value(char const* const& t);
+    void set_value(std::string const& t);
+    virtual sf::Vector2u print(sf::Vector2u currentposition, unsigned int conwidth);
 private:
     std::size_t max_error_number=1;
     std::list<std::string> error_list;
