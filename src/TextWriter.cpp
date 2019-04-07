@@ -3,6 +3,7 @@
 #include<sstream>
 #include"TileContainer.h"
 #include<SFML/System/Vector2.hpp>
+#include<iomanip>
 
 std::size_t TextWriter::char_lookup[255]={};
 
@@ -30,9 +31,13 @@ void TextWriter::write(const std::string& text, TileContainer *_tilecont, sf::Ve
         else break;
     }
 }
-void TextWriter::write_hex(unsigned int _hex_number, TileContainer *_tilecont, sf::Vector2u _position) {
+void TextWriter::write_hex(unsigned int _hex_number, TileContainer *_tilecont, sf::Vector2u _position, unsigned int fill_zeros) {
     std::stringstream _tmpstream;
-    _tmpstream<<std::hex<<_hex_number;
+    _tmpstream<<std::setfill('0')<<std::setw(fill_zeros)<<std::hex<<_hex_number<<std::dec;
     TextWriter::write(_tmpstream.str(),_tilecont,_position);
 }
-void TextWriter::write_int(unsigned int, TileContainer *_tilecont, sf::Vector2u _position) {}
+void TextWriter::write_int(unsigned int _int_number, TileContainer *_tilecont, sf::Vector2u _position, unsigned int fill_zeros) {
+    std::stringstream _tmpstream;
+    _tmpstream<<std::setfill('0')<<std::setw(fill_zeros)<<std::dec<<_int_number<<std::dec;
+    TextWriter::write(_tmpstream.str(),_tilecont,_position);
+}

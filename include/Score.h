@@ -16,7 +16,7 @@ public:
         score[1]=_score[1];
         score[2]=_score[2];
     }
-    explicit ScoreContainer(unsigned int _score) {
+    explicit ScoreContainer(unsigned int _score) {  //bugged
         score[0]=(_score&0x0f)+((_score/10)%10)*0x0f;
         _score/=100;
         score[1]=(_score&0x0f)+((_score/10)%10)*0x0f;
@@ -56,17 +56,13 @@ class Score : public Renderer
     private:
         TileContainer *_tilecont;
         bool maxout;
-        //void lowbytecheck();
-        //void lowbytecheck2();
         void bytechecklowdigit(const std::size_t& byte, const bool& andop);
         void bytecheckhighdigit(const std::size_t& byte, const bool& andop);
         void lastdigitcheck();
         ScoreContainer score;
-        ScoreContainer topscores;
-        //unsigned char lowbyte; score[0]
-        //unsigned char midbyte; score[1]
-        //unsigned char highbyte; score[2]
-        nes_uchar pointsarray[10];
+        ScoreContainer scoretemp;
+        ScoreContainer topscores[3]={};
+        static nes_uchar pointsarray[10];
 
 };
 

@@ -37,11 +37,11 @@ public:
     LinesContainer& addLines(const nes_uchar& _added_lines) { //TODO breaks for more than 6 lines added
         lines[0]+=_added_lines;
         if (lines[0]%16u>9u) {
-            glb::cm.update<std::string>("system",std::string("lines[0]%%16= ")+std::to_string(lines[0]%16));
+            //glb::cm.update<std::string>("system",std::string("lines[0]%%16= ")+std::to_string(lines[0]%16));
             lines[0]+=0x06;
         }
         if (lines[0]/16u>9u) {
-            glb::cm.update<std::string>("system",std::string("lines[0]&0xf0= ")+std::to_string(lines[0]&0xf0));
+            //glb::cm.update<std::string>("system",std::string("lines[0]&0xf0= ")+std::to_string(lines[0]&0xf0));
             lines[0]&=0x0f;
             lines[1]++;
         }
@@ -49,7 +49,7 @@ public:
     }
 };
 
-class LevelLines : public Renderer
+class LevelLines : public Renderer //DOESN'T WORK LIKE THE NES AFTER LEVEL 137
 {
     public:
         LevelLines() {};
@@ -58,9 +58,12 @@ class LevelLines : public Renderer
         void addlines(const nes_uchar& _clearedlines);
         void render();
     private:
-        LinesContainer lines;
-        nes_uchar level;
-        nes_ushort linestolevelup; //TODO
+        LinesContainer lines{};
+        LinesContainer linestemp{};
+        nes_uchar level=0;
+        nes_uchar leveltemp=0;
+        nes_ushort linestolevelup=0;
+        static nes_uchar level_hex[256]; //TODO
 };
 
 #endif // LEVELLINES_H

@@ -119,6 +119,8 @@ void RenderPlayField::renderimage(bool blink) {
     TextWriter::write("NEXT"s ,tilecont,{glb::nextx,glb::nexty});
     TextWriter::write("TOP"s ,tilecont,{24,3}); //TODO USECONSTEXPR
     TextWriter::write("SCORE"s ,tilecont,{24,6});
+    TextWriter::write("LINES-"s ,tilecont,{glb::linesx-6,glb::linesy});
+    TextWriter::write("LEVEL"s ,tilecont,{glb::levelx,glb::levely});
     if (blink) {
         playfield_blink=true;
         tilecont->at(30,23)=tiletype(65,0x0d,0x3c,0x00,0x20);

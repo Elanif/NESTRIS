@@ -4,11 +4,10 @@ Score::Score(TileContainer *_tilecont, const nes_ushort& _frameappearance)
 :Renderer(_tilecont, _frameappearance),
 maxout(true)
 {
-    pointsarray[0]=00; pointsarray[1]=00;
-    pointsarray[2]=40; pointsarray[3]=00;
-    pointsarray[4]=00; pointsarray[5]=01;
-    pointsarray[6]=00; pointsarray[7]=03;
-    pointsarray[8]=00; pointsarray[9]=12;
+    nes_uchar scorearray[3]={0x00,0x00,0x01};
+    topscores[0]=ScoreContainer(scorearray);
+    topscores[1]=ScoreContainer(5000u);
+    topscores[2]=ScoreContainer(1000u);
 }
 
 Score::Score(TileContainer *_tilecont, const nes_ushort& _frameappearance, const bool& _maxout)
@@ -23,16 +22,25 @@ void Score::render() {
         return;
     }
     else {
-        for (std::size_t i=0; i<3; i++) {
-            TextWriter::write_hex(score[i],tilecont,{glb::topscorex-i*2,glb::topscorey});
-            tilecont->at(glb::topscorex-i*2,glb::topscorey)=tiletype(1+(score[i]&0x0f),0x0d,0x30,0x00,0x00);
-            tilecont->at(glb::topscorex-i*2-1,glb::topscorey)=tiletype(1+((score[i]>>4)&0x0f),0x0d,0x30,0x00,0x00);
+        using namespace std::string_literals;
+        glb::cm.update<std::string>("system","score[0]="s+ntris::to_string(score[0]));
+        if (glb::lineclearframecounter>0) {
+            for (std::size_t i=0; i<3; i++) {
+                TextWriter::write_hex(topscores[0][i],tilecont,{glb::topscorex-i*2-1,glb::topscorey},2);
+            }
+            for (std::size_t i=0; i<3; i++) {
+                TextWriter::write_hex(scoretemp[i],tilecont,{glb::scorex-i*2-1,glb::scorey},2);
+            }
         }
-        for (std::size_t i=0; i<3; i++) {
-            tilecont->at(glb::scorex-i*2,glb::scorey)=tiletype(1+(score[i]&0x0f),0x0d,0x30,0x00,0x00);
-            tilecont->at(glb::scorex-i*2-1,glb::scorey)=tiletype(1+((score[i]>>4)&0x0f),0x0d,0x30,0x00,0x00);
+        else {
+            scoretemp=score;
+            for (std::size_t i=0; i<3; i++) {
+                TextWriter::write_hex(topscores[0][i],tilecont,{glb::topscorex-i*2-1,glb::topscorey},2);
+            }
+            for (std::size_t i=0; i<3; i++) {
+                TextWriter::write_hex(score[i],tilecont,{glb::scorex-i*2-1,glb::scorey},2);
+            }
         }
-
     }
 }
 
@@ -104,3 +112,11 @@ void Score::lowbytecheck2() {
     }
     lowbyte=A;
 }*/
+
+nes_uchar Score::pointsarray[10]= {
+    00, 00,
+    0x40, 00,
+    00, 0x01,
+    00, 0x03,
+    00, 0x12
+};

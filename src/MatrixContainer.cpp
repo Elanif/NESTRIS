@@ -21,11 +21,6 @@ nes_uchar MatrixContainer::getBlock(const nes_uchar& x, const nes_uchar& y) {
 }
 
 void MatrixContainer::render(const nes_uchar& _level) {
-    /*if (hidecounter>0 || glb::lineclearframecounter>0 || glb::updatingmatrix) {
-        auto tmphidecounter=hidecounter;
-        auto tmplineclearframecounter=glb::lineclearframecounter;
-        auto tmpupdatingmatrix=glb::updatingmatrix;
-    }*/
     if (hidecounter>0) {
         --hidecounter;
         return;
@@ -35,44 +30,20 @@ void MatrixContainer::render(const nes_uchar& _level) {
             for (std::size_t i=0; i<linescleared; ++i ){
                 std::size_t x=glb::lineclearframecounter-1;
                 std::size_t y=linesclearedarray[i];
-                matrix(x,y)=0; //was y-2
-                //tilecont->at(x,y)=tiletype(_level,matrix(x,y));
+                matrix(x,y)=0;
 
                 x=10-glb::lineclearframecounter;
-                matrix(x,y)=0; //was y-2
-                //tilecont->at(x,y)=tiletype(_level,matrix(x,y));
+                matrix(x,y)=0;
             }
         }
     }
     else if (glb::updatingmatrix>0) {
         std::size_t update_iter=5-glb::updatingmatrix;
-        glb::cm.update_error<std::size_t>(glb::updatingmatrix);
-        if (update_iter==0u) {
-            for (std::size_t y=0; y<6; ++y) {
-                for (std::size_t x=0; x<10; ++x) {
-                    matrix(x,y)=0;
-                }
+        for (std::size_t y=0; y<4; ++y) {
+            for (std::size_t x=0; x<10; ++x) {
+                matrix(x,y+update_iter*4+2)=newmatrix(x,y+update_iter*4+2);
             }
         }
-        else {
-            for (std::size_t y=0; y<4; ++y) {
-                for (std::size_t x=0; x<10; ++x) {
-                    matrix(x,y+update_iter*4)=newmatrix(x,y+update_iter*4-4);
-                }
-            }
-        }
-        /*
-        for (nes_uchar y=2+(5-glb::updatingmatrix)*4; y<2+(5-(glb::updatingmatrix-1))*4; ++y)
-            for (nes_uchar x=0; x<10; ++x)
-                tilecont->at(glb::playfieldx+x,glb::playfieldy+y-2)=tiletype(_level,newmatrix(x,y));
-                //BlockRenderer::block(renderSurface,newmatrix(x,y),_level,PLAYFIELDX+x*8,PLAYFIELDY+(y-2)*8);
-        for (nes_uchar y=2+(5-(glb::updatingmatrix-1))*4; y<22; ++y)
-            for (nes_uchar x=0; x<10; ++x)
-                tilecont->at(glb::playfieldx+x,glb::playfieldy+y-2)=tiletype(_level,matrix(x,y));
-                //BlockRenderer::block(renderSurface,matrix(x,y),_level,PLAYFIELDX+x*8,PLAYFIELDY+(y-2)*8);
-        if (glb::updatingmatrix==1) matrix=newmatrix;
-        return;
-            */
     }
     for (nes_uchar x=0; x<10; ++x) { //TODO maybe optimize to render only new stuff around piece
         for (nes_uchar y=2; y<22; ++y) {

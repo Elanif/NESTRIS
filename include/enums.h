@@ -73,8 +73,8 @@ namespace glb { //todo make into ntris
     const sf::Vector2u nextpiece_coords[7]={{204,112},{204,112},{204,112},{208,112},{204,112},{204,112},{208,112}};
     constexpr std::size_t linesx=19;
     constexpr std::size_t linesy=2;
-    constexpr std::size_t levelx=26;
-    constexpr std::size_t levely=15;//FIX
+    constexpr std::size_t levelx=24;
+    constexpr std::size_t levely=19;
     constexpr std::size_t topscorex=29;
     constexpr std::size_t topscorey=4;
     constexpr std::size_t scorex=29;
