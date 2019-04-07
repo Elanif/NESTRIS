@@ -15,8 +15,6 @@ public:
     virtual ~OutputInfo();
     OutputInfo(const std::string& _name,const std::string &_unit);
     virtual void set_value(const char* const& t);
-    template<typename T>
-    void set_value(const T& t);
     virtual sf::Vector2u print(sf::Vector2u currentposition, int conwidth);
 
 };
