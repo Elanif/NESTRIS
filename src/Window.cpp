@@ -1,5 +1,7 @@
 #include"Window.h"
 #include<cmath>
+#include"ConsoleManager.h"
+
 Window::Window(const size_t& _width, const size_t& _height, sf::RenderStates _state, const bool& optimized)
 {
     //_state.transform().getMatrix();
@@ -13,7 +15,7 @@ Window::Window(const size_t& _width, const size_t& _height, sf::RenderStates _st
     sf::Event event;
     sf::Int64 smallesttimeunit=sf::Int64(0);
     sf::Clock onesecondinit;
-    sf::Clock elapsedtime=sf::Clock();
+    sf::Clock elapsedtime;
     while (onesecondinit.getElapsedTime()<sf::Time(sf::milliseconds(100))) {
         elapsedtime.restart();
         sf::sleep(sf::microseconds(1));
@@ -25,21 +27,32 @@ Window::Window(const size_t& _width, const size_t& _height, sf::RenderStates _st
 
     while (window.isOpen()) {
         if (elapsedtime.getElapsedTime().asMicroseconds()>=microsecondsperframe) {
-            printf("fps=%f\n",(double)sf::Int64(1000000)/(double)elapsedtime.getElapsedTime().asMicroseconds());
+                //FILE*cmcalls=fopen("cmcalls.txt","a");
+            glb::cm.update<double>("fps",(double)sf::Int64(1000000)/(double)elapsedtime.getElapsedTime().asMicroseconds());
+            //fprintf(cmcalls,"glb::cmupdate %f\n",(double)sf::Int64(1000000)/(double)elapsedtime.getElapsedTime().asMicroseconds());
             elapsedtime.restart();
             _engine.frame(inputManager.getInput());
-            //SFML update window
-            //window.clear();
-            printf("%I64d before drawmod\n",elapsedtime.getElapsedTime().asMicroseconds());
+            glb::cm.update<sf::Int64>("input delay",elapsedtime.getElapsedTime().asMicroseconds());
+            //fprintf(cmcalls,"glb::cmupdate %I64d\n",elapsedtime.getElapsedTime().asMicroseconds());
+            sf::Int64 delaycalc=elapsedtime.getElapsedTime().asMicroseconds();
+
             tilerend.drawmod(window, _state);
-            printf("%I64d before display\n",elapsedtime.getElapsedTime().asMicroseconds());
+            delaycalc=elapsedtime.getElapsedTime().asMicroseconds()-delaycalc;
+            glb::cm.update<sf::Int64>("draw delay",elapsedtime.getElapsedTime().asMicroseconds()-delaycalc);
+            //fprintf(cmcalls,"glb::cmupdate %I64d\n",elapsedtime.getElapsedTime().asMicroseconds());
+            delaycalc=elapsedtime.getElapsedTime().asMicroseconds();
+
             window.display();
-            printf("%I64d after display\n",elapsedtime.getElapsedTime().asMicroseconds());
+            delaycalc=elapsedtime.getElapsedTime().asMicroseconds()-delaycalc;
+            glb::cm.update<sf::Int64>("display delay",elapsedtime.getElapsedTime().asMicroseconds());
+            //fprintf(cmcalls,"glb::cmupdate %I64d\n",elapsedtime.getElapsedTime().asMicroseconds());
+            delaycalc=elapsedtime.getElapsedTime().asMicroseconds();
             while (window.pollEvent(event))
             {
                 if (event.type == sf::Event::Closed)
                     window.close();
             }
+            glb::cm.print();
         }
         else {
             sf::Int64 delaystart=elapsedtime.getElapsedTime().asMicroseconds();

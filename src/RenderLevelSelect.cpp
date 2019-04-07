@@ -36,7 +36,7 @@ int RenderLevelSelect::updateLevelSelect(const ActiveInputs& _input) {
 }
 
 void RenderLevelSelect::renderLevelSelect(const bool& _reload) {
-    printf("levelselect=%d\n",currentlevel);
+    //printf("levelselect=%d\n",currentlevel);
     tiletype test;
     //levelselect
     test.palette_color[0]=0x0D;

@@ -1,19 +1,19 @@
 #include "Engine.h"
 #include<cstdio>
 #include"random.h"
+#include"ConsoleManager.h"
 Engine::Engine(TileContainer* _tilecont, const size_t& _startingmenu):
 tilecont(_tilecont),
 currentmenu(_startingmenu),
 RLS(_tilecont,0,0),
 RPF(_tilecont, framecounter, 0)
 {
-    printf("tilenumber=%d \n",tilecont->at(0,0).tilenumber);
     //renderer=new Renderer(_window);
 
     levelselectreload=true;
 
     framecounter=0;
-    printf("Engine init\n");
+    glb::cm.update<std::string>("error",std::string("Engine init"));
 }
 
 
@@ -21,7 +21,7 @@ void Engine::frame(const ActiveInputs& _inputs) {
     ++framecounter;
     incframe();
     random::prng();
-    printf("engine::frame, currentmenu=%d\n",currentmenu);
+    glb::cm.update<int>("current menu",currentmenu);
     switch(currentmenu) {
     case LEVELSELECT:
         RLS.renderLevelSelect(levelselectreload);
@@ -38,7 +38,7 @@ void Engine::frame(const ActiveInputs& _inputs) {
         RPF.render(framecounter);
         break;
     default:
-        printf("ERROR default frame case in switch\n");
+        glb::cm.update<std::string>("error","ERROR default frame case in switch");
         break;
     }
 }

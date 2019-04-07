@@ -31,6 +31,7 @@
 #define incframe glb::FrameCounter::inc
 #endif // incframe
 #include "stddef.h"
+#include"ConsoleManager.h"
 
 namespace glb {
     enum BTN {
@@ -59,6 +60,7 @@ namespace glb {
             return framecountlittle%4;
         }
     };
+    extern ConsoleManager cm;
     extern nes_uchar lineclearframecounter;
     extern nes_uchar updatingmatrix;
     const size_t playfieldx=12;

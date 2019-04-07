@@ -113,7 +113,7 @@ void PieceContainer::inputManager(const ActiveInputs& _inputs, const PFMatrix& p
         }
         else currentpiece=temppiece;
     }
-    printf("das=%d\n",das);
+    //printf("das=%d\n",das);
 }
 
 const Piece& PieceContainer::getPiece() const{
@@ -141,7 +141,7 @@ void PieceContainer::rendernextpiece(const nes_uchar& _level) {
 void PieceContainer::render(const nes_ushort& _framecounter, const nes_uchar& _level) {
     //printf("piecetype=%d, color=%d, blocks=%d, x=%d, y=%d, x1=%d, y1=%d\n",currentpiece.piecetype,currentpiece.color(),currentpiece.getPos().size(),currentpiece.x,currentpiece.y,currentpiece.getPos()[0].first,currentpiece.getPos()[0].second);
     if (hidecounter>0) {
-        printf("hidecounter=%d\n",hidecounter);
+        //printf("hidecounter=%d\n",hidecounter);
         --hidecounter;
         return;
     }
@@ -203,7 +203,7 @@ void PieceContainer::hidecurrentpiece(const nes_uchar& _hidecurrent) {
     hidecountercurrentpiece=_hidecurrent;
 }
 void PieceContainer::lockpiece(const nes_uchar& _lockheight) {
-    printf("Lockpiece\n");
+    //printf("Lockpiece\n");
     nes_uchar _spawndelay=10+((_lockheight+3)/5)*2; //TODO fidn true formula
     spawnPiece(_spawndelay);
     downinterrupted=true; //TODO where to put this

@@ -1,6 +1,6 @@
 #include "TileContainer.h"
 #include<cstdio>
-
+#include"ConsoleManager.h"
 unsigned char tiletype::colors[10][4]={
     {0x0D ,0x30 ,0x21 ,0x12},
     {0x0D ,0x30 ,0x29 ,0x1A},
@@ -16,7 +16,10 @@ unsigned char tiletype::colors[10][4]={
 
 const tiletype& TileContainer::at(const size_t& x, const size_t& y) const {
     if (x<0||x>=width||y<0||y>=height) {
-        printf("out of bounds in tilecontainer %d %d width height= %d %d\n", x, y,width,height);
+        char *tempstr;
+        tempstr="";
+        sprintf(tempstr,"out of bounds in tilecontainer %d %d width height= %d %d\n", x, y,width,height);
+        glb::cm.update("error",tempstr);
         return oob_error;
     }
     else return tilegrid[y*width+x];
@@ -24,7 +27,9 @@ const tiletype& TileContainer::at(const size_t& x, const size_t& y) const {
 
 tiletype& TileContainer::at(const size_t& x, const size_t& y) {
     if (x<0||x>=width||y<0||y>=height) {
-        printf("out of bounds in tilecontainer %d %d width height= %d %d\n", x, y,width,height);
+        char *tempstr="";
+        sprintf(tempstr,"out of bounds in tilecontainer %d %d width height= %d %d\n", x, y,width,height);
+        //glb::cm.update("error",tempstr);
         return oob_error;
     }
     else {
