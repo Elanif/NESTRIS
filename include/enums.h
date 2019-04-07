@@ -18,7 +18,12 @@
 #ifndef PLAYFIELDY
 #define PLAYFIELDY 40
 #endif // PLAYFIELDY
-
+#ifndef NEXTPIECEX
+#define NEXTPIECEX 195
+#endif // NEXTPIECEX
+#ifndef NEXTPIECEY
+#define NEXTPIECEY 111
+#endif // NEXTPIECEY
 enum BTN {
     LEFT,
     UP,

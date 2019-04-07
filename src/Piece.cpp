@@ -3,7 +3,7 @@
 Piece::Piece()
 {
     x=5;
-    y=3;
+    y=2;
     piecetype=-1;
     rotation=0;
     color=2; //TODO

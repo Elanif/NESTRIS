@@ -18,12 +18,10 @@ bool collision(const PFMatrix& _pfmatrix, const Piece& _piece) {
         size_t _xx=piecepositions[i].first;
         size_t _yy=piecepositions[i].second;
         if (!PFMatrix::inbounds(_xx,_yy)) {
-                //printf("__xx, __yy %d %d is out of bounts\n",_xx,_yy);
             collision = true;
             break;
         }
         if (_pfmatrix(_xx,_yy)) {
-                //printf("collision\n");
             collision = true;
             break;
         }
@@ -105,7 +103,7 @@ void PieceContainer::inputManager(const ActiveInputs& _inputs, const PFMatrix& p
         }
         else currentpiece=temppiece;
     }
-
+    printf("das=%d\n",das);
 }
 
 const Piece& PieceContainer::getPiece() const{
@@ -125,10 +123,17 @@ void PieceContainer::render(const nes_ushort& _framecounter, const nes_uchar& _l
         nes_uchar _yy=currentpiece.y+Piece::rotationmatrix[currentpiece.piecetype*4+currentpiece.rotation%4][i][1];
         if (PFMatrix::visible(_xx,_yy)) {
             _xx=_xx*8+PLAYFIELDX;
-            _yy=(_yy-3)*8+PLAYFIELDY;
+            _yy=(_yy-2)*8+PLAYFIELDY;
             BlockRenderer::block(renderSurface, currentpiece.color, _level, _xx,_yy);
             lastrenderedpos.push_back(std::make_pair(_xx,_yy));
         }
+    }
+    for (size_t i=0; i<4; ++i) {
+        nes_uchar _xx=currentpiece.x+Piece::rotationmatrix[currentpiece.piecetype*4+currentpiece.rotation%4][i][0];
+        nes_uchar _yy=currentpiece.y+Piece::rotationmatrix[currentpiece.piecetype*4+currentpiece.rotation%4][i][1];
+            _xx=_xx*8+PLAYFIELDX;
+            _yy=(_yy-2)*8+PLAYFIELDY;
+            BlockRenderer::block(renderSurface, currentpiece.color, _level, _xx,_yy);
     }
 }
 
@@ -163,13 +168,13 @@ void PieceContainer::spawnPiece(const nes_uchar& _spawndelay) {
     spawnID = newSpawnID;
     //printf("spawnid=%d\n",spawnID);
     nextpiece.piecetype=spawnID;
-    das=downcounter=holddowncounter=0;
+    downcounter=holddowncounter=0;
     spawnpiececounter=_spawndelay; //10~18 TODO
 }
 
 void PieceContainer::lockpiece(const nes_uchar& _lockheight) {
-    printf("lockpiece\n");
-    nes_uchar _spawndelay=22-_lockheight/4; //TODO
+    printf("Lockpiece\n");
+    nes_uchar _spawndelay=10+(_lockheight+2)/4; //TODO
     spawnPiece(_spawndelay);
 }
 

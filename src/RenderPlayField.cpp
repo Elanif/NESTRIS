@@ -44,6 +44,15 @@ void RenderPlayField::update(const ActiveInputs& _input) {
 }
 
 void RenderPlayField::render(const nes_ushort& _framecounter) {
+
+    /*if (blinkscreencounter--%4==3) {//postfix or prefix?
+        SDL_Surface * surfacePlayField = IMG_Load( "playfieldblink.png" );
+        if( surfacePlayField== NULL )
+        {
+            printf( "Unable to load image %s! SDL Error: %s\n", "levelselectnumbers.png", SDL_GetError() );
+        }
+        SDL_BlitSurface(surfacePlayField, NULL, renderSurface, NULL);
+    }*/
     //levellineshandler.render(_framecounter);
     piecehandler.deletepiece();
     matrixhandler.render(level);

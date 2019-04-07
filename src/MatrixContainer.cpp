@@ -9,6 +9,7 @@
 MatrixContainer::MatrixContainer(SDL_Window * _window, const nes_ushort& _frameappearance)
     :Renderer(_window, _frameappearance)
 {
+    updatingmatrix=0;
     int imgFlags = IMG_INIT_PNG;
     if( !( IMG_Init( imgFlags ) & imgFlags ) )
     {
@@ -22,17 +23,21 @@ nes_uchar MatrixContainer::getBlock(const nes_uchar& x, const nes_uchar& y) {
 
 void MatrixContainer::render(const nes_uchar& _level) {
     //ifnothide
-    if (blinkscreencounter--%4==3) {//postfix or prefix?
-        SDL_Surface * surfacePlayField = IMG_Load( "playfieldblink.png" );
-        if( surfacePlayField== NULL )
-        {
-            printf( "Unable to load image %s! SDL Error: %s\n", "levelselectnumbers.png", SDL_GetError() );
-        }
-        SDL_BlitSurface(surfacePlayField, NULL, renderSurface, NULL);
+    if (updatingmatrix>0) {
+        for (nes_uchar y=2+(5-updatingmatrix)*4; y<2+(5-(updatingmatrix-1))*4; ++y)
+            for (nes_uchar x=0; x<10; ++x)
+                BlockRenderer::block(renderSurface,newmatrix(x,y),_level,PLAYFIELDX+x*8,PLAYFIELDY+(y-2)*8);
+        for (nes_uchar y=2+(5-(updatingmatrix-1))*4; y<22; ++y)
+            for (nes_uchar x=0; x<10; ++x)
+                BlockRenderer::block(renderSurface,matrix(x,y),_level,PLAYFIELDX+x*8,PLAYFIELDY+(y-2)*8);
+        --updatingmatrix;
+        if (updatingmatrix==0) matrix=newmatrix;
     }
-    for (nes_uchar x=0; x<10; ++x) { //TODO maybe optimize to render only new stuff around piece
-        for (nes_uchar y=0; y<22; ++y) {
-            BlockRenderer::block(renderSurface,matrix(x,y),_level,PLAYFIELDX+x*8,PLAYFIELDY+(y)*8);
+    else {
+        for (nes_uchar x=0; x<10; ++x) { //TODO maybe optimize to render only new stuff around piece
+            for (nes_uchar y=2; y<22; ++y) {
+                BlockRenderer::block(renderSurface,matrix(x,y),_level,PLAYFIELDX+x*8,PLAYFIELDY+(y-2)*8);
+            }
         }
     }
     //TODO
@@ -45,8 +50,7 @@ bool MatrixContainer::collision(const Piece& _piece) const{
     for (std::vector<std::pair<nes_uchar, nes_uchar> >::size_type i=0; i<piecepositions.size(); ++i) {
         size_t _xx=piecepositions[i].first;
         size_t _yy=piecepositions[i].second;
-        if (_xx<0||_xx>9||_yy>21||_yy<0) {
-                printf("__xx, __yy %d %d is out of bounts\n",_xx,_yy);
+        if (!PFMatrix::inbounds(_xx,_yy)) {
             collision = true;
             break;
         }
@@ -65,7 +69,7 @@ nes_uchar MatrixContainer::lockpiece(const Piece& _piece) {
         size_t _yy=piecepositions[i].second;
         matrix(_xx,_yy)=_piece.color;
     }
-    char _tempclearedlines=0;//clearlines();
+    char _tempclearedlines=clearlines();
     if (_tempclearedlines) {
         //animation
 
@@ -104,6 +108,7 @@ nes_uchar MatrixContainer::clearlines() {
             newmatrix(j,i)=newmatrix(j,rowcounter);
         }
     }
+    if (linescleared>0) updatingmatrix=5;
     return linescleared;
 }
 

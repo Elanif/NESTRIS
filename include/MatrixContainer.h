@@ -24,6 +24,7 @@ class MatrixContainer : public Renderer
     private:
         nes_uchar blinkscreencounter;
         nes_uchar linesclearedarray[22];
+        nes_schar updatingmatrix;
         PFMatrix newmatrix;
         PFMatrix matrix;
 };
