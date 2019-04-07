@@ -24,7 +24,7 @@ constexpr std::size_t xytoi(const std::size_t& x, const std::size_t& y, const st
 constexpr std::size_t xytoi(const std::size_t& x, const std::size_t& y, const std::size_t& width, const std::size_t& height, const std::size_t& rectwidth, const std::size_t& rectheight) {
     return x+y*width;
 }
-TileRenderer::TileRenderer(const std::size_t& _width, const std::size_t& _height, sf::Vector2u _tilesize, const int& _drawmethod, const std::size_t& _extra_render)
+TileRenderer::TileRenderer(const std::size_t& _width, const std::size_t& _height, sf::Vector2u _tilesize, const int& _drawmethod, const sf::Vector3<std::size_t>& _extra_render)
 :tilecont(_width,_height,_extra_render),
 width(_width),
 height(_height),
@@ -61,11 +61,12 @@ extra_render(_extra_render) //TODO EXTRA RENDER FOR MORE STUFF THAN DRAWTEXTUR
         if (!tiletexture.create(texturesize,texturesize)) {
             //TODO ERROR
         }
-        verteximage=sf::VertexArray(sf::Quads,width*height*4+extra_render*2*4);
+        verteximage=sf::VertexArray(sf::Quads,width*height*4+(extra_render.x+extra_render.y+extra_render.z)*4);
+        const std::size_t headline=4*(extra_render.x+extra_render.y);
         for (std::size_t i=0; i<width; ++i) {
             for (std::size_t j=0; j<height; ++j) {
 
-                sf::Vertex* quad = &verteximage[(i + j * width) * 4+4*extra_render];
+                sf::Vertex* quad = &verteximage[(i + j * width) * 4+headline];
 
                 quad[0].position = sf::Vector2f(i * tilesize.x, j * tilesize.y);
                 quad[1].position = sf::Vector2f((i + 1) * tilesize.x, j * tilesize.y);
@@ -245,7 +246,7 @@ std::size_t TileRenderer::add_or_find_texture(const tiletype& newtile, sf::Image
     return whereisthistexture;
 }
 
-void TileRenderer::renderExtraTiles(std::size_t offset, const decltype(tilecont.previous_tiles)& extra_tiles) {
+void TileRenderer::renderExtraTiles(std::size_t offset, const decltype(tilecont.extra_tiles.x)& extra_tiles, const std::size_t max_extra) {
     std::size_t extra_render_counter=0; //TODO separate function
     for (const auto&i: extra_tiles) {
         const glb::triple& triple_it=std::get<1>(i);
@@ -267,17 +268,18 @@ void TileRenderer::renderExtraTiles(std::size_t offset, const decltype(tilecont.
         verteximage[tempi+2].texCoords=sf::Vector2f((tu+1)*tilesize.x,(tv+1)*tilesize.x);
         verteximage[tempi+3].texCoords=sf::Vector2f(tu*tilesize.x,(tv+1)*tilesize.x);
         extra_render_counter++;
-        if (extra_render_counter>extra_render) break;
+        if (extra_render_counter>max_extra) break;
     }
 }
 
 void TileRenderer::drawtexture(sf::RenderTarget& target, sf::RenderStates states){
 
+    const std::vector<std::size_t> headline={0,4*extra_render.x,4*(extra_render.x+extra_render.y),4*width*height+4*(extra_render.x+extra_render.y)};
     for (std::size_t x=0; x<width; ++x) {
         for (std::size_t y=0; y<height; ++y) {
             if (tilecont.updated(x,y)) {
                 std::size_t whereisthistexture=add_or_find_texture(tilecont.atconst(x,y));
-                const std::size_t tempi=xytoi(x,y,width,height)*4+extra_render*4;
+                const std::size_t tempi=xytoi(x,y,width,height)*4+headline[2];
                 const sf::Vector2u texturesize=tiletexture.getSize();
                 std::size_t tu = whereisthistexture % (texturesize.x / tilesize.x);
                 std::size_t tv = whereisthistexture / (texturesize.x / tilesize.x);
@@ -289,24 +291,32 @@ void TileRenderer::drawtexture(sf::RenderTarget& target, sf::RenderStates states
             }
         }
     }
-    const std::size_t trail=4*width*height+extra_render*4;
-    renderExtraTiles(0,tilecont.previous_tiles);
-    renderExtraTiles(trail,tilecont.following_tiles);
+    //renderExtraTiles(headline[0],  tilecont.extra_tiles.x,     extra_render.x);
+    renderExtraTiles(headline[1],  tilecont.extra_tiles.y,     extra_render.y);
+    //renderExtraTiles(headline[3],  tilecont.extra_tiles.z,     extra_render.z);
 
     states.transform *= getTransform();
     states.texture = &tiletexture;
     target.draw(verteximage,states);
 
-    for (std::size_t i=0; i<4*tilecont.previous_tiles.size(); ++i) {
-        verteximage[i]=sf::Vector2f(0,0);
-        verteximage[i].texCoords=sf::Vector2f(0,0);
+    for (std::size_t i=0; i<4*tilecont.extra_tiles.x.size(); ++i) {
+        verteximage[i+headline[0]]=sf::Vector2f(0,0);
+        verteximage[i+headline[0]].texCoords=sf::Vector2f(0,0);
     }
-    tilecont.previous_tiles.clear();
-    for (std::size_t i=0; i<4*tilecont.following_tiles.size(); ++i) {
-        verteximage[i+trail]=sf::Vector2f(0,0);
-        verteximage[i+trail].texCoords=sf::Vector2f(0,0);
+    tilecont.extra_tiles.x.clear();
+
+    for (std::size_t i=0; i<4*tilecont.extra_tiles.y.size(); ++i) {
+        verteximage[i+headline[1]]=sf::Vector2f(0,0);
+        verteximage[i+headline[1]].texCoords=sf::Vector2f(0,0);
     }
-    tilecont.following_tiles.clear();
+    tilecont.extra_tiles.y.clear();
+
+    for (std::size_t i=0; i<4*tilecont.extra_tiles.z.size(); ++i) {
+        verteximage[i+headline[3]]=sf::Vector2f(0,0);
+        verteximage[i+headline[3]].texCoords=sf::Vector2f(0,0);
+    }
+    tilecont.extra_tiles.z.clear();
+
     tilecont.resetupdated();
 }
 
@@ -529,7 +539,7 @@ sf::Uint32 TileRenderer::palette[4][16]= { //RGB PALLETE
 	{0xffffffff,0xb6dbffff,0xdbb6ffff,0xffb6ffff,0xff92ffff,0xffb6b6ff,0xffdb92ff,0xffff49ff,0xffff6dff,0xb6ff49ff,0x92ff6dff,0x49ffdbff,0x92dbffff,0x929292ff,0xff,0xff}
 };*/
 
-sf::Uint32 TileRenderer::palette[4][16]= { //YPrBr palette //with 0x1D transparent
+sf::Uint32 TileRenderer::palette[4][16]= { //YPrBr palette //with glb::trnspr transparent
     {0x7C7C7CFF ,0x0000FCFF ,0x0000BCFF ,0x4428BCFF ,0x940084FF ,0xA80020FF ,0xA81000FF ,0x881400FF ,0x503000FF ,0x007800FF ,0x006800FF ,0x005800FF ,0x004058FF ,0x000000FF ,0x000000FF ,0x000000FF},
     {0xBCBCBCFF ,0x0078F8FF ,0x0058F8FF ,0x6844FCFF ,0xD800CCFF ,0xE40058FF ,0xF83800FF ,0xE45C10FF ,0xAC7C00FF ,0x00B800FF ,0x00A800FF ,0x00A844FF ,0x008888FF ,0x00000000 ,0x000000FF ,0x000000FF},
     {0xF8F8F8FF ,0x3CBCFCFF ,0x6888FCFF ,0x9878F8FF ,0xF878F8FF ,0xF85898FF ,0xF87858FF ,0xFCA044FF ,0xF8B800FF ,0xB8F818FF ,0x58D854FF ,0x58F898FF ,0x00E8D8FF ,0x787878FF ,0x000000FF ,0x000000FF},

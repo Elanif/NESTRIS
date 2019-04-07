@@ -79,7 +79,7 @@ class ConsoleManager : public sf::NonCopyable
                 }
             }
         }
-        void print();
+        void print(bool always_print=false);
         ~ConsoleManager();
 
     private:

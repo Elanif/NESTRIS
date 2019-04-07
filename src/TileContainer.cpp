@@ -49,29 +49,42 @@ const bool& TileContainer::updated(const std::size_t& x, const std::size_t& y) {
 
 void TileContainer::renderExtra(const std::size_t pixelx, const std::size_t pixely, const tiletype& t, const double& priority) {
     if (priority<0.5) {
-        if (previous_tiles.size()>=extra_render) {
+        if (extra_tiles.y.size()>=extra_render.y) {
             std::stringstream errorstream;
             errorstream<<"Too many extra previous tiles, pixelx,pixely="<<pixelx<<","<<pixely<<" tiletype="<<t.tilenumber;
             glb::cm.update<std::string>("error",errorstream.str());
         }
         else {
-            previous_tiles.insert(std::make_pair(priority,glb::triple(pixelx,pixely,t)));
+            extra_tiles.y.insert(std::make_pair(priority,glb::triple(pixelx,pixely,t)));
         }
+        for (const auto& i:t.palette_color) {
+            if (i==glb::trnspr &&false) {
+                if (extra_tiles.x.size()>=extra_render.x) {
+                    std::stringstream errorstream;
+                    errorstream<<"Too many extra trnspr tiles, pixelx,pixely="<<pixelx<<","<<pixely<<" tiletype="<<t.tilenumber;
+                    glb::cm.update<std::string>("error",errorstream.str());
+                }
+                else {
+                    extra_tiles.x.insert(std::make_pair(priority,glb::triple(pixelx,pixely,tiletype(87,0x0d,0x0d,0x0d,0x0d))));
+                }
+                break;
+            }
+        }
+
     }
     if (priority>=0.5) {
-        if (following_tiles.size()>=extra_render) {
+        if (extra_tiles.z.size()>=extra_render.z) {
             std::stringstream errorstream;
             errorstream<<"Too many extra following tiles, pixelx,pixely="<<pixelx<<","<<pixely<<" tiletype="<<t.tilenumber;
             glb::cm.update<std::string>("error",errorstream.str());
         }
         else{
-            following_tiles.insert(std::make_pair(priority,glb::triple(pixelx,pixely,t)));
+            extra_tiles.z.insert(std::make_pair(priority,glb::triple(pixelx,pixely,t)));
         }
     }
 
 }
-
-TileContainer::TileContainer(const std::size_t& _width, const std::size_t& _height, const std::size_t& _extra_render)
+TileContainer::TileContainer(const std::size_t& _width, const std::size_t& _height, const sf::Vector3<std::size_t>& _extra_render)
     :width(_width),
     height(_height),
     extra_render(_extra_render)
@@ -97,6 +110,7 @@ void TileContainer::reset() {
     for (std::size_t i=0; i<width*height; ++i) {
         tilegrid[i].tilenumber=87;
         tilegrid[i].palette_color[0]=0x0d;
+        _upd[i]=true;
     }
 }
 

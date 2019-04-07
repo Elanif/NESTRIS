@@ -79,7 +79,7 @@ namespace glb {
     const sf::Vector2u tilesize={8,8};
     constexpr int spritemode=1;
     constexpr std::size_t maxcolor=4;
-
+    constexpr nes_uchar trnspr=0x1d;
     typedef std::tuple<std::size_t, std::size_t, tiletype> triple;
 }
 

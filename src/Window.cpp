@@ -12,7 +12,8 @@ Window::Window(const std::size_t& _width, const std::size_t& _height, sf::Vector
     state.scale(_scale);
     sf::RenderWindow window(sf::VideoMode(_width*_scale.x, _height*_scale.y), "Nestris");
     sf::Vector2u tilesize(8,8);
-    TileRenderer tilerend(_width/8,_height/8,tilesize,TileRenderer::DRAWTEXTURE,64);
+    const sf::Vector3<std::size_t> extra_render(16,16,64);
+    TileRenderer tilerend(_width/8,_height/8,tilesize,TileRenderer::DRAWTEXTURE,extra_render);
     tilerend.load("sprites.txt");
     //tilerend.load("sprites.txtupdated");
     Engine _engine= Engine(tilerend.getTileContainer(),10); //TODO change 10
@@ -29,7 +30,6 @@ Window::Window(const std::size_t& _width, const std::size_t& _height, sf::Vector
     }
     sf::Int64 microsecondsperframe=1000000.L/60.0988L;
     elapsedtime.restart();
-
     while (window.isOpen()) {
         if (elapsedtime.getElapsedTime().asMicroseconds()>=microsecondsperframe) {
 
@@ -42,7 +42,7 @@ Window::Window(const std::size_t& _width, const std::size_t& _height, sf::Vector
             glb::cm.update<sf::Int64>("input delay",elapsedtime.getElapsedTime().asMicroseconds()-delaycalc);
             delaycalc=elapsedtime.getElapsedTime().asMicroseconds();
 
-            //window.clear();//adds 30microseconds
+            window.clear();//adds 15microseconds
             tilerend.drawmod(window, state);
 
             glb::cm.update<sf::Int64>("draw delay",elapsedtime.getElapsedTime().asMicroseconds()-delaycalc);
@@ -84,7 +84,8 @@ Window::Window(const std::size_t& _width, const std::size_t& _height, sf::Vector
             }
         }
     }
-    glb::cm.update("system",std::string("Window terminating"));
+    glb::cm.update<std::string>("system",std::string("Window terminating"));
+    glb::cm.print(true);
 }
 
 

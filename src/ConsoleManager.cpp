@@ -40,7 +40,7 @@ sf::Vector2u OutputInfo::print(sf::Vector2u currentposition, int conwidth, FILE*
     gotoxycm(currentposition.x,currentposition.y);
     currentposition.x+=outputstring.size();
     std::cout<<outputstring;
-    if (name==std::string("error")) {
+    if (name==std::string("error")&&value!=std::string("0")&&value.length()>0) {
         auto clock = std::chrono::system_clock::now();
         std::time_t current_time = std::chrono::system_clock::to_time_t(clock);
         std::string time_str=std::ctime(&current_time);
@@ -146,8 +146,8 @@ OutputInfo& ConsoleManager::add_value(const OutputInfo& outputinfo) {
 }
 
 
-void ConsoleManager::print() {
-    if (framecounter++%4==0) {
+void ConsoleManager::print(bool always_print) {
+    if (framecounter++%4==0||always_print) {
         //rlutil::cls();
         sf::Vector2u pos={0,0};
         for (auto info:CMmap) {
