@@ -21,11 +21,11 @@ nes_uchar MatrixContainer::getBlock(const nes_uchar& x, const nes_uchar& y) {
 }
 
 void MatrixContainer::render(const nes_uchar& _level) {
-    /*if (hidecounter>0 || glb::lineclearframecounter>0 || glb::updatingmatrix) {
+    if (hidecounter>0 || glb::lineclearframecounter>0 || glb::updatingmatrix) {
         auto tmphidecounter=hidecounter;
         auto tmplineclearframecounter=glb::lineclearframecounter;
         auto tmpupdatingmatrix=glb::updatingmatrix;
-    }*/
+    }
     if (hidecounter>0) {
         --hidecounter;
         return;
@@ -46,7 +46,7 @@ void MatrixContainer::render(const nes_uchar& _level) {
     }
     else if (glb::updatingmatrix>0) {
         std::size_t update_iter=5-glb::updatingmatrix;
-        glb::cm.update_error<std::size_t>(glb::updatingmatrix);
+        glb::cm.update<std::size_t>("error",glb::updatingmatrix);
         if (update_iter==0u) {
             for (std::size_t y=0; y<6; ++y) {
                 for (std::size_t x=0; x<10; ++x) {

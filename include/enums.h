@@ -32,8 +32,8 @@
 #endif // incframe
 #include <cstddef>
 #include<SFML/System/Vector2.hpp>
-class tuple;
-#include"ConsoleManager.h"
+#include<tuple>
+class ConsoleManager;
 class tiletype;
 namespace glb { //todo make into ntris
     typedef const char* const_string_literal;

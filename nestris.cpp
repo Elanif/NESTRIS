@@ -1,5 +1,6 @@
 #include"enums.h"
 #include"ConsoleManager.h"
+ConsoleManager glb::cm;
 #include<cstdio>
 #include"Window.h"
 #include<SFML/Graphics.hpp>

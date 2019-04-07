@@ -8,6 +8,23 @@
 #include<utility>
 #include"rlutil.h"
 #include"OutputInfo.h"
+/*
+template<typename T>
+std::string set_value_priv(const T& t){
+    return std::to_string(t);
+}
+
+typedef std::__cxx11::basic_string<char> glb::string_literal;
+template<>
+std::string set_value_priv(const glb::string_literal& t){
+    return std::string(t);
+}
+typedef char* glb::string_literal;
+template<>
+std::string set_value_priv(const glb::string_literal& t){
+    return std::string(t);
+}*/
+
 
 class ConsoleManager : public sf::NonCopyable
 {
@@ -15,10 +32,9 @@ class ConsoleManager : public sf::NonCopyable
         ConsoleManager();
         template<class T>
         void update(std::string info, const T& t) ;
-        void update(std::string info, const char* const& t) ;
+        void update(std::string info, const glb::const_string_literal& t) ;
         template<class T>
         void update_error(const T& t) ;
-        void update_error(const char* t);
         void print(bool always_print=false);
         ~ConsoleManager();
 

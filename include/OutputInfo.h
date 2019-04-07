@@ -3,6 +3,7 @@
 #include<string>
 #include<list>
 #include<SFML/System/Vector2.hpp>
+#include"enums.h"
 class OutputInfo
 {
 public:
@@ -13,7 +14,7 @@ public:
     OutputInfo();
     virtual ~OutputInfo();
     OutputInfo(const std::string& _name,const std::string &_unit);
-    virtual void set_value(const char* const& t);
+    void set_value(const glb::const_string_literal& t);
     template<typename T>
     void set_value(const T& t);
     virtual sf::Vector2u print(sf::Vector2u currentposition, int conwidth, FILE* error_log=NULL);
@@ -26,12 +27,12 @@ inline void OutputInfo::set_value<std::string>(const std::string& t) {
 }
 
 template<>
-inline void OutputInfo::set_value<const char*>(const char* const& t) {
+inline void OutputInfo::set_value<glb::const_string_literal>(const glb::const_string_literal& t) {
     value=std::string(t);
 }
 
 template<>
-inline void OutputInfo::set_value<char*>(char* const& t) {
+inline void OutputInfo::set_value<glb::string_literal>(const glb::string_literal& t) {
     value=std::string(t);
 }
 
@@ -56,7 +57,7 @@ public:
     OutputInfoError(const std::string& _name, const std::size_t& _max_error_number=1); //if _low==true stores the lowest only
     template<typename T>
     void set_value(const T& t);
-    void set_value(const char* t);
+    void set_value(const glb::const_string_literal& t);
     sf::Vector2u print(sf::Vector2u currentposition, int conwidth);
 private:
     std::size_t max_error_number=1;
@@ -74,7 +75,7 @@ namespace ntris {
         return t;
     }
     template<>
-    inline std::string to_string<const char*>(const char* const& t) {
+    inline std::string to_string<glb::const_string_literal>(const glb::const_string_literal& t) {
         return std::string(t);
     }
 }

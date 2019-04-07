@@ -20,7 +20,7 @@ void OutputInfo::set_value(const T& t)
 {
     value=ntris::to_string(t);
 }
-void OutputInfo::set_value(const char* const& t)
+void OutputInfo::set_value(const glb::const_string_literal& t)
 {
     value=ntris::to_string(t);
 }
@@ -114,15 +114,9 @@ void OutputInfoError::set_value(const T& t) {
     error_list.push_back(ntris::to_string(t));
 }
 
-void OutputInfoError::set_value(const char *t) {
-    set_value<std::string>(std::string(t));
-}
-
-template void OutputInfoError::set_value<char const*>(char const* const& t) ;
+template void OutputInfoError::set_value<glb::const_string_literal>(const glb::const_string_literal& t) ;
 template void OutputInfoError::set_value<std::string>(const std::string& t) ;
 template void OutputInfoError::set_value<double>(const double& t) ;
-template void OutputInfoError::set_value<int>(const int& t) ;
-template void OutputInfoError::set_value<unsigned int>(const unsigned int& t) ;
 template void OutputInfoError::set_value<long long>(const long long& t) ;
 template void OutputInfoError::set_value<unsigned long long>(const unsigned long long& t) ;
 

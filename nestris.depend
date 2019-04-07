@@ -14442,9 +14442,7 @@
 	<ctime>
 	<rlutil.h>
 
-1553167274 source:g:\nestris\project_versions\20190320consolemanager\nestris.cpp
-	"enums.h"
-	"ConsoleManager.h"
+1552039580 source:g:\nestris\project_versions\20190320consolemanager\nestris.cpp
 	<cstdio>
 	"Window.h"
 	<SFML/Graphics.hpp>
@@ -14465,12 +14463,12 @@
 1551714630 g:\nestris\project_versions\20190320consolemanager\include\activeinputs.h
 	"enums.h"
 
-1553167312 g:\nestris\project_versions\20190320consolemanager\include\enums.h
+1553163972 g:\nestris\project_versions\20190320consolemanager\include\enums.h
 	<cstddef>
 	<SFML/System/Vector2.hpp>
-	"ConsoleManager.h"
+	<tuple>
 
-1553167516 g:\nestris\project_versions\20190320consolemanager\include\consolemanager.h
+1553163750 g:\nestris\project_versions\20190320consolemanager\include\consolemanager.h
 	<vector>
 	<unordered_map>
 	<string>
@@ -14494,10 +14492,11 @@
 	<sys/types.h>
 	<sys/time.h>
 
-1553168574 g:\nestris\project_versions\20190320consolemanager\include\outputinfo.h
+1553163858 g:\nestris\project_versions\20190320consolemanager\include\outputinfo.h
 	<string>
 	<list>
 	<SFML/System/Vector2.hpp>
+	"enums.h"
 
 1551714592 g:\nestris\project_versions\20190320consolemanager\include\engine.h
 	"Input.h"
@@ -14607,7 +14606,7 @@
 1548932828 g:\nestris\project_versions\20190320consolemanager\include\random.h
 	"enums.h"
 
-1553167274 source:g:\nestris\project_versions\20190320consolemanager\src\enums.cpp
+1553164004 source:g:\nestris\project_versions\20190320consolemanager\src\enums.cpp
 	"enums.h"
 
 1551714618 source:g:\nestris\project_versions\20190320consolemanager\src\input.cpp
@@ -14618,14 +14617,14 @@
 1552931262 source:g:\nestris\project_versions\20190320consolemanager\src\levellines.cpp
 	"LevelLines.h"
 
-1553167824 source:g:\nestris\project_versions\20190320consolemanager\src\matrixcontainer.cpp
+1553076450 source:g:\nestris\project_versions\20190320consolemanager\src\matrixcontainer.cpp
 	"MatrixContainer.h"
 	"enums.h"
 	<vector>
 	<utility>
 	<cstdio>
 
-1553168558 source:g:\nestris\project_versions\20190320consolemanager\src\outputinfo.cpp
+1553100172 source:g:\nestris\project_versions\20190320consolemanager\src\outputinfo.cpp
 	"OutputInfo.h"
 	<chrono>
 	<ctime>
@@ -14655,7 +14654,7 @@
 	"RenderLevelSelect.h"
 	<cstdio>
 
-1553167494 source:g:\nestris\project_versions\20190320consolemanager\src\renderplayfield.cpp
+1553076450 source:g:\nestris\project_versions\20190320consolemanager\src\renderplayfield.cpp
 	"RenderPlayField.h"
 	"random.h"
 	"PieceContainer.h"
@@ -14688,7 +14687,7 @@
 	"ConsoleManager.h"
 	<string>
 
-1553168332 source:g:\nestris\project_versions\20190320consolemanager\src\consolemanager.cpp
+1553163752 source:g:\nestris\project_versions\20190320consolemanager\src\consolemanager.cpp
 	"ConsoleManager.h"
 	<iostream>
 	<SFML/System/Sleep.hpp>
