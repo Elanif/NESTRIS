@@ -41,7 +41,7 @@ void MatrixContainer::render(const nes_uchar& _level) {
     }
     else if (glb::updatingmatrix>0) {
         std::size_t update_iter=5-glb::updatingmatrix;
-        glb::cm.update<std::string>("error",std::string("updating matrix=")+std::to_string(glb::updatingmatrix));
+        glb::cm.update<std::size_t>("error",glb::updatingmatrix);
         if (update_iter==0u) {
             for (std::size_t y=0; y<6; ++y) {
                 for (std::size_t x=0; x<10; ++x) {

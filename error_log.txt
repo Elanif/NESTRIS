@@ -289,3 +289,295 @@ Tue Mar 19 11:35:31 2019 error=updating matrix=1
 2019-03-19 12:15:04.289 error=updating matrix=1
 2019-03-19 12:15:04.367 error=updating matrix=1
 2019-03-19 12:15:05.459 error=updating matrix=1
+2019-03-19 13:02:50.414 error=updating matrix=5
+2019-03-19 13:02:50.431 error=updating matrix=4
+2019-03-19 13:02:50.448 error=updating matrix=3
+2019-03-19 13:02:50.465 error=updating matrix=2
+2019-03-19 13:02:50.482 error=updating matrix=1
+2019-03-19 13:02:50.548 error=updating matrix=1
+2019-03-19 13:02:50.614 error=updating matrix=1
+2019-03-19 13:02:50.681 error=updating matrix=1
+2019-03-19 13:02:50.748 error=updating matrix=1
+2019-03-19 13:02:50.813 error=updating matrix=1
+2019-03-19 13:02:50.881 error=updating matrix=1
+2019-03-19 13:02:50.948 error=updating matrix=1
+2019-03-19 13:02:51.014 error=updating matrix=1
+2019-03-19 13:02:51.081 error=updating matrix=1
+2019-03-19 13:02:51.652 error=updating matrix=1
+2019-03-19 13:02:51.717 error=updating matrix=1
+2019-03-19 13:02:51.784 error=updating matrix=1
+2019-03-19 13:02:51.850 error=updating matrix=1
+2019-03-19 13:02:51.917 error=updating matrix=1
+2019-03-19 13:02:51.983 error=updating matrix=1
+2019-03-19 13:02:52.050 error=updating matrix=1
+2019-03-19 13:02:52.117 error=updating matrix=1
+2019-03-19 13:02:52.183 error=updating matrix=1
+2019-03-19 13:02:52.250 error=updating matrix=1
+2019-03-19 13:02:52.316 error=updating matrix=1
+2019-03-19 13:02:52.383 error=updating matrix=1
+2019-03-19 13:02:52.449 error=updating matrix=1
+2019-03-19 13:02:52.516 error=updating matrix=1
+2019-03-19 13:02:52.583 error=updating matrix=1
+2019-03-19 13:02:52.649 error=updating matrix=1
+2019-03-19 13:02:52.716 error=updating matrix=1
+2019-03-19 13:02:52.783 error=updating matrix=1
+2019-03-19 13:02:52.849 error=updating matrix=1
+2019-03-19 13:02:52.916 error=updating matrix=1
+2019-03-19 13:02:52.982 error=updating matrix=1
+2019-03-19 13:02:53.049 error=updating matrix=1
+2019-03-19 13:02:53.115 error=updating matrix=1
+2019-03-19 13:02:53.182 error=updating matrix=1
+2019-03-19 13:02:53.249 error=updating matrix=1
+2019-03-19 13:02:53.316 error=updating matrix=1
+2019-03-19 13:02:53.382 error=updating matrix=1
+2019-03-19 13:02:53.449 error=updating matrix=1
+2019-03-19 13:02:53.515 error=updating matrix=1
+2019-03-19 13:02:53.582 error=updating matrix=1
+2019-03-19 13:02:53.648 error=updating matrix=1
+2019-03-19 13:02:53.715 error=updating matrix=1
+2019-03-19 13:02:53.782 error=updating matrix=1
+2019-03-19 13:02:53.849 error=updating matrix=1
+2019-03-19 13:02:53.915 error=updating matrix=1
+2019-03-19 13:02:53.982 error=updating matrix=1
+2019-03-19 13:02:54.048 error=updating matrix=1
+2019-03-19 13:02:54.115 error=updating matrix=1
+2019-03-19 13:02:54.182 error=updating matrix=1
+2019-03-19 13:02:54.248 error=updating matrix=1
+2019-03-19 13:02:54.315 error=updating matrix=1
+2019-03-19 13:02:54.382 error=updating matrix=1
+2019-03-19 13:02:54.448 error=updating matrix=1
+2019-03-19 13:02:54.515 error=updating matrix=1
+2019-03-19 13:02:54.581 error=updating matrix=1
+2019-03-19 13:02:54.648 error=updating matrix=1
+2019-03-19 13:02:54.715 error=updating matrix=1
+2019-03-19 13:02:54.781 error=updating matrix=1
+2019-03-19 13:02:54.848 error=updating matrix=1
+2019-03-19 13:02:54.914 error=updating matrix=1
+2019-03-19 13:02:54.981 error=updating matrix=1
+2019-03-19 13:02:55.048 error=updating matrix=1
+2019-03-19 13:02:55.114 error=updating matrix=1
+2019-03-19 13:02:55.181 error=updating matrix=1
+2019-03-19 13:02:55.248 error=updating matrix=1
+2019-03-19 13:02:55.314 error=updating matrix=1
+2019-03-19 13:02:55.381 error=updating matrix=1
+2019-03-19 13:02:55.447 error=updating matrix=1
+2019-03-19 13:02:55.514 error=updating matrix=1
+2019-03-19 13:02:55.581 error=updating matrix=1
+2019-03-19 13:02:55.647 error=updating matrix=1
+2019-03-19 13:02:55.714 error=updating matrix=1
+2019-03-19 13:02:55.780 error=updating matrix=1
+2019-03-19 13:02:55.847 error=updating matrix=1
+2019-03-19 13:02:55.914 error=updating matrix=1
+2019-03-19 13:02:55.981 error=updating matrix=1
+2019-03-19 13:02:56.047 error=updating matrix=1
+2019-03-19 13:02:56.114 error=updating matrix=1
+2019-03-19 13:02:56.180 error=updating matrix=1
+2019-03-19 13:02:56.247 error=updating matrix=1
+2019-03-19 13:02:56.314 error=updating matrix=1
+2019-03-19 13:02:56.380 error=updating matrix=1
+2019-03-19 13:02:56.447 error=updating matrix=1
+2019-03-19 13:02:56.513 error=updating matrix=1
+2019-03-19 13:02:56.580 error=updating matrix=1
+2019-03-19 13:02:56.647 error=updating matrix=1
+2019-03-19 13:02:56.713 error=updating matrix=1
+2019-03-19 13:02:56.780 error=updating matrix=1
+2019-03-19 13:02:56.847 error=updating matrix=1
+2019-03-19 13:02:56.913 error=updating matrix=1
+2019-03-19 13:02:56.980 error=updating matrix=1
+2019-03-19 13:02:57.047 error=updating matrix=1
+2019-03-19 13:02:57.113 error=updating matrix=1
+2019-03-19 13:02:57.181 error=updating matrix=1
+2019-03-19 13:02:57.247 error=updating matrix=1
+2019-03-19 13:02:57.313 error=updating matrix=1
+2019-03-19 13:02:57.379 error=updating matrix=1
+2019-03-19 13:02:57.446 error=updating matrix=1
+2019-03-19 13:02:57.513 error=updating matrix=1
+2019-03-19 13:02:57.580 error=updating matrix=1
+2019-03-19 13:02:57.647 error=updating matrix=1
+2019-03-19 13:02:58.196 error=updating matrix=1
+2019-03-19 13:02:58.261 error=updating matrix=1
+2019-03-19 13:02:58.328 error=updating matrix=1
+2019-03-19 13:02:58.395 error=updating matrix=1
+2019-03-19 13:02:58.461 error=updating matrix=1
+2019-03-19 13:02:58.528 error=updating matrix=1
+2019-03-19 13:02:58.594 error=updating matrix=1
+2019-03-19 13:02:58.661 error=updating matrix=1
+2019-03-19 13:02:58.728 error=updating matrix=1
+2019-03-19 13:02:58.794 error=updating matrix=1
+2019-03-19 13:02:58.861 error=updating matrix=1
+2019-03-19 13:02:58.928 error=updating matrix=1
+2019-03-19 13:02:58.994 error=updating matrix=1
+2019-03-19 13:02:59.061 error=updating matrix=1
+2019-03-19 13:02:59.127 error=updating matrix=5
+2019-03-19 13:02:59.144 error=updating matrix=4
+2019-03-19 13:02:59.161 error=updating matrix=3
+2019-03-19 13:02:59.178 error=updating matrix=2
+2019-03-19 13:02:59.195 error=updating matrix=1
+2019-03-19 13:02:59.261 error=updating matrix=1
+2019-03-19 13:02:59.327 error=updating matrix=1
+2019-03-19 13:02:59.394 error=updating matrix=1
+2019-03-19 13:02:59.461 error=updating matrix=1
+2019-03-19 13:02:59.527 error=updating matrix=1
+2019-03-19 13:02:59.594 error=updating matrix=1
+2019-03-19 13:02:59.661 error=updating matrix=1
+2019-03-19 13:02:59.727 error=updating matrix=1
+2019-03-19 13:02:59.794 error=updating matrix=1
+2019-03-19 13:02:59.861 error=updating matrix=1
+2019-03-19 13:02:59.927 error=updating matrix=1
+2019-03-19 13:02:59.994 error=updating matrix=1
+2019-03-19 13:03:00.060 error=updating matrix=1
+2019-03-19 13:03:00.210 error=updating matrix=1
+2019-03-19 13:05:08.753 error=5
+2019-03-19 13:05:08.769 error=4
+2019-03-19 13:05:08.786 error=3
+2019-03-19 13:05:08.802 error=2
+2019-03-19 13:05:08.819 error=1
+2019-03-19 13:05:08.886 error=1
+2019-03-19 13:05:08.952 error=1
+2019-03-19 13:05:09.019 error=1
+2019-03-19 13:05:09.085 error=1
+2019-03-19 13:05:09.152 error=1
+2019-03-19 13:05:09.219 error=1
+2019-03-19 13:05:09.285 error=1
+2019-03-19 13:05:09.352 error=1
+2019-03-19 13:05:09.418 error=1
+2019-03-19 13:05:09.485 error=1
+2019-03-19 13:05:09.552 error=1
+2019-03-19 13:05:09.619 error=1
+2019-03-19 13:05:09.685 error=1
+2019-03-19 13:05:09.752 error=1
+2019-03-19 13:05:09.818 error=1
+2019-03-19 13:05:10.341 error=1
+2019-03-19 13:05:10.408 error=1
+2019-03-19 13:05:10.474 error=1
+2019-03-19 13:05:10.543 error=1
+2019-03-19 13:05:10.610 error=1
+2019-03-19 13:05:10.677 error=1
+2019-03-19 13:05:10.743 error=1
+2019-03-19 13:05:10.810 error=1
+2019-03-19 13:05:10.876 error=1
+2019-03-19 13:05:10.942 error=1
+2019-03-19 13:05:11.010 error=1
+2019-03-19 13:05:11.076 error=1
+2019-03-19 13:05:11.143 error=1
+2019-03-19 13:05:11.210 error=1
+2019-03-19 13:05:11.276 error=1
+2019-03-19 13:05:11.343 error=1
+2019-03-19 13:05:11.410 error=1
+2019-03-19 13:05:11.476 error=1
+2019-03-19 13:05:11.543 error=1
+2019-03-19 13:05:11.609 error=1
+2019-03-19 13:05:11.676 error=1
+2019-03-19 13:05:11.743 error=1
+2019-03-19 13:05:11.809 error=1
+2019-03-19 13:05:11.875 error=1
+2019-03-19 13:05:11.943 error=1
+2019-03-19 13:05:12.009 error=1
+2019-03-19 13:05:12.076 error=1
+2019-03-19 13:05:12.142 error=1
+2019-03-19 13:05:12.209 error=1
+2019-03-19 13:05:12.275 error=1
+2019-03-19 13:05:12.341 error=1
+2019-03-19 13:05:12.408 error=1
+2019-03-19 13:05:12.475 error=1
+2019-03-19 13:05:12.542 error=1
+2019-03-19 13:05:12.609 error=1
+2019-03-19 13:05:13.184 error=1
+2019-03-19 13:05:13.249 error=1
+2019-03-19 13:05:13.315 error=1
+2019-03-19 13:05:13.382 error=1
+2019-03-19 13:05:13.449 error=1
+2019-03-19 13:05:13.516 error=1
+2019-03-19 13:05:13.582 error=1
+2019-03-19 13:05:13.648 error=1
+2019-03-19 13:05:13.716 error=1
+2019-03-19 13:05:13.782 error=1
+2019-03-19 13:05:13.849 error=1
+2019-03-19 13:05:13.916 error=1
+2019-03-19 13:05:13.983 error=1
+2019-03-19 13:05:14.049 error=1
+2019-03-19 13:05:14.116 error=1
+2019-03-19 13:05:14.182 error=1
+2019-03-19 13:05:14.248 error=1
+2019-03-19 13:05:14.316 error=1
+2019-03-19 13:05:14.383 error=1
+2019-03-19 13:05:14.449 error=1
+2019-03-19 13:05:14.516 error=1
+2019-03-19 13:05:14.583 error=1
+2019-03-19 13:05:14.649 error=1
+2019-03-19 13:05:14.716 error=1
+2019-03-19 13:05:14.783 error=1
+2019-03-19 13:05:14.849 error=1
+2019-03-19 13:05:14.916 error=1
+2019-03-19 13:05:14.983 error=1
+2019-03-19 13:05:15.051 error=1
+2019-03-19 13:05:15.116 error=1
+2019-03-19 13:05:15.183 error=1
+2019-03-19 13:05:15.249 error=1
+2019-03-19 13:05:15.316 error=1
+2019-03-19 13:05:15.383 error=1
+2019-03-19 13:05:15.449 error=1
+2019-03-19 13:05:15.516 error=1
+2019-03-19 13:05:15.583 error=1
+2019-03-19 13:05:15.649 error=1
+2019-03-19 13:05:15.716 error=1
+2019-03-19 13:05:15.783 error=1
+2019-03-19 13:05:15.850 error=1
+2019-03-19 13:05:15.916 error=1
+2019-03-19 13:05:15.983 error=1
+2019-03-19 13:05:16.050 error=1
+2019-03-19 13:05:16.117 error=1
+2019-03-19 13:05:16.183 error=1
+2019-03-19 13:05:16.250 error=1
+2019-03-19 13:05:16.316 error=1
+2019-03-19 13:05:16.383 error=1
+2019-03-19 13:05:16.450 error=1
+2019-03-19 13:05:16.517 error=1
+2019-03-19 13:05:16.583 error=1
+2019-03-19 13:05:16.650 error=1
+2019-03-19 13:05:16.716 error=1
+2019-03-19 13:05:16.783 error=1
+2019-03-19 13:05:16.850 error=1
+2019-03-19 13:05:16.917 error=1
+2019-03-19 13:05:16.983 error=1
+2019-03-19 13:05:17.050 error=1
+2019-03-19 13:05:17.117 error=1
+2019-03-19 13:05:17.184 error=1
+2019-03-19 13:05:17.250 error=1
+2019-03-19 13:05:17.317 error=1
+2019-03-19 13:05:17.384 error=1
+2019-03-19 13:05:17.450 error=1
+2019-03-19 13:05:17.517 error=1
+2019-03-19 13:05:17.584 error=1
+2019-03-19 13:05:17.651 error=1
+2019-03-19 13:05:17.717 error=1
+2019-03-19 13:05:17.784 error=1
+2019-03-19 13:05:17.850 error=1
+2019-03-19 13:05:17.917 error=1
+2019-03-19 13:05:17.984 error=1
+2019-03-19 13:05:18.051 error=1
+2019-03-19 13:05:18.118 error=1
+2019-03-19 13:05:18.184 error=1
+2019-03-19 13:05:18.251 error=1
+2019-03-19 13:05:18.317 error=1
+2019-03-19 13:05:18.384 error=1
+2019-03-19 13:05:18.451 error=1
+2019-03-19 13:05:18.517 error=1
+2019-03-19 13:05:18.584 error=1
+2019-03-19 13:05:18.651 error=1
+2019-03-19 13:05:18.717 error=1
+2019-03-19 13:05:18.784 error=1
+2019-03-19 13:05:18.850 error=1
+2019-03-19 13:05:18.917 error=1
+2019-03-19 13:05:18.984 error=1
+2019-03-19 13:05:19.051 error=1
+2019-03-19 13:05:19.117 error=1
+2019-03-19 13:05:19.184 error=1
+2019-03-19 13:05:19.250 error=1
+2019-03-19 13:05:19.317 error=1
+2019-03-19 13:05:19.384 error=1
+2019-03-19 13:05:19.451 error=1
+2019-03-19 13:05:19.519 error=1
+2019-03-19 13:05:19.585 error=1
+2019-03-19 13:05:19.652 error=1
+2019-03-19 13:05:19.798 error=1

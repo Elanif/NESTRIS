@@ -45,7 +45,8 @@ void RenderPlayField::update(const ActiveInputs& _input, const nes_ushort& _fram
         if (linescleared) {
             levellineshandler.addlines(linescleared);
             glb::lineclearframecounter=5; //deletes the columns starting from the middle, 5 times, once every fram%4==0
-            glb::updatingmatrix=5; //then it updates the vram of the matrix, it takes 5 frames of copying from top to bottom
+            glb::updatingmatrix=0; //this is updaetd later
+            //then it updates the vram of the matrix, it takes 5 frames of copying from top to bottom
         }
         scorehandler.lineclear(level,linescleared);
         scorehandler.softdrop(piecehandler.holddownpoints);
@@ -87,8 +88,11 @@ void RenderPlayField::render(const nes_ushort& _framecounter) {
     piecehandler.render(_framecounter,level);
     scorehandler.render();
     //if it's clear lines time and !(by coincidence the first frame it fell the frame was dividible by 4)
-    if (glb::lineclearframecounter>0 && !firstframeis4 && getframemod4()==0) glb::lineclearframecounter--; //TODO pause itneraction
-    else if (glb::lineclearframecounter==0 && glb::updatingmatrix>0) {
+    if (glb::lineclearframecounter>0 && !firstframeis4 && getframemod4()==0) {
+        glb::lineclearframecounter--; //TODO pause itneraction
+        if (glb::lineclearframecounter==0) glb::updatingmatrix=5;
+    }
+    else if (glb::updatingmatrix>0) { //doesnt happen in the same frame as lineclearedframecounter--
         --glb::updatingmatrix;
         if (glb::updatingmatrix==0) piecehandler.spawnPiece();//if it's the last frame of the 5-frame matrix update it spawns a new piece for the next frame, [frame discrepancy?]
     }
