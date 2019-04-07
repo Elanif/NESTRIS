@@ -12,6 +12,12 @@
 #ifndef nes_sshort
 #define nes_sshort short
 #endif
+#ifndef PLAYFIELDX
+#define PLAYFIELDX 96
+#endif // PLAYFIELDX
+#ifndef PLAYFIELDY
+#define PLAYFIELDY 40
+#endif // PLAYFIELDY
 
 enum BTN {
     LEFT,

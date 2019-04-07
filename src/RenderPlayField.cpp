@@ -26,23 +26,20 @@ RenderPlayField::RenderPlayField(SDL_Window * _window, const nes_ushort& _framea
 
 void RenderPlayField::update(const ActiveInputs& _input) {
     //printf("renderplayfield::update\n");
-    piecehandler.doMove(matrixhandler.collision(piecehandler.tryMove(_input)));
-
-    piecehandler.doRotate(matrixhandler.collision(piecehandler.tryRotate(_input)));
-
-    if (matrixhandler.collision(piecehandler.tryDrop(_input,gravity[level]))) {
-            printf("drop down collision\n");
-        char _lockheight=piecehandler.getPiece().y;
-        matrixhandler.lockpiece(piecehandler.getPiece());
-        piecehandler.lockpiece(_lockheight);//TODO
-    }
-    else piecehandler.doDrop();
+    piecehandler.inputManager(_input, matrixhandler.getMatrix(), gravity[level]);
+    /*if piecehandler.dropped
+        score add points piecehandler.holddownpoints //prima o dopo animazione?
+        matrix.lockpiece(piecehandelr last dropped piece)
+        if matrix.clearing lines
+            piecehandler sleep
+            piecehandler hide?
+            */
 }
 
 void RenderPlayField::render(const nes_ushort& _framecounter) {
     //levellineshandler.render(_framecounter);
     piecehandler.deletepiece();
-    //matrixhandler.render(_framecounter);
+    matrixhandler.render();
     piecehandler.render(_framecounter,levellineshandler.getlevel());
     //scorehandler.render(_framecounter);
 }

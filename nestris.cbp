@@ -61,6 +61,8 @@
 		<Unit filename="include/LevelLines.h" />
 		<Unit filename="include/MatrixContainer.h" />
 		<Unit filename="include/Menu.h" />
+		<Unit filename="include/PFMatrix.h" />
+		<Unit filename="include/Piece.h" />
 		<Unit filename="include/PieceContainer.h" />
 		<Unit filename="include/PlayField.h" />
 		<Unit filename="include/RenderLevelSelect.h" />
@@ -82,6 +84,8 @@
 		<Unit filename="src/LevelLines.cpp" />
 		<Unit filename="src/MatrixContainer.cpp" />
 		<Unit filename="src/Menu.cpp" />
+		<Unit filename="src/PFMatrix.cpp" />
+		<Unit filename="src/Piece.cpp" />
 		<Unit filename="src/PieceContainer.cpp" />
 		<Unit filename="src/PlayField.cpp" />
 		<Unit filename="src/RenderLevelSelect.cpp" />
