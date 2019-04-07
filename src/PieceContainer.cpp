@@ -145,22 +145,21 @@ void PieceContainer::render(const nes_ushort& _framecounter, const nes_uchar& _l
         return;
     }
     lastrenderedpos.clear();
-    for (size_t i=0; i<4; ++i) {
-        nes_uchar _xx=currentpiece.x+Piece::rotationmatrix[currentpiece.piecetype*4+currentpiece.rotation%4][i][0];
-        nes_uchar _yy=currentpiece.y+Piece::rotationmatrix[currentpiece.piecetype*4+currentpiece.rotation%4][i][1];
-        if (PFMatrix::visible(_xx,_yy)) {
-            _xx=_xx*8+PLAYFIELDX;
-            _yy=(_yy-2)*8+PLAYFIELDY;
-            BlockRenderer::block(renderSurface, currentpiece.color, _level, _xx,_yy);
-            lastrenderedpos.push_back(std::make_pair(_xx,_yy));
-        }
+    if (hidecountercurrentpiece>0) {
+        --hidecountercurrentpiece;
     }
-    for (size_t i=0; i<4; ++i) {
-        nes_uchar _xx=currentpiece.x+Piece::rotationmatrix[currentpiece.piecetype*4+currentpiece.rotation%4][i][0];
-        nes_uchar _yy=currentpiece.y+Piece::rotationmatrix[currentpiece.piecetype*4+currentpiece.rotation%4][i][1];
-        _xx=_xx*8+PLAYFIELDX;
-        _yy=(_yy-2)*8+PLAYFIELDY;
-        BlockRenderer::block(renderSurface, currentpiece.color, _level, _xx,_yy);
+    else {
+        std::vector<std::pair<nes_uchar, nes_uchar> > piecepositions = currentpiece.getPos();
+        for (std::vector<std::pair<nes_uchar, nes_uchar> >::size_type i=0; i<piecepositions.size(); ++i) {
+            size_t _xx=piecepositions[i].first;
+            size_t _yy=piecepositions[i].second;
+            if (PFMatrix::visible(_xx,_yy)) {
+                _xx=_xx*8+PLAYFIELDX;
+                _yy=(_yy-2)*8+PLAYFIELDY;
+                BlockRenderer::block(renderSurface, currentpiece.color, _level, _xx,_yy);
+                lastrenderedpos.push_back(std::make_pair(_xx,_yy));
+            }
+        }
     }
     deletenextpiece();
     rendernextpiece(_level);
@@ -199,13 +198,13 @@ void PieceContainer::spawnPiece(const nes_uchar& _spawndelay) { //TODO its not u
     nextpiece.piecetype=spawnID;
     downcounter=holddowncounter=0;
 }
-
+void PieceContainer::hidecurrentpiece(const nes_uchar& _hidecurrent) {
+    hidecountercurrentpiece=_hidecurrent;
+}
 void PieceContainer::lockpiece(const nes_uchar& _lockheight) {
     printf("Lockpiece\n");
     nes_uchar _spawndelay=10+((_lockheight+3)/5)*2; //TODO fidn true formula
     spawnPiece(_spawndelay);
     downinterrupted=true; //TODO where to put this
-    sleep(_spawndelay);
-    hide(_spawndelay-1);
 }
 

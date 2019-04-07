@@ -24,6 +24,12 @@
 #ifndef NEXTPIECEY
 #define NEXTPIECEY 111
 #endif // NEXTPIECEY
+#ifndef getframemod4
+#define getframemod4 FrameCounter::mod4
+#endif // getframemod
+#ifndef incframe
+#define incframe FrameCounter::inc
+#endif // incframe
 enum BTN {
     LEFT,
     UP,
@@ -33,5 +39,21 @@ enum BTN {
     START,
     B,
     A
+};
+
+class FrameCounter {
+    static nes_schar framecountlittle;
+    static nes_schar framecountbig;
+    public:
+    static void inc() {
+        if (framecountlittle==127) framecountlittle=-128;
+        else ++framecountlittle;
+        if (framecountbig==127) framecountbig=-128;
+        else ++framecountbig;
+    }
+
+    static nes_schar mod4() {
+        return framecountlittle%4;
+    }
 };
 #endif // ENUMS_H

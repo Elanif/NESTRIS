@@ -30,7 +30,11 @@ public:
     bool dropped;
     Piece lastdroppedpiece;
     nes_uchar holddownpoints;
+    void hidecurrentpiece(const nes_uchar& _hidecurrent);
+
 private:
+
+    nes_uchar hidecountercurrentpiece;
 
     std::vector<std::pair<nes_uchar, nes_uchar> > lastrenderedpos;
     size_t spawncount;

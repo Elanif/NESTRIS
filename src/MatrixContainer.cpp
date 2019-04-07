@@ -29,17 +29,17 @@ void MatrixContainer::render(const nes_uchar& _level) {
         return;
     }
     if (blinkscreencounter>0) {    //TODO how does pause interact with the clear animation?
-        int _ttest;
-        scanf("%d",&_ttest);
-        for (size_t i=0; i<linescleared; ++i ){
-                printf("blinkscreencounter= %d, linesclearedarray[%d]=%d\n",blinkscreencounter,i,linesclearedarray[i]);
-            matrix(blinkscreencounter/4,linesclearedarray[i])=0;
-            matrix(9-blinkscreencounter/4,linesclearedarray[i])=0;
+        if (getframemod4()==1) {
+            for (size_t i=0; i<linescleared; ++i ){
+                    printf("blinkscreencounter= %d, linesclearedarray[%d]=%d\n",blinkscreencounter,i,linesclearedarray[i]);
+                matrix(blinkscreencounter/4,linesclearedarray[i])=0;
+                matrix(9-blinkscreencounter/4,linesclearedarray[i])=0;
+                printf("matrix(%d,%d)\n",blinkscreencounter/4,linesclearedarray[i]);
+            }
+            --blinkscreencounter;
         }
-        --blinkscreencounter;
-        return;
     }
-    if (updatingmatrix>0) {
+    else if (updatingmatrix>0) {
         for (nes_uchar y=2+(5-updatingmatrix)*4; y<2+(5-(updatingmatrix-1))*4; ++y)
             for (nes_uchar x=0; x<10; ++x)
                 BlockRenderer::block(renderSurface,newmatrix(x,y),_level,PLAYFIELDX+x*8,PLAYFIELDY+(y-2)*8);
@@ -48,12 +48,11 @@ void MatrixContainer::render(const nes_uchar& _level) {
                 BlockRenderer::block(renderSurface,matrix(x,y),_level,PLAYFIELDX+x*8,PLAYFIELDY+(y-2)*8);
         --updatingmatrix;
         if (updatingmatrix==0) matrix=newmatrix;
+        return;
     }
-    else {
-        for (nes_uchar x=0; x<10; ++x) { //TODO maybe optimize to render only new stuff around piece
-            for (nes_uchar y=2; y<22; ++y) {
-                BlockRenderer::block(renderSurface,matrix(x,y),_level,PLAYFIELDX+x*8,PLAYFIELDY+(y-2)*8);
-            }
+    for (nes_uchar x=0; x<10; ++x) { //TODO maybe optimize to render only new stuff around piece
+        for (nes_uchar y=2; y<22; ++y) {
+            BlockRenderer::block(renderSurface,matrix(x,y),_level,PLAYFIELDX+x*8,PLAYFIELDY+(y-2)*8);
         }
     }
     //TODO
@@ -87,7 +86,7 @@ nes_uchar MatrixContainer::lockpiece(const Piece& _piece, const nes_ushort&  _fr
     }
     char _tempclearedlines=clearlines();
     if (_tempclearedlines) {
-        blinkscreencounter=((_framecounter+20)/5)*5-_framecounter+1;
+        blinkscreencounter=5;
         updatingmatrix=5;
 
     }
@@ -108,7 +107,8 @@ nes_uchar MatrixContainer::clearlines() {
                 column=10;
             }
         }
-        if(whichlines[row]=clearedline) { //no == intentional
+        whichlines[row]=clearedline;
+        if(whichlines[row]) {
             lowestline=row;
             //blinkscreencounter=19;
             linesclearedarray[linescleared++]=row;

@@ -21,6 +21,7 @@ Engine::~Engine()
 
 void Engine::frame(const ActiveInputs& _inputs) {
     ++framecounter;
+    incframe();
     random::prng();
     //printf("engine::frame, currentmenu=%d\n",currentmenu);
     switch(currentmenu) {

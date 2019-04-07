@@ -28,11 +28,20 @@ void RenderPlayField::update(const ActiveInputs& _input, const nes_ushort& _fram
     //printf("renderplayfield::update\n");
     piecehandler.inputManager(_input, matrixhandler.getMatrix(), gravity[level]);
     if (piecehandler.dropped) {
-        nes_uchar linescleared=matrixhandler.lockpiece(piecehandler.lastdroppedpiece,_framecounter);
+        nes_uchar linescleared=matrixhandler.lockpiece(piecehandler.lastdroppedpiece,_framecounter); //for some reason the locked piece doesnt appear at first
         scorehandler.lineclear(level,linescleared);
         scorehandler.softdrop(piecehandler.holddownpoints);
         piecehandler.lockpiece(piecehandler.lastdroppedpiece.y);
         piecehandler.dropped=false;
+        if (linescleared) {
+            piecehandler.sleep(20);
+            piecehandler.hidecurrentpiece(19);
+        }
+        else {
+            nes_uchar _spawndelay=10+((piecehandler.lastdroppedpiece.y+3)/5)*2; //TODO fidn true formula
+            piecehandler.sleep(_spawndelay);
+            piecehandler.hidecurrentpiece(_spawndelay-1);
+        }
         if (linescleared>=4) {
             printf("setting RPF blinkscreencounter=%d\n",blinkscreencounter=((_framecounter+20)/5)*5-_framecounter+2); //+1 so the extra frame it renders the normal scren
         }
@@ -53,7 +62,7 @@ void RenderPlayField::render(const nes_ushort& _framecounter) {
         //if %4==0 no blink
         //--
     if (blinkscreencounter>0) {
-        if (blinkscreencounter%4==2) {//postfix or prefix?
+        if (blinkscreencounter%4==2) {
             SDL_Surface * surfacePlayField = IMG_Load( "playfieldblink.png" );
             if( surfacePlayField== NULL )
             {
@@ -62,10 +71,10 @@ void RenderPlayField::render(const nes_ushort& _framecounter) {
             SDL_BlitSurface(surfacePlayField, NULL, renderSurface, NULL);
         }
         else if (blinkscreencounter%4==1) {
-            SDL_Surface * surfacePlayField = IMG_Load( "playfield.png" );
+            SDL_Surface * surfacePlayField = IMG_Load( "playfieldnoblink.png" );
             if( surfacePlayField== NULL )
             {
-                printf( "Unable to load image %s! SDL Error: %s\n", "playfield.png", SDL_GetError() );
+                printf( "Unable to load image %s! SDL Error: %s\n", "playfieldnoblink.png", SDL_GetError() );
             }
             SDL_BlitSurface(surfacePlayField, NULL, renderSurface, NULL);
         }

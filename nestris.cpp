@@ -5,6 +5,7 @@
 const int SCREEN_WIDTH = 256;
 const int SCREEN_HEIGHT = 224;
 
+
 int main(int argc, char** args) {
     if( SDL_Init( SDL_INIT_VIDEO ) < 0 )
     {
