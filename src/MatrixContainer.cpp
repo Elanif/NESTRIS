@@ -16,7 +16,12 @@ MatrixContainer::MatrixContainer(SDL_Window * _window, const nes_ushort& _framea
         printf( "SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError() );
     }
     hidecounter=sleepcounter=0;
-    blinkscreencounter=linescleared=0;
+    linescleared=0;
+    for (int i=0; i<9;++i) {
+        for (int j=18; j<22; ++j) {
+            matrix(i,j)=1;
+        }
+    }
 }
 
 nes_uchar MatrixContainer::getBlock(const nes_uchar& x, const nes_uchar& y) {
@@ -28,15 +33,14 @@ void MatrixContainer::render(const nes_uchar& _level) {
         --hidecounter;
         return;
     }
-    if (blinkscreencounter>0) {    //TODO how does pause interact with the clear animation?
-        if (getframemod4()==1) {
+    if (glb::lineclearframecounter>0) {    //TODO how does pause interact with the clear animation?
+        if (getframemod4()==0) {
             for (size_t i=0; i<linescleared; ++i ){
-                    printf("blinkscreencounter= %d, linesclearedarray[%d]=%d\n",blinkscreencounter,i,linesclearedarray[i]);
-                matrix(blinkscreencounter/4,linesclearedarray[i])=0;
-                matrix(9-blinkscreencounter/4,linesclearedarray[i])=0;
-                printf("matrix(%d,%d)\n",blinkscreencounter/4,linesclearedarray[i]);
+                    printf("blinkscreencounter= %d, linesclearedarray[%d]=%d\n",glb::lineclearframecounter,i,linesclearedarray[i]);
+                matrix(glb::lineclearframecounter-1,linesclearedarray[i])=0;
+                matrix(10-glb::lineclearframecounter,linesclearedarray[i])=0;
+                printf("matrix(%d,%d)\n",glb::lineclearframecounter,linesclearedarray[i]);
             }
-            --blinkscreencounter;
         }
     }
     else if (updatingmatrix>0) {
@@ -82,11 +86,11 @@ nes_uchar MatrixContainer::lockpiece(const Piece& _piece, const nes_ushort&  _fr
     for (std::vector<std::pair<nes_uchar, nes_uchar> >::size_type i=0; i<piecepositions.size(); ++i) {
         size_t _xx=piecepositions[i].first;
         size_t _yy=piecepositions[i].second;
-        matrix(_xx,_yy)=_piece.color;
+        matrix(_xx,_yy)=_piece.color();
     }
     char _tempclearedlines=clearlines();
     if (_tempclearedlines) {
-        blinkscreencounter=5;
+        glb::lineclearframecounter=5;
         updatingmatrix=5;
 
     }

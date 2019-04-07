@@ -1,12 +1,13 @@
 #ifndef BLOCKRENDERER_H
 #define BLOCKRENDERER_H
 #include "SDL.h"
+#include "enums.h"
 
 class BlockRenderer
 {
     public:
         BlockRenderer();
-        static void block(SDL_Surface* renderSurface, const size_t& blocktype, const size_t& level, const size_t& x, const size_t& y);
+        static void block(SDL_Surface* renderSurface, const nes_uchar& blocktype, const size_t& level, const size_t& x, const size_t& y);
     protected:
 
     private:

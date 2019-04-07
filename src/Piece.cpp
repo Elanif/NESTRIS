@@ -6,15 +6,51 @@ Piece::Piece()
     y=2;
     piecetype=-1;
     rotation=0;
-    color=2; //TODO
 }
 
+nes_uchar Piece::color() const{
+
+    switch(piecetype) {
+    case 0:
+        return 1;
+        break;
+    case 1:
+        return 2;
+        break;
+    case 2:
+        return 3;
+        break;
+    case 3:
+        return 1;
+        break;
+    case 4:
+        return 2;
+        break;
+    case 5:
+        return 3;
+        break;
+    case 6:
+        return 1;
+        break;
+    default:
+        return 0;
+        break;
+    }
+}
 
 std::vector<std::pair<nes_uchar, nes_uchar> > Piece::getPos() const {
     std::vector<std::pair<nes_uchar,nes_uchar> > result;
     if (piecetype<0 || piecetype>6) return result;
     for (std::vector<std::pair<nes_uchar,nes_uchar> >::size_type i=0; i< 4; ++i) {
         result.push_back(std::make_pair(rotationmatrix[piecetype*4+rotation%4][i][0]+x,rotationmatrix[piecetype*4+rotation%4][i][1]+y));
+    }
+    return result;
+}
+std::vector<std::pair<nes_uchar, nes_uchar> > Piece::nextpiecePos() const {
+    std::vector<std::pair<nes_uchar,nes_uchar> > result;
+    if (piecetype<0 || piecetype>6) return result;
+    for (std::vector<std::pair<nes_uchar,nes_uchar> >::size_type i=0; i< 4; ++i) {
+        result.push_back(std::make_pair(rotationmatrix[piecetype*4+rotation%4][i][0]*8+nextpiecespawn[piecetype][0],rotationmatrix[piecetype*4+rotation%4][i][1]*8+nextpiecespawn[piecetype][1]));
     }
     return result;
 }
@@ -55,3 +91,12 @@ nes_schar Piece::rotationmatrix[28][4][2]={
    { { -2,  0 }, { -1,  0 }, {  0,  0 }, {  1,  0 }, },  // 12: I horizontal (spawn)
    { {  0, -2 }, {  0, -1 }, {  0,  0 }, {  0,  1 }, },  // 11: I vertical
     };
+nes_uchar Piece::nextpiecespawn[7][2]={
+    {203,111},
+    {203,111},
+    {203,111},
+    {207,111},
+    {203,111},
+    {203,111},
+    {207,115},
+};

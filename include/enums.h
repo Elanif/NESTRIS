@@ -25,35 +25,41 @@
 #define NEXTPIECEY 111
 #endif // NEXTPIECEY
 #ifndef getframemod4
-#define getframemod4 FrameCounter::mod4
+#define getframemod4 glb::FrameCounter::mod4
 #endif // getframemod
 #ifndef incframe
-#define incframe FrameCounter::inc
+#define incframe glb::FrameCounter::inc
 #endif // incframe
-enum BTN {
-    LEFT,
-    UP,
-    RIGHT,
-    DOWN,
-    SELECT,
-    START,
-    B,
-    A
-};
 
-class FrameCounter {
-    static nes_schar framecountlittle;
-    static nes_schar framecountbig;
-    public:
-    static void inc() {
-        if (framecountlittle==127) framecountlittle=-128;
-        else ++framecountlittle;
-        if (framecountbig==127) framecountbig=-128;
-        else ++framecountbig;
-    }
+namespace glb {
+    enum BTN {
+        LEFT,
+        UP,
+        RIGHT,
+        DOWN,
+        SELECT,
+        START,
+        B,
+        A
+    };
 
-    static nes_schar mod4() {
-        return framecountlittle%4;
-    }
-};
+    class FrameCounter {
+        static nes_schar framecountlittle;
+        static nes_schar framecountbig;
+        public:
+        static void inc() {
+            if (framecountlittle==127) framecountlittle=-128;
+            else ++framecountlittle;
+            if (framecountbig==127) framecountbig=-128;
+            else ++framecountbig;
+        }
+
+        static nes_schar mod4() {
+            return framecountlittle%4;
+        }
+    };
+    extern nes_uchar lineclearframecounter;
+
+}
+
 #endif // ENUMS_H

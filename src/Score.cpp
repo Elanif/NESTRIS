@@ -1,9 +1,9 @@
 #include "Score.h"
 
-#if __cplusplus >= 199711L
+/*#if __cplusplus >= 199711L
 Score::Score(SDL_Window * _window, const nes_ushort& _frameappearance):Score(_window, _frameappearance, true){
 };
-#else
+#else*/
 Score::Score(SDL_Window * _window, const nes_ushort& _frameappearance)
     :Renderer(_window, _frameappearance), maxout(true)
 {
@@ -14,7 +14,7 @@ Score::Score(SDL_Window * _window, const nes_ushort& _frameappearance)
     pointsarray[6]=00; pointsarray[7]=03;
     pointsarray[8]=00; pointsarray[9]=12;
 }
-#endif
+//#endif
 
 Score::Score(SDL_Window * _window, const nes_ushort& _frameappearance, const bool& _maxout)
     :Renderer(_window, _frameappearance),  maxout(_maxout)
@@ -27,6 +27,15 @@ Score::Score(SDL_Window * _window, const nes_ushort& _frameappearance, const boo
     pointsarray[8]=00; pointsarray[9]=12;
 }
 
+/*void Score::render() {
+    if (hidecounter>0) {
+        --hidecounter;
+        return;
+    }
+    else {
+
+    }
+}*/
 
 
 unsigned int Score::getscore() {

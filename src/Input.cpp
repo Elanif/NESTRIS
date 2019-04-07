@@ -51,8 +51,8 @@ void Input::setup(const size_t& joypadbuttons) { //fix parameters
     inputdependancies[SDL_SCANCODE_DOWN]=DOWN;
     inputdependancies[SDL_SCANCODE_A]=SELECT;
     inputdependancies[SDL_SCANCODE_S]=START;
-    inputdependancies[SDL_SCANCODE_Z]=B;
-    inputdependancies[SDL_SCANCODE_X]=A;
+    inputdependancies[SDL_SCANCODE_C]=A;//inputdependancies[SDL_SCANCODE_Z]=B;
+    inputdependancies[SDL_SCANCODE_V]=B;//inputdependancies[SDL_SCANCODE_X]=A;
 }
 
 Input::~Input() {

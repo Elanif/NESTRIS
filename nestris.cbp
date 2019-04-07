@@ -24,6 +24,7 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-O2" />
+					<Add option="-Wno-reorder" />
 					<Add directory="include" />
 				</Compiler>
 				<Linker>
@@ -33,7 +34,6 @@
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
-			<Add directory="../../CodeBlocks-EP/MinGW/SDL2-2.0.9/i686-w64-mingw32/include/SDL2" />
 			<Add directory="src" />
 			<Add directory="include" />
 			<Add directory="../nestris" />
@@ -47,13 +47,12 @@
 		</ResourceCompiler>
 		<Linker>
 			<Add option="-lmingw32 -lSDL2main -lSDL2 -lSDL2_image" />
-			<Add directory="../../CodeBlocks-EP/MinGW/SDL2-2.0.9/i686-w64-mingw32/lib" />
-			<Add directory="G:/CodeBlocks-EP/MinGW/SDL2-2.0.9/i686-w64-mingw32/bin" />
 			<Add directory="SDL2/SDL2/bin" />
 			<Add directory="SDL2/SDL2/lib" />
 		</Linker>
 		<Unit filename="include/ActiveInputs.h" />
 		<Unit filename="include/BlockRenderer.h" />
+		<Unit filename="include/CharRenderer.h" />
 		<Unit filename="include/Engine.h" />
 		<Unit filename="include/GameState.h" />
 		<Unit filename="include/ImageLoader.h" />
@@ -77,6 +76,7 @@
 		<Unit filename="nestris.cpp" />
 		<Unit filename="src/ActiveInputs.cpp" />
 		<Unit filename="src/BlockRenderer.cpp" />
+		<Unit filename="src/CharRenderer.cpp" />
 		<Unit filename="src/Engine.cpp" />
 		<Unit filename="src/GameState.cpp" />
 		<Unit filename="src/ImageLoader.cpp" />

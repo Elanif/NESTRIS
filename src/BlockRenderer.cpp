@@ -26,7 +26,7 @@ BlockRenderer::BlockRenderer()
 
 }
 
-void BlockRenderer::block(SDL_Surface* renderSurface, const size_t& blocktype, const size_t& level, const size_t& x, const size_t& y) {
+void BlockRenderer::block(SDL_Surface* renderSurface, const nes_uchar& blocktype, const size_t& level, const size_t& x, const size_t& y) {
     unsigned char c;
     int primacifra;
     int secondacifra;

@@ -19,14 +19,21 @@ class RenderPlayField : public Renderer
         void resetPlayField(const nes_uchar& _level);
         void renderPlayField(const unsigned long long& framecounter);
     private:
-
+        void renderimage(bool blink);
         MatrixContainer matrixhandler;
+        bool tetris;
         PieceContainer piecehandler;
+
         Score scorehandler;
+
         LevelLines levellineshandler;
+
         nes_uchar level;
         nes_uchar gravity[255];
-        nes_uchar blinkscreencounter;
+
+        bool firstframeis4;
+        bool paused;
+        nes_uchar pausecounter;
         /*
         int lockpiece();
         int updatePlayField(const ActiveInputs& _input) ;

@@ -4,6 +4,7 @@
 #include"random.h"
 #include"BlockRenderer.h"
 #include<cstdio>
+#include"SquareRenderer.h"
 
 PieceContainer::PieceContainer(SDL_Window * _window, const nes_ushort& _frameappearance)
     :Renderer(_window, _frameappearance), downinterrupted(false), das(0), downcounter(0), spawncount(0)
@@ -36,31 +37,32 @@ void PieceContainer::inputManager(const ActiveInputs& _inputs, const PFMatrix& p
         --sleepcounter;
         return;
     }
+    if (glb::lineclearframecounter>0) return;
     ++downcounter;
     //MOVE
     Piece temppiece=currentpiece;
-    if (_inputs.getPress(DOWN)) downinterrupted=false;
-    if (_inputs.getHold(DOWN)) {
-        if (_inputs.getPress(RIGHT)||_inputs.getPress(LEFT)||_inputs.getHold(RIGHT)||_inputs.getHold(LEFT)) downinterrupted=true;
+    if (_inputs.getPress(glb::DOWN)) downinterrupted=false;
+    if (_inputs.getHold(glb::DOWN)) {
+        if (_inputs.getPress(glb::RIGHT)||_inputs.getPress(glb::LEFT)||_inputs.getHold(glb::RIGHT)||_inputs.getHold(glb::LEFT)) downinterrupted=true;
     }
     else {
         holddowncounter=holddownpoints=0;
-        if (_inputs.getPress(RIGHT)) {
+        if (_inputs.getPress(glb::RIGHT)) {
             das=0;
             ++temppiece.x;
         }
-        else if (_inputs.getPress(LEFT)) {
+        else if (_inputs.getPress(glb::LEFT)) {
             das=0;
             --temppiece.x;
         }
-        else if (_inputs.getHold(RIGHT)) {
+        else if (_inputs.getHold(glb::RIGHT)) {
             ++das;
             if (das>=16) {
                 ++temppiece.x;
                 das=10;
             }
         }
-        else if (_inputs.getHold(LEFT)) {
+        else if (_inputs.getHold(glb::LEFT)) {
             ++das;
             if (das>=16) {
                 --temppiece.x;
@@ -70,12 +72,12 @@ void PieceContainer::inputManager(const ActiveInputs& _inputs, const PFMatrix& p
     }
     if (collision(pfmatrix,temppiece)) das=16;
     else currentpiece=temppiece;
-    //ROTATE
+    //ROTglb::ATE
     temppiece=currentpiece;
-    if (_inputs.getPress(A)) {
+    if (_inputs.getPress(glb::A)) {
         temppiece.rotation=(temppiece.rotation-1)%4;
     }
-    else if (_inputs.getPress(B)) {
+    else if (_inputs.getPress(glb::B)) {
         temppiece.rotation=(temppiece.rotation-1)%4;
     }
     if (!collision(pfmatrix,temppiece)) currentpiece=temppiece;
@@ -84,7 +86,7 @@ void PieceContainer::inputManager(const ActiveInputs& _inputs, const PFMatrix& p
     //DROP
     bool alreadymoveddown=false;
     temppiece=currentpiece;
-    if (_inputs.getHold(DOWN)&&!downinterrupted) {
+    if (_inputs.getHold(glb::DOWN)&&!downinterrupted) {
         ++holddowncounter;
         ++holddownpoints;
         if (holddowncounter>=3) {
@@ -121,24 +123,22 @@ void PieceContainer::deletepiece() {
 }
 
 void PieceContainer::deletenextpiece() {
-    for (nes_uchar x=0; x<4; ++x)
-        for (nes_uchar y=0; y<3; ++y)
-            BlockRenderer::block(renderSurface, 0, 0, NEXTPIECEX+x*8-8, NEXTPIECEY+y*8);
+    SquareRenderer::square(renderSurface,0,0,0,255,191,103,33,34);
 
 }
 
 void PieceContainer::rendernextpiece(const nes_uchar& _level) {
-    for (size_t i=0; i<4; ++i) {
-        nes_uchar _xx=Piece::rotationmatrix[nextpiece.piecetype*4+nextpiece.rotation%4][i][0];
-        nes_uchar _yy=Piece::rotationmatrix[nextpiece.piecetype*4+nextpiece.rotation%4][i][1];
-        _xx=_xx*8+NEXTPIECEX+8;
-        _yy=_yy*8+NEXTPIECEY+8;
-        BlockRenderer::block(renderSurface, nextpiece.color, _level, _xx,_yy);
+    std::vector<std::pair<nes_uchar, nes_uchar> > piecepositions = nextpiece.nextpiecePos();
+    for (std::vector<std::pair<nes_uchar, nes_uchar> >::size_type i=0; i<piecepositions.size(); ++i) {
+        size_t _xx=piecepositions[i].first;
+        size_t _yy=piecepositions[i].second;
+        BlockRenderer::block(renderSurface, nextpiece.color(), _level, _xx,_yy);
     }
 
 }
 
 void PieceContainer::render(const nes_ushort& _framecounter, const nes_uchar& _level) {
+    //printf("piecetype=%d, color=%d, blocks=%d, x=%d, y=%d, x1=%d, y1=%d\n",currentpiece.piecetype,currentpiece.color(),currentpiece.getPos().size(),currentpiece.x,currentpiece.y,currentpiece.getPos()[0].first,currentpiece.getPos()[0].second);
     if (hidecounter>0) {
         printf("hidecounter=%d\n",hidecounter);
         --hidecounter;
@@ -156,7 +156,7 @@ void PieceContainer::render(const nes_ushort& _framecounter, const nes_uchar& _l
             if (PFMatrix::visible(_xx,_yy)) {
                 _xx=_xx*8+PLAYFIELDX;
                 _yy=(_yy-2)*8+PLAYFIELDY;
-                BlockRenderer::block(renderSurface, currentpiece.color, _level, _xx,_yy);
+                BlockRenderer::block(renderSurface, currentpiece.color(), _level, _xx,_yy);
                 lastrenderedpos.push_back(std::make_pair(_xx,_yy));
             }
         }

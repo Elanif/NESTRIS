@@ -12,7 +12,7 @@ Window::Window(const size_t& _width, const size_t& _height)
             break;
         }
         _engine.frame(inputManager->getInput());
-        SDL_Delay( 1000.0/60.0 );
+        SDL_Delay( 1000.0/60.0988 );
         SDL_UpdateWindowSurface(window);
     }
 }
