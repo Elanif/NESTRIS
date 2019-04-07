@@ -75,7 +75,7 @@ class ConsoleManager : public sf::NonCopyable
             else {
                 CMmap[info].set_value<T>(t);
                 if (info==std::string("error")) {
-                    print();
+                    error_print=true;
                 }
             }
         }
@@ -84,7 +84,7 @@ class ConsoleManager : public sf::NonCopyable
 
     private:
         unsigned char framecounter=0;
-
+        bool error_print=false;
         OutputInfo& add_value(std::string info, std::string unit);
         OutputInfo& add_value(const OutputInfo& outputinfo);
         std::unordered_map<std::string, OutputInfo> CMmap;

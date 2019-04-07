@@ -14,7 +14,9 @@ if (hidecounter>0) {
         return;
     }
     else {
-
+        for (std::size_t i=0; i<2; i++) {
+            tilecont->at(glb::linesx-i,glb::linesy)=tiletype(1+(lines[i]&0x0f),0x0d,0x30,0x00,0x00);
+        }
     }
 }
 

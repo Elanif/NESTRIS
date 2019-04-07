@@ -11,8 +11,6 @@ RenderPlayField::RenderPlayField(TileContainer * _tilecont, const nes_ushort& _f
     scorehandler = Score(_tilecont, frameappearance, true);
     levellineshandler = LevelLines(_tilecont, frameappearance, _level);
     //statistics
-    //level
-    //lines
     nes_uchar _tempgravity[19]={48,43,38,33,28,23,18,13,8,6,5,5,5,4,4,4,3,3,3};
     for (std::size_t i=0; i<19; ++i) gravity[i]=_tempgravity[i];
     for (std::size_t i=19; i<29; ++i) gravity[i]=2;
@@ -23,12 +21,29 @@ RenderPlayField::RenderPlayField(TileContainer * _tilecont, const nes_ushort& _f
 
 }
 
+/**
+TODO implement the real rendering process:
+the blinking and rendering seem to be asynchronous
+with NO PAUSE: blinking starts (8-getframemod4()) frames after the frame when collision is detected
+the frame after the last blinking frame the vlank(?) update begins:
+tempatrix=matrix
+first 4 visible rows of matrix = black/blank
+for i=1 to 4 {
+    visible rows (i*4 to i*4+3) of matrix = visible rows (i*4-4 to i*4-1) of tempmatrix
+}
+with PAUSE: for example if the game is paused and unpaused in one of those (8-getframemod4()) frames and unpaused exactly 2 frames later:
+matrix is updated like previously but it only shifts the matrix of 1
+then blinking starts
+when blinking is done the matrix updates correctly
+*/
+
 void RenderPlayField::update(const ActiveInputs& _input, const nes_ushort& _framecounter) {
     //printf("renderplayfield::update\n");
     piecehandler.inputManager(_input, matrixhandler.getMatrix(), gravity[level]);
     if (piecehandler.dropped) {
         nes_uchar linescleared=matrixhandler.lockpiece(piecehandler.lastdroppedpiece,_framecounter);
         if (linescleared) {
+            levellineshandler.addlines(linescleared);
             glb::lineclearframecounter=5; //deletes the columns starting from the middle, 5 times, once every fram%4==0
             glb::updatingmatrix=5; //then it updates the vram of the matrix, it takes 5 frames of copying from top to bottom
         }
@@ -75,7 +90,7 @@ void RenderPlayField::render(const nes_ushort& _framecounter) {
     if (glb::lineclearframecounter>0 && !firstframeis4 && getframemod4()==0) glb::lineclearframecounter--; //TODO pause itneraction
     else if (glb::lineclearframecounter==0 && glb::updatingmatrix>0) {
         --glb::updatingmatrix;
-        if (glb::updatingmatrix==1) piecehandler.spawnPiece();//if it's the last frame of the 5-frame matrix update it spawns a new piece for the next frame, [frame discrepancy?]
+        if (glb::updatingmatrix==0) piecehandler.spawnPiece();//if it's the last frame of the 5-frame matrix update it spawns a new piece for the next frame, [frame discrepancy?]
     }
     firstframeis4=false;
     if (glb::ARE>0) { // if entry delay>0

@@ -40,6 +40,23 @@ void MatrixContainer::render(const nes_uchar& _level) {
         }
     }
     else if (glb::updatingmatrix>0) {
+        std::size_t update_iter=5-glb::updatingmatrix;
+        glb::cm.update<std::string>("error",std::string("updating matrix=")+std::to_string(glb::updatingmatrix));
+        if (update_iter==0u) {
+            for (std::size_t y=0; y<6; ++y) {
+                for (std::size_t x=0; x<10; ++x) {
+                    matrix(x,y)=0;
+                }
+            }
+        }
+        else {
+            for (std::size_t y=0; y<4; ++y) {
+                for (std::size_t x=0; x<10; ++x) {
+                    matrix(x,y+update_iter*4)=newmatrix(x,y+update_iter*4-4);
+                }
+            }
+        }
+        /*
         for (nes_uchar y=2+(5-glb::updatingmatrix)*4; y<2+(5-(glb::updatingmatrix-1))*4; ++y)
             for (nes_uchar x=0; x<10; ++x)
                 tilecont->at(glb::playfieldx+x,glb::playfieldy+y-2)=tiletype(_level,newmatrix(x,y));
@@ -50,6 +67,7 @@ void MatrixContainer::render(const nes_uchar& _level) {
                 //BlockRenderer::block(renderSurface,matrix(x,y),_level,PLAYFIELDX+x*8,PLAYFIELDY+(y-2)*8);
         if (glb::updatingmatrix==1) matrix=newmatrix;
         return;
+            */
     }
     for (nes_uchar x=0; x<10; ++x) { //TODO maybe optimize to render only new stuff around piece
         for (nes_uchar y=2; y<22; ++y) {

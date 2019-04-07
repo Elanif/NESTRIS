@@ -35,6 +35,7 @@ bool collision(const PFMatrix& _pfmatrix, const Piece& _piece) {
     return collision;
 }
 
+//TODO change nes_uchar in slower game modes
 void PieceContainer::inputManager(const ActiveInputs& _inputs, const PFMatrix& pfmatrix, const nes_uchar& _gravity) {
     if (init_delay>0) init_delay--; //TODO before or after, frame discrepancy?
     dropped=false;
@@ -125,6 +126,7 @@ const Piece& PieceContainer::getPiece() const{
     return currentpiece;
 }
 
+//TODO change both nes_ushort and nes_uchar with bigger game modes
 void PieceContainer::rendernextpiece(const nes_uchar& _level) {
     if (!hidenextpiece) {
         std::vector<std::pair<std::size_t, std::size_t> >  nextpiecepos=nextpiece.nextpiecePos();
@@ -134,6 +136,7 @@ void PieceContainer::rendernextpiece(const nes_uchar& _level) {
     }
 }
 
+//TODO change both nes_ushort and nes_uchar with bigger game modes
 void PieceContainer::render(const nes_ushort& _framecounter, const nes_uchar& _level) { //TODO the first piece renders a little bit late
     if (hidecounter>0) {
         --hidecounter;
@@ -153,7 +156,7 @@ void PieceContainer::render(const nes_ushort& _framecounter, const nes_uchar& _l
     }
 }
 
-
+//TODO can keep unsigned char, unless we decide to add many pieces
 void PieceContainer::spawnPiece() {
     currentpiece=nextpiece;
     nes_uchar spawnID=spawn_table[nextpiece.piecetype]; //creates a piece next to nextpiece
@@ -200,4 +203,5 @@ void PieceContainer::lockpiece() {
     downinterrupted=true; //TODO where to put this
 }
 
+//TODO change in bigger game modes
 nes_uchar PieceContainer::spawn_table[7]={0x02,0x07,0x08,0x0A,0x0B,0x0E,0x12};

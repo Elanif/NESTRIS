@@ -30,6 +30,14 @@ void OutputInfo::set_position(const sf::Vector2u& _position)
 {
     outputposition=_position;
 }
+
+template <typename Duration>
+void print_time(FILE* output, tm t, Duration fraction) {
+    using namespace std::chrono;
+    std::fprintf(output,"%04u-%02u-%02u %02u:%02u:%02u.%03u ", t.tm_year + 1900,
+                t.tm_mon + 1, t.tm_mday, t.tm_hour, t.tm_min, t.tm_sec,
+                static_cast<unsigned>(fraction / milliseconds(1)));
+}
 sf::Vector2u OutputInfo::print(sf::Vector2u currentposition, int conwidth, FILE*error_log)
 {
     if (currentposition.x!=0) {
@@ -43,11 +51,15 @@ sf::Vector2u OutputInfo::print(sf::Vector2u currentposition, int conwidth, FILE*
     if (name==std::string("error")&&value!=std::string("0")&&value.length()>0) {
         auto clock = std::chrono::system_clock::now();
         std::time_t current_time = std::chrono::system_clock::to_time_t(clock);
-        std::string time_str=std::ctime(&current_time);
-        time_str.resize(time_str.length()-1);
-        fprintf(error_log,"%s %s\n",time_str.c_str(),outputstring.c_str());
+        using namespace std::chrono;
+        system_clock::time_point now = system_clock::now();
+        system_clock::duration tp = now.time_since_epoch();
+        tp -= duration_cast<seconds>(tp);
+        print_time(error_log,*localtime(&current_time), tp);
+        fprintf(error_log,"%s\n",outputstring.c_str());
         fflush(error_log);
     }
+    value="";
     return sf::Vector2u(currentposition.x%conwidth,currentposition.y+currentposition.x/conwidth);
 }
 
@@ -147,12 +159,13 @@ OutputInfo& ConsoleManager::add_value(const OutputInfo& outputinfo) {
 
 
 void ConsoleManager::print(bool always_print) {
-    if (framecounter++%4==0||always_print) {
+    if (framecounter++%4==0||always_print||error_print) {
         //rlutil::cls();
         sf::Vector2u pos={0,0};
         for (auto info:CMmap) {
             pos=info.second.print(pos,rlutil::tcols(),error_log);
         }
+        error_print=false;
     }
 }
 
