@@ -8,11 +8,11 @@ size_t itoy(const size_t& i, const size_t& width, const size_t& height) {
 }
 size_t itoxrect(const size_t& i, const size_t& width, const size_t& height, const size_t& rectwidth, const size_t& rectheight) {
     size_t rectx=itox(i,width/rectwidth,height/rectheight)*rectwidth;
-    size_t recty=itoy(i,width/rectwidth,height/rectheight)*rectheight;
+    //size_t recty=itoy(i,width/rectwidth,height/rectheight)*rectheight;
     return rectx;
 }
 size_t itoyrect(const size_t& i, const size_t& width, const size_t& height, const size_t& rectwidth, const size_t& rectheight) {
-    size_t rectx=itox(i,width/rectwidth,height/rectheight)*rectwidth;
+    //size_t rectx=itox(i,width/rectwidth,height/rectheight)*rectwidth;
     size_t recty=itoy(i,width/rectwidth,height/rectheight)*rectheight;
     return recty;
 }
@@ -23,52 +23,54 @@ size_t xytoi(const size_t& x, const size_t& y, const size_t& width, const size_t
 size_t xytoi(const size_t& x, const size_t& y, const size_t& width, const size_t& height, const size_t& rectwidth, const size_t& rectheight) {
     return x+y*width;
 }
-TileRenderer::TileRenderer(const size_t& _width, const size_t& _height, const int& _drawmethod)
+TileRenderer::TileRenderer(const size_t& _width, const size_t& _height, sf::Vector2u _tilesize, const int& _drawmethod)
 :tilecont(_width,_height),
 width(_width),
 height(_height),
 drawmethod(_drawmethod),
 quadretti(NULL),
+tilesize(_tilesize),
 texturenumber(0)
 {
     if (drawmethod==DRAWSPRITE) {
         quadretti=new uint8container[width*height];
-        if (!temptexclass.create(width*8,height*8)) {
+        if (!temptexclass.create(width*tilesize.x,height*tilesize.y)) {
             //error
         }
         tempspriteclass.setTexture(temptexclass, true);
     }
     else if (drawmethod==DRAWIMAGE) {
-        finalimageclass.create(width*8,height*8);
+        finalimageclass.create(width*tilesize.x,height*tilesize.y);
         temptexclass.loadFromImage(finalimageclass);
         tempspriteclass.setTexture(temptexclass, true);
     }
     else if (drawmethod==DRAWVERTEX){
-        verteximage=sf::VertexArray(sf::Quads,width*height*8*8*4);
-        for (size_t i=0; i<width*height*4*8*8; i+=4) {
-            verteximage[i].position=sf::Vector2f(itox(i/4,width*8,height*8),itoy(i/4,width*8,height*8));
-            verteximage[i+1].position=sf::Vector2f(itox(i/4,width*8,height*8)+1,itoy(i/4,width*8,height*8));
-            verteximage[i+2].position=sf::Vector2f(itox(i/4,width*8,height*8)+1,itoy(i/4,width*8,height*8)+1);
-            verteximage[i+3].position=sf::Vector2f(itox(i/4,width*8,height*8),itoy(i/4,width*8,height*8)+1);
+        verteximage=sf::VertexArray(sf::Quads,width*height*4*tilesize.x*tilesize.y);
+        for (size_t i=0; i<width*height*4*tilesize.x*tilesize.y; i+=4) {
+            verteximage[i].position=sf::Vector2f(itox(i/4,width*tilesize.x,height*tilesize.y),itoy(i/4,width*tilesize.x,height*tilesize.y));
+            verteximage[i+1].position=sf::Vector2f(itox(i/4,width*tilesize.x,height*tilesize.y)+1,itoy(i/4,width*tilesize.x,height*tilesize.y));
+            verteximage[i+2].position=sf::Vector2f(itox(i/4,width*tilesize.x,height*tilesize.y)+1,itoy(i/4,width*tilesize.x,height*tilesize.y)+1);
+            verteximage[i+3].position=sf::Vector2f(itox(i/4,width*tilesize.x,height*tilesize.y),itoy(i/4,width*tilesize.x,height*tilesize.y)+1);
             verteximage[i].color=verteximage[i+1].color=verteximage[i+2].color=verteximage[i+3].color=sf::Color::Black;
         }
     }
-    else if (drawmethod==DRAWTEXTURE) {
+    else if (drawmethod==DRAWTEXTURE) { //TODO DYNAMICALLY CHOOSE SIZE && check if size<8
         texturesize=sf::Texture::getMaximumSize()<512?sf::Texture::getMaximumSize():512;
+        newtextures=fopen("Pre-rendered textures.txt","a");
         if (!tiletexture.create(texturesize,texturesize)) {
-            //error
+            //TODO ERROR
         }
         verteximage=sf::VertexArray(sf::Quads,width*height*4);
-        for (size_t i=0; i<width*height*4; i+=4) {
-            verteximage[i].position=sf::Vector2f(itox(i/4,width,height),itoy(i/4,width,height));
-            verteximage[i+1].position=sf::Vector2f(itox(i/4,width,height)+1,itoy(i/4,width,height));
-            verteximage[i+2].position=sf::Vector2f(itox(i/4,width,height)+1,itoy(i/4,width,height)+1);
-            verteximage[i+3].position=sf::Vector2f(itox(i/4,width,height),itoy(i/4,width,height)+1);
-            verteximage[i].position=sf::Vector2f(itoxrect(i/4,width,height,8,8),itoyrect(i/4,width,height,8,8));
-            verteximage[i+1].position=sf::Vector2f(itoxrect(i/4,width,height,8,8)+8,itoyrect(i/4,width,height,8,8));
-            verteximage[i+2].position=sf::Vector2f(itoxrect(i/4,width,height,8,8)+8,itoyrect(i/4,width,height,8,8)+8);
-            verteximage[i+3].position=sf::Vector2f(itoxrect(i/4,width,height,8,8),itoyrect(i/4,width,height,8,8)+8);
-            //verteximage[i].color=verteximage[i+1].color=verteximage[i+2].color=verteximage[i+3].color=sf::Color::Black;
+        for (size_t i=0; i<width; ++i) {
+            for (size_t j=0; j<height; ++j) {
+
+                sf::Vertex* quad = &verteximage[(i + j * width) * 4];
+
+                quad[0].position = sf::Vector2f(i * tilesize.x, j * tilesize.y);
+                quad[1].position = sf::Vector2f((i + 1) * tilesize.x, j * tilesize.y);
+                quad[2].position = sf::Vector2f((i + 1) * tilesize.x, (j + 1) * tilesize.y);
+                quad[3].position = sf::Vector2f(i * tilesize.x, (j + 1) * tilesize.y);
+            }
         }
     }
 }
@@ -77,27 +79,26 @@ TileContainer* TileRenderer::getTileContainer() {
     return &tilecont;
 }
 
-bool TileRenderer::load(const std::string& tilefile)
-{
+bool TileRenderer::load(const std::string& tilefile){
     //tilecont=TileContainer(width,height);
     FILE * spritefile=fopen(tilefile.c_str(),"r");
     if (!spritefile) return false;
     while (!feof(spritefile)) {
         size_t characters=0;
         sprite newsprite;
-        for (characters=0; characters<16&&!feof(spritefile); ++characters) {
+        for (characters=0; characters<tilesize.y*2&&!feof(spritefile); ++characters) {
             unsigned int hex;
             fscanf(spritefile,"%x",&hex);
-            if (characters<8) {
+            if (characters<tilesize.y) {
                 for (size_t i=0; i<8; ++i)
-                newsprite.arr[8-i-1][characters]=(hex >> i) & 1U;
+                newsprite.arr[tilesize.x-i-1][characters]=(hex >> i) & 1U;
             }
             else {
-                for (size_t i=0; i<8; ++i)
-                newsprite.arr[8-i-1][characters-8]+=((hex >> i) & 1U)<<1;
+                for (size_t i=0; i<tilesize.y; ++i)
+                newsprite.arr[tilesize.x-i-1][characters-8]+=((hex >> i) & 1U)<<1;
             }
         }
-        if (characters>=16) {
+        if (characters>=tilesize.y*2) {
             spritevector.push_back(newsprite);
             /*if (spritevector.size()<100) {
                 newsprite.print();
@@ -105,89 +106,98 @@ bool TileRenderer::load(const std::string& tilefile)
             }*/
         }
     }
+    if (drawmethod==DRAWTEXTURE) add_frequent_textures(); //puts blocks and characters
     return true;
 }
 
+size_t TileRenderer::add_or_find_texture(const tiletype& newtile, const bool& prerendering) {
+    size_t whereisthistexture=0;
+    tiletype temptile=newtile;
+    if ((temptile.palette_color[0]&0x0F)>=0x0D) temptile.palette_color[0]=0x0D;
+    if ((temptile.palette_color[1]&0x0F)>=0x0D) temptile.palette_color[1]=0x0D;
+    if ((temptile.palette_color[2]&0x0F)>=0x0D) temptile.palette_color[2]=0x0D;
+    if ((temptile.palette_color[3]&0x0F)>=0x0D) temptile.palette_color[3]=0x0D;
+    //std::unordered_map<tiletype, size_t>::const_iterator itposition=texturemap.find(temptile);
+    if (texturemap.find(temptile)==texturemap.end()) { //new texture
+        printf("creating new texture %d\n",temptile.tilenumber);
+        if (!prerendering) {
+            fprintf(newtextures,"%d %x %x %x %x\n",temptile.tilenumber,temptile.palette_color[0],temptile.palette_color[1],temptile.palette_color[2],temptile.palette_color[3]);
+        }
+        uint8container newtexture;
+        const int primacifra[4]={
+            temptile.palette_color[0]/16,
+            temptile.palette_color[1]/16,
+            temptile.palette_color[2]/16,
+            temptile.palette_color[3]/16
+        };
+        const int secondacifra[4]={
+            temptile.palette_color[0]%16,
+            temptile.palette_color[1]%16,
+            temptile.palette_color[2]%16,
+            temptile.palette_color[3]%16
+        };
+        const unsigned int color[4]={
+            palette[primacifra[0]][secondacifra[0]],
+            palette[primacifra[1]][secondacifra[1]],
+            palette[primacifra[2]][secondacifra[2]],
+            palette[primacifra[3]][secondacifra[3]]
+        };
+        sf::Uint8 rgba[4][4];
+        for (size_t colorcounter=0; colorcounter<4;++colorcounter) {
+            int colortemp=color[colorcounter];
+            for (size_t rgbacounter=0; rgbacounter<4;++rgbacounter) {
+                rgba[colorcounter][4-rgbacounter-1]=colortemp&0xff;
+                colortemp=colortemp>>8;
+            }
+        }
+        sprite* spritetemp=&spritevector[temptile.tilenumber];
+        sf::Uint8* tempquadretto=newtexture.getQuadretto();
+        for (size_t pixelx=0; pixelx<tilesize.x; ++pixelx) {
+            for (size_t pixely=0; pixely<tilesize.y; ++pixely) {
+                size_t tempi=xytoi(pixelx,pixely,tilesize.x,tilesize.y)*4;
+                nes_uchar tiletypetemp=spritetemp->arr[pixelx][pixely];
+                tempquadretto[tempi]=rgba[tiletypetemp][0];
+                tempquadretto[tempi+1]=rgba[tiletypetemp][1];
+                tempquadretto[tempi+2]=rgba[tiletypetemp][2];
+                tempquadretto[tempi+3]=rgba[tiletypetemp][3];
+            }
+        }
+        if (itoyrect(texturenumber,texturesize,texturesize,tilesize.x,tilesize.x)>texturesize) {
+            printf("Error, too many textures: %d\n",texturenumber);
+            throw texturenumber; //TODOBETTER
+        }
+        tiletexture.update(tempquadretto,tilesize.x,tilesize.y,itoxrect(texturenumber,texturesize,texturesize,tilesize.x,tilesize.y),itoyrect(texturenumber,texturesize,texturesize,tilesize.x,tilesize.y));
+        whereisthistexture=texturenumber;
+        texturemap[temptile]=whereisthistexture;
+        ++texturenumber;
+    }
+    else {
+        whereisthistexture=texturemap[temptile];
+    }
+    return whereisthistexture;
+}
 
 void TileRenderer::drawtexture(sf::RenderTarget& target, sf::RenderStates states){
 
     sf::Clock trclock;
     for (size_t x=0; x<width; ++x) {
         for (size_t y=0; y<height; ++y) {
-            sprite* spritetemp=&spritevector[tilecont.atconst(x,y).tilenumber];
             if (tilecont.updated(x,y)) {
-                size_t whereisthistexture=0;
-                if (texturemap.find(tilecont.atconst(x,y))==texturemap.end()) { //new texture
-                    printf("creating new texture\n");
-                    uint8container newtexture;
-                    const int primacifra[4]={
-                        tilecont.atconst(x,y).palette_color[0]/16,
-                        tilecont.atconst(x,y).palette_color[1]/16,
-                        tilecont.atconst(x,y).palette_color[2]/16,
-                        tilecont.atconst(x,y).palette_color[3]/16
-                    };
-                    const int secondacifra[4]={
-                        tilecont.atconst(x,y).palette_color[0]%16,
-                        tilecont.atconst(x,y).palette_color[1]%16,
-                        tilecont.atconst(x,y).palette_color[2]%16,
-                        tilecont.atconst(x,y).palette_color[3]%16
-                    };
-                    const unsigned int color[4]={
-                        palette[primacifra[0]][secondacifra[0]],
-                        palette[primacifra[1]][secondacifra[1]],
-                        palette[primacifra[2]][secondacifra[2]],
-                        palette[primacifra[3]][secondacifra[3]]
-                    };
-                    sf::Uint8 rgba[4][4];
-                    for (size_t colorcounter=0; colorcounter<4;++colorcounter) {
-                        int colortemp=color[colorcounter];
-                        for (size_t rgbacounter=0; rgbacounter<4;++rgbacounter) {
-                            rgba[colorcounter][4-rgbacounter-1]=colortemp&0xff;
-                            colortemp=colortemp>>8;
-                        }
-                    }
-                    sf::Uint8* tempquadretto=newtexture.getQuadretto();
-                    for (size_t pixelx=0; pixelx<8; ++pixelx) {
-                        for (size_t pixely=0; pixely<8; ++pixely) {
-                            size_t tempi=xytoi(pixelx,pixely,8,8)*4;
-                            nes_uchar tiletypetemp=spritetemp->arr[pixelx][pixely];
-                            tempquadretto[tempi]=rgba[tiletypetemp][0];
-                            tempquadretto[tempi+1]=rgba[tiletypetemp][1];
-                            tempquadretto[tempi+2]=rgba[tiletypetemp][2];
-                            tempquadretto[tempi+3]=rgba[tiletypetemp][3];
-                        }
-                    }
-                    if (itoyrect(texturenumber,texturesize,texturesize,8,8)>texturesize) {
-                        printf("Errore, troppe texture, numero di texture: %d\n",texturenumber);
-                        throw texturenumber; //TODOBETTER
-                    }
-                    tiletexture.update(tempquadretto,8,8,itoxrect(texturenumber,texturesize,texturesize,8,8),itoyrect(texturenumber,texturesize,texturesize,8,8));
-                    whereisthistexture=texturenumber;
-                    texturemap[tilecont.atconst(x,y)]=whereisthistexture;
-                    ++texturenumber;
-                }
-                else {
-                    //std::unordered_map<tiletype, size_t>::const_iterator finditerator= texturemap.find(tilecont.atconst(x,y));
-                    //whereisthistexture=finditerator->second;
-                    whereisthistexture=texturemap[tilecont.atconst(x,y)];
-                }
+                size_t whereisthistexture=add_or_find_texture(tilecont.atconst(x,y));
                 const size_t tempi=xytoi(x,y,width,height)*4;
                 const sf::Vector2u texturesize=tiletexture.getSize();
-                size_t textureposx=itoxrect(whereisthistexture,texturesize.x,texturesize.y,8,8); //TODO CORRECT ORDER?
-                size_t textureposy=itoyrect(whereisthistexture,texturesize.x,texturesize.y,8,8); //TODO CORRECT ORDER?
-                verteximage[tempi].texCoords=sf::Vector2f(textureposx,textureposy);
-                verteximage[tempi+1].texCoords=sf::Vector2f(textureposx+8,textureposy);
-                verteximage[tempi+2].texCoords=sf::Vector2f(textureposx+8,textureposy+8);
-                verteximage[tempi+3].texCoords=sf::Vector2f(textureposx,textureposy+8);
-                /*verteximage[0].texCoords=sf::Vector2f(textureposx,textureposy);
-                verteximage[0+1].texCoords=sf::Vector2f(textureposx+8,textureposy);
-                verteximage[0+2].texCoords=sf::Vector2f(textureposx+8,textureposy+8);
-                verteximage[0+3].texCoords=sf::Vector2f(textureposx,textureposy+8);*/
+                size_t tu = whereisthistexture % (texturesize.x / tilesize.x);
+                size_t tv = whereisthistexture / (texturesize.x / tilesize.x);
+
+                verteximage[tempi].texCoords=sf::Vector2f(tu*tilesize.x,tv*tilesize.x);
+                verteximage[tempi+1].texCoords=sf::Vector2f((tu+1)*tilesize.x,tv*tilesize.x);
+                verteximage[tempi+2].texCoords=sf::Vector2f((tu+1)*tilesize.x,(tv+1)*tilesize.x);
+                verteximage[tempi+3].texCoords=sf::Vector2f(tu*tilesize.x,(tv+1)*tilesize.x);
             }
         }
     }
-    //tempspriteclass.setTexture(tiletexture);
-    //target.draw(tempspriteclass,states);
+    states.transform *= getTransform();
+    states.texture = &tiletexture;
     target.draw(verteximage,states);
     tilecont.resetupdated();
 }
@@ -223,13 +233,11 @@ void TileRenderer::drawvertex(sf::RenderTarget& target, sf::RenderStates states)
                     sf::Color(color[3])
                 };
                 sprite* spritetemp=&spritevector[tilecont.atconst(x,y).tilenumber];
-                for (size_t pixelx=0; pixelx<8; ++pixelx) {
-                    for (size_t pixely=0; pixely<8; ++pixely) {
-                            //printf("tilenumber=%d \n",tilecont.at(x,y).tilenumber);
+                for (size_t pixelx=0; pixelx<tilesize.x; ++pixelx) {
+                    for (size_t pixely=0; pixely<tilesize.y; ++pixely) {
                         nes_uchar tiletypetemp=spritetemp->arr[pixelx][pixely];
                         //if (colortemp.a!=0)
-                        //finalimageclass.setPixel(x*8+pixelx,y*8+pixely,colortemp); //sf::Color(color[spritevector[tilecont(x,y).tilenumber].arr[pixelx][pixely]]
-                        const size_t tempi=xytoi(x*8+pixelx,y*8+pixely,width*8,height*8)*4;
+                        const size_t tempi=xytoi(x*tilesize.x+pixelx,y*tilesize.y+pixely,width*tilesize.x,height*tilesize.y)*4;
                         verteximage[tempi].color=sfcolor[tiletypetemp];
                         verteximage[tempi+1].color=sfcolor[tiletypetemp];
                         verteximage[tempi+2].color=sfcolor[tiletypetemp];
@@ -275,9 +283,9 @@ void TileRenderer::drawsprite(sf::RenderTarget& target, sf::RenderStates states)
                 }
                 sprite* spritetemp=&spritevector[tilecont.atconst(x,y).tilenumber];
                 sf::Uint8* tempquadretto=quadretti[xytoi(x,y,width,height)].getQuadretto();
-                for (size_t pixelx=0; pixelx<8; ++pixelx) {
-                    for (size_t pixely=0; pixely<8; ++pixely) {
-                        size_t tempi=xytoi(pixelx,pixely,8,8)*4;
+                for (size_t pixelx=0; pixelx<tilesize.x; ++pixelx) {
+                    for (size_t pixely=0; pixely<tilesize.y; ++pixely) {
+                        size_t tempi=xytoi(pixelx,pixely,tilesize.x,tilesize.y)*4;
                         nes_uchar tiletypetemp=spritetemp->arr[pixelx][pixely];
                         tempquadretto[tempi]=rgba[tiletypetemp][0];
                         tempquadretto[tempi+1]=rgba[tiletypetemp][1];
@@ -285,7 +293,7 @@ void TileRenderer::drawsprite(sf::RenderTarget& target, sf::RenderStates states)
                         tempquadretto[tempi+3]=rgba[tiletypetemp][3];
                     }
                 }
-                temptexclass.update(tempquadretto,8,8,x*8,y*8);
+                temptexclass.update(tempquadretto,tilesize.x,tilesize.y,x*tilesize.x,y*tilesize.y);
             }
         }
     }
@@ -322,24 +330,34 @@ void TileRenderer::drawimage(sf::RenderTarget& target, sf::RenderStates states){
                     sf::Color(color[3])
                 };
                 sprite *spritetemp=&spritevector[tilecont.atconst(x,y).tilenumber];
-                for (size_t pixelx=0; pixelx<8; ++pixelx) {
-                    for (size_t pixely=0; pixely<8; ++pixely) {
-                            //printf("tilenumber=%d \n",tilecont.at(x,y).tilenumber);
+                for (size_t pixelx=0; pixelx<tilesize.x; ++pixelx) {
+                    for (size_t pixely=0; pixely<tilesize.y; ++pixely) {
                         nes_uchar tiletypetemp=spritetemp->arr[pixelx][pixely];
                         //if (colortemp.a!=0)
-                        finalimageclass.setPixel(x*8+pixelx,y*8+pixely,sfcolor[tiletypetemp]); //sf::Color(color[spritevector[tilecont(x,y).tilenumber].arr[pixelx][pixely]]
+                        finalimageclass.setPixel(x*tilesize.x+pixelx,y*tilesize.y+pixely,sfcolor[tiletypetemp]); //sf::Color(color[spritevector[tilecont(x,y).tilenumber].arr[pixelx][pixely]]
                     }
                 }
             }
         }
     }
-    //printf("after update matrix =%I64d\n",trclock.getElapsedTime().asMicroseconds());
     temptexclass.update(finalimageclass);
-   // printf("after textureLoadFromImage =%I64d\n",trclock.getElapsedTime().asMicroseconds());
-    //printf("after setTexture =%I64d\n",trclock.getElapsedTime().asMicroseconds());
     target.draw(tempspriteclass,states);
-    //printf("after draw =%I64d\n",trclock.getElapsedTime().asMicroseconds());
     tilecont.resetupdated();
+}
+
+void TileRenderer::add_frequent_textures() {
+    tiletype block;
+    add_or_find_texture(block);
+    block=tiletype(0,0);
+    add_or_find_texture(block);
+    for (size_t level=0; level<10; ++level) {
+        block=tiletype(level,1);
+        add_or_find_texture(block);
+        block=tiletype(level,2);
+        add_or_find_texture(block);
+        block=tiletype(level,3);
+        add_or_find_texture(block);
+    }
 }
 
 void TileRenderer::drawmod(sf::RenderTarget& target, sf::RenderStates states)
@@ -357,10 +375,15 @@ void TileRenderer::drawmod(sf::RenderTarget& target, sf::RenderStates states)
     case DRAWVERTEX:
         drawvertex(target, states);
         break;
+    default:
+        drawimage(target,states);
+        //TODO CM WARNING
+        break;
     }
 }
 
 TileRenderer::~TileRenderer() {
+    if (newtextures) fclose(newtextures);
     if (quadretti) delete[]quadretti;
 }
 

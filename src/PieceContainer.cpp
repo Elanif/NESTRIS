@@ -5,7 +5,12 @@
 #include<cstdio>
 
 PieceContainer::PieceContainer(TileContainer * _tilecont, const nes_ushort& _frameappearance)
-    :Renderer(_tilecont, _frameappearance), downinterrupted(false), das(0), downcounter(0), spawncount(0)
+:Renderer(_tilecont, _frameappearance),
+downinterrupted(false),
+das(0),
+downcounter(0),
+spawncount(0),
+hidenextpiece(false)
 {
     spawnPiece(0);
     spawnPiece(0);
@@ -31,11 +36,12 @@ bool collision(const PFMatrix& _pfmatrix, const Piece& _piece) {
 
 void PieceContainer::inputManager(const ActiveInputs& _inputs, const PFMatrix& pfmatrix, const nes_uchar& _gravity) {
     dropped=false;
+    if (_inputs.getPress(glb::SELECT)) hidenextpiece=!hidenextpiece;
     if (sleepcounter>0) {
         --sleepcounter;
         return;
     }
-    if (glb::lineclearframecounter>0) return;
+    if (glb::lineclearframecounter>0||glb::updatingmatrix>0) return; //TODO 1 frame error? updating>1?
     ++downcounter;
     //MOVE
     Piece temppiece=currentpiece;
@@ -114,27 +120,22 @@ const Piece& PieceContainer::getPiece() const{
     return currentpiece;
 }
 
-void PieceContainer::deletepiece() { //is this even needed now
-    for (size_t i=0; i<lastrenderedpos.size(); ++i) { //TODO size:type
-
-    }
-}
-
 void PieceContainer::deletenextpiece() {
-    for (size_t x=glb::nextpiecex; x<glb::nextpiecex+4;++x)
-        for (size_t y=glb::nextpiecey; y<glb::nextpiecey+4;++y)
-            tilecont->at(x,y)=tiletype();
 
 }
 
 void PieceContainer::rendernextpiece(const nes_uchar& _level) {
-    std::vector<std::pair<nes_uchar, nes_uchar> > piecepositions = nextpiece.getPos();
-    for (std::vector<std::pair<nes_uchar, nes_uchar> >::size_type i=0; i<piecepositions.size(); ++i) { //todo with correct stuff
-        size_t _xx=piecepositions[i].first;
-        size_t _yy=piecepositions[i].second;
-        tilecont->at(glb::nextpiecex+_xx,glb::nextpiecey+_yy)=tiletype(_level,nextpiece.color());
+    for (size_t x=glb::nextpiecex; x<glb::nextpiecex+4;++x)
+        for (size_t y=glb::nextpiecey; y<glb::nextpiecey+4;++y)
+            tilecont->at(x,y)=tiletype(0,0);
+    if (!hidenextpiece) {
+        std::vector<std::pair<nes_uchar, nes_uchar> > piecepositions = nextpiece.nextpiecePos();
+        for (std::vector<std::pair<nes_uchar, nes_uchar> >::size_type i=0; i<piecepositions.size(); ++i) { //todo with correct stuff
+            size_t _xx=piecepositions[i].first;
+            size_t _yy=piecepositions[i].second;
+            tilecont->at(glb::nextpiecex+_xx,glb::nextpiecey+_yy)=tiletype(_level,nextpiece.color());
+        }
     }
-
 }
 
 void PieceContainer::render(const nes_ushort& _framecounter, const nes_uchar& _level) {
@@ -144,6 +145,7 @@ void PieceContainer::render(const nes_ushort& _framecounter, const nes_uchar& _l
         --hidecounter;
         return;
     }
+    if (glb::lineclearframecounter>0) return;
     lastrenderedpos.clear();
     if (hidecountercurrentpiece>0) {
         --hidecountercurrentpiece;

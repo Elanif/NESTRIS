@@ -5,8 +5,8 @@ Window::Window(const size_t& _width, const size_t& _height, sf::RenderStates _st
     //_state.transform().getMatrix();
     sf::Vector2f windowtransformation(4.0f,4.0f);//_state.transform().
     sf::RenderWindow window(sf::VideoMode(_width*4, _height*4), "Nestris");
-
-    TileRenderer tilerend(_width/8,_height/8,TileRenderer::DRAWTEXTURE);
+    sf::Vector2u tilesize(8,8);
+    TileRenderer tilerend(_width/8,_height/8,tilesize,TileRenderer::DRAWTEXTURE);
     tilerend.load("sprites.txt");
     Engine _engine= Engine(tilerend.getTileContainer(),10); //TODO change 10
 

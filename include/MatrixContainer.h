@@ -23,7 +23,7 @@ class MatrixContainer : public Renderer
 
     private:
         nes_uchar linesclearedarray[22];
-        nes_uchar updatingmatrix, linescleared;
+        nes_uchar linescleared;
         PFMatrix newmatrix;
         PFMatrix matrix;
 };

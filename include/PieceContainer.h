@@ -24,9 +24,8 @@ public:
     void doDrop();
     void lockpiece(const nes_uchar& _lockheight);
     const Piece& getPiece() const;
-    void deletepiece() ;
-    void render(const nes_ushort& _framecounter, const nes_uchar& _level);
     void deletenextpiece();
+    void render(const nes_ushort& _framecounter, const nes_uchar& _level);
     void rendernextpiece(const nes_uchar& _level);
     bool dropped;
     Piece lastdroppedpiece;
@@ -42,7 +41,7 @@ private:
     nes_uchar spawnpiececounter;
     void spawnPiece(const nes_uchar& _spawndelay);
 
-    bool downinterrupted;
+    bool downinterrupted, hidenextpiece;
     nes_uchar das, downcounter, holddowncounter;
     Piece currentpiece, nextpiece;
 };

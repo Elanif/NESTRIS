@@ -68,9 +68,12 @@
 		<Linker>
 			<Add option="-O2" />
 			<Add option="-static-libstdc++" />
+			<Add option="-static-libgcc" />
+			<Add option="-static" />
 			<Add directory="../SFML-2.5.1/lib" />
 		</Linker>
 		<Unit filename="include/ActiveInputs.h" />
+		<Unit filename="include/ConsoleManager.h" />
 		<Unit filename="include/Engine.h" />
 		<Unit filename="include/Input.h" />
 		<Unit filename="include/LevelLines.h" />
@@ -89,6 +92,7 @@
 		<Unit filename="include/random.h" />
 		<Unit filename="nestris.cpp" />
 		<Unit filename="src/ActiveInputs.cpp" />
+		<Unit filename="src/ConsoleManager.cpp" />
 		<Unit filename="src/Engine.cpp" />
 		<Unit filename="src/Input.cpp" />
 		<Unit filename="src/LevelLines.cpp" />

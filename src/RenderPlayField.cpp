@@ -35,6 +35,9 @@ void RenderPlayField::update(const ActiveInputs& _input, const nes_ushort& _fram
             glb::lineclearframecounter=5;
             if (getframemod4()==0) firstframeis4=true;
             else firstframeis4=false;
+            //nes_uchar _spawndelay=20;
+            //piecehandler.sleep(_spawndelay);
+            //piecehandler.hidecurrentpiece(_spawndelay-1);
         }
         else {
             nes_uchar _spawndelay=10+((piecehandler.lastdroppedpiece.y+2)/5)*2; //TODO fidn true formula
@@ -73,7 +76,6 @@ void RenderPlayField::render(const nes_ushort& _framecounter) {
         renderimage(false);
     }
     levellineshandler.render();
-    piecehandler.deletepiece();
     matrixhandler.render(level);
     piecehandler.render(_framecounter,level);
     scorehandler.render();

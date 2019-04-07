@@ -7,7 +7,6 @@
 MatrixContainer::MatrixContainer(TileContainer * _tilecont, const nes_ushort& _frameappearance)
     :Renderer(_tilecont, _frameappearance)
 {
-    updatingmatrix=0;
     hidecounter=sleepcounter=0;
     linescleared=0;
     for (int i=0; i<9;++i) {
@@ -41,17 +40,17 @@ void MatrixContainer::render(const nes_uchar& _level) {
             }
         }
     }
-    else if (updatingmatrix>0) {
-        for (nes_uchar y=2+(5-updatingmatrix)*4; y<2+(5-(updatingmatrix-1))*4; ++y)
+    else if (glb::updatingmatrix>0) {
+        for (nes_uchar y=2+(5-glb::updatingmatrix)*4; y<2+(5-(glb::updatingmatrix-1))*4; ++y)
             for (nes_uchar x=0; x<10; ++x)
                 tilecont->at(glb::playfieldx+x,glb::playfieldy+y-2)=tiletype(_level,newmatrix(x,y));
                 //BlockRenderer::block(renderSurface,newmatrix(x,y),_level,PLAYFIELDX+x*8,PLAYFIELDY+(y-2)*8);
-        for (nes_uchar y=2+(5-(updatingmatrix-1))*4; y<22; ++y)
+        for (nes_uchar y=2+(5-(glb::updatingmatrix-1))*4; y<22; ++y)
             for (nes_uchar x=0; x<10; ++x)
                 tilecont->at(glb::playfieldx+x,glb::playfieldy+y-2)=tiletype(_level,matrix(x,y));
                 //BlockRenderer::block(renderSurface,matrix(x,y),_level,PLAYFIELDX+x*8,PLAYFIELDY+(y-2)*8);
-        --updatingmatrix;
-        if (updatingmatrix==0) matrix=newmatrix;
+        --glb::updatingmatrix;
+        if (glb::updatingmatrix==0) matrix=newmatrix;
         return;
     }
     for (nes_uchar x=0; x<10; ++x) { //TODO maybe optimize to render only new stuff around piece
@@ -91,7 +90,7 @@ nes_uchar MatrixContainer::lockpiece(const Piece& _piece, const nes_ushort&  _fr
     char _tempclearedlines=clearlines();
     if (_tempclearedlines) {
         glb::lineclearframecounter=5;
-        updatingmatrix=5;
+        glb::updatingmatrix=5;
 
     }
     return _tempclearedlines;

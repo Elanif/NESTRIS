@@ -91,7 +91,7 @@ std::vector<std::pair<nes_uchar, nes_uchar> > Piece::nextpiecePos() const { //OU
     std::vector<std::pair<nes_uchar,nes_uchar> > result;
     if (piecetype<0 || piecetype>6) return result;
     for (std::vector<std::pair<nes_uchar,nes_uchar> >::size_type i=0; i< 4; ++i) {
-        result.push_back(std::make_pair(rotationmatrix[piecetype*4+rotation%4][i][0]*8+nextpiecespawn[piecetype][0],rotationmatrix[piecetype*4+rotation%4][i][1]*8+nextpiecespawn[piecetype][1]));
+        result.push_back(std::make_pair(rotationmatrix[piecetype*4+rotation%4][i][0],rotationmatrix[piecetype*4+rotation%4][i][1]));
 
     }
     return result;

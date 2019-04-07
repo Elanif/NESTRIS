@@ -12,13 +12,13 @@ class tiletype {
     tiletype()
         :tilenumber(0)
     {
-        palette_color[0]=palette_color[1]=palette_color[2]= palette_color[3]=0xF;
+        palette_color[0]=palette_color[1]=palette_color[2]= palette_color[3]=0x0D;
     }
     tiletype(const nes_uchar& _level, const nes_uchar& _blocktype)
     :tilenumber(87)
     {
         if (_blocktype==0) {
-            palette_color[0]=palette_color[1]=palette_color[2]= palette_color[3]=0xF;
+            palette_color[0]=palette_color[1]=palette_color[2]= palette_color[3]=0x0D;
         }
         else {
             tilenumber=891+_blocktype;

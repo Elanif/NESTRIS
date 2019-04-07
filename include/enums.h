@@ -60,6 +60,7 @@ namespace glb {
         }
     };
     extern nes_uchar lineclearframecounter;
+    extern nes_uchar updatingmatrix;
     const size_t playfieldx=12;
     const size_t playfieldy=5;
     const size_t nextpiecex=24;
