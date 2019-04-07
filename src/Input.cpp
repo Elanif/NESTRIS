@@ -1,5 +1,6 @@
 #include "Input.h"
 #include<cstdio>
+#include<SFML/Window/Keyboard.hpp>
 Input::Input()
     :leftandright(false)
 {
@@ -28,12 +29,12 @@ ActiveInputs Input::getInput() {
 }
 
 void Input::setup() { //fix parameters
-    inputdependancies.push_back(make_pair(sf::Keyboard::Left,glb::LEFT));
-    inputdependancies.push_back(make_pair(sf::Keyboard::Up,glb::UP));
-    inputdependancies.push_back(make_pair(sf::Keyboard::Right,glb::RIGHT));
-    inputdependancies.push_back(make_pair(sf::Keyboard::Down,glb::DOWN));
-    inputdependancies.push_back(make_pair(sf::Keyboard::A,glb::SELECT));
-    inputdependancies.push_back(make_pair(sf::Keyboard::S,glb::START));
-    inputdependancies.push_back(make_pair(SDL_SCANCODE_Z,B));
-    inputdependancies.push_back(make_pair(sf::Keyboard::V,glb::B));
+    inputdependancies.push_back(std::make_pair(sf::Keyboard::Left,glb::LEFT));
+    inputdependancies.push_back(std::make_pair(sf::Keyboard::Up,glb::UP));
+    inputdependancies.push_back(std::make_pair(sf::Keyboard::Right,glb::RIGHT));
+    inputdependancies.push_back(std::make_pair(sf::Keyboard::Down,glb::DOWN));
+    inputdependancies.push_back(std::make_pair(sf::Keyboard::A,glb::SELECT));
+    inputdependancies.push_back(std::make_pair(sf::Keyboard::S,glb::START));
+    inputdependancies.push_back(std::make_pair(sf::Keyboard::C,glb::A));
+    inputdependancies.push_back(std::make_pair(sf::Keyboard::V,glb::B));
 }

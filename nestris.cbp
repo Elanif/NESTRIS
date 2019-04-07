@@ -14,8 +14,16 @@
 				<Compiler>
 					<Add option="-g" />
 					<Add option="-Wno-reorder" />
+					<Add option="-DSFML_STATIC" />
 					<Add directory="include" />
+					<Add directory="../SFML-2.5.1/include" />
 				</Compiler>
+				<Linker>
+					<Add library="sfml-graphics-d" />
+					<Add library="sfml-window-d" />
+					<Add library="sfml-system-d" />
+					<Add directory="../SFML-2.5.1/lib" />
+				</Linker>
 			</Target>
 			<Target title="Release">
 				<Option output="bin/Release/nestris" prefix_auto="1" extension_auto="1" />
@@ -29,17 +37,18 @@
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
+					<Add library="sfml-graphics" />
+					<Add library="sfml-window" />
+					<Add library="sfml-system" />
 				</Linker>
 			</Target>
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
-			<Add directory="../../CodeBlocks-EP/MinGW/SDL2-2.0.9/i686-w64-mingw32/include/SDL2" />
 			<Add directory="src" />
 			<Add directory="include" />
 			<Add directory="../nestris" />
-			<Add directory="SDL2/SDL2/lib" />
-			<Add directory="SDL2" />
+			<Add directory="../SFML-2.5.1/include" />
 		</Compiler>
 		<ResourceCompiler>
 			<Add directory="include" />
@@ -47,56 +56,26 @@
 			<Add directory="../nestris" />
 		</ResourceCompiler>
 		<Linker>
-			<Add option="-lmingw32 -lSDL2main -lSDL2 -lSDL2_image" />
-			<Add directory="../../CodeBlocks-EP/MinGW/SDL2-2.0.9/i686-w64-mingw32/lib" />
-			<Add directory="G:/CodeBlocks-EP/MinGW/SDL2-2.0.9/i686-w64-mingw32/bin" />
-			<Add directory="SDL2/SDL2/bin" />
-			<Add directory="SDL2/SDL2/lib" />
+			<Add directory="../SFML-2.5.1/lib" />
 		</Linker>
 		<Unit filename="include/ActiveInputs.h" />
-		<Unit filename="include/BlockRenderer.h" />
-		<Unit filename="include/CharRenderer.h" />
 		<Unit filename="include/Engine.h" />
-		<Unit filename="include/GameState.h" />
-		<Unit filename="include/ImageLoader.h" />
 		<Unit filename="include/Input.h" />
-		<Unit filename="include/LevelLines.h" />
-		<Unit filename="include/MatrixContainer.h" />
-		<Unit filename="include/Menu.h" />
-		<Unit filename="include/PFMatrix.h" />
-		<Unit filename="include/Piece.h" />
-		<Unit filename="include/PieceContainer.h" />
-		<Unit filename="include/PlayField.h" />
 		<Unit filename="include/RenderLevelSelect.h" />
-		<Unit filename="include/RenderPlayField.h" />
 		<Unit filename="include/Renderer.h" />
-		<Unit filename="include/Score.h" />
-		<Unit filename="include/SquareRenderer.h" />
-		<Unit filename="include/Statistics.h" />
+		<Unit filename="include/TileContainer.h" />
+		<Unit filename="include/TileRenderer.h" />
 		<Unit filename="include/Window.h" />
 		<Unit filename="include/enums.h" />
 		<Unit filename="include/random.h" />
 		<Unit filename="nestris.cpp" />
 		<Unit filename="src/ActiveInputs.cpp" />
-		<Unit filename="src/BlockRenderer.cpp" />
-		<Unit filename="src/CharRenderer.cpp" />
 		<Unit filename="src/Engine.cpp" />
-		<Unit filename="src/GameState.cpp" />
-		<Unit filename="src/ImageLoader.cpp" />
 		<Unit filename="src/Input.cpp" />
-		<Unit filename="src/LevelLines.cpp" />
-		<Unit filename="src/MatrixContainer.cpp" />
-		<Unit filename="src/Menu.cpp" />
-		<Unit filename="src/PFMatrix.cpp" />
-		<Unit filename="src/Piece.cpp" />
-		<Unit filename="src/PieceContainer.cpp" />
-		<Unit filename="src/PlayField.cpp" />
 		<Unit filename="src/RenderLevelSelect.cpp" />
-		<Unit filename="src/RenderPlayField.cpp" />
 		<Unit filename="src/Renderer.cpp" />
-		<Unit filename="src/Score.cpp" />
-		<Unit filename="src/SquareRenderer.cpp" />
-		<Unit filename="src/Statistics.cpp" />
+		<Unit filename="src/TileContainer.cpp" />
+		<Unit filename="src/TileRenderer.cpp" />
 		<Unit filename="src/Window.cpp" />
 		<Unit filename="src/enums.cpp" />
 		<Unit filename="src/random.cpp" />

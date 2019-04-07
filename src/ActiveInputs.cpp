@@ -6,8 +6,10 @@ ActiveInputs::ActiveInputs(const size_t& _buttons, bool *_prevactiveinputs, bool
 {
     //memcpy?
     //opposing axis handling
-    for (size_t buttoninit=0; buttoninit<_buttons; ++buttoninit) prevactiveinputs[buttoninit]=_prevactiveinputs[buttoninit];
-    for (size_t buttoninit=0; buttoninit<_buttons; ++buttoninit) activeinputs[buttoninit]=_activeinputs[buttoninit];
+    for (size_t buttoninit=0; buttoninit<_buttons; ++buttoninit)
+        prevactiveinputs[buttoninit]=_prevactiveinputs[buttoninit];
+    for (size_t buttoninit=0; buttoninit<_buttons; ++buttoninit)
+        activeinputs[buttoninit]=_activeinputs[buttoninit];
 
 }
 

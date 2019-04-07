@@ -6,18 +6,12 @@
 #include"Engine.h"
 #include<cstdio>
 
-class Window
+class Window : public sf::NonCopyable
 {
     public:
-        Window(const size_t& width, const size_t& height);
-    protected:
+        Window(const size_t& width, const size_t& height, sf::RenderStates _states, const bool& optimized);
     private:
-        void initWindow(const size_t& _width, const size_t& _height);
-        Input* initInput();
-        Input* inputManager;
-        sf::RenderWindow;
-        void mainloop();
-        bool active;
+        Input inputManager;
 };
 
 #endif

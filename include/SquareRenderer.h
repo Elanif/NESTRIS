@@ -1,7 +1,6 @@
 #pragma once
 #ifndef SQUARERENDERER_H
 #define SQUARERENDERER_H
-#include "SDL.h"
 
 class SquareRenderer
 {

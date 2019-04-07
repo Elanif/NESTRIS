@@ -1,6 +1,6 @@
 #ifndef ACTIVEINPUTS_H
 #define ACTIVEINPUTS_H
-#include"SDL.h"
+#include"stddef.h"
 class ActiveInputs {
     public:
         ActiveInputs(const size_t& _buttons, bool *_prevactiveinputs, bool *_activeinputs, bool _leftandright=false);

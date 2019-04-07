@@ -1,14 +1,13 @@
 #include "Renderer.h"
 
-Renderer::Renderer(SDL_Window * _window, const nes_ushort& _frameappearance)
-    :window(_window), frameappearance(_frameappearance)
+Renderer::Renderer(TileContainer* _tilecont, const nes_ushort& _frameappearance)
+    :tilecont(_tilecont), frameappearance(_frameappearance)
 {
-    renderSurface=SDL_GetWindowSurface(window);
+
 }
 Renderer::Renderer()
 {
-    window=NULL;
-    renderSurface=NULL;
+    tilecont=NULL;
 }
 
  void Renderer::hide(const nes_uchar& _hidecounter) {

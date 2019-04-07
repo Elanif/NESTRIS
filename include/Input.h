@@ -1,11 +1,11 @@
 #ifndef INPUT_H
 #define INPUT_H
 #define MAXBUTTONS 8
-#include<SDL.h>
 #include "ActiveInputs.h"
 #include"enums.h"
 #include<vector>
 #include<utility>
+#include<SFML/Window/Event.hpp>
 
 class Input
 {
@@ -19,7 +19,7 @@ class Input
         bool prevactiveinputs[MAXBUTTONS];
         bool activeinputs[MAXBUTTONS];
         bool leftandright;
-        vector<pair<int, int> >inputdependancies;
+        std::vector<std::pair<sf::Keyboard::Key, glb::BTN> >inputdependancies;
         size_t maxbuttons;
 };
 #endif
