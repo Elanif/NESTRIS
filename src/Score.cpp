@@ -18,7 +18,7 @@ Score::Score(TileContainer *_tilecont, const nes_ushort& _frameappearance, const
     maxout=false;
 }
 
-/*void Score::render() {
+void Score::render() {
     if (hidecounter>0) {
         --hidecounter;
         return;
@@ -26,7 +26,7 @@ Score::Score(TileContainer *_tilecont, const nes_ushort& _frameappearance, const
     else {
 
     }
-}*/
+}
 
 
 unsigned int Score::getscore() {

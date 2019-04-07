@@ -8,6 +8,47 @@ Piece::Piece()
     rotation=0;
 }
 
+Piece::Piece(const char& charpiecetype)
+{
+    x=5;
+    y=2;
+    rotation=0;
+    switch(charpiecetype) {
+    case 'T':
+    case 't':
+        piecetype=0;
+        break;
+    case 'J':
+    case 'j':
+        piecetype=1;
+        break;
+    case 'Z':
+    case 'z':
+        piecetype=2;
+        break;
+    case 'O':
+    case 'o':
+        piecetype=3;
+        break;
+    case 'S':
+    case 's':
+        piecetype=4;
+        break;
+    case 'L':
+    case 'l':
+        piecetype=5;
+        break;
+    case 'I':
+    case 'i':
+        piecetype=6;
+        break;
+    default:
+        piecetype=-1;
+        break;
+    }
+}
+
+
 nes_uchar Piece::color() const{
 
     switch(piecetype) {
@@ -46,11 +87,12 @@ std::vector<std::pair<nes_uchar, nes_uchar> > Piece::getPos() const {
     }
     return result;
 }
-std::vector<std::pair<nes_uchar, nes_uchar> > Piece::nextpiecePos() const {
+std::vector<std::pair<nes_uchar, nes_uchar> > Piece::nextpiecePos() const { //OUTDATED
     std::vector<std::pair<nes_uchar,nes_uchar> > result;
     if (piecetype<0 || piecetype>6) return result;
     for (std::vector<std::pair<nes_uchar,nes_uchar> >::size_type i=0; i< 4; ++i) {
         result.push_back(std::make_pair(rotationmatrix[piecetype*4+rotation%4][i][0]*8+nextpiecespawn[piecetype][0],rotationmatrix[piecetype*4+rotation%4][i][1]*8+nextpiecespawn[piecetype][1]));
+
     }
     return result;
 }

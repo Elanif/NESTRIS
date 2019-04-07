@@ -5,10 +5,10 @@
 
 
 RenderPlayField::RenderPlayField(TileContainer * _tilecont, const nes_ushort& _frameappearance, nes_uchar _level):Renderer(_tilecont, _frameappearance), level(_level){
-    //piecehandler = PieceContainer(_tilecont, frameappearance);
+    piecehandler = PieceContainer(_tilecont, frameappearance);
     matrixhandler = MatrixContainer(_tilecont, frameappearance);
-    //scorehandler = Score(_tilecont, frameappearance, true);
-    //levellineshandler = LevelLines(_tilecont, frameappearance, _level);
+    scorehandler = Score(_tilecont, frameappearance, true);
+    levellineshandler = LevelLines(_tilecont, frameappearance, _level);
     //statistics
     //level
     //lines
@@ -24,7 +24,7 @@ RenderPlayField::RenderPlayField(TileContainer * _tilecont, const nes_ushort& _f
 
 void RenderPlayField::update(const ActiveInputs& _input, const nes_ushort& _framecounter) {
     //printf("renderplayfield::update\n");
-    /*piecehandler.inputManager(_input, matrixhandler.getMatrix(), gravity[level]);
+    piecehandler.inputManager(_input, matrixhandler.getMatrix(), gravity[level]);
     if (piecehandler.dropped) {
         nes_uchar linescleared=matrixhandler.lockpiece(piecehandler.lastdroppedpiece,_framecounter); //for some reason the locked piece doesnt appear at first
         scorehandler.lineclear(level,linescleared);
@@ -44,7 +44,7 @@ void RenderPlayField::update(const ActiveInputs& _input, const nes_ushort& _fram
         if (linescleared>=4) {
             tetris=true;
         }
-    }*/
+    }
 }
 
 void RenderPlayField::renderimage(bool blink) {
@@ -72,22 +72,22 @@ void RenderPlayField::render(const nes_ushort& _framecounter) {
         tetris=false;
         renderimage(false);
     }
-    //levellineshandler.render(_framecounter);
-    //piecehandler.deletepiece();
+    levellineshandler.render();
+    piecehandler.deletepiece();
     matrixhandler.render(level);
-    //piecehandler.render(_framecounter,levellineshandler.getlevel());
-    //scorehandler.render(_framecounter);
+    piecehandler.render(_framecounter,level);
+    scorehandler.render();
     if (glb::lineclearframecounter>0 && !firstframeis4 && getframemod4()==0) glb::lineclearframecounter--;
     if (glb::lineclearframecounter>0 && getframemod4()==0) firstframeis4=false;
 }
 
 void RenderPlayField::resetPlayField(const nes_uchar& _level){
     //todo next piece
+    level=_level;
 
     renderimage(false);
-    level=_level;
-    //piecehandler = PieceContainer(tilecont, frameappearance);
+    piecehandler = PieceContainer(tilecont, frameappearance);
     matrixhandler = MatrixContainer(tilecont, frameappearance);
-    //scorehandler = Score(tilecont, frameappearance, true);
-    //levellineshandler = LevelLines(tilecont, frameappearance, _level);
+    scorehandler = Score(tilecont, frameappearance, true);
+    levellineshandler = LevelLines(tilecont, frameappearance, _level);
 }

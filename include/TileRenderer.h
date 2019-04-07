@@ -58,7 +58,7 @@ public:
             }
             if (characters>=16) {
                 spritevector.push_back(newsprite);
-                /*if (spritevector.size()<20) {
+                /*if (spritevector.size()<100) {
                     newsprite.print();
                     printf("\n");
                 }*/
@@ -113,13 +113,13 @@ public:
                 }
             }
         }
-        printf("after update matrix =%I64d\n",trclock.getElapsedTime().asMicroseconds());
+        //printf("after update matrix =%I64d\n",trclock.getElapsedTime().asMicroseconds());
         temptexclass.loadFromImage(finalimageclass);
-        printf("after textureLoadFromImage =%I64d\n",trclock.getElapsedTime().asMicroseconds());
+       // printf("after textureLoadFromImage =%I64d\n",trclock.getElapsedTime().asMicroseconds());
         tempspriteclass.setTexture(temptexclass, true);
-        printf("after setTexture =%I64d\n",trclock.getElapsedTime().asMicroseconds());
+        //printf("after setTexture =%I64d\n",trclock.getElapsedTime().asMicroseconds());
         target.draw(tempspriteclass,states);
-        printf("after draw =%I64d\n",trclock.getElapsedTime().asMicroseconds());
+        //printf("after draw =%I64d\n",trclock.getElapsedTime().asMicroseconds());
         tilecont.resetupdated();
     }
 

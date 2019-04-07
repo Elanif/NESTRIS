@@ -2,12 +2,10 @@
 #include<stddef.h>
 #include"enums.h"
 #include"random.h"
-#include"BlockRenderer.h"
 #include<cstdio>
-#include"SquareRenderer.h"
 
-PieceContainer::PieceContainer(SDL_Window * _window, const nes_ushort& _frameappearance)
-    :Renderer(_window, _frameappearance), downinterrupted(false), das(0), downcounter(0), spawncount(0)
+PieceContainer::PieceContainer(TileContainer * _tilecont, const nes_ushort& _frameappearance)
+    :Renderer(_tilecont, _frameappearance), downinterrupted(false), das(0), downcounter(0), spawncount(0)
 {
     spawnPiece(0);
     spawnPiece(0);
@@ -116,23 +114,25 @@ const Piece& PieceContainer::getPiece() const{
     return currentpiece;
 }
 
-void PieceContainer::deletepiece() {
+void PieceContainer::deletepiece() { //is this even needed now
     for (size_t i=0; i<lastrenderedpos.size(); ++i) { //TODO size:type
-        BlockRenderer::block(renderSurface, 0, 0, lastrenderedpos[i].first,lastrenderedpos[i].second);
+
     }
 }
 
 void PieceContainer::deletenextpiece() {
-    SquareRenderer::square(renderSurface,0,0,0,255,191,103,33,34);
+    for (size_t x=glb::nextpiecex; x<glb::nextpiecex+4;++x)
+        for (size_t y=glb::nextpiecey; y<glb::nextpiecey+4;++y)
+            tilecont->at(x,y)=tiletype();
 
 }
 
 void PieceContainer::rendernextpiece(const nes_uchar& _level) {
-    std::vector<std::pair<nes_uchar, nes_uchar> > piecepositions = nextpiece.nextpiecePos();
-    for (std::vector<std::pair<nes_uchar, nes_uchar> >::size_type i=0; i<piecepositions.size(); ++i) {
+    std::vector<std::pair<nes_uchar, nes_uchar> > piecepositions = nextpiece.getPos();
+    for (std::vector<std::pair<nes_uchar, nes_uchar> >::size_type i=0; i<piecepositions.size(); ++i) { //todo with correct stuff
         size_t _xx=piecepositions[i].first;
         size_t _yy=piecepositions[i].second;
-        BlockRenderer::block(renderSurface, nextpiece.color(), _level, _xx,_yy);
+        tilecont->at(glb::nextpiecex+_xx,glb::nextpiecey+_yy)=tiletype(_level,nextpiece.color());
     }
 
 }
@@ -154,9 +154,8 @@ void PieceContainer::render(const nes_ushort& _framecounter, const nes_uchar& _l
             size_t _xx=piecepositions[i].first;
             size_t _yy=piecepositions[i].second;
             if (PFMatrix::visible(_xx,_yy)) {
-                _xx=_xx*8+PLAYFIELDX;
-                _yy=(_yy-2)*8+PLAYFIELDY;
-                BlockRenderer::block(renderSurface, currentpiece.color(), _level, _xx,_yy);
+                tilecont->at(glb::playfieldx+_xx,glb::playfieldy+_yy-2)=tiletype(_level,currentpiece.color());
+                //printf("currentcolor=%d, nextcolor=%d, level=%d\n",currentpiece.color(),nextpiece.color(),_level);
                 lastrenderedpos.push_back(std::make_pair(_xx,_yy));
             }
         }

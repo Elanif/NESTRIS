@@ -5,9 +5,9 @@
 #include "Renderer.h"
 #include"ActiveInputs.h"
 #include "Score.h"
-//#include"PieceContainer.h"
+#include"PieceContainer.h"
 #include"MatrixContainer.h"
-//#include"LevelLines.h"
+#include"LevelLines.h"
 #include"enums.h"
 
 class RenderPlayField : public Renderer
@@ -21,13 +21,13 @@ class RenderPlayField : public Renderer
     private:
         void renderimage(bool blink);
         MatrixContainer matrixhandler;
-        bool tetris;/*
+        bool tetris;
         PieceContainer piecehandler;
 
         Score scorehandler;
 
         LevelLines levellineshandler;
-*/
+
         nes_uchar level;
         nes_uchar gravity[255];
 

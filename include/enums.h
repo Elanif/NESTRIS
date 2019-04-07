@@ -30,6 +30,7 @@
 #ifndef incframe
 #define incframe glb::FrameCounter::inc
 #endif // incframe
+#include "stddef.h"
 
 namespace glb {
     enum BTN {
@@ -59,6 +60,13 @@ namespace glb {
         }
     };
     extern nes_uchar lineclearframecounter;
+    const size_t playfieldx=12;
+    const size_t playfieldy=5;
+    const size_t nextpiecex=24;
+    const size_t nextpiecey=13;
+    const size_t linesx=19;
+    const size_t linesy=2;
+    const size_t levelx=26;
 
 }
 

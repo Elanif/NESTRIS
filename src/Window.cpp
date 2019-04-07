@@ -32,7 +32,9 @@ Window::Window(const size_t& _width, const size_t& _height, sf::RenderStates _st
             //SFML update window
             //window.clear();
             tilerend.drawmod(window, _state);
+            printf("%I64d before display\n",elapsedtime.getElapsedTime().asMicroseconds());
             window.display();
+            printf("%I64d after display\n",elapsedtime.getElapsedTime().asMicroseconds());
             while (window.pollEvent(event))
             {
                 if (event.type == sf::Event::Closed)

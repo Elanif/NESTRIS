@@ -19,7 +19,7 @@ class tiletype {
             palette_color[0]=palette_color[1]=palette_color[2]= palette_color[3]=0xF;
         }
         else {
-            tilenumber=733+_blocktype;
+            tilenumber=891+_blocktype;
             palette_color[0]=colors[_level][0];
             palette_color[1]=colors[_level][1];
             palette_color[2]=colors[_level][2];

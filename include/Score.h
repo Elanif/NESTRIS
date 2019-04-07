@@ -15,6 +15,7 @@ class Score : public Renderer
         unsigned int getscore();
         void softdrop(nes_uchar);
         void lineclear(const nes_uchar& level, const nes_uchar& linescleared) ; //TODO var type
+        void render();
     protected:
 
     private:

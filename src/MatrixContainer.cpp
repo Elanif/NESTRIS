@@ -26,26 +26,29 @@ void MatrixContainer::render(const nes_uchar& _level) {
         --hidecounter;
         return;
     }
-    const size_t playfieldx=5;
-    const size_t playfieldy=5;
     if (glb::lineclearframecounter>0) {    //TODO how does pause interact with the clear animation?
         if (getframemod4()==0) {
             for (size_t i=0; i<linescleared; ++i ){
-                    printf("blinkscreencounter= %d, linesclearedarray[%d]=%d\n",glb::lineclearframecounter,i,linesclearedarray[i]);
-                matrix(glb::lineclearframecounter-1,linesclearedarray[i])=0;
-                matrix(10-glb::lineclearframecounter,linesclearedarray[i])=0;
-                printf("matrix(%d,%d)\n",glb::lineclearframecounter,linesclearedarray[i]);
+                size_t x=glb::lineclearframecounter-1;
+                size_t y=linesclearedarray[i];
+                matrix(x,y)=0;
+                tilecont->at(x,y-2)=tiletype(_level,matrix(x,y));
+
+                x=10-glb::lineclearframecounter;
+                //size_t y=linesclearedarray[i];
+                matrix(x,y)=0;
+                tilecont->at(x,y-2)=tiletype(_level,matrix(x,y));
             }
         }
     }
     else if (updatingmatrix>0) {
         for (nes_uchar y=2+(5-updatingmatrix)*4; y<2+(5-(updatingmatrix-1))*4; ++y)
             for (nes_uchar x=0; x<10; ++x)
-                tilecont->at(playfieldx+x,playfieldy+y)=tiletype(_level,newmatrix(x,y));
+                tilecont->at(glb::playfieldx+x,glb::playfieldy+y-2)=tiletype(_level,newmatrix(x,y));
                 //BlockRenderer::block(renderSurface,newmatrix(x,y),_level,PLAYFIELDX+x*8,PLAYFIELDY+(y-2)*8);
         for (nes_uchar y=2+(5-(updatingmatrix-1))*4; y<22; ++y)
             for (nes_uchar x=0; x<10; ++x)
-                tilecont->at(playfieldx+x,playfieldy+y)=tiletype(_level,matrix(x,y));
+                tilecont->at(glb::playfieldx+x,glb::playfieldy+y-2)=tiletype(_level,matrix(x,y));
                 //BlockRenderer::block(renderSurface,matrix(x,y),_level,PLAYFIELDX+x*8,PLAYFIELDY+(y-2)*8);
         --updatingmatrix;
         if (updatingmatrix==0) matrix=newmatrix;
@@ -53,7 +56,7 @@ void MatrixContainer::render(const nes_uchar& _level) {
     }
     for (nes_uchar x=0; x<10; ++x) { //TODO maybe optimize to render only new stuff around piece
         for (nes_uchar y=2; y<22; ++y) {
-            tilecont->at(playfieldx+x,playfieldy+y)=tiletype(_level,newmatrix(x,y));
+            tilecont->at(glb::playfieldx+x,glb::playfieldy+y-2)=tiletype(_level,matrix(x,y));
         }
     }
     //TODO
@@ -121,7 +124,7 @@ nes_uchar MatrixContainer::clearlines() {
             newmatrix(i,j)=matrix(i,j);
         }
     }
-    for (size_t i=lowestline, rowcounter=lowestline; i>=1&&rowcounter>=1; --i,--rowcounter) { //20 because playfield isn't saved over 20
+    for (size_t i=lowestline, rowcounter=lowestline; i>=1&&rowcounter>=1; --i,--rowcounter) { //20 because glb::playfield isn't saved over 20
         while(rowcounter>=1&&whichlines[rowcounter]) --rowcounter;
         for (size_t j=0; j<10; ++j) {
             newmatrix(j,i)=newmatrix(j,rowcounter);

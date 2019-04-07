@@ -62,9 +62,11 @@
 		<Unit filename="include/ActiveInputs.h" />
 		<Unit filename="include/Engine.h" />
 		<Unit filename="include/Input.h" />
+		<Unit filename="include/LevelLines.h" />
 		<Unit filename="include/MatrixContainer.h" />
 		<Unit filename="include/PFMatrix.h" />
 		<Unit filename="include/Piece.h" />
+		<Unit filename="include/PieceContainer.h" />
 		<Unit filename="include/RenderLevelSelect.h" />
 		<Unit filename="include/RenderPlayField.h" />
 		<Unit filename="include/Renderer.h" />
@@ -78,9 +80,11 @@
 		<Unit filename="src/ActiveInputs.cpp" />
 		<Unit filename="src/Engine.cpp" />
 		<Unit filename="src/Input.cpp" />
+		<Unit filename="src/LevelLines.cpp" />
 		<Unit filename="src/MatrixContainer.cpp" />
 		<Unit filename="src/PFMatrix.cpp" />
 		<Unit filename="src/Piece.cpp" />
+		<Unit filename="src/PieceContainer.cpp" />
 		<Unit filename="src/RenderLevelSelect.cpp" />
 		<Unit filename="src/RenderPlayField.cpp" />
 		<Unit filename="src/Renderer.cpp" />
