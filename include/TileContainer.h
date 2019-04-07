@@ -28,7 +28,10 @@ class tiletype {
             palette_color[3]=colors[_level][3];
         }
     }
-
+    tiletype(const size_t& _tilenumber, const nes_uchar& c1, const nes_uchar& c2, const nes_uchar& c3, const nes_uchar& c4)
+        :tilenumber(_tilenumber),
+        palette_color{c1,c2,c3,c4}
+    {}
     bool operator==(const tiletype& t2) const {
         return (this->tilenumber==t2.tilenumber)&&(this->palette_color[0]==t2.palette_color[0])&&(this->palette_color[1]==t2.palette_color[1])&&(this->palette_color[2]==t2.palette_color[2])&&(this->palette_color[3]==t2.palette_color[3]);
     }

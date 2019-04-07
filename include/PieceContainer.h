@@ -44,5 +44,7 @@ private:
     bool downinterrupted, hidenextpiece;
     nes_uchar das, downcounter, holddowncounter;
     Piece currentpiece, nextpiece;
+
+    static nes_uchar spawn_table[7];
 };
 #endif // PIECE_H

@@ -90,29 +90,29 @@ ConsoleManager::ConsoleManager()
     fps.set_value<double>(0);
     fps.set_position({0,0});
 
-    OutputInfo& input_delay=add_value("input delay","microseconds");
+    OutputInfoLow<sf::Int64> _input("input delay","microseconds",false);
+    OutputInfo& input_delay=add_value(_input);
     input_delay.set_value<sf::Int64>(0);
     input_delay.set_position({0,1});
 
-    OutputInfo& render_delay=add_value("render delay","microseconds");
+    OutputInfoLow<sf::Int64> _render("render delay","microseconds",false);
+    OutputInfo& render_delay=add_value(_render);
     render_delay.set_value<sf::Int64>(0);
     render_delay.set_position({0,2});
 
-    OutputInfo& draw_delay=add_value("draw delay","microseconds");
+    OutputInfoLow<sf::Int64> _draw("draw delay","microseconds",false);
+    OutputInfo& draw_delay=add_value(_draw);
     draw_delay.set_value<sf::Int64>(0);
     draw_delay.set_position({0,3});
 
-    OutputInfo& display_delay=add_value("display delay","microseconds");
+    OutputInfoLow<sf::Int64> _display("display delay","microseconds",false);
+    OutputInfo& display_delay=add_value(_display);
     display_delay.set_value<sf::Int64>(0);
     display_delay.set_position({0,4});
 
-    OutputInfo& current_menu=add_value("current menu","");
-    current_menu.set_value<int>(0);
-    current_menu.set_position({0,5});
-
     OutputInfo& error=add_value("error","");
     error.set_value<int>(0);
-    error.set_position({0,6});
+    error.set_position({0,5});
 
     OutputInfo& system=add_value("system","");
     system.set_value<int>(0);

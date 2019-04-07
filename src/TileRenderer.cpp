@@ -2,6 +2,7 @@
 #include"ConsoleManager.h"
 #include"enums.h"
 #include<string>
+#include<fstream>
 size_t itox(const size_t& i, const size_t& width, const size_t& height) {
     return i%width;
 }
@@ -122,13 +123,13 @@ size_t TileRenderer::add_or_find_texture(const tiletype& newtile, sf::Image* pre
     if (texturemap.find(temptile)==texturemap.end()) { //new texture
 
         if (itoyrect(texturenumber,texturesize,texturesize,tilesize.x,tilesize.x)>texturesize) {
-            glb::cm.update("error",std::string("Too many textures"));
+            glb::cm.update<std::string>("error",std::string("Too many textures"));
             throw texturenumber; //TODOBETTER
         }
 
-        glb::cm.update("system",std::string("Creating new texture"));
+        glb::cm.update<std::string>("system",std::string("Creating new texture"));
 
-        if (!prerendering) {
+        if (!prerendering) { //TODO USE OFSTREAM
             fprintf(newtextures,"%d %x %x %x %x\n",temptile.tilenumber,temptile.palette_color[0],temptile.palette_color[1],temptile.palette_color[2],temptile.palette_color[3]);
         }
 
@@ -181,7 +182,6 @@ size_t TileRenderer::add_or_find_texture(const tiletype& newtile, sf::Image* pre
         else {
             for (size_t pixelx=0; pixelx<tilesize.x; ++pixelx) {
                 for (size_t pixely=0; pixely<tilesize.y; ++pixely) {
-                    size_t tempi=xytoi(pixelx,pixely,tilesize.x,tilesize.y)*4;
                     nes_uchar tiletypetemp=spritetemp->arr[pixelx][pixely];
                     prerendering->setPixel(pixelx+itoxrect(texturenumber,texturesize,texturesize,tilesize.x,tilesize.y),
                                         pixely+itoyrect(texturenumber,texturesize,texturesize,tilesize.x,tilesize.y),
@@ -233,7 +233,7 @@ void TileRenderer::drawvertex(sf::RenderTarget& target, sf::RenderStates states)
     for (size_t x=0; x<width; ++x) {
         for (size_t y=0; y<height; ++y) {
             if (tilecont.updated(x,y)) {
-                const int primacifra[4]={
+                const int primacifra[4]={ //could be made into a routine to clear some of this code
                     tilecont.atconst(x,y).palette_color[0]/16,
                     tilecont.atconst(x,y).palette_color[1]/16,
                     tilecont.atconst(x,y).palette_color[2]/16,
@@ -371,9 +371,19 @@ void TileRenderer::drawimage(sf::RenderTarget& target, sf::RenderStates states){
 }
 
 void TileRenderer::add_frequent_textures() {
-    newtextures=fopen("Pre-rendered textures.txt","r");
+    std::ifstream previous_textures("Pre-rendered textures.txt");
+    if (!previous_textures) {
+        glb::cm.update<std::string>("error","Couldn't open previous textures");
+    }
+
     sf::Image texture_image;
     texture_image.create(texturesize, texturesize);
+    size_t tilenumber;
+    unsigned int c1,c2,c3,c4; //using char would read 1 char at a time e.g. 2a read as 2
+    while ((previous_textures>>std::dec>>tilenumber>>std::hex>>c1>>c2>>c3>>c4>>std::dec)) {
+        add_or_find_texture(tiletype(tilenumber,c1,c2,c3,c4),&texture_image);
+    }
+    previous_textures.close();
     tiletype block;
     add_or_find_texture(block, &texture_image);
     block=tiletype(0,0);
@@ -387,7 +397,6 @@ void TileRenderer::add_frequent_textures() {
         add_or_find_texture(block, &texture_image);
     }
     tiletexture.loadFromImage(texture_image);
-    fclose(newtextures);
     newtextures=fopen("Pre-rendered textures.txt","a");
 }
 
@@ -407,8 +416,8 @@ void TileRenderer::drawmod(sf::RenderTarget& target, sf::RenderStates states)
         drawvertex(target, states);
         break;
     default:
+        glb::cm.update<std::string>("error","Warning, default drawmod");
         drawimage(target,states);
-        //TODO CM WARNING
         break;
     }
 }

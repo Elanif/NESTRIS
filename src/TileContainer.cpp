@@ -20,9 +20,6 @@ const tiletype& TileContainer::at(const size_t& x, const size_t& y) const {
     if (x<0||x>=width||y<0||y>=height) {
         std::stringstream errorstream;
         errorstream<<"out of bounds in tilecontainer"<<x<<"/"<<width<<" "<<y<<"/"<<height;
-        //std::string errorstring=std::string("out of bounds in tilecontainer")+x+std::string("/")+width+std::string(" ")+y+std::string("/")+height;
-        /*char *tempstr="";
-        sprintf(tempstr,"out of bounds in tilecontainer %d %d width height= %d %d\n", x, y,width,height);*/
         glb::cm.update("error",errorstream.str());
         return oob_error;
     }
@@ -34,10 +31,6 @@ tiletype& TileContainer::at(const size_t& x, const size_t& y) {
         std::stringstream errorstream;
         errorstream<<"out of bounds in tilecontainer"<<x<<"/"<<width<<" "<<y<<"/"<<height;
         glb::cm.update("error",errorstream.str());
-        /*std::string errorstring=std::string("out of bounds in tilecontainer")+x+std::string("/")+width+std::string(" ")+y+std::string("/")+height;
-        glb::cm.update("error",errorstring);
-        sprintf(tempstr,"out of bounds in tilecontainer %d %d width height= %d %d\n", x, y,width,height);
-        glb::cm.update("error",tempstr);*/
         return oob_error;
     }
     else {

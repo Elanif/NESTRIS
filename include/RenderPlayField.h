@@ -35,7 +35,8 @@ class RenderPlayField : public Renderer
         bool paused;
         nes_uchar pausecounter;
 
-
+        void init_assets();
+        std::vector<tiletype> renderblink;
         /*
         int lockpiece();
         int updatePlayField(const ActiveInputs& _input) ;

@@ -21,7 +21,6 @@ void Engine::frame(const ActiveInputs& _inputs) {
     ++framecounter;
     incframe();
     random::prng();
-    glb::cm.update<int>("current menu",currentmenu);
     switch(currentmenu) {
     case LEVELSELECT:
         RLS.renderLevelSelect(levelselectreload);

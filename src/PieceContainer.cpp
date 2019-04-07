@@ -129,24 +129,21 @@ void PieceContainer::rendernextpiece(const nes_uchar& _level) {
         for (size_t y=glb::nextpiecey; y<glb::nextpiecey+4;++y)
             tilecont->at(x,y)=tiletype(0,0);
     if (!hidenextpiece) {
-        std::vector<std::pair<nes_uchar, nes_uchar> > piecepositions = nextpiece.nextpiecePos();
-        for (std::vector<std::pair<nes_uchar, nes_uchar> >::size_type i=0; i<piecepositions.size(); ++i) { //todo with correct stuff
-            size_t _xx=piecepositions[i].first;
-            size_t _yy=piecepositions[i].second;
-            tilecont->at(glb::nextpiecex+_xx,glb::nextpiecey+_yy)=tiletype(_level,nextpiece.color());
+        std::vector<std::pair<nes_schar, nes_schar> > piecepositions = nextpiece.nextpiecePos();
+        for (std::vector<std::pair<nes_schar, nes_schar> >::size_type i=0; i<piecepositions.size(); ++i) { //TODO decide how it handles position
+            size_t _xx=glb::nextpiecex+piecepositions[i].first;
+            size_t _yy=glb::nextpiecey+piecepositions[i].second;
+            tilecont->at(_xx,_yy)=tiletype(_level,nextpiece.color());
         }
     }
 }
 
-void PieceContainer::render(const nes_ushort& _framecounter, const nes_uchar& _level) {
-    //printf("piecetype=%d, color=%d, blocks=%d, x=%d, y=%d, x1=%d, y1=%d\n",currentpiece.piecetype,currentpiece.color(),currentpiece.getPos().size(),currentpiece.x,currentpiece.y,currentpiece.getPos()[0].first,currentpiece.getPos()[0].second);
+void PieceContainer::render(const nes_ushort& _framecounter, const nes_uchar& _level) { //TODO the first piece renders a little bit late
     if (hidecounter>0) {
-        //printf("hidecounter=%d\n",hidecounter);
         --hidecounter;
         return;
     }
     if (glb::lineclearframecounter>0) return;
-    lastrenderedpos.clear();
     if (hidecountercurrentpiece>0) {
         --hidecountercurrentpiece;
     }
@@ -157,8 +154,6 @@ void PieceContainer::render(const nes_ushort& _framecounter, const nes_uchar& _l
             size_t _yy=piecepositions[i].second;
             if (PFMatrix::visible(_xx,_yy)) {
                 tilecont->at(glb::playfieldx+_xx,glb::playfieldy+_yy-2)=tiletype(_level,currentpiece.color());
-                //printf("currentcolor=%d, nextcolor=%d, level=%d\n",currentpiece.color(),nextpiece.color(),_level);
-                lastrenderedpos.push_back(std::make_pair(_xx,_yy));
             }
         }
     }
@@ -167,36 +162,42 @@ void PieceContainer::render(const nes_ushort& _framecounter, const nes_uchar& _l
 }
 
 
-void PieceContainer::spawnPiece(const nes_uchar& _spawndelay) { //TODO its not using the spawnID table which causes weird weights
+void PieceContainer::spawnPiece(const nes_uchar& _spawndelay) { //TODO check if it's right
     currentpiece=nextpiece;
-    nes_uchar spawnID=nextpiece.piecetype; //creates a piece next to nextpiece
+    nes_uchar spawnID=spawn_table[nextpiece.piecetype]; //creates a piece next to nextpiece
     ++spawncount;
     nes_uchar index=random::prng()>>8;
     index+=spawncount;
     index&=7;
     nes_uchar newSpawnID;
     if (index!=7) {
-        newSpawnID = index;
+        newSpawnID = spawn_table[index];
         if (newSpawnID == spawnID) {
             random::prng();
             index=random::prng()>>8;
             index&=7;
-            index+=spawncount;
+            index+=spawnID;
             index%=7;
-            newSpawnID = index;
+            newSpawnID = spawn_table[index];
         }
     }
     else {
         random::prng();
         index=random::prng()>>8;
         index&=7;
-        index+=spawncount;
+        index+=spawnID;
         index%=7;
-        newSpawnID = index;
+        newSpawnID = spawn_table[index];
     }
     spawnID = newSpawnID;
-    //printf("spawnid=%d\n",spawnID);
-    nextpiece.piecetype=spawnID;
+    nes_uchar realID=0;
+    for (size_t i=0; i<7;++i) {
+        if (spawn_table[i]==spawnID) {
+            realID=i;
+            break;
+        }
+    }
+    nextpiece.piecetype=realID;
     downcounter=holddowncounter=0;
 }
 void PieceContainer::hidecurrentpiece(const nes_uchar& _hidecurrent) {
@@ -209,3 +210,4 @@ void PieceContainer::lockpiece(const nes_uchar& _lockheight) {
     downinterrupted=true; //TODO where to put this
 }
 
+nes_uchar PieceContainer::spawn_table[7]={0x02,0x07,0x08,0x0A,0x0B,0x0E,0x12};
