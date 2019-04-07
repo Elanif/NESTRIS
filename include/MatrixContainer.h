@@ -14,7 +14,7 @@ class MatrixContainer : public Renderer
         MatrixContainer() {};
         MatrixContainer(SDL_Window * _window, const nes_ushort& _frameappearance);
         bool collision(const Piece& _piece) const;
-        nes_uchar lockpiece(const Piece& _piece);
+        nes_uchar lockpiece(const Piece& _piece, const nes_ushort&  _framecounter);
         nes_uchar clearlines();
         const PFMatrix& getMatrix() const {return matrix;};
         nes_uchar getBlock(const nes_uchar& x, const nes_uchar& y);
@@ -24,7 +24,7 @@ class MatrixContainer : public Renderer
 
     private:
         nes_uchar linesclearedarray[22];
-        nes_schar updatingmatrix, linescleared;
+        nes_uchar updatingmatrix, linescleared;
         PFMatrix newmatrix;
         PFMatrix matrix;
 };

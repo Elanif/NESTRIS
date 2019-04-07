@@ -3,6 +3,7 @@
 #include"SquareRenderer.h"
 #include"random.h"
 #include"PieceContainer.h"
+#include"SDL_Image.h"
 #include<cstdio>
 
 
@@ -19,9 +20,8 @@ RenderPlayField::RenderPlayField(SDL_Window * _window, const nes_ushort& _framea
     for (size_t i=19; i<29; ++i) gravity[i]=2;
     for (size_t i=29; i<255; ++i) gravity[i]=1;
 
-    /*
-    blinkscreencounter=spawnpiececounter=0;
-;*/
+    blinkscreencounter=1;
+
 }
 
 void RenderPlayField::update(const ActiveInputs& _input, const nes_ushort& _framecounter) {
@@ -34,12 +34,7 @@ void RenderPlayField::update(const ActiveInputs& _input, const nes_ushort& _fram
         piecehandler.lockpiece(piecehandler.lastdroppedpiece.y);
         piecehandler.dropped=false;
         if (linescleared>=4) {
-            blinkingscrencounter=((_framecounter+1)/5)*4-_framecounter+1; //+1 so the extra frame it renders the normal scren
-        //in render
-        //if %4==3 bilnk
-        //if %4==0 no blink
-        //--
-
+            printf("setting RPF blinkscreencounter=%d\n",blinkscreencounter=((_framecounter+20)/5)*5-_framecounter+2); //+1 so the extra frame it renders the normal scren
         }
     }
     /*if piecehandler.dropped
@@ -53,14 +48,29 @@ void RenderPlayField::update(const ActiveInputs& _input, const nes_ushort& _fram
 
 void RenderPlayField::render(const nes_ushort& _framecounter) {
 
-    /*if (blinkscreencounter--%4==3) {//postfix or prefix?
-        SDL_Surface * surfacePlayField = IMG_Load( "playfieldblink.png" );
-        if( surfacePlayField== NULL )
-        {
-            printf( "Unable to load image %s! SDL Error: %s\n", "levelselectnumbers.png", SDL_GetError() );
+        //in render
+        //if %4==3 bilnk
+        //if %4==0 no blink
+        //--
+    if (blinkscreencounter>0) {
+        if (blinkscreencounter%4==2) {//postfix or prefix?
+            SDL_Surface * surfacePlayField = IMG_Load( "playfieldblink.png" );
+            if( surfacePlayField== NULL )
+            {
+                printf( "Unable to load image %s! SDL Error: %s\n", "playfieldblink.png", SDL_GetError() );
+            }
+            SDL_BlitSurface(surfacePlayField, NULL, renderSurface, NULL);
         }
-        SDL_BlitSurface(surfacePlayField, NULL, renderSurface, NULL);
-    }*/
+        else if (blinkscreencounter%4==1) {
+            SDL_Surface * surfacePlayField = IMG_Load( "playfield.png" );
+            if( surfacePlayField== NULL )
+            {
+                printf( "Unable to load image %s! SDL Error: %s\n", "playfield.png", SDL_GetError() );
+            }
+            SDL_BlitSurface(surfacePlayField, NULL, renderSurface, NULL);
+        }
+        --blinkscreencounter;
+    }
     //levellineshandler.render(_framecounter);
     piecehandler.deletepiece();
     matrixhandler.render(level);

@@ -26,6 +26,7 @@ class RenderPlayField : public Renderer
         LevelLines levellineshandler;
         nes_uchar level;
         nes_uchar gravity[255];
+        nes_uchar blinkscreencounter;
         /*
         int lockpiece();
         int updatePlayField(const ActiveInputs& _input) ;

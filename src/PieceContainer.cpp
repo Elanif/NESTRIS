@@ -10,6 +10,7 @@ PieceContainer::PieceContainer(SDL_Window * _window, const nes_ushort& _frameapp
 {
     spawnPiece(0);
     spawnPiece(0);
+    hidecounter=sleepcounter=0;
 }
 bool collision(const PFMatrix& _pfmatrix, const Piece& _piece) {
     bool collision = false;
@@ -120,9 +121,9 @@ void PieceContainer::deletepiece() {
 }
 
 void PieceContainer::deletenextpiece() {
-    for (nes_uchar x=0; x<3; ++x)
+    for (nes_uchar x=0; x<4; ++x)
         for (nes_uchar y=0; y<3; ++y)
-            BlockRenderer::block(renderSurface, 0, 0, NEXTPIECEX+x*8, NEXTPIECEY+y*8);
+            BlockRenderer::block(renderSurface, 0, 0, NEXTPIECEX+x*8-8, NEXTPIECEY+y*8);
 
 }
 
@@ -166,7 +167,7 @@ void PieceContainer::render(const nes_ushort& _framecounter, const nes_uchar& _l
 }
 
 
-void PieceContainer::spawnPiece(const nes_uchar& _spawndelay) {
+void PieceContainer::spawnPiece(const nes_uchar& _spawndelay) { //TODO its not using the spawnID table which causes weird weights
     currentpiece=nextpiece;
     nes_uchar spawnID=nextpiece.piecetype; //creates a piece next to nextpiece
     ++spawncount;

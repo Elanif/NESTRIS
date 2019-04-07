@@ -15,6 +15,8 @@ MatrixContainer::MatrixContainer(SDL_Window * _window, const nes_ushort& _framea
     {
         printf( "SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError() );
     }
+    hidecounter=sleepcounter=0;
+    blinkscreencounter=linescleared=0;
 }
 
 nes_uchar MatrixContainer::getBlock(const nes_uchar& x, const nes_uchar& y) {
@@ -27,7 +29,10 @@ void MatrixContainer::render(const nes_uchar& _level) {
         return;
     }
     if (blinkscreencounter>0) {    //TODO how does pause interact with the clear animation?
+        int _ttest;
+        scanf("%d",&_ttest);
         for (size_t i=0; i<linescleared; ++i ){
+                printf("blinkscreencounter= %d, linesclearedarray[%d]=%d\n",blinkscreencounter,i,linesclearedarray[i]);
             matrix(blinkscreencounter/4,linesclearedarray[i])=0;
             matrix(9-blinkscreencounter/4,linesclearedarray[i])=0;
         }
@@ -82,7 +87,7 @@ nes_uchar MatrixContainer::lockpiece(const Piece& _piece, const nes_ushort&  _fr
     }
     char _tempclearedlines=clearlines();
     if (_tempclearedlines) {
-        blinkscreencounter=((_framecounter+1)/5)*4;
+        blinkscreencounter=((_framecounter+20)/5)*5-_framecounter+1;
         updatingmatrix=5;
 
     }
