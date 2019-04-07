@@ -54,7 +54,7 @@ texturenumber(0)
         }
     }
     else if (drawmethod==DRAWTEXTURE) {
-        texturesize=sf::Texture::getMaximumSize();
+        texturesize=sf::Texture::getMaximumSize()<512?sf::Texture::getMaximumSize():512;
         if (!tiletexture.create(texturesize,texturesize)) {
             //error
         }
@@ -64,7 +64,11 @@ texturenumber(0)
             verteximage[i+1].position=sf::Vector2f(itox(i/4,width,height)+1,itoy(i/4,width,height));
             verteximage[i+2].position=sf::Vector2f(itox(i/4,width,height)+1,itoy(i/4,width,height)+1);
             verteximage[i+3].position=sf::Vector2f(itox(i/4,width,height),itoy(i/4,width,height)+1);
-            verteximage[i].color=verteximage[i+1].color=verteximage[i+2].color=verteximage[i+3].color=sf::Color::Black;
+            verteximage[i].position=sf::Vector2f(itoxrect(i/4,width,height,8,8),itoyrect(i/4,width,height,8,8));
+            verteximage[i+1].position=sf::Vector2f(itoxrect(i/4,width,height,8,8)+8,itoyrect(i/4,width,height,8,8));
+            verteximage[i+2].position=sf::Vector2f(itoxrect(i/4,width,height,8,8)+8,itoyrect(i/4,width,height,8,8)+8);
+            verteximage[i+3].position=sf::Vector2f(itoxrect(i/4,width,height,8,8),itoyrect(i/4,width,height,8,8)+8);
+            //verteximage[i].color=verteximage[i+1].color=verteximage[i+2].color=verteximage[i+3].color=sf::Color::Black;
         }
     }
 }
@@ -82,7 +86,7 @@ bool TileRenderer::load(const std::string& tilefile)
         size_t characters=0;
         sprite newsprite;
         for (characters=0; characters<16&&!feof(spritefile); ++characters) {
-            int hex;
+            unsigned int hex;
             fscanf(spritefile,"%x",&hex);
             if (characters<8) {
                 for (size_t i=0; i<8; ++i)
@@ -159,27 +163,32 @@ void TileRenderer::drawtexture(sf::RenderTarget& target, sf::RenderStates states
                     }
                     tiletexture.update(tempquadretto,8,8,itoxrect(texturenumber,texturesize,texturesize,8,8),itoyrect(texturenumber,texturesize,texturesize,8,8));
                     whereisthistexture=texturenumber;
-                    //TODO tiletexture[tile]=key
+                    texturemap[tilecont.atconst(x,y)]=whereisthistexture;
                     ++texturenumber;
                 }
                 else {
-                    std::unordered_map<tiletype, size_t>::const_iterator finditerator= texturemap.find(tilecont.atconst(x,y));
-                    whereisthistexture=finditerator->second;
+                    //std::unordered_map<tiletype, size_t>::const_iterator finditerator= texturemap.find(tilecont.atconst(x,y));
+                    //whereisthistexture=finditerator->second;
+                    whereisthistexture=texturemap[tilecont.atconst(x,y)];
                 }
                 const size_t tempi=xytoi(x,y,width,height)*4;
                 const sf::Vector2u texturesize=tiletexture.getSize();
-                const size_t textureposx=itoxrect(whereisthistexture,texturesize.x,texturesize.y,8,8); //TODO CORRECT ORDER?
-                const size_t textureposy=itoyrect(whereisthistexture,texturesize.x,texturesize.y,8,8); //TODO CORRECT ORDER?
+                size_t textureposx=itoxrect(whereisthistexture,texturesize.x,texturesize.y,8,8); //TODO CORRECT ORDER?
+                size_t textureposy=itoyrect(whereisthistexture,texturesize.x,texturesize.y,8,8); //TODO CORRECT ORDER?
                 verteximage[tempi].texCoords=sf::Vector2f(textureposx,textureposy);
                 verteximage[tempi+1].texCoords=sf::Vector2f(textureposx+8,textureposy);
                 verteximage[tempi+2].texCoords=sf::Vector2f(textureposx+8,textureposy+8);
                 verteximage[tempi+3].texCoords=sf::Vector2f(textureposx,textureposy+8);
+                /*verteximage[0].texCoords=sf::Vector2f(textureposx,textureposy);
+                verteximage[0+1].texCoords=sf::Vector2f(textureposx+8,textureposy);
+                verteximage[0+2].texCoords=sf::Vector2f(textureposx+8,textureposy+8);
+                verteximage[0+3].texCoords=sf::Vector2f(textureposx,textureposy+8);*/
             }
         }
     }
-    tempspriteclass.setTexture(tiletexture);
-    target.draw(tempspriteclass,states);
-    //target.draw(verteximage,states);
+    //tempspriteclass.setTexture(tiletexture);
+    //target.draw(tempspriteclass,states);
+    target.draw(verteximage,states);
     tilecont.resetupdated();
 }
 

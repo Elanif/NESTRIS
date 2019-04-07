@@ -44,6 +44,15 @@
 			</Target>
 		</Build>
 		<Compiler>
+			<Add option="-Wnon-virtual-dtor" />
+			<Add option="-Wredundant-decls" />
+			<Add option="-Wundef" />
+			<Add option="-Wfloat-equal" />
+			<Add option="-Winline" />
+			<Add option="-Wunreachable-code" />
+			<Add option="-Wswitch-enum" />
+			<Add option="-Wswitch-default" />
+			<Add option="-pedantic" />
 			<Add option="-Wall" />
 			<Add option="-std=c++11" />
 			<Add directory="src" />
@@ -57,6 +66,8 @@
 			<Add directory="../nestris" />
 		</ResourceCompiler>
 		<Linker>
+			<Add option="-O2" />
+			<Add option="-static-libstdc++" />
 			<Add directory="../SFML-2.5.1/lib" />
 		</Linker>
 		<Unit filename="include/ActiveInputs.h" />

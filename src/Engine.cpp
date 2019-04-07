@@ -37,5 +37,8 @@ void Engine::frame(const ActiveInputs& _inputs) {
         RPF.update(_inputs, framecounter);
         RPF.render(framecounter);
         break;
+    default:
+        printf("ERROR default frame case in switch\n");
+        break;
     }
 }

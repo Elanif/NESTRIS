@@ -14,9 +14,10 @@ class tiletype {
     {
         palette_color[0]=palette_color[1]=palette_color[2]= palette_color[3]=0xF;
     }
-    tiletype(const nes_uchar& _level, const nes_uchar& _blocktype) {
+    tiletype(const nes_uchar& _level, const nes_uchar& _blocktype)
+    :tilenumber(87)
+    {
         if (_blocktype==0) {
-            tilenumber=87;
             palette_color[0]=palette_color[1]=palette_color[2]= palette_color[3]=0xF;
         }
         else {
@@ -32,11 +33,6 @@ class tiletype {
         return (this->tilenumber==t2.tilenumber)&&(this->palette_color[0]==t2.palette_color[0])&&(this->palette_color[1]==t2.palette_color[1])&&(this->palette_color[2]==t2.palette_color[2])&&(this->palette_color[3]==t2.palette_color[3]);
     }
 
-    sf::Int64 convertToI64() const {
-        size_t colors=64-8;
-        return sf::Int64(palette_color[0]+colors*(palette_color[1]+colors*(palette_color[2]+colors*(palette_color[3]+colors*(tilenumber)))));
-    }
-
     static unsigned char colors[10][4];
 };
 
@@ -46,10 +42,11 @@ namespace std {
     {
         std::size_t operator()(const tiletype& t) const noexcept
         {
-           return std::hash<sf::Int64>()(t.convertToI64());
+            size_t colors=64-8;
+            return std::hash<sf::Int64>()(t.palette_color[0]+colors*(t.palette_color[1]+colors*(t.palette_color[2]+colors*(t.palette_color[3]+colors*(t.tilenumber)))));
         }
     };
-};
+}
 
 class TileContainer : sf::NonCopyable //TODO CHANGE WHEN CLONE
 {

@@ -8938,7 +8938,7 @@
 1550427292 source:f:\nestris\project_versions\20190217\src\levellines.cpp
 	"LevelLines.h"
 
-1550477330 source:f:\nestris\project_versions\20190217newgraphicengine\nestris.cpp
+1550330910 source:f:\nestris\project_versions\20190217newgraphicengine\nestris.cpp
 	<cstdio>
 	"Window.h"
 	<SFML/Graphics.hpp>
@@ -8971,20 +8971,18 @@
 	"RenderLevelSelect.h"
 	"RenderPlayField.h"
 
-1550508474 f:\nestris\project_versions\20190217newgraphicengine\include\tilecontainer.h
+1550412208 f:\nestris\project_versions\20190217newgraphicengine\include\tilecontainer.h
 	"enums.h"
 	"stddef.h"
 	<SFML/System/NonCopyable.hpp>
-	<functional>
 
-1550507502 f:\nestris\project_versions\20190217newgraphicengine\include\tilerenderer.h
+1550436124 f:\nestris\project_versions\20190217newgraphicengine\include\tilerenderer.h
 	"TileContainer.h"
 	<SFML/Graphics.hpp>
 	"enums.h"
 	<vector>
 	<string>
 	<cstdio>
-	<unordered_map>
 
 1550158548 f:\nestris\project_versions\20190217newgraphicengine\include\renderlevelselect.h
 	"ActiveInputs.h"
@@ -8998,7 +8996,7 @@
 	"TileContainer.h"
 	"enums.h"
 
-1550508882 f:\nestris\project_versions\20190217newgraphicengine\include\renderplayfield.h
+1550416610 f:\nestris\project_versions\20190217newgraphicengine\include\renderplayfield.h
 	"TileContainer.h"
 	"Renderer.h"
 	"ActiveInputs.h"
@@ -9116,7 +9114,7 @@
 	"TileContainer.h"
 	<cstdio>
 
-1550508428 source:f:\nestris\project_versions\20190217newgraphicengine\src\tilerenderer.cpp
+1550440618 source:f:\nestris\project_versions\20190217newgraphicengine\src\tilerenderer.cpp
 	"TileRenderer.h"
 
 1550076582 source:g:\nestris\project_versions\20190217newgraphicengine\src\activeinputs.cpp
@@ -9708,4 +9706,366 @@
 
 1550508428 source:g:\nestris\project_versions\20190217newgraphicengine\src\tilerenderer.cpp
 	"TileRenderer.h"
+
+1550477330 source:f:\nestris\project_versions\20190218unordered_map\nestris.cpp
+	<cstdio>
+	"Window.h"
+	<SFML/Graphics.hpp>
+
+1550248916 f:\nestris\project_versions\20190218unordered_map\include\window.h
+	"Input.h"
+	<SFML/Graphics.hpp>
+	"Engine.h"
+	<cstdio>
+
+1550075948 f:\nestris\project_versions\20190218unordered_map\include\input.h
+	"ActiveInputs.h"
+	"enums.h"
+	<vector>
+	<utility>
+	<SFML/Window/Event.hpp>
+
+1550075694 f:\nestris\project_versions\20190218unordered_map\include\activeinputs.h
+	"stddef.h"
+
+1550426962 f:\nestris\project_versions\20190218unordered_map\include\enums.h
+	"stddef.h"
+
+1550276312 f:\nestris\project_versions\20190218unordered_map\include\engine.h
+	"Input.h"
+	"ActiveInputs.h"
+	<SFML/Graphics.hpp>
+	"TileContainer.h"
+	"TileRenderer.h"
+	"RenderLevelSelect.h"
+	"RenderPlayField.h"
+
+1550529694 f:\nestris\project_versions\20190218unordered_map\include\tilecontainer.h
+	"enums.h"
+	"stddef.h"
+	<SFML/System/NonCopyable.hpp>
+	<functional>
+
+1550507502 f:\nestris\project_versions\20190218unordered_map\include\tilerenderer.h
+	"TileContainer.h"
+	<SFML/Graphics.hpp>
+	"enums.h"
+	<vector>
+	<string>
+	<cstdio>
+	<unordered_map>
+
+1550158548 f:\nestris\project_versions\20190218unordered_map\include\renderlevelselect.h
+	"ActiveInputs.h"
+	<SFML/Graphics.hpp>
+	"TileContainer.h"
+	"Renderer.h"
+
+1550276312 f:\nestris\project_versions\20190218unordered_map\include\renderer.h
+	"stddef.h"
+	<SFML/Graphics.hpp>
+	"TileContainer.h"
+	"enums.h"
+
+1550508882 f:\nestris\project_versions\20190218unordered_map\include\renderplayfield.h
+	"TileContainer.h"
+	"Renderer.h"
+	"ActiveInputs.h"
+	"Score.h"
+	"PieceContainer.h"
+	"MatrixContainer.h"
+	"LevelLines.h"
+	"enums.h"
+
+1550427002 f:\nestris\project_versions\20190218unordered_map\include\score.h
+	<cstdio>
+	"Renderer.h"
+	"enums.h"
+	"TileContainer.h"
+
+1550275164 f:\nestris\project_versions\20190218unordered_map\include\piececontainer.h
+	"enums.h"
+	"PFMatrix.h"
+	"Piece.h"
+	"Renderer.h"
+	<vector>
+	<utility>
+	"ActiveInputs.h"
+	"TileContainer.h"
+
+1549207030 f:\nestris\project_versions\20190218unordered_map\include\pfmatrix.h
+	<cstdio>
+
+1550408564 f:\nestris\project_versions\20190218unordered_map\include\piece.h
+	"enums.h"
+	<vector>
+	<utility>
+
+1550342702 f:\nestris\project_versions\20190218unordered_map\include\matrixcontainer.h
+	"enums.h"
+	"Renderer.h"
+	"PieceContainer.h"
+	"PFMatrix.h"
+	"Piece.h"
+	<cstdio>
+
+1550426960 f:\nestris\project_versions\20190218unordered_map\include\levellines.h
+	"Renderer.h"
+	"TileContainer.h"
+	"enums.h"
+
+1550076582 source:f:\nestris\project_versions\20190218unordered_map\src\activeinputs.cpp
+	"ActiveInputs.h"
+	<cstdio>
+	"enums.h"
+
+1550530312 source:f:\nestris\project_versions\20190218unordered_map\src\engine.cpp
+	"Engine.h"
+	<cstdio>
+	"random.h"
+
+1548932828 f:\nestris\project_versions\20190218unordered_map\include\random.h
+	"enums.h"
+
+1549977796 source:f:\nestris\project_versions\20190218unordered_map\src\enums.cpp
+	"enums.h"
+
+1550075930 source:f:\nestris\project_versions\20190218unordered_map\src\input.cpp
+	"Input.h"
+	<cstdio>
+	<SFML/Window/Keyboard.hpp>
+
+1550427292 source:f:\nestris\project_versions\20190218unordered_map\src\levellines.cpp
+	"LevelLines.h"
+
+1550427680 source:f:\nestris\project_versions\20190218unordered_map\src\matrixcontainer.cpp
+	"MatrixContainer.h"
+	"enums.h"
+	<vector>
+	<utility>
+	<cstdio>
+
+1549030012 source:f:\nestris\project_versions\20190218unordered_map\src\pfmatrix.cpp
+
+1550412938 source:f:\nestris\project_versions\20190218unordered_map\src\piece.cpp
+	"Piece.h"
+
+1550413442 source:f:\nestris\project_versions\20190218unordered_map\src\piececontainer.cpp
+	"PieceContainer.h"
+	<stddef.h>
+	"enums.h"
+	"random.h"
+	<cstdio>
+
+1550076996 source:f:\nestris\project_versions\20190218unordered_map\src\random.cpp
+	"random.h"
+	<cstdio>
+
+1550276312 source:f:\nestris\project_versions\20190218unordered_map\src\renderer.cpp
+	"Renderer.h"
+
+1550433714 source:f:\nestris\project_versions\20190218unordered_map\src\renderlevelselect.cpp
+	"RenderLevelSelect.h"
+	<cstdio>
+
+1550426960 source:f:\nestris\project_versions\20190218unordered_map\src\renderplayfield.cpp
+	"RenderPlayField.h"
+	"random.h"
+	"PieceContainer.h"
+	<cstdio>
+
+1550427002 source:f:\nestris\project_versions\20190218unordered_map\src\score.cpp
+	"Score.h"
+
+1550433714 source:f:\nestris\project_versions\20190218unordered_map\src\tilecontainer.cpp
+	"TileContainer.h"
+	<cstdio>
+
+1550529592 source:f:\nestris\project_versions\20190218unordered_map\src\tilerenderer.cpp
+	"TileRenderer.h"
+
+1550530482 source:f:\nestris\project_versions\20190218unordered_map\src\window.cpp
+	"Window.h"
+	<cmath>
+
+1550477330 source:g:\nestris\project_versions\20190218unordered_map\nestris.cpp
+	<cstdio>
+	"Window.h"
+	<SFML/Graphics.hpp>
+
+1550248916 g:\nestris\project_versions\20190218unordered_map\include\window.h
+	"Input.h"
+	<SFML/Graphics.hpp>
+	"Engine.h"
+	<cstdio>
+
+1550075948 g:\nestris\project_versions\20190218unordered_map\include\input.h
+	"ActiveInputs.h"
+	"enums.h"
+	<vector>
+	<utility>
+	<SFML/Window/Event.hpp>
+
+1550075694 g:\nestris\project_versions\20190218unordered_map\include\activeinputs.h
+	"stddef.h"
+
+1550426962 g:\nestris\project_versions\20190218unordered_map\include\enums.h
+	"stddef.h"
+
+1550276312 g:\nestris\project_versions\20190218unordered_map\include\engine.h
+	"Input.h"
+	"ActiveInputs.h"
+	<SFML/Graphics.hpp>
+	"TileContainer.h"
+	"TileRenderer.h"
+	"RenderLevelSelect.h"
+	"RenderPlayField.h"
+
+1550529694 g:\nestris\project_versions\20190218unordered_map\include\tilecontainer.h
+	"enums.h"
+	"stddef.h"
+	<SFML/System/NonCopyable.hpp>
+	<functional>
+
+1550507502 g:\nestris\project_versions\20190218unordered_map\include\tilerenderer.h
+	"TileContainer.h"
+	<SFML/Graphics.hpp>
+	"enums.h"
+	<vector>
+	<string>
+	<cstdio>
+	<unordered_map>
+
+1550158548 g:\nestris\project_versions\20190218unordered_map\include\renderlevelselect.h
+	"ActiveInputs.h"
+	<SFML/Graphics.hpp>
+	"TileContainer.h"
+	"Renderer.h"
+
+1550276312 g:\nestris\project_versions\20190218unordered_map\include\renderer.h
+	"stddef.h"
+	<SFML/Graphics.hpp>
+	"TileContainer.h"
+	"enums.h"
+
+1550508882 g:\nestris\project_versions\20190218unordered_map\include\renderplayfield.h
+	"TileContainer.h"
+	"Renderer.h"
+	"ActiveInputs.h"
+	"Score.h"
+	"PieceContainer.h"
+	"MatrixContainer.h"
+	"LevelLines.h"
+	"enums.h"
+
+1550427002 g:\nestris\project_versions\20190218unordered_map\include\score.h
+	<cstdio>
+	"Renderer.h"
+	"enums.h"
+	"TileContainer.h"
+
+1550275164 g:\nestris\project_versions\20190218unordered_map\include\piececontainer.h
+	"enums.h"
+	"PFMatrix.h"
+	"Piece.h"
+	"Renderer.h"
+	<vector>
+	<utility>
+	"ActiveInputs.h"
+	"TileContainer.h"
+
+1549207030 g:\nestris\project_versions\20190218unordered_map\include\pfmatrix.h
+	<cstdio>
+
+1550408564 g:\nestris\project_versions\20190218unordered_map\include\piece.h
+	"enums.h"
+	<vector>
+	<utility>
+
+1550342702 g:\nestris\project_versions\20190218unordered_map\include\matrixcontainer.h
+	"enums.h"
+	"Renderer.h"
+	"PieceContainer.h"
+	"PFMatrix.h"
+	"Piece.h"
+	<cstdio>
+
+1550426960 g:\nestris\project_versions\20190218unordered_map\include\levellines.h
+	"Renderer.h"
+	"TileContainer.h"
+	"enums.h"
+
+1550076582 source:g:\nestris\project_versions\20190218unordered_map\src\activeinputs.cpp
+	"ActiveInputs.h"
+	<cstdio>
+	"enums.h"
+
+1550530312 source:g:\nestris\project_versions\20190218unordered_map\src\engine.cpp
+	"Engine.h"
+	<cstdio>
+	"random.h"
+
+1548932828 g:\nestris\project_versions\20190218unordered_map\include\random.h
+	"enums.h"
+
+1549977796 source:g:\nestris\project_versions\20190218unordered_map\src\enums.cpp
+	"enums.h"
+
+1550075930 source:g:\nestris\project_versions\20190218unordered_map\src\input.cpp
+	"Input.h"
+	<cstdio>
+	<SFML/Window/Keyboard.hpp>
+
+1550427292 source:g:\nestris\project_versions\20190218unordered_map\src\levellines.cpp
+	"LevelLines.h"
+
+1550427680 source:g:\nestris\project_versions\20190218unordered_map\src\matrixcontainer.cpp
+	"MatrixContainer.h"
+	"enums.h"
+	<vector>
+	<utility>
+	<cstdio>
+
+1549030012 source:g:\nestris\project_versions\20190218unordered_map\src\pfmatrix.cpp
+
+1550412938 source:g:\nestris\project_versions\20190218unordered_map\src\piece.cpp
+	"Piece.h"
+
+1550413442 source:g:\nestris\project_versions\20190218unordered_map\src\piececontainer.cpp
+	"PieceContainer.h"
+	<stddef.h>
+	"enums.h"
+	"random.h"
+	<cstdio>
+
+1550076996 source:g:\nestris\project_versions\20190218unordered_map\src\random.cpp
+	"random.h"
+	<cstdio>
+
+1550276312 source:g:\nestris\project_versions\20190218unordered_map\src\renderer.cpp
+	"Renderer.h"
+
+1550433714 source:g:\nestris\project_versions\20190218unordered_map\src\renderlevelselect.cpp
+	"RenderLevelSelect.h"
+	<cstdio>
+
+1550426960 source:g:\nestris\project_versions\20190218unordered_map\src\renderplayfield.cpp
+	"RenderPlayField.h"
+	"random.h"
+	"PieceContainer.h"
+	<cstdio>
+
+1550427002 source:g:\nestris\project_versions\20190218unordered_map\src\score.cpp
+	"Score.h"
+
+1550433714 source:g:\nestris\project_versions\20190218unordered_map\src\tilecontainer.cpp
+	"TileContainer.h"
+	<cstdio>
+
+1550533782 source:g:\nestris\project_versions\20190218unordered_map\src\tilerenderer.cpp
+	"TileRenderer.h"
+
+1550581708 source:g:\nestris\project_versions\20190218unordered_map\src\window.cpp
+	"Window.h"
+	<cmath>
 
