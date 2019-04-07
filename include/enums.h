@@ -39,12 +39,12 @@ namespace glb { //todo make into ntris
     typedef const char* const_string_literal;
     typedef char* string_literal;
     enum BTN {
-        LEFT,
-        UP,
-        RIGHT,
-        DOWN,
-        SELECT,
-        START,
+        Left,
+        Up,
+        Right,
+        Down,
+        Select,
+        Start,
         B,
         A
     };

@@ -41,7 +41,7 @@ void PieceContainer::inputManager(const ActiveInputs& _inputs, const PFMatrix& p
     if (init_delay>0) {
         init_delay--; //TODO before or after, frame discrepancy?
     }
-    if (_inputs.getPress(glb::SELECT)) hidenextpiece=!hidenextpiece;
+    if (_inputs.getPress(glb::Select)) hidenextpiece=!hidenextpiece;
     if (sleepcounter>0) {
         --sleepcounter;
         return;
@@ -50,32 +50,32 @@ void PieceContainer::inputManager(const ActiveInputs& _inputs, const PFMatrix& p
     ++downcounter;
     //MOVE
     Piece temppiece=currentpiece;
-    if (_inputs.getPress(glb::DOWN)) {
+    if (_inputs.getPress(glb::Down)) {
         downinterrupted=false;
         init_delay=0;
     }
-    if (_inputs.getHold(glb::DOWN)) {
+    if (_inputs.getHold(glb::Down)) {
         init_delay=0;
-        if (_inputs.getPress(glb::RIGHT)||_inputs.getPress(glb::LEFT)||_inputs.getHold(glb::RIGHT)||_inputs.getHold(glb::LEFT)) downinterrupted=true;
+        if (_inputs.getPress(glb::Right)||_inputs.getPress(glb::Left)||_inputs.getHold(glb::Right)||_inputs.getHold(glb::Left)) downinterrupted=true;
     }
     else {
         holddowncounter=holddownpoints=0;
-        if (_inputs.getPress(glb::RIGHT)) {
+        if (_inputs.getPress(glb::Right)) {
             das=0;
             ++temppiece.x;
         }
-        else if (_inputs.getPress(glb::LEFT)) {
+        else if (_inputs.getPress(glb::Left)) {
             das=0;
             --temppiece.x;
         }
-        else if (_inputs.getHold(glb::RIGHT)) {
+        else if (_inputs.getHold(glb::Right)) {
             ++das;
             if (das>=16) {
                 ++temppiece.x;
                 das=10;
             }
         }
-        else if (_inputs.getHold(glb::LEFT)) {
+        else if (_inputs.getHold(glb::Left)) {
             ++das;
             if (das>=16) {
                 --temppiece.x;
@@ -99,7 +99,7 @@ void PieceContainer::inputManager(const ActiveInputs& _inputs, const PFMatrix& p
     //DROP
     bool alreadymoveddown=false;
     temppiece=currentpiece;
-    if (_inputs.getHold(glb::DOWN)&&!downinterrupted) {
+    if (_inputs.getHold(glb::Down)&&!downinterrupted) {
         ++holddowncounter;
         if (holddowncounter>=3) {
             ++holddownpoints;

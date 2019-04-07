@@ -18,12 +18,12 @@ class RenderLevelSelect : Renderer
     private:
         void reload();
         enum BUTTONS {
-            LEFT,
-            UP,
-            RIGHT,
-            DOWN,
-            SELECT,
-            START,
+            Left,
+            Up,
+            Right,
+            Down,
+            Select,
+            Start,
             B,
             A
         };

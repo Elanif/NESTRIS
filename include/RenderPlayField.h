@@ -65,12 +65,12 @@ class RenderPlayField : public Renderer
         bool checkcollision(PieceDetails& _piece, PieceDetails& _lastgoodpos);
 
         enum BUTTONS {
-            LEFT,
-            UP,
-            RIGHT,
-            DOWN,
-            SELECT,
-            START,
+            Left,
+            Up,
+            Right,
+            Down,
+            Select,
+            Start,
             B,
             A
         };
