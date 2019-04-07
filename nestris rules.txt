@@ -1,0 +1,126 @@
+when not noted the lag is 2(0) frames
+
+ABST1) soft reset, 2(0) frames later black screen, same as 3(1), 4(2) legal screen
+
+LDR1) LDR held down && not all of LDR held down previous frame means that in 3 frames(1 after lag) currentpiece and nextpiece disappear for 1 frame
+
+T1) pause is a 2 frames process: 2(0) frames later everything but currentpiece and next piece disappear (unless LDR1 is in action, then everything disappears)
+				3(1) frames later everything but "PAUSE" is on the screen
+T2) unpausing is a 3 frames process: 1(-1) frames later "PAUSE" is on the screen, currentpiece and piece arent', black line on top of the screen
+					2(0) frames later "PAUSE" on screen, current piece and piece aren't, no black line
+					3(1) frames later it's unpased
+AB1) rotates clockwise (A button)
+AB2) having A held down and pressing B rotates ccw (B button)
+AB3) having B held down and pressing A rotates ccw (A button)
+
+LR1) pressing L and R in the same frame moves the current piece right, das=0
+LR2) if L has been held down and then R is hit then everything occurs as expected
+LR3) IMPORTANT if R is held down and L is hit then the current piece moves right, this means that holding down R and tapping L moves the piece right
+LR3) pressing R while L is held or L while R is held sets das to 0, moves piece right regardless of das being 0, 15 or increasing to 16 in the current frame (don't know if it actually increases to 16)
+
+T4) no keys (or combination of keys?) has any effect being pressed during pause except D and ABST1
+T41) hitting a key (or multiple keys) on the same frame as hitting T processes all inputs, including ABST1 and LR1, AB1
+T42) trying to unpause hitting T and any other key on the same frame has no effect
+
+D1) after 3 frames of D being held down the piece goes down (regardless of fallcounter, but not twice in the same frame)
+D2) fallcounter reset to 0 then it goes down if fallcounter>=2 or fallcounter>= gravity -> fallcounter=0
+D3) hitting A or B while D is held doesn't interfere with the gravity modifying effect from D, AB1 through AB3 can happen.
+D4) S while D is held down will hide next piece as expected, D will still work
+D5) T while D is held down will pause the game as expected, D will still work after unpausing if it has been held down (and even if it is unterrupted and resumed during pause)
+D6) if ABD are held down in the same frame the piece will rotate as of AB1 and go down faster as expected
+D7) pressing L, R or U while D is held down will interrupt the faster falling, nothing else will happen (das doesnt change, no piece movement)
+D7.5) pressing DR/DL/DU in the same frame and holding down D will do nothing (das doesnt change, no piece movement)
+
+D10) score for holding down D depends on the amount of times the piece moved down "because" of the D button, max 12 at level 0-28, 8 at level 29 and further. sometiems weird scores happen, maybe with initial entry delay?
+
+X)
+2(0) frames starting playfield screen goes black, 3(1) still black, 4(2) weird color playfield, "LINES - " blank after lines "NEXT " blank under next "LEVEL " blank under level, 5(3) same, 6(4) fully loaded except next and currentpiece 7(5) fully loaded
+input starts working at 5(3)
+TODO
+after how many frames each game mode is fully rendered and how many frames after pressing start inputs work?
+documentate line clear animation, the effect of hitting S, T and more during line clear, same for ARE
+
+Y)
+documentation on ARE, frame delay, rng
+let frame 0 be the last frame that lets you move the piece, frame 1 the first frame that doesn't let you move the piece (lock at 0.5 frame), then after x frames (at frame x+1) inputs are avaiable again for the first time, at the beginning of that frame the new piece is rolled, that means the RNG value used is the one processed at x+0.5th frame (or x+1th frame if it happens before everything else)
+
+x values = {10,12,14,16,18} depending on the heigh of the last dropped piece
+data on x values and softdrophighscore values
+all pieces were dropped with initial rotation, the height is the center of the piece, down was held down for all possible frames -1 (the first input frame)
+height ranges from -2 to 19
+x is the delay for the next piece
+004F is the hold down counter for scoring, value at locking is taken into consideration
+piece	height	x	score	frameshelddown	004F	binary		binary score
+j	18	10	12	39		19	00010011	1100
+i	17	12	11	37		18	00010010	1011
+j	15	12	9	33		16	00010000	1001
+l	13	14	13	29		14	00001110
+s	11	14	5	25		12	00001100
+l	10	14	10	23		11	00001011
+i	9	16	9	21		10	00001010
+s	7	16	1	17		8	00001000
+z	5	18	5	13		6	00000110
+l	3	18	3	9		4	00000100
+j	1	18	1	5		2	00000010
+i	0	*	0	3		1	00000001
+*next piece appears 19(+1) frame laters which means it would be "movable" at frame 18 but it instantly locks because of overlap
+
+testing score with first piece (spawncount=2), J, diminishing 004F by holding down a few frames then releasing and holding down until the end
+drop\initial score, table: final score
+d\s	0	1	6	7	8	9	10	11	20
+1	0	1	6	7		9	10	
+2	1	2	7	8		10	11	
+3	2	3	8	9		11	12	
+4	3	4	9	10		12	13	
+5	4	5	10	11		13	14	
+6	5	6	11	12		14	15	
+7	6	7	12	13		15	16	
+8	7	8	13	14	15	10	17	
+9	8	9	14	15	10	11	18	
+10	9	10	15	10	11	12	19	
+11	10	11	10	11	12	13	20	
+12	11	12	11	12	13	14	21	
+13	12	13	12	13	14	15	22	
+14	13	14	13	14	15	16	23	
+15	14	15	14	15	16	17	24	25
+16	15	10	15	16	17	18	25	20	35
+17	10	11	16	17	18	19	20	21	30
+18	11	12	17	18	19	20	21	22	31
+19	12	13	18	19	20	21	22	23	32
+20									33			
+
+1c0e
+A=holddownpoints
+if (A<2) goto $29
+else 
+score[0]--
+A=score[0]+A
+score[0]=A
+
+A=A&#$0F -> A=lowest 4 bits of A
+if (A-#$0A) doesnt carry goto $07 (CLC) (branch if lower digit of score[0]>9)
+else 
+A=score[0]
+A=A+#$06 //+6
+score[0]=A
+A=score[0]
+A=A&#$F0
+if (A-#$A0) doesnt carry goto $07 (CLC)(branch if upper digit of score[0]>9)
+A=A+#$60 //upper digit of score[0]-=10 // +96?
+score[1]++
+
+
+		
+score[0]=hscore%10+16*(hscore%100)/10 // if hschore decimal
+int score[0]=a=score[0]-1+holddown
+if (a&0x0f<10) return a&0x0f+a/0x0f; // scores are saved in hex
+a+=#$6;
+score[0]=a;
+a=score[0];
+if (a&0xf0<0xa0) return a&0x0f+a/0x0f; 
+a+=#$60;
+/*score[0]=a;
+score[1]++;*/
+//cioè se score[0] e score[1] non hanno problemi di carry
+hscore=(hscore/0xff)*0xff+score[0]&0x0f+score[0]/0x0f+0xff;
+helddown=0
