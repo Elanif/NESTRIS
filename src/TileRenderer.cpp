@@ -113,7 +113,7 @@ void TileRenderer::load_palette(const std::string& path) {
 }
 
 bool TileRenderer::load(const std::string& tilefile){
-    load_palette("YPbPr.pal");
+    load_palette("palette/YPbPr.pal");
     FILE * Spritefile=fopen(tilefile.c_str(),"r");
     if (!Spritefile) {
         glb::cm.update_error("Couldn't open sprite file: "+tilefile);
@@ -462,7 +462,7 @@ void TileRenderer::drawimage(sf::RenderTarget& target, sf::RenderStates states){
 }
 
 void TileRenderer::add_frequent_textures() {
-    std::ifstream previous_textures("Pre-rendered textures.txt");
+    std::ifstream previous_textures("texturesprite/Pre-rendered textures.txt");
     if (!previous_textures) {
         glb::cm.update_error("Couldn't open previous textures");
     }
@@ -488,7 +488,7 @@ void TileRenderer::add_frequent_textures() {
         add_or_find_texture(block, &texture_image);
     }
     tiletexture.loadFromImage(texture_image);
-    newtextures=fopen("Pre-rendered textures.txt","a");
+    newtextures=fopen("texturesprite/Pre-rendered textures.txt","a");
 }
 
 void TileRenderer::drawmod(sf::RenderTarget& target, sf::RenderStates states)

@@ -29,10 +29,11 @@ void Statistics::render(const nes_uchar& _level) {
 }
 
 void Statistics::renderBlocks() {
-    const nes_uchar c0=glb::block_colors[level][0];
-    const nes_uchar c1=glb::block_colors[level][1];
-    const nes_uchar c2=glb::block_colors[level][2];
-    const nes_uchar c3=glb::block_colors[level][3];
+    const nes_uchar levelmod10=level%10;
+    const nes_uchar c0=glb::block_colors[levelmod10][0];
+    const nes_uchar c1=glb::block_colors[levelmod10][1];
+    const nes_uchar c2=glb::block_colors[levelmod10][2];
+    const nes_uchar c3=glb::block_colors[levelmod10][3];
     tilecont->at(4,21)=tiletype(662,c0,c1,c2,c3);
     tilecont->at(3,19)=tiletype(652,c0,c1,c2,c3);
     tilecont->at(5,18)=tiletype(642,c0,c1,c2,c3);

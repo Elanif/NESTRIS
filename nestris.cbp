@@ -21,6 +21,7 @@
 				<Linker>
 					<Add library="sfml-graphics-d" />
 					<Add library="sfml-window-d" />
+					<Add library="sfml-audio-d" />
 					<Add library="sfml-system-d" />
 					<Add directory="../SFML-2.5.1/lib" />
 				</Linker>
@@ -39,6 +40,7 @@
 					<Add option="-s" />
 					<Add library="sfml-graphics" />
 					<Add library="sfml-window" />
+					<Add library="sfml-audio" />
 					<Add library="sfml-system" />
 				</Linker>
 			</Target>
@@ -87,6 +89,7 @@
 		<Unit filename="include/RenderPlayField.h" />
 		<Unit filename="include/Renderer.h" />
 		<Unit filename="include/Score.h" />
+		<Unit filename="include/Sound.hpp" />
 		<Unit filename="include/Sprite.h" />
 		<Unit filename="include/Statistics.h" />
 		<Unit filename="include/TextWriter.h" />
@@ -111,6 +114,7 @@
 		<Unit filename="src/RenderPlayField.cpp" />
 		<Unit filename="src/Renderer.cpp" />
 		<Unit filename="src/Score.cpp" />
+		<Unit filename="src/Sound.cpp" />
 		<Unit filename="src/Sprite.cpp" />
 		<Unit filename="src/Statistics.cpp" />
 		<Unit filename="src/TextWriter.cpp" />

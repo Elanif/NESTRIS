@@ -1,0 +1,31 @@
+1	Unknown Track
+2	B-Type Success!
+3	Music 1
+4 	Music 2
+5	Music 3
+6	Music 1 fast 
+7 	Music 2 fast 
+8	Music 3 fast
+9	Highscore (Tetris Master)
+10 	Ending
+11	? B-Type maybe?
+12	Move in menu (Move Piece?) (Score detraction in B-Type)
+13	Start press in menu
+14	Move piece (Move in menu again?)
+15	B-Type Score detraction
+16	Rotate Piece
+17	Level Up
+18 	Piece Drop
+19	High Pitched sound?
+20	End of Tetris sound
+21	Line Clear Sound
+22	Low pitch descending sound?
+23	bee-
+24	Top out?
+25	Top out?
+26	Space ship1?
+27	Space ship2?
+28	lots of beeps
+29	Space ship3?
+30	boop
+31	baap
