@@ -1,9 +1,12 @@
 #ifndef MATRIXCONTAINER_H
 #define MATRIXCONTAINER_H
 #include"SDL.h"
+#include"enums.h"
 #include"Renderer.h"
 #include"PieceContainer.h"
-#include"enums.h"
+#include"PFMatrix.h"
+#include"Piece.h"
+#include<cstdio>
 
 class MatrixContainer : public Renderer
 {
@@ -13,13 +16,16 @@ class MatrixContainer : public Renderer
         bool collision(const Piece& _piece) const;
         nes_uchar lockpiece(const Piece& _piece);
         nes_uchar clearlines();
-        nes_uchar getBlock(const nes_uchar& x, const nes_uchar& y) const;
+        const PFMatrix& getMatrix() const {return matrix;};
+        nes_uchar getBlock(const nes_uchar& x, const nes_uchar& y);
+        void render();
     protected:
 
     private:
+        nes_uchar blinkscreencounter;
         nes_uchar linesclearedarray[22];
-        nes_uchar newmatrix[10][22];
-        nes_uchar matrix[10][22];
+        PFMatrix newmatrix;
+        PFMatrix matrix;
 };
 
 #endif // MATRIXCONTAINER_H

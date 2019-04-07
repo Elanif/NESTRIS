@@ -1,23 +1,12 @@
-#ifndef PIECE_H
-#define PIECE_H
+#ifndef PIECECONTAINER_H
+#define PIECECONTAINER_H
+#include"enums.h"
+#include"PFMatrix.h"
+#include"Piece.h"
 #include "Renderer.h"
 #include<vector>
 #include<utility>
 #include"ActiveInputs.h"
-#include"enums.h"
-
-class Piece
-{
-    public:
-        Piece();
-        nes_uchar x, y, piecetype, rotation, color;
-        std::vector<std::pair<nes_uchar, nes_uchar> > getPos() const;
-
-    static nes_schar rotationmatrix[28][4][2];
-    protected:
-
-    private:
-};
 
 
 class PieceContainer : public Renderer
@@ -28,6 +17,7 @@ public:
     Piece tryMove(const ActiveInputs& _inputs);
     Piece tryRotate(const ActiveInputs& _inputs);
     Piece tryDrop(const ActiveInputs& _inputs, const nes_uchar& _gravity);
+    void inputManager(const ActiveInputs& _inputs, const PFMatrix& pfmatrix, const nes_uchar& _gravity);
     void doMove(const bool& _collision);
     void doRotate(const bool& _collision);
     void doDrop();
@@ -42,11 +32,8 @@ private:
     nes_uchar spawnpiececounter;
     void spawnPiece(const nes_uchar& _spawndelay);
 
-    bool downinterrupted;
-    nes_uchar das, downcounter, holddowncounter;
+    bool downinterrupted, dropped;
+    nes_uchar das, downcounter, holddowncounter, holddownpoints;
     Piece currentpiece, nextpiece;
-
-    nes_uchar tempdas, tempholddowncounter, tempdowncounter;
-    Piece temppiece;
 };
 #endif // PIECE_H

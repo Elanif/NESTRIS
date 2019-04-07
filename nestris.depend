@@ -3005,3 +3005,549 @@
 	<utility>
 	<cstdio>
 
+1548880350 source:g:\nestris project\project versions\20190201\nestris\nestris.cpp
+	<cstdio>
+	"SDL.h"
+	"Window.h"
+
+1540998544 g:\nestris project\project versions\20190201\nestris\sdl2\sdl.h
+	"SDL_main.h"
+	"SDL_stdinc.h"
+	"SDL_assert.h"
+	"SDL_atomic.h"
+	"SDL_audio.h"
+	"SDL_clipboard.h"
+	"SDL_cpuinfo.h"
+	"SDL_endian.h"
+	"SDL_error.h"
+	"SDL_events.h"
+	"SDL_filesystem.h"
+	"SDL_gamecontroller.h"
+	"SDL_haptic.h"
+	"SDL_hints.h"
+	"SDL_joystick.h"
+	"SDL_loadso.h"
+	"SDL_log.h"
+	"SDL_messagebox.h"
+	"SDL_mutex.h"
+	"SDL_power.h"
+	"SDL_render.h"
+	"SDL_rwops.h"
+	"SDL_sensor.h"
+	"SDL_shape.h"
+	"SDL_system.h"
+	"SDL_thread.h"
+	"SDL_timer.h"
+	"SDL_version.h"
+	"SDL_video.h"
+	"begin_code.h"
+	"close_code.h"
+
+1540998544 g:\nestris project\project versions\20190201\nestris\sdl2\sdl_main.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1540998544 g:\nestris project\project versions\20190201\nestris\sdl2\sdl_stdinc.h
+	"SDL_config.h"
+	<sys/types.h>
+	<stdio.h>
+	<stdlib.h>
+	<stddef.h>
+	<stdarg.h>
+	<stdlib.h>
+	<malloc.h>
+	<stddef.h>
+	<stdarg.h>
+	<memory.h>
+	<string.h>
+	<strings.h>
+	<wchar.h>
+	<inttypes.h>
+	<stdint.h>
+	<ctype.h>
+	<math.h>
+	<float.h>
+	<alloca.h>
+	<malloc.h>
+	<malloc.h>
+	<malloc.h>
+	<stdlib.h>
+	<sal.h>
+	"begin_code.h"
+	"close_code.h"
+
+1540998544 g:\nestris project\project versions\20190201\nestris\sdl2\sdl_config.h
+	"SDL_platform.h"
+
+1540998544 g:\nestris project\project versions\20190201\nestris\sdl2\sdl_platform.h
+	"AvailabilityMacros.h"
+	"TargetConditionals.h"
+	<winapifamily.h>
+	"begin_code.h"
+	"close_code.h"
+
+1540998544 g:\nestris project\project versions\20190201\nestris\sdl2\begin_code.h
+
+1540998544 g:\nestris project\project versions\20190201\nestris\sdl2\close_code.h
+
+1540998544 g:\nestris project\project versions\20190201\nestris\sdl2\sdl_assert.h
+	"SDL_config.h"
+	"begin_code.h"
+	<signal.h>
+	"close_code.h"
+
+1540998544 g:\nestris project\project versions\20190201\nestris\sdl2\sdl_atomic.h
+	"SDL_stdinc.h"
+	"SDL_platform.h"
+	"begin_code.h"
+	<mbarrier.h>
+	"close_code.h"
+
+1540998544 g:\nestris project\project versions\20190201\nestris\sdl2\sdl_audio.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_endian.h"
+	"SDL_mutex.h"
+	"SDL_thread.h"
+	"SDL_rwops.h"
+	"begin_code.h"
+	"close_code.h"
+
+1540998544 g:\nestris project\project versions\20190201\nestris\sdl2\sdl_error.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1540998544 g:\nestris project\project versions\20190201\nestris\sdl2\sdl_endian.h
+	"SDL_stdinc.h"
+	<endian.h>
+	"begin_code.h"
+	"close_code.h"
+
+1540998544 g:\nestris project\project versions\20190201\nestris\sdl2\sdl_mutex.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1540998544 g:\nestris project\project versions\20190201\nestris\sdl2\sdl_thread.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_atomic.h"
+	"SDL_mutex.h"
+	"begin_code.h"
+	<process.h>
+	<process.h>
+	<stdlib.h>
+	"close_code.h"
+
+1540998544 g:\nestris project\project versions\20190201\nestris\sdl2\sdl_rwops.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1540998544 g:\nestris project\project versions\20190201\nestris\sdl2\sdl_clipboard.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1540998544 g:\nestris project\project versions\20190201\nestris\sdl2\sdl_cpuinfo.h
+	"SDL_stdinc.h"
+	<intrin.h>
+	<intrin.h>
+	<altivec.h>
+	<arm_neon.h>
+	<mm3dnow.h>
+	<immintrin.h>
+	<mmintrin.h>
+	<xmmintrin.h>
+	<emmintrin.h>
+	<pmmintrin.h>
+	"begin_code.h"
+	"close_code.h"
+
+1540998544 g:\nestris project\project versions\20190201\nestris\sdl2\sdl_events.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_video.h"
+	"SDL_keyboard.h"
+	"SDL_mouse.h"
+	"SDL_joystick.h"
+	"SDL_gamecontroller.h"
+	"SDL_quit.h"
+	"SDL_gesture.h"
+	"SDL_touch.h"
+	"begin_code.h"
+	"close_code.h"
+
+1540998544 g:\nestris project\project versions\20190201\nestris\sdl2\sdl_video.h
+	"SDL_stdinc.h"
+	"SDL_pixels.h"
+	"SDL_rect.h"
+	"SDL_surface.h"
+	"begin_code.h"
+	"close_code.h"
+
+1540998544 g:\nestris project\project versions\20190201\nestris\sdl2\sdl_pixels.h
+	"SDL_stdinc.h"
+	"SDL_endian.h"
+	"begin_code.h"
+	"close_code.h"
+
+1540998544 g:\nestris project\project versions\20190201\nestris\sdl2\sdl_rect.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_pixels.h"
+	"SDL_rwops.h"
+	"begin_code.h"
+	"close_code.h"
+
+1540998544 g:\nestris project\project versions\20190201\nestris\sdl2\sdl_surface.h
+	"SDL_stdinc.h"
+	"SDL_pixels.h"
+	"SDL_rect.h"
+	"SDL_blendmode.h"
+	"SDL_rwops.h"
+	"begin_code.h"
+	"close_code.h"
+
+1540998544 g:\nestris project\project versions\20190201\nestris\sdl2\sdl_blendmode.h
+	"begin_code.h"
+	"close_code.h"
+
+1540998544 g:\nestris project\project versions\20190201\nestris\sdl2\sdl_keyboard.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_keycode.h"
+	"SDL_video.h"
+	"begin_code.h"
+	"close_code.h"
+
+1540998544 g:\nestris project\project versions\20190201\nestris\sdl2\sdl_keycode.h
+	"SDL_stdinc.h"
+	"SDL_scancode.h"
+
+1540998544 g:\nestris project\project versions\20190201\nestris\sdl2\sdl_scancode.h
+	"SDL_stdinc.h"
+
+1540998544 g:\nestris project\project versions\20190201\nestris\sdl2\sdl_mouse.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_video.h"
+	"begin_code.h"
+	"close_code.h"
+
+1540998544 g:\nestris project\project versions\20190201\nestris\sdl2\sdl_joystick.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1540998544 g:\nestris project\project versions\20190201\nestris\sdl2\sdl_gamecontroller.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_rwops.h"
+	"SDL_joystick.h"
+	"begin_code.h"
+	"close_code.h"
+
+1540998544 g:\nestris project\project versions\20190201\nestris\sdl2\sdl_quit.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+
+1540998544 g:\nestris project\project versions\20190201\nestris\sdl2\sdl_gesture.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_video.h"
+	"SDL_touch.h"
+	"begin_code.h"
+	"close_code.h"
+
+1540998544 g:\nestris project\project versions\20190201\nestris\sdl2\sdl_touch.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_video.h"
+	"begin_code.h"
+	"close_code.h"
+
+1540998544 g:\nestris project\project versions\20190201\nestris\sdl2\sdl_filesystem.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1540998544 g:\nestris project\project versions\20190201\nestris\sdl2\sdl_haptic.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"SDL_joystick.h"
+	"begin_code.h"
+	"close_code.h"
+
+1540998544 g:\nestris project\project versions\20190201\nestris\sdl2\sdl_hints.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1540998544 g:\nestris project\project versions\20190201\nestris\sdl2\sdl_loadso.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1540998544 g:\nestris project\project versions\20190201\nestris\sdl2\sdl_log.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1540998544 g:\nestris project\project versions\20190201\nestris\sdl2\sdl_messagebox.h
+	"SDL_stdinc.h"
+	"SDL_video.h"
+	"begin_code.h"
+	"close_code.h"
+
+1540998544 g:\nestris project\project versions\20190201\nestris\sdl2\sdl_power.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1540998544 g:\nestris project\project versions\20190201\nestris\sdl2\sdl_render.h
+	"SDL_stdinc.h"
+	"SDL_rect.h"
+	"SDL_video.h"
+	"begin_code.h"
+	"close_code.h"
+
+1540998544 g:\nestris project\project versions\20190201\nestris\sdl2\sdl_sensor.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1540998544 g:\nestris project\project versions\20190201\nestris\sdl2\sdl_shape.h
+	"SDL_stdinc.h"
+	"SDL_pixels.h"
+	"SDL_rect.h"
+	"SDL_surface.h"
+	"SDL_video.h"
+	"begin_code.h"
+	"close_code.h"
+
+1540998544 g:\nestris project\project versions\20190201\nestris\sdl2\sdl_system.h
+	"SDL_stdinc.h"
+	"SDL_keyboard.h"
+	"SDL_render.h"
+	"SDL_video.h"
+	"begin_code.h"
+	"close_code.h"
+
+1540998544 g:\nestris project\project versions\20190201\nestris\sdl2\sdl_timer.h
+	"SDL_stdinc.h"
+	"SDL_error.h"
+	"begin_code.h"
+	"close_code.h"
+
+1540998544 g:\nestris project\project versions\20190201\nestris\sdl2\sdl_version.h
+	"SDL_stdinc.h"
+	"begin_code.h"
+	"close_code.h"
+
+1548930728 g:\nestris project\project versions\20190201\nestris\include\window.h
+	"Input.h"
+	"SDL.h"
+	"Engine.h"
+	<cstdio>
+
+1548932874 g:\nestris project\project versions\20190201\nestris\include\input.h
+	<SDL.h>
+	"ActiveInputs.h"
+	"enums.h"
+
+1548837304 g:\nestris project\project versions\20190201\nestris\include\activeinputs.h
+	"SDL.h"
+
+1549039122 g:\nestris project\project versions\20190201\nestris\include\enums.h
+
+1548087108 g:\nestris project\project versions\20190201\nestris\include\engine.h
+	"Input.h"
+	"ActiveInputs.h"
+	"SDL.h"
+	"Renderer.h"
+	"RenderLevelSelect.h"
+	"RenderPlayField.h"
+
+1548931822 g:\nestris project\project versions\20190201\nestris\include\renderer.h
+	"stddef.h"
+	"SDL.h"
+	"enums.h"
+
+1548752398 g:\nestris project\project versions\20190201\nestris\include\renderlevelselect.h
+	"ActiveInputs.h"
+	"Renderer.h"
+
+1548932942 g:\nestris project\project versions\20190201\nestris\include\renderplayfield.h
+	"SDL.h"
+	"Renderer.h"
+	"ActiveInputs.h"
+	"Score.h"
+	"PieceContainer.h"
+	"MatrixContainer.h"
+	"LevelLines.h"
+	"enums.h"
+
+1548932930 g:\nestris project\project versions\20190201\nestris\include\score.h
+	<cstdio>
+	"Renderer.h"
+	"enums.h"
+
+1549034914 g:\nestris project\project versions\20190201\nestris\include\piececontainer.h
+	"enums.h"
+	"PFMatrix.h"
+	"Piece.h"
+	"Renderer.h"
+	<vector>
+	<utility>
+	"ActiveInputs.h"
+
+1549036854 g:\nestris project\project versions\20190201\nestris\include\matrixcontainer.h
+	"SDL.h"
+	"enums.h"
+	"Renderer.h"
+	"PieceContainer.h"
+	"PFMatrix.h"
+	"Piece.h"
+	<cstdio>
+
+1548931872 g:\nestris project\project versions\20190201\nestris\include\levellines.h
+	"Renderer.h"
+	"enums.h"
+
+1548837302 source:g:\nestris project\project versions\20190201\nestris\src\activeinputs.cpp
+	"ActiveInputs.h"
+	<cstdio>
+	"enums.h"
+
+1548120162 source:g:\nestris project\project versions\20190201\nestris\src\blockrenderer.cpp
+	"BlockRenderer.h"
+	<cstdio>
+	"SquareRenderer.h"
+
+1547822414 g:\nestris project\project versions\20190201\nestris\include\blockrenderer.h
+	"SDL.h"
+
+1547821068 g:\nestris project\project versions\20190201\nestris\include\squarerenderer.h
+	"SDL.h"
+
+1548880398 source:g:\nestris project\project versions\20190201\nestris\src\engine.cpp
+	"Engine.h"
+	<cstdio>
+	"random.h"
+
+1548932828 g:\nestris project\project versions\20190201\nestris\include\random.h
+	"enums.h"
+
+1548837250 source:g:\nestris project\project versions\20190201\nestris\src\enums.cpp
+	"enums.h"
+
+1545131962 source:g:\nestris project\project versions\20190201\nestris\src\gamestate.cpp
+	"GameState.h"
+
+1545131962 g:\nestris project\project versions\20190201\nestris\include\gamestate.h
+
+1544777474 source:g:\nestris project\project versions\20190201\nestris\src\imageloader.cpp
+	"ImageLoader.h"
+
+1545129768 g:\nestris project\project versions\20190201\nestris\include\imageloader.h
+	"SDL.h"
+	<string>
+	<cstdio>
+	<cstring>
+
+1548880130 source:g:\nestris project\project versions\20190201\nestris\src\input.cpp
+	"Input.h"
+	<cstdio>
+
+1548931868 source:g:\nestris project\project versions\20190201\nestris\src\levellines.cpp
+	"LevelLines.h"
+
+1549039124 source:g:\nestris project\project versions\20190201\nestris\src\matrixcontainer.cpp
+	"MatrixContainer.h"
+	"enums.h"
+	<vector>
+	<utility>
+	<cstdio>
+	"BlockRenderer.h"
+	"SDL_Image.h"
+
+1544519184 source:g:\nestris project\project versions\20190201\nestris\src\menu.cpp
+	"Menu.h"
+
+1545129770 g:\nestris project\project versions\20190201\nestris\include\menu.h
+
+1544519310 source:g:\nestris project\project versions\20190201\nestris\src\playfield.cpp
+	"PlayField.h"
+
+1545129774 g:\nestris project\project versions\20190201\nestris\include\playfield.h
+
+1548931824 source:g:\nestris project\project versions\20190201\nestris\src\random.cpp
+	"random.h"
+	<cstdio>
+
+1548931826 source:g:\nestris project\project versions\20190201\nestris\src\renderer.cpp
+	"Renderer.h"
+
+1548752368 source:g:\nestris project\project versions\20190201\nestris\src\renderlevelselect.cpp
+	"RenderLevelSelect.h"
+	<SDL_image.h>
+	<cstdio>
+	"SquareRenderer.h"
+
+1540997982 g:\nestris project\project versions\20190201\nestris\sdl2\sdl_image.h
+	"SDL.h"
+	"SDL_version.h"
+	"begin_code.h"
+	"close_code.h"
+
+1549036894 source:g:\nestris project\project versions\20190201\nestris\src\renderplayfield.cpp
+	"RenderPlayField.h"
+	"BlockRenderer.h"
+	"SquareRenderer.h"
+	"random.h"
+	"PieceContainer.h"
+	<cstdio>
+
+1548931856 source:g:\nestris project\project versions\20190201\nestris\src\score.cpp
+	"Score.h"
+
+1547821604 source:g:\nestris project\project versions\20190201\nestris\src\squarerenderer.cpp
+	"SquareRenderer.h"
+
+1544519358 source:g:\nestris project\project versions\20190201\nestris\src\statistics.cpp
+	"Statistics.h"
+
+1545129778 g:\nestris project\project versions\20190201\nestris\include\statistics.h
+
+1548930736 source:g:\nestris project\project versions\20190201\nestris\src\window.cpp
+	"Window.h"
+
+1549039618 source:g:\nestris project\project versions\20190201\nestris\src\piececontainer.cpp
+	"PieceContainer.h"
+	<stddef.h>
+	"enums.h"
+	"random.h"
+	"BlockRenderer.h"
+	<cstdio>
+
+1549036932 g:\nestris project\project versions\20190201\nestris\include\pfmatrix.h
+	<cstdio>
+
+1549030012 source:g:\nestris project\project versions\20190201\nestris\src\pfmatrix.cpp
+
+1549032146 g:\nestris project\project versions\20190201\nestris\include\piece.h
+	"enums.h"
+	<vector>
+	<utility>
+
+1549032062 source:g:\nestris project\project versions\20190201\nestris\src\piece.cpp
+	"Piece.h"
+
