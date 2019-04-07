@@ -27,24 +27,22 @@ void RenderPlayField::update(const ActiveInputs& _input, const nes_ushort& _fram
     //printf("renderplayfield::update\n");
     piecehandler.inputManager(_input, matrixhandler.getMatrix(), gravity[level]);
     if (piecehandler.dropped) {
-        nes_uchar linescleared=matrixhandler.lockpiece(piecehandler.lastdroppedpiece,_framecounter); //for some reason the locked piece doesnt appear at first
+        nes_uchar linescleared=matrixhandler.lockpiece(piecehandler.lastdroppedpiece,_framecounter);
+        if (linescleared) {
+            glb::lineclearframecounter=5; //deletes the columns starting from the middle, 5 times, once every fram%4==0
+            glb::updatingmatrix=5; //then it updates the vram of the matrix, it takes 5 frames of copying from top to bottom
+        }
         scorehandler.lineclear(level,linescleared);
         scorehandler.softdrop(piecehandler.holddownpoints);
-        glb::cm.update<std::string>("system","hold down points= "+std::to_string(piecehandler.holddownpoints));
-        piecehandler.lockpiece(piecehandler.lastdroppedpiece.y);
+        piecehandler.lockpiece();
         piecehandler.dropped=false;
         if (linescleared) {
             glb::lineclearframecounter=5;
             if (getframemod4()==0) firstframeis4=true; //normally rendering happens before inputs, since I do it right after input managing I have to account for the frame being already eligible for blinking
             else firstframeis4=false;
-            //nes_uchar _spawndelay=20;
-            //piecehandler.sleep(_spawndelay);
-            //piecehandler.hidecurrentpiece(_spawndelay-1);
         }
         else {
-            nes_uchar _spawndelay=10+((piecehandler.lastdroppedpiece.y+2)/5)*2; //TODO fidn true formula
-            piecehandler.sleep(_spawndelay);
-            piecehandler.hidecurrentpiece(_spawndelay-1);
+            glb::ARE=10+((piecehandler.lastdroppedpiece.y+2)/5)*2; //TODO find true formula
         }
         if (linescleared>=4) {
             tetris=true;
@@ -52,7 +50,65 @@ void RenderPlayField::update(const ActiveInputs& _input, const nes_ushort& _fram
     }
 }
 
+
+void RenderPlayField::render(const nes_ushort& _framecounter) {
+    //renderimage(false); more optimization to be done
+    if (glb::lineclearframecounter>0) {
+        if (tetris) {
+            if (getframemod4()==0&&!firstframeis4){
+                renderimage(true);
+            }
+            else if (playfield_blink) {
+                renderimage(false);
+            }
+        }
+    }
+    else if (tetris) {
+        tetris=false;
+        if (playfield_blink) renderimage(false);
+    }
+    levellineshandler.render();
+    matrixhandler.render(level);
+    piecehandler.render(_framecounter,level);
+    scorehandler.render();
+    //if it's clear lines time and !(by coincidence the first frame it fell the frame was dividible by 4)
+    if (glb::lineclearframecounter>0 && !firstframeis4 && getframemod4()==0) glb::lineclearframecounter--; //TODO pause itneraction
+    else if (glb::lineclearframecounter==0 && glb::updatingmatrix>0) {
+        --glb::updatingmatrix;
+        if (glb::updatingmatrix==1) piecehandler.spawnPiece();//if it's the last frame of the 5-frame matrix update it spawns a new piece for the next frame, [frame discrepancy?]
+    }
+    firstframeis4=false;
+    if (glb::ARE>0) { // if entry delay>0
+        if (glb::ARE==1) piecehandler.spawnPiece();//if it's the last entry delay frame it spawns a new piece for the next frame, [frame discrepancy?]
+        glb::ARE--;
+    }
+}
+
+void RenderPlayField::resetPlayField(const nes_uchar& _level){
+    //todo next piece
+    level=_level;
+    tilecont->reset();
+    renderimage(false);
+    piecehandler = PieceContainer(tilecont, frameappearance);
+    matrixhandler = MatrixContainer(tilecont, frameappearance);
+    scorehandler = Score(tilecont, frameappearance, true);
+    levellineshandler = LevelLines(tilecont, frameappearance, _level);
+}
+
 void RenderPlayField::renderimage(bool blink) {
+    //NEXT
+    tilecont->at(glb::nextx,glb::nexty)=tiletype(24,0x0d,0x30,0x30,0x30);
+    tilecont->at(glb::nextx+1,glb::nexty)=tiletype(15,0x0d,0x30,0x30,0x30);
+    tilecont->at(glb::nextx+2,glb::nexty)=tiletype(34,0x0d,0x30,0x30,0x30);
+    tilecont->at(glb::nextx+3,glb::nexty)=tiletype(30,0x0d,0x30,0x30,0x30);
+    //TOP SCORE
+    tilecont->at(25,3)=tilecont->at(26,6)=tiletype(25,0x0d,0x30,0x00,0x00);
+    tilecont->at(27,6)=tiletype(28,0x0d,0x30,0x00,0x00);
+    tilecont->at(24,3)=tiletype(30,0x0d,0x30,0x00,0x00);
+    tilecont->at(24,6)=tiletype(29,0x0d,0x30,0x00,0x00);
+    tilecont->at(25,6)=tiletype(13,0x0d,0x30,0x00,0x00);
+    tilecont->at(28,6)=tiletype(15,0x0d,0x30,0x00,0x00);
+    tilecont->at(26,3)=tiletype(26,0x0d,0x30,0x00,0x00);
     if (blink) {
         playfield_blink=true;
         tilecont->at(30,23)=tiletype(65,0x0d,0x3c,0x00,0x20);
@@ -130,40 +186,6 @@ void RenderPlayField::renderimage(bool blink) {
     }
 }
 
-void RenderPlayField::render(const nes_ushort& _framecounter) {
-    //renderimage(false); more optimization to be done
-    if (glb::lineclearframecounter>0) {
-        if (tetris) {
-            if (getframemod4()==0&&!firstframeis4){
-                renderimage(true);
-            }
-            else if (playfield_blink) {
-                renderimage(false);
-            }
-        }
-    }
-    else if (tetris) {
-        tetris=false;
-        if (playfield_blink) renderimage(false);
-    }
-    levellineshandler.render();
-    matrixhandler.render(level);
-    piecehandler.render(_framecounter,level);
-    scorehandler.render();
-    if (glb::lineclearframecounter>0 && !firstframeis4 && getframemod4()==0) glb::lineclearframecounter--; //TODO pause itneraction
-    firstframeis4=false;
-}
-
-void RenderPlayField::resetPlayField(const nes_uchar& _level){
-    //todo next piece
-    level=_level;
-    tilecont->reset();
-    renderimage(false);
-    piecehandler = PieceContainer(tilecont, frameappearance);
-    matrixhandler = MatrixContainer(tilecont, frameappearance);
-    scorehandler = Score(tilecont, frameappearance, true);
-    levellineshandler = LevelLines(tilecont, frameappearance, _level);
-}
 
 void RenderPlayField::init_assets() {
 }

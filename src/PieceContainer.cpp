@@ -13,8 +13,8 @@ downcounter(0),
 spawncount(0),
 hidenextpiece(false)
 {
-    spawnPiece(0);
-    spawnPiece(0);
+    spawnPiece();
+    spawnPiece();
     hidecounter=sleepcounter=0;
 }
 bool collision(const PFMatrix& _pfmatrix, const Piece& _piece) {
@@ -36,17 +36,21 @@ bool collision(const PFMatrix& _pfmatrix, const Piece& _piece) {
 }
 
 void PieceContainer::inputManager(const ActiveInputs& _inputs, const PFMatrix& pfmatrix, const nes_uchar& _gravity) {
+    if (init_delay>0) init_delay--; //TODO before or after, frame discrepancy?
     dropped=false;
     if (_inputs.getPress(glb::SELECT)) hidenextpiece=!hidenextpiece;
     if (sleepcounter>0) {
         --sleepcounter;
         return;
     }
-    if (glb::lineclearframecounter>0||glb::updatingmatrix>0) return; //TODO 1 frame error? updating>1?
+    if (glb::lineclearframecounter>0||glb::updatingmatrix>0||glb::ARE>0) return; //TODO 1 frame error? updating>1?
     ++downcounter;
     //MOVE
     Piece temppiece=currentpiece;
-    if (_inputs.getPress(glb::DOWN)) downinterrupted=false;
+    if (_inputs.getPress(glb::DOWN)) {
+        downinterrupted=false;
+        init_delay=0;
+    }
     if (_inputs.getHold(glb::DOWN)) {
         if (_inputs.getPress(glb::RIGHT)||_inputs.getPress(glb::LEFT)||_inputs.getHold(glb::RIGHT)||_inputs.getHold(glb::LEFT)) downinterrupted=true;
     }
@@ -83,7 +87,7 @@ void PieceContainer::inputManager(const ActiveInputs& _inputs, const PFMatrix& p
         temppiece.rotation=(temppiece.rotation-1)%4;
     }
     else if (_inputs.getPress(glb::B)) {
-        temppiece.rotation=(temppiece.rotation-1)%4;
+        temppiece.rotation=(temppiece.rotation+1)%4;
     }
     if (!collision(pfmatrix,temppiece)) currentpiece=temppiece;
 
@@ -105,7 +109,7 @@ void PieceContainer::inputManager(const ActiveInputs& _inputs, const PFMatrix& p
             else currentpiece=temppiece;
         }
     }
-    if (downcounter>=_gravity &&!alreadymoveddown) {
+    if (downcounter>=_gravity &&!alreadymoveddown &&init_delay==0) { //TODO does it wait 96+gravity[frame] for the first piece or only 96?
         ++temppiece.y;
         downcounter=0;
         if (collision(pfmatrix,temppiece)) {
@@ -135,12 +139,8 @@ void PieceContainer::render(const nes_ushort& _framecounter, const nes_uchar& _l
         --hidecounter;
         return;
     }
-    if (glb::lineclearframecounter>0) {
-        return;
-    }
-    if (hidecountercurrentpiece>0) {
-        --hidecountercurrentpiece;
-    }
+    rendernextpiece(_level);
+    if (glb::lineclearframecounter>0||glb::updatingmatrix>0||glb::ARE>0) return;
     else {
         std::vector<std::pair<nes_uchar, nes_uchar> > piecepositions = currentpiece.getPos();
         for (std::vector<std::pair<nes_uchar, nes_uchar> >::size_type i=0; i<piecepositions.size(); ++i) {
@@ -151,11 +151,10 @@ void PieceContainer::render(const nes_ushort& _framecounter, const nes_uchar& _l
             }
         }
     }
-    rendernextpiece(_level);
 }
 
 
-void PieceContainer::spawnPiece(const nes_uchar& _spawndelay) { //TODO check if it's right
+void PieceContainer::spawnPiece() {
     currentpiece=nextpiece;
     nes_uchar spawnID=spawn_table[nextpiece.piecetype]; //creates a piece next to nextpiece
     ++spawncount;
@@ -193,13 +192,11 @@ void PieceContainer::spawnPiece(const nes_uchar& _spawndelay) { //TODO check if 
     nextpiece.piecetype=realID;
     downcounter=holddowncounter=0;
 }
-void PieceContainer::hidecurrentpiece(const nes_uchar& _hidecurrent) {
-    hidecountercurrentpiece=_hidecurrent;
-}
-void PieceContainer::lockpiece(const nes_uchar& _lockheight) {
+
+void PieceContainer::lockpiece() {
     //printf("Lockpiece\n");
-    nes_uchar _spawndelay=10+((_lockheight+3)/5)*2; //TODO fidn true formula
-    spawnPiece(_spawndelay);
+    //spawnPiece();  //do it later
+    currentpiece=Piece();
     downinterrupted=true; //TODO where to put this
 }
 

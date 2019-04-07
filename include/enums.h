@@ -63,10 +63,9 @@ namespace glb {
     extern ConsoleManager cm;
     extern nes_uchar lineclearframecounter;
     extern nes_uchar updatingmatrix;
+    extern nes_uchar ARE;
     constexpr std::size_t playfieldx=12;
     constexpr std::size_t playfieldy=5;
-    /*constexpr std::size_t nextpiecex=204;//FIX
-    constexpr std::size_t nextpiecey=110;//FIX*/
     const sf::Vector2u nextpiece_coords[7]={{204,112},{204,112},{204,112},{208,112},{204,112},{204,112},{208,112}};
     constexpr std::size_t linesx=19;
     constexpr std::size_t linesy=2;
@@ -76,6 +75,8 @@ namespace glb {
     constexpr std::size_t topscorey=4;
     constexpr std::size_t scorex=29;
     constexpr std::size_t scorey=7;
+    constexpr std::size_t nextx=24;
+    constexpr std::size_t nexty=12;
     const sf::Vector2u tilesize={8,8};
     constexpr int spritemode=1;
     constexpr std::size_t maxcolor=4;

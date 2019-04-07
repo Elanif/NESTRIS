@@ -36,6 +36,25 @@ int RenderLevelSelect::updateLevelSelect(const ActiveInputs& _input) {
 }
 
 void RenderLevelSelect::renderLevelSelect(const bool& _reload) {
+
+
+    if (_reload) reload();
+    const std::size_t levelselecttilex=6+(lastrenderedlevel%5)*2;
+    const std::size_t levelselecttiley=9+(lastrenderedlevel/5)*2;
+
+    if (blink++%4!=0) {
+        for (std::size_t i=0; i<2; ++i) {
+            for (std::size_t j=0; j<2; ++j) {
+                tilecont->renderExtra(levelselecttilex*8+4+i*8,levelselecttiley*8+4+j*8,tiletype(87,0x27,0x0d,0x0d,0x0d),0.1);
+            }
+        }
+    }
+    lastrenderedlevel=currentlevel;
+
+}
+
+void RenderLevelSelect::reload() {
+    //green stuff in the middle
     tilecont->at(15,10)=tiletype(5,0x1d,0x16,0x00,0x00);
     tilecont->at(11,10)=tiletype(3,0x1d,0x16,0x00,0x00);
     tilecont->at(16,13)=tiletype(48,0x1d,0x00,0x2a,0x00);
@@ -60,24 +79,7 @@ void RenderLevelSelect::renderLevelSelect(const bool& _reload) {
     tilecont->at(6,13)=tiletype(46,0x1d,0x00,0x2a,0x00);
     tilecont->at(8,13)=tilecont->at(10,13)=tilecont->at(12,13)=tilecont->at(14,13)=tiletype(82,0x1d,0x00,0x2a,0x00);
 
-    if (_reload) reload();
-    tilecont->renderExtra((6+(lastrenderedlevel%5)*2)*8,(9+(lastrenderedlevel/5)*2)*8,tiletype(0,0x1d,0x30,0x30,0x30),0.3);
-    for (std::size_t i=0; i<32; ++i) {
-        for (std::size_t j=0; j<28; ++j) {
-            tilecont->at(i,j)=tiletype(87,0x1d,0x1d,0x1d,0x1d);
-        }
-    }
-    std::size_t pixelx=(1+6+(lastrenderedlevel%5)*2)*8;
-    std::size_t pixely=(9+(lastrenderedlevel/5)*2)*8;
-    tilecont->extra_tiles.x.insert(std::make_pair(0.4,glb::triple(pixelx,pixely,tiletype(160,0x0d,0x11,0x22,0x33))));
-    tilecont->extra_tiles.y.insert(std::make_pair(0.2,glb::triple(pixelx+50,pixely+50,tiletype(160,0x0d,0x11,0x22,0x33))));
-    tilecont->extra_tiles.z.insert(std::make_pair(0.7,glb::triple(pixelx+100,pixely+100,tiletype(160,0x0d,0x11,0x22,0x33))));
-
-    lastrenderedlevel=currentlevel;
-
-}
-
-void RenderLevelSelect::reload() {
+    //everything else
     tilecont->at(5,24)=tiletype(46,0x0d,0x00,0x38,0x00);
     tilecont->at(1,24)=tiletype(65,0x0d,0x30,0x00,0x00);
     tilecont->at(26,24)=tiletype(48,0x0d,0x00,0x38,0x00);

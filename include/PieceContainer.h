@@ -22,14 +22,14 @@ public:
     void doMove(const bool& _collision);
     void doRotate(const bool& _collision);
     void doDrop();
-    void lockpiece(const nes_uchar& _lockheight);
+    void lockpiece();
     const Piece& getPiece() const;
     void render(const nes_ushort& _framecounter, const nes_uchar& _level);
     void rendernextpiece(const nes_uchar& _level);
+    void spawnPiece();
     bool dropped;
     Piece lastdroppedpiece;
     nes_uchar holddownpoints;
-    void hidecurrentpiece(const nes_uchar& _hidecurrent);
 
 private:
 
@@ -38,11 +38,11 @@ private:
     std::vector<std::pair<nes_uchar, nes_uchar> > lastrenderedpos;
     std::size_t spawncount=0; //TODO check spawncount
     nes_uchar spawnpiececounter;
-    void spawnPiece(const nes_uchar& _spawndelay);
 
     bool downinterrupted=false, hidenextpiece; //TODO does select carry after new games?
-    nes_uchar das=0, downcounter=0, holddowncounter=0;
-    Piece currentpiece, nextpiece;
+    bool just_spawned=false;
+    nes_uchar das=0, downcounter=0, holddowncounter=0, init_delay=96;
+    Piece currentpiece, nextpiece, shown_nextpiece;
 
     static nes_uchar spawn_table[7];
 };

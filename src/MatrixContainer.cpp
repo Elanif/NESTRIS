@@ -10,7 +10,7 @@ MatrixContainer::MatrixContainer(TileContainer * _tilecont, const nes_ushort& _f
     hidecounter=sleepcounter=0;
     linescleared=0;
     for (int i=0; i<9;++i) {
-        for (int j=18; j<22; ++j) {
+        for (int j=10; j<22; ++j) {
             matrix(i,j)=1; //staring wtih a tetris
         }
     }
@@ -48,8 +48,7 @@ void MatrixContainer::render(const nes_uchar& _level) {
             for (nes_uchar x=0; x<10; ++x)
                 tilecont->at(glb::playfieldx+x,glb::playfieldy+y-2)=tiletype(_level,matrix(x,y));
                 //BlockRenderer::block(renderSurface,matrix(x,y),_level,PLAYFIELDX+x*8,PLAYFIELDY+(y-2)*8);
-        --glb::updatingmatrix;
-        if (glb::updatingmatrix==0) matrix=newmatrix;
+        if (glb::updatingmatrix==1) matrix=newmatrix;
         return;
     }
     for (nes_uchar x=0; x<10; ++x) { //TODO maybe optimize to render only new stuff around piece
@@ -87,11 +86,6 @@ nes_uchar MatrixContainer::lockpiece(const Piece& _piece, const nes_ushort&  _fr
         matrix(_xx,_yy)=_piece.color();
     }
     char _tempclearedlines=clearlines();
-    if (_tempclearedlines) {
-        glb::lineclearframecounter=5;
-        glb::updatingmatrix=5;
-
-    }
     return _tempclearedlines;
 }
 

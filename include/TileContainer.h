@@ -19,21 +19,22 @@ class tiletype {
     tiletype(const nes_uchar& _level, const nes_uchar& _blocktype)
     :tilenumber(87)
     {
+        const nes_uchar modlevel=_level%10; //TODO after 138
         switch(_blocktype) {
         case 1:
             tilenumber=678;
-            palette_color[2]=colors[_level][2];
-            palette_color[3]=colors[_level][3];
+            palette_color[2]=colors[modlevel][2];
+            palette_color[3]=colors[modlevel][3];
             break;
         case 2:
             tilenumber=679;
-            palette_color[2]=colors[_level][3];
-            palette_color[3]=colors[_level][2];
+            palette_color[2]=colors[modlevel][3];
+            palette_color[3]=colors[modlevel][2];
             break;
         case 3:
             tilenumber=679;
-            palette_color[2]=colors[_level][2];
-            palette_color[3]=colors[_level][3];
+            palette_color[2]=colors[modlevel][2];
+            palette_color[3]=colors[modlevel][3];
             break;
         default:
             tilenumber=0;
@@ -43,8 +44,8 @@ class tiletype {
             palette_color[0]=palette_color[1]=palette_color[2]= palette_color[3]=0x0D;
         }
         else {
-            palette_color[0]=colors[_level][0];
-            palette_color[1]=colors[_level][1];
+            palette_color[0]=colors[modlevel][0];
+            palette_color[1]=colors[modlevel][1];
         }
     }
     tiletype(const std::size_t& _tilenumber, const nes_uchar& c1, const nes_uchar& c2, const nes_uchar& c3, const nes_uchar& c4)

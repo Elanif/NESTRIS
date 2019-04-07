@@ -1,7 +1,7 @@
 #include "LevelLines.h"
 
 LevelLines::LevelLines(TileContainer * _tilecont, const nes_ushort& _frameappearance, const nes_uchar& _level)
-    :Renderer(_tilecont, _frameappearance), level(_level), lines(0)
+    :Renderer(_tilecont, _frameappearance), level(_level), lines(0u)
 {
     nes_ushort linestolevelup=(level+1)/16*100;
     if ((level+1)%16>=10) linestolevelup+=100;
@@ -23,6 +23,6 @@ const nes_uchar& LevelLines::getlevel() const {
 }
 
 void LevelLines::addlines(const nes_uchar& _clearedlines) {
-    lines+=_clearedlines;
-    if (lines>linestolevelup) ++level;
+    lines.addLines(_clearedlines);
+    if (lines.reallines()>linestolevelup) ++level;
 }
