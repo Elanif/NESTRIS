@@ -1,34 +1,25 @@
 #ifndef INPUT_H
 #define INPUT_H
+#define MAXBUTTONS 8
 #include<SDL.h>
 #include "ActiveInputs.h"
 #include"enums.h"
+#include<vector>
+#include<utility>
 
 class Input
 {
     public:
         Input();
-        virtual ~Input();
-        bool windowClosed() const;
         ActiveInputs getInput();
     private:
-        void update(const Uint8* _keyboardstate, int*_inputdependancies, const size_t& _keys, const size_t& _buttons);
-        void setup(const size_t& test);
-        SDL_Event* inputevent;
-        enum BUTTONS {
-            LEFT,
-            UP,
-            RIGHT,
-            DOWN,
-            SELECT,
-            START,
-            B,
-            A
-        };
-        bool* prevactiveinputs;
-        bool* activeinputs;
+        void update(const size_t& _buttons);
+        void setup();
+        sf::Event event;
+        bool prevactiveinputs[MAXBUTTONS];
+        bool activeinputs[MAXBUTTONS];
         bool leftandright;
-        int* inputdependancies;
-        int maxbuttons;
+        vector<pair<int, int> >inputdependancies;
+        size_t maxbuttons;
 };
 #endif

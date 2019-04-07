@@ -6779,7 +6779,7 @@
 
 1549030012 source:g:\nestris project\project versions\20190212\nestris\src\pfmatrix.cpp
 
-1549986876 source:g:\nestris project\project versions\20190212\nestris\src\piece.cpp
+1549985812 source:g:\nestris project\project versions\20190212\nestris\src\piece.cpp
 	"Piece.h"
 
 1549986340 source:g:\nestris project\project versions\20190212\nestris\src\piececontainer.cpp
@@ -6831,9 +6831,4 @@
 
 1549983402 source:g:\nestris project\project versions\20190212\nestris\src\window.cpp
 	"Window.h"
-
-1550066148 source:g:\nestris project\project versions\20190212\nestris\src\charrenderer.cpp
-	"CharRenderer.h"
-
-1550066140 g:\nestris project\project versions\20190212\nestris\include\charrenderer.h
 

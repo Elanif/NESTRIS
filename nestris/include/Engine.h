@@ -3,6 +3,7 @@
 
 #include "Input.h"
 #include "ActiveInputs.h"
+#include "SDL.h"
 #include "Renderer.h"
 #include "RenderLevelSelect.h"
 #include "RenderPlayField.h"
@@ -10,13 +11,15 @@
 class Engine
 {
     public:
-        Engine(sf::RenderWindow* _window, size_t _startingmenu);
+        Engine(SDL_Window * _window, size_t _startingmenu);
+        virtual ~Engine();
         void frame(const ActiveInputs& _inputs);
     protected:
     private:
-        sf::RenderWindow* window;
-        RenderLevelSelect RLS;
-        RenderPlayField RPF;
+        SDL_Window * window;
+        Renderer *renderer;
+        RenderLevelSelect *RLS;
+        RenderPlayField *RPF;
 
         enum MenuType {
             LEVELSELECT=10,
