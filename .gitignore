@@ -39,3 +39,8 @@ obj/
 *.exe
 *.out
 *.app
+
+#My stuff
+*.nes
+doxygen/
+SDL2/
