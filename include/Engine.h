@@ -13,7 +13,7 @@
 class Engine
 {
     public:
-        Engine(TileContainer* _tilecont, const size_t& _startingmenu);
+        Engine(TileContainer* _tilecont, const std::size_t& _startingmenu);
         void frame(const ActiveInputs& _inputs);
     protected:
     private:
@@ -24,7 +24,7 @@ class Engine
             LEVELSELECT=10,
             PLAYFIELD=11
         };
-        size_t currentmenu;
+        std::size_t currentmenu;
 
         //levelselect
         int levelselect;

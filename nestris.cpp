@@ -18,7 +18,7 @@ aggiornamento dinamico del smallesttimeunit
 optzione 1: sf::Image collegato a array di bool di cose da aggiornare -> usare rendertexture?
 opzine 2:
 unordered_map di tiletype, forse ha senso mettere i blocchi colorati dei livelli all'inizio e creare un'hash comoda per questi
-<tiletype tiletodraw, size_t index> se tiletodraw è in map si usa la posizione di vertexpos[index] messa in VertexArray[i].Quad
+<tiletype tiletodraw, std::size_t index> se tiletodraw è in map si usa la posizione di vertexpos[index] messa in VertexArray[i].Quad
 se no si fa update di texture
 usare comunque un array di bool
 thread diversi per ogni combinazione di input da fare dopo draw con pre render

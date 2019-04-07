@@ -15,7 +15,7 @@ public:
 class uint8container {
 public:
     uint8container() {
-        for (size_t i=0; i<4*8*8;++i)
+        for (std::size_t i=0; i<4*8*8;++i)
             quadretto[i]=0;
     }
     sf::Uint8* getQuadretto() {return quadretto;}
@@ -24,21 +24,21 @@ private:
 };
 
 struct SpriteEqual {
-    size_t lookup(unsigned char color, unsigned char* palette_color, size_t colors_found) const{
-        for (size_t i=0; i<colors_found; ++i)
+    std::size_t lookup(unsigned char color, unsigned char* palette_color, std::size_t colors_found) const{
+        for (std::size_t i=0; i<colors_found; ++i)
             if (palette_color[i]==color) return i;
-        return (size_t)-1;
+        return (std::size_t)-1;
     }
     bool operator()(const Sprite& img1, const Sprite& img2) const{
-        size_t colors_found=0;
+        std::size_t colors_found=0;
         unsigned char palette_color1[glb::maxcolor];//={0,0,0,0};
         unsigned char palette_color2[glb::maxcolor];//={0,0,0,0};
-        for (size_t x=0; x<glb::tilesize.x; ++x) {
-            for (size_t y=0; y<glb::tilesize.y; ++y) {
-                size_t lookup1=lookup(img1.arr[x][y],palette_color1,colors_found);
-                size_t lookup2=lookup(img2.arr[x][y],palette_color2,colors_found);
+        for (std::size_t x=0; x<glb::tilesize.x; ++x) {
+            for (std::size_t y=0; y<glb::tilesize.y; ++y) {
+                std::size_t lookup1=lookup(img1.arr[x][y],palette_color1,colors_found);
+                std::size_t lookup2=lookup(img2.arr[x][y],palette_color2,colors_found);
                 if (lookup1!=lookup2) return false;
-                if (lookup1==(size_t)-1) {
+                if (lookup1==(std::size_t)-1) {
                     if (colors_found>=glb::maxcolor) throw "Too many colors in sprite equal"; //ERROR
                     palette_color1[colors_found]=img1.arr[x][y];
                     palette_color2[colors_found]=img2.arr[x][y];
@@ -65,8 +65,8 @@ namespace std
         {
             sf::Vector2u imagesize=t.getSize();
             unsigned long long temphash=0;
-            for (size_t x=0; x<imagesize.x; ++x)
-                for (size_t y=0; y<imagesize.y; ++y)
+            for (std::size_t x=0; x<imagesize.x; ++x)
+                for (std::size_t y=0; y<imagesize.y; ++y)
                     temphash+=t.getPixel(x,y).toInteger();
             return std::hash<unsigned long long>()(temphash);
         }
@@ -77,20 +77,20 @@ namespace std
         std::size_t operator()(const Sprite& t) const noexcept
         {
             struct funcholder {
-                static size_t lookup(unsigned char color, unsigned char* palette_color, size_t colors_found) {
-                    for (size_t i=0; i<colors_found; ++i)
+                static std::size_t lookup(unsigned char color, unsigned char* palette_color, std::size_t colors_found) {
+                    for (std::size_t i=0; i<colors_found; ++i)
                         if (palette_color[i]==color) return i;
-                    return (size_t)-1;
+                    return (std::size_t)-1;
                 }
             };
-            size_t colors_found=0;
+            std::size_t colors_found=0;
             unsigned char palette_color1[glb::maxcolor];
             unsigned long long temphash=0;
             unsigned long long rotations=0;
-            for (size_t x=0; x<glb::tilesize.x; ++x) {
-                for (size_t y=0; y<glb::tilesize.y; ++y) {
-                    size_t lookup1=funcholder::lookup(t.arr[x][y],palette_color1,colors_found);
-                    if (lookup1==(size_t)-1) {
+            for (std::size_t x=0; x<glb::tilesize.x; ++x) {
+                for (std::size_t y=0; y<glb::tilesize.y; ++y) {
+                    std::size_t lookup1=funcholder::lookup(t.arr[x][y],palette_color1,colors_found);
+                    if (lookup1==(std::size_t)-1) {
                         if (colors_found>=glb::maxcolor) throw "Too many colors in sprite hash"; //ERROR
                         palette_color1[colors_found]=t.arr[x][y];
                         ++colors_found;

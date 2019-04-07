@@ -30,7 +30,7 @@
 #ifndef incframe
 #define incframe glb::FrameCounter::inc
 #endif // incframe
-#include "stddef.h"
+#include <cstddef>
 #include"ConsoleManager.h"
 
 namespace glb {
@@ -63,19 +63,19 @@ namespace glb {
     extern ConsoleManager cm;
     extern nes_uchar lineclearframecounter;
     extern nes_uchar updatingmatrix;
-    constexpr size_t playfieldx=12;
-    constexpr size_t playfieldy=5;
-    constexpr size_t nextpiecex=24;//FIX
-    constexpr size_t nextpiecey=13;//FIX
-    constexpr size_t linesx=19;
-    constexpr size_t linesy=2;
-    constexpr size_t levelx=26;
-    constexpr size_t levely=5;//FIX
-    constexpr size_t scorex=10;
-    constexpr size_t scorey=10;
+    constexpr std::size_t playfieldx=12;
+    constexpr std::size_t playfieldy=5;
+    constexpr std::size_t nextpiecex=24;//FIX
+    constexpr std::size_t nextpiecey=13;//FIX
+    constexpr std::size_t linesx=19;
+    constexpr std::size_t linesy=2;
+    constexpr std::size_t levelx=26;
+    constexpr std::size_t levely=5;//FIX
+    constexpr std::size_t scorex=10;
+    constexpr std::size_t scorey=10;
     const sf::Vector2u tilesize={8,8};
     constexpr int spritemode=1;
-    constexpr size_t maxcolor=4;
+    constexpr std::size_t maxcolor=4;
 }
 
 #endif // ENUMS_H

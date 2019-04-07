@@ -23,8 +23,8 @@ class Score : public Renderer
         bool maxout;
         //void lowbytecheck();
         //void lowbytecheck2();
-        void bytechecklowdigit(const size_t& byte, const bool& andop);
-        void bytecheckhighdigit(const size_t& byte, const bool& andop);
+        void bytechecklowdigit(const std::size_t& byte, const bool& andop);
+        void bytecheckhighdigit(const std::size_t& byte, const bool& andop);
         void lastdigitcheck();
         nes_uchar score[3];
         //unsigned char lowbyte;

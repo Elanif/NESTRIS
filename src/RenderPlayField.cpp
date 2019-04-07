@@ -14,9 +14,9 @@ RenderPlayField::RenderPlayField(TileContainer * _tilecont, const nes_ushort& _f
     //level
     //lines
     nes_uchar _tempgravity[19]={48,43,38,33,28,23,18,13,8,6,5,5,5,4,4,4,3,3,3};
-    for (size_t i=0; i<19; ++i) gravity[i]=_tempgravity[i];
-    for (size_t i=19; i<29; ++i) gravity[i]=2;
-    for (size_t i=29; i<255; ++i) gravity[i]=1;
+    for (std::size_t i=0; i<19; ++i) gravity[i]=_tempgravity[i];
+    for (std::size_t i=19; i<29; ++i) gravity[i]=2;
+    for (std::size_t i=29; i<255; ++i) gravity[i]=1;
 
     glb::lineclearframecounter=0;
     playfield_blink=firstframeis4=tetris=false;

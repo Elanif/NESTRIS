@@ -1,6 +1,6 @@
 #include "RenderLevelSelect.h"
 #include<cstdio>
-RenderLevelSelect::RenderLevelSelect(TileContainer *_tilecont, const size_t& _frameappearance, const size_t& _currentlevel):
+RenderLevelSelect::RenderLevelSelect(TileContainer *_tilecont, const std::size_t& _frameappearance, const std::size_t& _currentlevel):
 Renderer(_tilecont,_frameappearance),
 currentlevel(_currentlevel)
 {
@@ -57,32 +57,32 @@ void RenderLevelSelect::renderLevelSelect(const bool& _reload) {
     tilecont->at(6+10,9+4)=test;
     //horizontal
     test.tilenumber=42;
-    for (size_t x=0; x<5; ++x) {
+    for (std::size_t x=0; x<5; ++x) {
             tilecont->at(7+x*2,9)=test;
     }
 
     test.tilenumber=47;
-    for (size_t x=0; x<5; ++x) {
-        for (size_t y=0; y<2; ++y) {
+    for (std::size_t x=0; x<5; ++x) {
+        for (std::size_t y=0; y<2; ++y) {
             tilecont->at(7+x*2,11+y*2)=test;
         }
     }
     //T
     test.tilenumber=81;
-    for (size_t x=0; x<4; ++x) {
+    for (std::size_t x=0; x<4; ++x) {
             tilecont->at(8+x*2,9)=test;
     }
 
 
     if (_reload) reload();
-    for (size_t x=0; x<3; ++x) {
-        for (size_t y=0; y<3; ++y) {
+    for (std::size_t x=0; x<3; ++x) {
+        for (std::size_t y=0; y<3; ++y) {
             tilecont->at(6+x+(lastrenderedlevel%5)*2,9+y+(lastrenderedlevel/5)*2).palette_color[0]=0x0D;
         }
     }
     if (blink++%4<2) {
-        for (size_t x=0; x<3; ++x) {
-            for (size_t y=0; y<3; ++y) {
+        for (std::size_t x=0; x<3; ++x) {
+            for (std::size_t y=0; y<3; ++y) {
                 tilecont->at(6+x+(currentlevel%5)*2,9+y+(currentlevel/5)*2).palette_color[0]=0x15;
             }
         }

@@ -29,7 +29,7 @@ public:
     std::string name;
     std::string value;
     std::string unit;
-    size_t last_render_length;
+    std::size_t last_render_length;
     sf::Vector2u outputposition;
     OutputInfo();
     virtual ~OutputInfo();

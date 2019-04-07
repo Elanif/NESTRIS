@@ -13,13 +13,13 @@ class Input
         Input();
         ActiveInputs getInput();
     private:
-        void update(const size_t& _buttons);
+        void update(const std::size_t& _buttons);
         void setup();
         sf::Event event;
         bool prevactiveinputs[MAXBUTTONS];
         bool activeinputs[MAXBUTTONS];
         bool leftandright;
         std::vector<std::pair<sf::Keyboard::Key, glb::BTN> >inputdependancies;
-        size_t maxbuttons;
+        std::size_t maxbuttons;
 };
 #endif

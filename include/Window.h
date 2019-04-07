@@ -9,7 +9,7 @@
 class Window : public sf::NonCopyable
 {
     public:
-        Window(const size_t& width, const size_t& height, sf::RenderStates _states, const bool& optimized);
+        Window(const std::size_t& width, const std::size_t& height, sf::RenderStates _states, const bool& optimized);
     private:
         Input inputManager;
 };

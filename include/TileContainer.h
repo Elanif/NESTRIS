@@ -7,7 +7,7 @@
 
 class tiletype {
     public:
-    size_t tilenumber;
+    std::size_t tilenumber;
     nes_uchar palette_color[4];
     tiletype()
         :tilenumber(0)
@@ -45,7 +45,7 @@ class tiletype {
             palette_color[1]=colors[_level][1];
         }
     }
-    tiletype(const size_t& _tilenumber, const nes_uchar& c1, const nes_uchar& c2, const nes_uchar& c3, const nes_uchar& c4)
+    tiletype(const std::size_t& _tilenumber, const nes_uchar& c1, const nes_uchar& c2, const nes_uchar& c3, const nes_uchar& c4)
         :tilenumber(_tilenumber),
         palette_color{c1,c2,c3,c4}
     {}
@@ -62,7 +62,7 @@ namespace std {
     {
         std::size_t operator()(const tiletype& t) const noexcept
         {
-            size_t colors=64-8;
+            std::size_t colors=64-8;
             //TODO remove trailing colors
             return std::hash<sf::Int64>()(t.palette_color[0]+colors*(t.palette_color[1]+colors*(t.palette_color[2]+colors*(t.palette_color[3]+colors*(t.tilenumber)))));
         }
@@ -74,16 +74,16 @@ class TileContainer : sf::NonCopyable //TODO CHANGE WHEN CLONE
     private:
     public:
         //TODO COPY ETC
-        const tiletype& at(const size_t& x, const size_t& y) const;
-        tiletype& at(const size_t& x, const size_t& y);
-        const tiletype& atconst(const size_t& x, const size_t& y) const {return at(x,y);}
+        const tiletype& at(const std::size_t& x, const std::size_t& y) const;
+        tiletype& at(const std::size_t& x, const std::size_t& y);
+        const tiletype& atconst(const std::size_t& x, const std::size_t& y) const {return at(x,y);}
         void resetupdated() ;
-        const bool& updated(const size_t& x, const size_t& y);
-        TileContainer(const size_t& _width, const size_t& _height);
+        const bool& updated(const std::size_t& x, const std::size_t& y);
+        TileContainer(const std::size_t& _width, const std::size_t& _height);
         TileContainer();
         ~TileContainer();
         tiletype* tilegrid;
-        size_t width, height;
+        std::size_t width, height;
         tiletype oob_error;
         bool* _upd;
 };

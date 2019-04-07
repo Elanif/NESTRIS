@@ -1,6 +1,6 @@
 #include "Renderer.h"
 
-Renderer::Renderer(TileContainer* _tilecont, const size_t& _frameappearance)
+Renderer::Renderer(TileContainer* _tilecont, const std::size_t& _frameappearance)
     :tilecont(_tilecont), frameappearance(_frameappearance)
 {
 

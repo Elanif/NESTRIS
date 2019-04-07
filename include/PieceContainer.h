@@ -36,7 +36,7 @@ private:
     nes_uchar hidecountercurrentpiece=0;
 
     std::vector<std::pair<nes_uchar, nes_uchar> > lastrenderedpos;
-    size_t spawncount=0; //TODO check spawncount
+    std::size_t spawncount=0; //TODO check spawncount
     nes_uchar spawnpiececounter;
     void spawnPiece(const nes_uchar& _spawndelay);
 

@@ -3,27 +3,27 @@
 #include"enums.h"
 #include<string>
 #include<fstream>
-constexpr size_t itox(const size_t& i, const size_t& width, const size_t& height) {
+constexpr std::size_t itox(const std::size_t& i, const std::size_t& width, const std::size_t& height) {
     return i%width;
 }
-constexpr size_t itoy(const size_t& i, const size_t& width, const size_t& height) {
+constexpr std::size_t itoy(const std::size_t& i, const std::size_t& width, const std::size_t& height) {
     return i/width;
 }
-constexpr size_t itoxrect(const size_t& i, const size_t& width, const size_t& height, const size_t& rectwidth, const size_t& rectheight) {
+constexpr std::size_t itoxrect(const std::size_t& i, const std::size_t& width, const std::size_t& height, const std::size_t& rectwidth, const std::size_t& rectheight) {
     return itox(i,width/rectwidth,height/rectheight)*rectwidth;
 }
-constexpr size_t itoyrect(const size_t& i, const size_t& width, const size_t& height, const size_t& rectwidth, const size_t& rectheight) {
-    //constexpr size_t rectx=itox(i,width/rectwidth,height/rectheight)*rectwidth;
+constexpr std::size_t itoyrect(const std::size_t& i, const std::size_t& width, const std::size_t& height, const std::size_t& rectwidth, const std::size_t& rectheight) {
+    //constexpr std::size_t rectx=itox(i,width/rectwidth,height/rectheight)*rectwidth;
     return itoy(i,width/rectwidth,height/rectheight)*rectheight;
 }
 
-constexpr size_t xytoi(const size_t& x, const size_t& y, const size_t& width, const size_t& height) {
+constexpr std::size_t xytoi(const std::size_t& x, const std::size_t& y, const std::size_t& width, const std::size_t& height) {
     return x+y*width;
 }
-constexpr size_t xytoi(const size_t& x, const size_t& y, const size_t& width, const size_t& height, const size_t& rectwidth, const size_t& rectheight) {
+constexpr std::size_t xytoi(const std::size_t& x, const std::size_t& y, const std::size_t& width, const std::size_t& height, const std::size_t& rectwidth, const std::size_t& rectheight) {
     return x+y*width;
 }
-TileRenderer::TileRenderer(const size_t& _width, const size_t& _height, sf::Vector2u _tilesize, const int& _drawmethod)
+TileRenderer::TileRenderer(const std::size_t& _width, const std::size_t& _height, sf::Vector2u _tilesize, const int& _drawmethod)
 :tilecont(_width,_height),
 width(_width),
 height(_height),
@@ -46,7 +46,7 @@ texturenumber(0)
     }
     else if (drawmethod==DRAWVERTEX){
         verteximage=sf::VertexArray(sf::Quads,width*height*4*tilesize.x*tilesize.y);
-        for (size_t i=0; i<width*height*4*tilesize.x*tilesize.y; i+=4) {
+        for (std::size_t i=0; i<width*height*4*tilesize.x*tilesize.y; i+=4) {
             verteximage[i].position=sf::Vector2f(itox(i/4,width*tilesize.x,height*tilesize.y),itoy(i/4,width*tilesize.x,height*tilesize.y));
             verteximage[i+1].position=sf::Vector2f(itox(i/4,width*tilesize.x,height*tilesize.y)+1,itoy(i/4,width*tilesize.x,height*tilesize.y));
             verteximage[i+2].position=sf::Vector2f(itox(i/4,width*tilesize.x,height*tilesize.y)+1,itoy(i/4,width*tilesize.x,height*tilesize.y)+1);
@@ -60,8 +60,8 @@ texturenumber(0)
             //TODO ERROR
         }
         verteximage=sf::VertexArray(sf::Quads,width*height*4);
-        for (size_t i=0; i<width; ++i) {
-            for (size_t j=0; j<height; ++j) {
+        for (std::size_t i=0; i<width; ++i) {
+            for (std::size_t j=0; j<height; ++j) {
 
                 sf::Vertex* quad = &verteximage[(i + j * width) * 4];
 
@@ -109,22 +109,24 @@ void TileRenderer::load_palette(const std::string& path) {
 
 bool TileRenderer::load(const std::string& tilefile){
     load_palette("YPbPr.pal");
-    std::unordered_map<Sprite,size_t,std::hash<Sprite>,SpriteEqual> spritemap;
     FILE * Spritefile=fopen(tilefile.c_str(),"r");
-    if (!Spritefile) return false;
-    size_t spritenumber=0;
+    if (!Spritefile) {
+        glb::cm.update<std::string>("error","Couldn't open sprite file: "+tilefile);
+        return false;
+    }
+    std::size_t spritenumber=spritevector.size();
     while (!feof(Spritefile)) {
-        size_t characters=0;
+        std::size_t characters=0;
         Sprite newsprite;
         for (characters=0; characters<tilesize.y*2&&!feof(Spritefile); ++characters) {
             unsigned int hex;
             fscanf(Spritefile,"%x",&hex);
             if (characters<tilesize.y) {
-                for (size_t i=0; i<8; ++i)
+                for (std::size_t i=0; i<tilesize.x; ++i)
                 newsprite.arr[tilesize.x-i-1][characters]=(hex >> i) & 1U;
             }
             else {
-                for (size_t i=0; i<tilesize.y; ++i)
+                for (std::size_t i=0; i<tilesize.x; ++i)
                 newsprite.arr[tilesize.x-i-1][characters-8]+=((hex >> i) & 1U)<<1;
             }
         }
@@ -149,8 +151,8 @@ bool TileRenderer::load(const std::string& tilefile){
     return true;
 }
 
-size_t TileRenderer::add_or_find_texture(const tiletype& newtile, sf::Image* prerendering=NULL) {
-    size_t whereisthistexture=0;
+std::size_t TileRenderer::add_or_find_texture(const tiletype& newtile, sf::Image* prerendering=NULL) {
+    std::size_t whereisthistexture=0;
     tiletype temptile=newtile;
     if ((temptile.palette_color[0]&0x0F)>=0x0D) temptile.palette_color[0]=0x0D;
     if ((temptile.palette_color[1]&0x0F)>=0x0D) temptile.palette_color[1]=0x0D;
@@ -190,9 +192,9 @@ size_t TileRenderer::add_or_find_texture(const tiletype& newtile, sf::Image* pre
             palette[primacifra[3]][secondacifra[3]]
         };
         sf::Uint8 rgba[4][4];
-        for (size_t colorcounter=0; colorcounter<4;++colorcounter) {
+        for (std::size_t colorcounter=0; colorcounter<4;++colorcounter) {
             int colortemp=color[colorcounter];
-            for (size_t rgbacounter=0; rgbacounter<4;++rgbacounter) {
+            for (std::size_t rgbacounter=0; rgbacounter<4;++rgbacounter) {
                 rgba[colorcounter][4-rgbacounter-1]=colortemp&0xff;
                 colortemp=colortemp>>8;
             }
@@ -200,9 +202,9 @@ size_t TileRenderer::add_or_find_texture(const tiletype& newtile, sf::Image* pre
         Sprite* spritetemp=&spritevector[temptile.tilenumber];
         if (!prerendering) {
             sf::Uint8* tempquadretto=newtexture.getQuadretto(); //quadretto means small square in Italian
-            for (size_t pixelx=0; pixelx<tilesize.x; ++pixelx) {
-                for (size_t pixely=0; pixely<tilesize.y; ++pixely) {
-                    size_t tempi=xytoi(pixelx,pixely,tilesize.x,tilesize.y)*4;
+            for (std::size_t pixelx=0; pixelx<tilesize.x; ++pixelx) {
+                for (std::size_t pixely=0; pixely<tilesize.y; ++pixely) {
+                    std::size_t tempi=xytoi(pixelx,pixely,tilesize.x,tilesize.y)*4;
                     nes_uchar tiletypetemp=spritetemp->arr[pixelx][pixely];
                     tempquadretto[tempi]=rgba[tiletypetemp][0];
                     tempquadretto[tempi+1]=rgba[tiletypetemp][1];
@@ -217,8 +219,8 @@ size_t TileRenderer::add_or_find_texture(const tiletype& newtile, sf::Image* pre
                                itoyrect(texturenumber,texturesize,texturesize,tilesize.x,tilesize.y));
         }
         else {
-            for (size_t pixelx=0; pixelx<tilesize.x; ++pixelx) {
-                for (size_t pixely=0; pixely<tilesize.y; ++pixely) {
+            for (std::size_t pixelx=0; pixelx<tilesize.x; ++pixelx) {
+                for (std::size_t pixely=0; pixely<tilesize.y; ++pixely) {
                     nes_uchar tiletypetemp=spritetemp->arr[pixelx][pixely];
                     prerendering->setPixel(pixelx+itoxrect(texturenumber,texturesize,texturesize,tilesize.x,tilesize.y),
                                         pixely+itoyrect(texturenumber,texturesize,texturesize,tilesize.x,tilesize.y),
@@ -242,14 +244,14 @@ size_t TileRenderer::add_or_find_texture(const tiletype& newtile, sf::Image* pre
 void TileRenderer::drawtexture(sf::RenderTarget& target, sf::RenderStates states){
 
     sf::Clock trclock;
-    for (size_t x=0; x<width; ++x) {
-        for (size_t y=0; y<height; ++y) {
+    for (std::size_t x=0; x<width; ++x) {
+        for (std::size_t y=0; y<height; ++y) {
             if (tilecont.updated(x,y)) {
-                size_t whereisthistexture=add_or_find_texture(tilecont.atconst(x,y));
-                const size_t tempi=xytoi(x,y,width,height)*4;
+                std::size_t whereisthistexture=add_or_find_texture(tilecont.atconst(x,y));
+                const std::size_t tempi=xytoi(x,y,width,height)*4;
                 const sf::Vector2u texturesize=tiletexture.getSize();
-                size_t tu = whereisthistexture % (texturesize.x / tilesize.x);
-                size_t tv = whereisthistexture / (texturesize.x / tilesize.x);
+                std::size_t tu = whereisthistexture % (texturesize.x / tilesize.x);
+                std::size_t tv = whereisthistexture / (texturesize.x / tilesize.x);
 
                 verteximage[tempi].texCoords=sf::Vector2f(tu*tilesize.x,tv*tilesize.x);
                 verteximage[tempi+1].texCoords=sf::Vector2f((tu+1)*tilesize.x,tv*tilesize.x);
@@ -267,8 +269,8 @@ void TileRenderer::drawtexture(sf::RenderTarget& target, sf::RenderStates states
 void TileRenderer::drawvertex(sf::RenderTarget& target, sf::RenderStates states){
 
     sf::Clock trclock;
-    for (size_t x=0; x<width; ++x) {
-        for (size_t y=0; y<height; ++y) {
+    for (std::size_t x=0; x<width; ++x) {
+        for (std::size_t y=0; y<height; ++y) {
             if (tilecont.updated(x,y)) {
                 const int primacifra[4]={ //could be made into a routine to clear some of this code
                     tilecont.atconst(x,y).palette_color[0]/16,
@@ -295,11 +297,11 @@ void TileRenderer::drawvertex(sf::RenderTarget& target, sf::RenderStates states)
                     sf::Color(color[3])
                 };
                 Sprite* spritetemp=&spritevector[tilecont.atconst(x,y).tilenumber];
-                for (size_t pixelx=0; pixelx<tilesize.x; ++pixelx) {
-                    for (size_t pixely=0; pixely<tilesize.y; ++pixely) {
+                for (std::size_t pixelx=0; pixelx<tilesize.x; ++pixelx) {
+                    for (std::size_t pixely=0; pixely<tilesize.y; ++pixely) {
                         nes_uchar tiletypetemp=spritetemp->arr[pixelx][pixely];
                         //if (colortemp.a!=0)
-                        const size_t tempi=xytoi(x*tilesize.x+pixelx,y*tilesize.y+pixely,width*tilesize.x,height*tilesize.y)*4;
+                        const std::size_t tempi=xytoi(x*tilesize.x+pixelx,y*tilesize.y+pixely,width*tilesize.x,height*tilesize.y)*4;
                         verteximage[tempi].color=sfcolor[tiletypetemp];
                         verteximage[tempi+1].color=sfcolor[tiletypetemp];
                         verteximage[tempi+2].color=sfcolor[tiletypetemp];
@@ -314,8 +316,8 @@ void TileRenderer::drawvertex(sf::RenderTarget& target, sf::RenderStates states)
 }
 
 void TileRenderer::drawsprite(sf::RenderTarget& target, sf::RenderStates states){
-    for (size_t x=0; x<width; ++x) {
-        for (size_t y=0; y<height; ++y) {
+    for (std::size_t x=0; x<width; ++x) {
+        for (std::size_t y=0; y<height; ++y) {
             if (tilecont.updated(x,y)) {
                 const int primacifra[4]={
                     tilecont.atconst(x,y).palette_color[0]/16,
@@ -336,18 +338,18 @@ void TileRenderer::drawsprite(sf::RenderTarget& target, sf::RenderStates states)
                     palette[primacifra[3]][secondacifra[3]]
                 };
                 sf::Uint8 rgba[4][4];
-                for (size_t colorcounter=0; colorcounter<4;++colorcounter) {
+                for (std::size_t colorcounter=0; colorcounter<4;++colorcounter) {
                     int colortemp=color[colorcounter];
-                    for (size_t rgbacounter=0; rgbacounter<4;++rgbacounter) {
+                    for (std::size_t rgbacounter=0; rgbacounter<4;++rgbacounter) {
                         rgba[colorcounter][4-rgbacounter-1]=colortemp&0xff;
                         colortemp=colortemp>>8;
                     }
                 }
                 Sprite* spritetemp=&spritevector[tilecont.atconst(x,y).tilenumber];
                 sf::Uint8* tempquadretto=quadretti[xytoi(x,y,width,height)].getQuadretto();
-                for (size_t pixelx=0; pixelx<tilesize.x; ++pixelx) {
-                    for (size_t pixely=0; pixely<tilesize.y; ++pixely) {
-                        size_t tempi=xytoi(pixelx,pixely,tilesize.x,tilesize.y)*4;
+                for (std::size_t pixelx=0; pixelx<tilesize.x; ++pixelx) {
+                    for (std::size_t pixely=0; pixely<tilesize.y; ++pixely) {
+                        std::size_t tempi=xytoi(pixelx,pixely,tilesize.x,tilesize.y)*4;
                         nes_uchar tiletypetemp=spritetemp->arr[pixelx][pixely];
                         tempquadretto[tempi]=rgba[tiletypetemp][0];
                         tempquadretto[tempi+1]=rgba[tiletypetemp][1];
@@ -364,8 +366,8 @@ void TileRenderer::drawsprite(sf::RenderTarget& target, sf::RenderStates states)
 }
 
 void TileRenderer::drawimage(sf::RenderTarget& target, sf::RenderStates states){
-    for (size_t x=0; x<width; ++x) {
-        for (size_t y=0; y<height; ++y) {
+    for (std::size_t x=0; x<width; ++x) {
+        for (std::size_t y=0; y<height; ++y) {
             if (tilecont.updated(x,y)) {
                 const int primacifra[4]={
                     tilecont.atconst(x,y).palette_color[0]/16,
@@ -392,8 +394,8 @@ void TileRenderer::drawimage(sf::RenderTarget& target, sf::RenderStates states){
                     sf::Color(color[3])
                 };
                 Sprite *spritetemp=&spritevector[tilecont.atconst(x,y).tilenumber];
-                for (size_t pixelx=0; pixelx<tilesize.x; ++pixelx) {
-                    for (size_t pixely=0; pixely<tilesize.y; ++pixely) {
+                for (std::size_t pixelx=0; pixelx<tilesize.x; ++pixelx) {
+                    for (std::size_t pixely=0; pixely<tilesize.y; ++pixely) {
                         nes_uchar tiletypetemp=spritetemp->arr[pixelx][pixely];
                         //if (colortemp.a!=0)
                         finalimageclass.setPixel(x*tilesize.x+pixelx,y*tilesize.y+pixely,sfcolor[tiletypetemp]); //sf::Color(color[Spritevector[tilecont(x,y).tilenumber].arr[pixelx][pixely]]
@@ -415,7 +417,7 @@ void TileRenderer::add_frequent_textures() {
 
     sf::Image texture_image;
     texture_image.create(texturesize, texturesize);
-    size_t tilenumber;
+    std::size_t tilenumber;
     unsigned int c1,c2,c3,c4; //using char would read 1 char at a time e.g. 2a read as 2
     while ((previous_textures>>std::dec>>tilenumber>>std::hex>>c1>>c2>>c3>>c4>>std::dec)) {
         add_or_find_texture(tiletype(tilenumber,c1,c2,c3,c4),&texture_image);
@@ -425,7 +427,7 @@ void TileRenderer::add_frequent_textures() {
     add_or_find_texture(block, &texture_image);
     block=tiletype(0,0);
     add_or_find_texture(block, &texture_image);
-    for (size_t level=0; level<10; ++level) {
+    for (std::size_t level=0; level<10; ++level) {
         block=tiletype(level,1);
         add_or_find_texture(block, &texture_image);
         block=tiletype(level,2);

@@ -2,14 +2,15 @@
 #include<cmath>
 #include"ConsoleManager.h"
 #include<string>
-Window::Window(const size_t& _width, const size_t& _height, sf::RenderStates _state, const bool& optimized)
+Window::Window(const std::size_t& _width, const std::size_t& _height, sf::RenderStates _state, const bool& optimized)
 {
     //_state.transform().getMatrix();
     sf::Vector2f windowtransformation(4.0f,4.0f);//_state.transform().
     sf::RenderWindow window(sf::VideoMode(_width*4, _height*4), "Nestris");
     sf::Vector2u tilesize(8,8);
     TileRenderer tilerend(_width/8,_height/8,tilesize,TileRenderer::DRAWTEXTURE);
-    tilerend.load("Sprites.txt");
+    tilerend.load("sprites.txt");
+    //tilerend.load("sprites.txtupdated");
     Engine _engine= Engine(tilerend.getTileContainer(),10); //TODO change 10
 
     sf::Event event;
@@ -119,7 +120,7 @@ sf::Int64 datawidth;
         sf::Int64 widthtemp=smallesttimeunit/_width;
         sf::Int64 left=datawidth*widthtemp;
         sf::Int64 right=datawidth*(widthtemp+1);
-        for (size_t i=0; i<timetests.size(); ++i) {
+        for (std::size_t i=0; i<timetests.size(); ++i) {
             if (timetests[i]>=left&&timetests[i]<right) {
                 rectheight++;
             }
@@ -141,7 +142,7 @@ Does anybody have a better idea?
 For reference the nes (ntsc at least)
 
 // NO DISTRIBUTION
-Window::Window(const size_t& _width, const size_t& _height, const bool& optimized)
+Window::Window(const std::size_t& _width, const std::size_t& _height, const bool& optimized)
 {
     //initWindow(_width,_height);
     //inputManager=initInput();

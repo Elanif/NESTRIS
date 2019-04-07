@@ -4,14 +4,14 @@
 Input::Input()
     :leftandright(false)
 {
-    for (size_t buttoninit=0; buttoninit<MAXBUTTONS; ++buttoninit) prevactiveinputs[buttoninit]=activeinputs[buttoninit]=false;
+    for (std::size_t buttoninit=0; buttoninit<MAXBUTTONS; ++buttoninit) prevactiveinputs[buttoninit]=activeinputs[buttoninit]=false;
     setup(); //tasti della tastiera
 }
 
-void Input::update(const size_t& _buttons) {
-    for (size_t buttoninit=0; buttoninit<MAXBUTTONS; ++buttoninit) prevactiveinputs[buttoninit]=activeinputs[buttoninit];
-    for (size_t buttoninit=0; buttoninit<MAXBUTTONS; ++buttoninit) activeinputs[buttoninit]=false;
-    for (size_t buttoninit=0; buttoninit<MAXBUTTONS; ++buttoninit) {
+void Input::update(const std::size_t& _buttons) {
+    for (std::size_t buttoninit=0; buttoninit<MAXBUTTONS; ++buttoninit) prevactiveinputs[buttoninit]=activeinputs[buttoninit];
+    for (std::size_t buttoninit=0; buttoninit<MAXBUTTONS; ++buttoninit) activeinputs[buttoninit]=false;
+    for (std::size_t buttoninit=0; buttoninit<MAXBUTTONS; ++buttoninit) {
         if (sf::Keyboard::isKeyPressed(inputdependancies[buttoninit].first)) activeinputs[inputdependancies[buttoninit].second]=true;
     }
     if (activeinputs[glb::RIGHT]) {

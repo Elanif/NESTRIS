@@ -9,7 +9,7 @@
 class RenderLevelSelect : Renderer
 {
     public:
-        RenderLevelSelect(TileContainer* _tilecont, const size_t& _frameappearance, const size_t& _currentlevel);
+        RenderLevelSelect(TileContainer* _tilecont, const std::size_t& _frameappearance, const std::size_t& _currentlevel);
         RenderLevelSelect();
         int update(ActiveInputs* activeinputs);
         void renderLevelSelect(const bool& _reload);
@@ -27,9 +27,9 @@ class RenderLevelSelect : Renderer
             B,
             A
         };
-        size_t currentlevel;
+        std::size_t currentlevel;
         unsigned int blink;
-        size_t lastrenderedlevel;
+        std::size_t lastrenderedlevel;
 };
 
 #endif

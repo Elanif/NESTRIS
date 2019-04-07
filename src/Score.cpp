@@ -43,13 +43,13 @@ void Score::lastdigitcheck() {
     }
 }
 
-void Score::bytechecklowdigit(const size_t& byte, const bool& andop) {
+void Score::bytechecklowdigit(const std::size_t& byte, const bool& andop) {
     nes_uchar A=score[byte];
     if (andop) A=A&0x0f;
     if (A-0x0A>=0) score[byte]+=0x06;
 }
 
-void Score::bytecheckhighdigit(const size_t& byte, const bool& andop) {
+void Score::bytecheckhighdigit(const std::size_t& byte, const bool& andop) {
     nes_uchar A=score[byte];
     if (andop) A=A&0xf0;
     if (A-0xA0>=0) {
@@ -69,7 +69,7 @@ void Score::softdrop(nes_uchar helddownpoints) { //helddownpoints used in calcul
     }
 }
 void Score::lineclear(const nes_uchar& level, const nes_uchar& linescleared) {
-    for (size_t i=0; i<=level; ++i) {
+    for (std::size_t i=0; i<=level; ++i) {
         score[0]+=pointsarray[linescleared*2];
         bytecheckhighdigit(0,false); //for some reason it doesn't do &0xf0
         score[1]+=pointsarray[linescleared*2+1];

@@ -2,7 +2,7 @@
 #include<cstdio>
 #include"random.h"
 #include"ConsoleManager.h"
-Engine::Engine(TileContainer* _tilecont, const size_t& _startingmenu):
+Engine::Engine(TileContainer* _tilecont, const std::size_t& _startingmenu):
 tilecont(_tilecont),
 currentmenu(_startingmenu),
 RLS(_tilecont,0,0),

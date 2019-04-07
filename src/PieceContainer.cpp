@@ -20,8 +20,8 @@ bool collision(const PFMatrix& _pfmatrix, const Piece& _piece) {
     bool collision = false;
     std::vector<std::pair<nes_uchar, nes_uchar> > piecepositions = _piece.getPos();
     for (std::vector<std::pair<nes_uchar, nes_uchar> >::size_type i=0; i<piecepositions.size(); ++i) {
-        size_t _xx=piecepositions[i].first;
-        size_t _yy=piecepositions[i].second;
+        std::size_t _xx=piecepositions[i].first;
+        std::size_t _yy=piecepositions[i].second;
         if (!PFMatrix::inbounds(_xx,_yy)) {
             collision = true;
             break;
@@ -121,15 +121,14 @@ const Piece& PieceContainer::getPiece() const{
 }
 
 void PieceContainer::rendernextpiece(const nes_uchar& _level) {
-    for (size_t x=glb::nextpiecex; x<glb::nextpiecex+4;++x)
-        for (size_t y=glb::nextpiecey; y<glb::nextpiecey+4;++y)
+    for (std::size_t x=glb::nextpiecex; x<glb::nextpiecex+4;++x)
+        for (std::size_t y=glb::nextpiecey; y<glb::nextpiecey+4;++y)
             tilecont->at(x,y)=tiletype();
     if (!hidenextpiece) {
-        std::vector<std::pair<nes_schar, nes_schar> > piecepositions = nextpiece.nextpiecePos();
-        for (std::vector<std::pair<nes_schar, nes_schar> >::size_type i=0; i<piecepositions.size(); ++i) { //TODO decide how it handles position
-            size_t _xx=glb::nextpiecex+piecepositions[i].first;
-            size_t _yy=glb::nextpiecey+piecepositions[i].second;
-            tilecont->at(_xx,_yy)=tiletype(_level,nextpiece.color());
+        typedef std::tuple<nes_schar, nes_schar, std::size_t> triple;
+        std::vector<triple> nextpiecepos=nextpiece.nextpiecePos();
+        for (const auto& i:nextpiecepos) {
+            tilecont->at(std::get<0>(i),std::get<1>(i))=tiletype(std::get<2>(i),0x0d, 0x30, 0x12, 0x00);
         }
     }
 }
@@ -148,8 +147,8 @@ void PieceContainer::render(const nes_ushort& _framecounter, const nes_uchar& _l
     else {
         std::vector<std::pair<nes_uchar, nes_uchar> > piecepositions = currentpiece.getPos();
         for (std::vector<std::pair<nes_uchar, nes_uchar> >::size_type i=0; i<piecepositions.size(); ++i) {
-            size_t _xx=piecepositions[i].first;
-            size_t _yy=piecepositions[i].second;
+            std::size_t _xx=piecepositions[i].first;
+            std::size_t _yy=piecepositions[i].second;
             if (PFMatrix::visible(_xx,_yy)) {
                 tilecont->at(glb::playfieldx+_xx,glb::playfieldy+_yy-2)=tiletype(_level,currentpiece.color());
             }
@@ -188,7 +187,7 @@ void PieceContainer::spawnPiece(const nes_uchar& _spawndelay) { //TODO check if 
     }
     spawnID = newSpawnID;
     nes_uchar realID=0;
-    for (size_t i=0; i<7;++i) {
+    for (std::size_t i=0; i<7;++i) {
         if (spawn_table[i]==spawnID) {
             realID=i;
             break;

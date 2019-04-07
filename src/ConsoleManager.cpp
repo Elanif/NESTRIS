@@ -3,7 +3,7 @@
 #include<iostream>
 #include<SFML/System/Sleep.hpp>
 
-void gotoxycm(size_t x, size_t y) {
+void gotoxycm(std::size_t x, std::size_t y) {
     gotoxy(x+1,y+1);
 }
 

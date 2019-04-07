@@ -42,7 +42,7 @@ class RenderPlayField : public Renderer
         int lockpiece();
         int updatePlayField(const ActiveInputs& _input) ;
         int** pfmatrix;
-        void renderSquare(const Uint8& red, const Uint8& green, const Uint8& blue, const Uint8& alpha, const size_t& x, const size_t& y, const size_t& w, const size_t& h);
+        void renderSquare(const Uint8& red, const Uint8& green, const Uint8& blue, const Uint8& alpha, const std::size_t& x, const std::size_t& y, const std::size_t& w, const std::size_t& h);
         unsigned int das;
         unsigned int fallcounter;
         int spawnpiececounter;
@@ -51,7 +51,7 @@ class RenderPlayField : public Renderer
         void spawnPiece();
         int clearlines();
         int ** newmatrix;
-        size_t linescleared;
+        std::size_t linescleared;
         int linesclearedarray[22];
 
 
