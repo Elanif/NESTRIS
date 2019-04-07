@@ -88,80 +88,13 @@ std::vector<std::pair<nes_uchar, nes_uchar> > Piece::getPos() const {
     return result;
 }
 
-typedef std::tuple<nes_schar, nes_schar, std::size_t> triple;
-std::vector<triple > Piece::nextpiecePos() const { //OUTDATED
-    std::vector<triple >  result;
+std::vector<std::pair<std::size_t, std::size_t> > Piece::nextpiecePos() const {
+    std::vector<std::pair<std::size_t, std::size_t> > result;
     if (piecetype<0 || piecetype>6) return result;
-    switch(piecetype) {
-    case 0:
-        result.push_back(triple(27,14,743));
-        result.push_back(triple(26,15,743));
-
-        result.push_back(triple(25,14,742));
-        result.push_back(triple(26,14,742));
-
-        result.push_back(triple(24,14,741));
-        result.push_back(triple(25,15,741));
-        break;
-    case 1:
-        result.push_back(triple(27,14,746));
-        result.push_back(triple(27,15,746));
-
-        result.push_back(triple(25,14,745));
-        result.push_back(triple(26,14,745));
-
-        result.push_back(triple(24,14,744));
-        result.push_back(triple(26,15,744));
-        break;
-    case 2:
-        result.push_back(triple(26,14,746));
-        result.push_back(triple(27,15,746));
-
-        result.push_back(triple(25,14,745));
-        result.push_back(triple(26,15,745));
-
-        result.push_back(triple(24,14,744));
-        result.push_back(triple(25,15,744));
-        break;
-    case 3:
-        result.push_back(triple(25,14,678));
-        result.push_back(triple(26,14,678));
-        result.push_back(triple(25,15,678));
-        result.push_back(triple(26,15,678));
-        break;
-    case 4:
-        result.push_back(triple(27,14,746));
-        result.push_back(triple(26,15,746));
-
-        result.push_back(triple(26,14,745));
-        result.push_back(triple(25,15,745));
-
-        result.push_back(triple(25,14,744));
-        result.push_back(triple(24,15,744));
-        break;
-    case 5:
-        result.push_back(triple(27,14,746));
-        result.push_back(triple(25,15,746));
-
-        result.push_back(triple(25,14,745));
-        result.push_back(triple(26,14,745));
-
-        result.push_back(triple(24,14,744));
-        result.push_back(triple(24,15,744));
-        break;
-    case 6:
-        result.push_back(triple(24,15,748));
-        result.push_back(triple(25,15,748));
-        result.push_back(triple(26,15,748));
-        result.push_back(triple(27,15,748));
-
-        result.push_back(triple(24,14,747));
-        result.push_back(triple(25,14,747));
-        result.push_back(triple(26,14,747));
-        result.push_back(triple(27,14,747));
-        break;
-
-
+    for (std::vector<std::pair<nes_uchar,nes_uchar> >::size_type i=0; i< 4; ++i) {
+        std::size_t nextpiecex=glb::nextpiece_coords[piecetype].x+rotationmatrix[piecetype*4+rotation%4][i][0]*8;
+        std::size_t nextpiecey=glb::nextpiece_coords[piecetype].y+rotationmatrix[piecetype*4+rotation%4][i][1]*8;
+        result.push_back(std::make_pair(nextpiecex,nextpiecey));
     }
     return result;
 }

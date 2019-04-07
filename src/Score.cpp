@@ -4,7 +4,6 @@ Score::Score(TileContainer *_tilecont, const nes_ushort& _frameappearance)
 :Renderer(_tilecont, _frameappearance),
 maxout(true)
 {
-    score[0]=score[1]=score[2]=0;
     pointsarray[0]=00; pointsarray[1]=00;
     pointsarray[2]=40; pointsarray[3]=00;
     pointsarray[4]=00; pointsarray[5]=01;
@@ -24,6 +23,21 @@ void Score::render() {
         return;
     }
     else {
+        tilecont->at(25,3)=tilecont->at(26,6)=tiletype(25,0x0d,0x30,0x00,0x00);
+        tilecont->at(27,6)=tiletype(28,0x0d,0x30,0x00,0x00);
+        tilecont->at(24,3)=tiletype(30,0x0d,0x30,0x00,0x00);
+        tilecont->at(24,6)=tiletype(29,0x0d,0x30,0x00,0x00);
+        tilecont->at(25,6)=tiletype(13,0x0d,0x30,0x00,0x00);
+        tilecont->at(28,6)=tiletype(15,0x0d,0x30,0x00,0x00);
+        tilecont->at(26,3)=tiletype(26,0x0d,0x30,0x00,0x00);
+        for (std::size_t i=0; i<3; i++) {
+            tilecont->at(glb::topscorex-i*2,glb::topscorey)=tiletype(1+(score[i]&0x0f),0x0d,0x30,0x00,0x00);
+            tilecont->at(glb::topscorex-i*2-1,glb::topscorey)=tiletype(1+((score[i]>>4)&0x0f),0x0d,0x30,0x00,0x00);
+        }
+        for (std::size_t i=0; i<3; i++) {
+            tilecont->at(glb::scorex-i*2,glb::scorey)=tiletype(1+(score[i]&0x0f),0x0d,0x30,0x00,0x00);
+            tilecont->at(glb::scorex-i*2-1,glb::scorey)=tiletype(1+((score[i]>>4)&0x0f),0x0d,0x30,0x00,0x00);
+        }
 
     }
 }

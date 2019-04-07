@@ -98,7 +98,7 @@ void TileRenderer::load_palette(const std::string& path) {
         if (counter>=16*4) break;
     }
     //TODO CARE FOR TRANSPARENCY
-    //palette_temp[0][0xd]=(palette_temp[0][0xd]>>8)<<8;
+    palette_temp[1][0xd]=(palette_temp[1][0xd]>>8)<<8;
     if (counter>=64) {
         for (std::size_t i=0; i<4;++i) {
             for (std::size_t j=0; j<16;++j) {
@@ -252,9 +252,6 @@ void TileRenderer::renderExtraTiles(std::size_t offset, const decltype(tilecont.
         const std::size_t& x=std::get<0>(triple_it);
         const std::size_t& y=std::get<1>(triple_it);
         const tiletype& t=std::get<2>(triple_it);
-        std::stringstream errorstream;
-        errorstream<<x<<" "<<y<<" "<<t.tilenumber<<" "<<(std::size_t)t.palette_color[0]<<"           ";
-        glb::cm.update<std::string>("system",errorstream.str());
         std::size_t whereisthistexture=add_or_find_texture(t);
         const std::size_t tempi=offset+extra_render_counter*4;
         const sf::Vector2u texturesize=tiletexture.getSize();
@@ -270,12 +267,12 @@ void TileRenderer::renderExtraTiles(std::size_t offset, const decltype(tilecont.
         verteximage[tempi+2].texCoords=sf::Vector2f((tu+1)*tilesize.x,(tv+1)*tilesize.x);
         verteximage[tempi+3].texCoords=sf::Vector2f(tu*tilesize.x,(tv+1)*tilesize.x);
         extra_render_counter++;
+        if (extra_render_counter>extra_render) break;
     }
 }
 
 void TileRenderer::drawtexture(sf::RenderTarget& target, sf::RenderStates states){
 
-    sf::Clock trclock;
     for (std::size_t x=0; x<width; ++x) {
         for (std::size_t y=0; y<height; ++y) {
             if (tilecont.updated(x,y)) {
@@ -292,34 +289,28 @@ void TileRenderer::drawtexture(sf::RenderTarget& target, sf::RenderStates states
             }
         }
     }
-    tilecont.renderExtra(5,5,tiletype(678,0x0d,0x30,0x20,0x10),0.4);
-    tilecont.renderExtra(25,25,tiletype(679,0x0d,0x30,0x30,0x30),0.6);
-    tilecont.renderExtra(5,5,tiletype(87,0x30,0x30,0x20,0x10),0.4);
-    tilecont.renderExtra(25,25,tiletype(87,0x30,0x30,0x30,0x30),0.6);
-    tilecont.renderExtra(5,5,tiletype(10,0x0d,0x30,0x20,0x10),0.4);
-    tilecont.renderExtra(25,25,tiletype(10,0x0d,0x30,0x30,0x30),0.6);
-    tilecont.renderExtra(60,60,tiletype(10,0x0d,0x30,0x30,0x30),0.6);
+    const std::size_t trail=4*width*height+extra_render*4;
     renderExtraTiles(0,tilecont.previous_tiles);
-    renderExtraTiles(4*width*height,tilecont.following_tiles);
+    renderExtraTiles(trail,tilecont.following_tiles);
+
     states.transform *= getTransform();
     states.texture = &tiletexture;
     target.draw(verteximage,states);
+
     for (std::size_t i=0; i<4*tilecont.previous_tiles.size(); ++i) {
         verteximage[i]=sf::Vector2f(0,0);
         verteximage[i].texCoords=sf::Vector2f(0,0);
     }
     tilecont.previous_tiles.clear();
     for (std::size_t i=0; i<4*tilecont.following_tiles.size(); ++i) {
-        verteximage[i+4*width*height]=sf::Vector2f(0,0);
-        verteximage[i+4*width*height].texCoords=sf::Vector2f(0,0);
+        verteximage[i+trail]=sf::Vector2f(0,0);
+        verteximage[i+trail].texCoords=sf::Vector2f(0,0);
     }
     tilecont.following_tiles.clear();
     tilecont.resetupdated();
 }
 
 void TileRenderer::drawvertex(sf::RenderTarget& target, sf::RenderStates states){
-
-    sf::Clock trclock;
     for (std::size_t x=0; x<width; ++x) {
         for (std::size_t y=0; y<height; ++y) {
             if (tilecont.updated(x,y)) {
@@ -538,7 +529,7 @@ sf::Uint32 TileRenderer::palette[4][16]= { //RGB PALLETE
 	{0xffffffff,0xb6dbffff,0xdbb6ffff,0xffb6ffff,0xff92ffff,0xffb6b6ff,0xffdb92ff,0xffff49ff,0xffff6dff,0xb6ff49ff,0x92ff6dff,0x49ffdbff,0x92dbffff,0x929292ff,0xff,0xff}
 };*/
 
-sf::Uint32 TileRenderer::palette[4][16]= { //YPrBr palette
+sf::Uint32 TileRenderer::palette[4][16]= { //YPrBr palette //with 0x1D transparent
     {0x7C7C7CFF ,0x0000FCFF ,0x0000BCFF ,0x4428BCFF ,0x940084FF ,0xA80020FF ,0xA81000FF ,0x881400FF ,0x503000FF ,0x007800FF ,0x006800FF ,0x005800FF ,0x004058FF ,0x000000FF ,0x000000FF ,0x000000FF},
     {0xBCBCBCFF ,0x0078F8FF ,0x0058F8FF ,0x6844FCFF ,0xD800CCFF ,0xE40058FF ,0xF83800FF ,0xE45C10FF ,0xAC7C00FF ,0x00B800FF ,0x00A800FF ,0x00A844FF ,0x008888FF ,0x00000000 ,0x000000FF ,0x000000FF},
     {0xF8F8F8FF ,0x3CBCFCFF ,0x6888FCFF ,0x9878F8FF ,0xF878F8FF ,0xF85898FF ,0xF87858FF ,0xFCA044FF ,0xF8B800FF ,0xB8F818FF ,0x58D854FF ,0x58F898FF ,0x00E8D8FF ,0x787878FF ,0x000000FF ,0x000000FF},

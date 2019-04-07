@@ -6,6 +6,41 @@
 #include"enums.h"
 #include"TileContainer.h"
 
+class ScoreContainer {
+public:
+    ScoreContainer() {
+        score[0]=score[1]=score[2]=0;
+    }
+    explicit ScoreContainer(nes_uchar _score[]) {
+        score[0]=_score[0];
+        score[1]=_score[1];
+        score[2]=_score[2];
+    }
+    explicit ScoreContainer(unsigned int _score) {
+        score[0]=(_score&0x0f)+((_score/10)%10)*0x0f;
+        _score/=100;
+        score[1]=(_score&0x0f)+((_score/10)%10)*0x0f;
+        _score/=100;
+        score[2]=(_score&0x0f)+((_score/10)%10)*0x0f;
+        _score/=100;
+    }
+    nes_uchar score[3];
+    unsigned int realscore() const {
+        unsigned int result=(score[0]&0x0f)+((score[0]&0xf0)/0x0f)*10;
+        result+=(score[1]&0x0f)*100+((score[1]&0xf0)/0x0f)*1000;
+        result+=(score[2]&0x0f)*10000+((score[2]&0xf0)/0x0f)*100000;
+        return result;
+    }
+    bool operator>(const ScoreContainer& _sc) const {
+        return this->realscore()>_sc.realscore();
+    }
+    const nes_uchar& operator[](const std::size_t& i) const {
+        return score[i];
+    }
+    nes_uchar& operator[](const std::size_t& i) {
+        return score[i];
+    }
+};
 class Score : public Renderer
 {
     public:
@@ -26,12 +61,14 @@ class Score : public Renderer
         void bytechecklowdigit(const std::size_t& byte, const bool& andop);
         void bytecheckhighdigit(const std::size_t& byte, const bool& andop);
         void lastdigitcheck();
-        nes_uchar score[3];
-        //unsigned char lowbyte;
-        //unsigned char midbyte;
-        //unsigned char highbyte;
+        ScoreContainer score;
+        ScoreContainer topscores;
+        //unsigned char lowbyte; score[0]
+        //unsigned char midbyte; score[1]
+        //unsigned char highbyte; score[2]
         nes_uchar pointsarray[10];
 
 };
+
 
 #endif // SCORE_H

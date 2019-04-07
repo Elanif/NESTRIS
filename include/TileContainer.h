@@ -76,6 +76,7 @@ class TileContainer : sf::NonCopyable
         const std::size_t extra_render=0;
     public:
         //TODO make private
+        void reset();
         std::multimap<double, glb::triple> previous_tiles;
         std::multimap<double, glb::triple> following_tiles;
         const tiletype& at(const std::size_t& x, const std::size_t& y) const;

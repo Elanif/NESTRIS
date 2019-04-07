@@ -2,11 +2,15 @@
 #include<cmath>
 #include"ConsoleManager.h"
 #include<string>
-Window::Window(const std::size_t& _width, const std::size_t& _height, sf::RenderStates _state, const bool& optimized)
+Window::Window(const std::size_t& _width, const std::size_t& _height, sf::Vector2f _scale, const bool& optimized)
 {
-    //_state.transform().getMatrix();
-    sf::Vector2f windowtransformation(4.0f,4.0f);//_state.transform().
-    sf::RenderWindow window(sf::VideoMode(_width*4, _height*4), "Nestris");
+    bool fourthirds=false;
+    sf::Transform state;
+    if (fourthirds) {
+        _scale.y*=(double)_width/_height*3./4.;
+    }
+    state.scale(_scale);
+    sf::RenderWindow window(sf::VideoMode(_width*_scale.x, _height*_scale.y), "Nestris");
     sf::Vector2u tilesize(8,8);
     TileRenderer tilerend(_width/8,_height/8,tilesize,TileRenderer::DRAWTEXTURE,64);
     tilerend.load("sprites.txt");
@@ -38,8 +42,8 @@ Window::Window(const std::size_t& _width, const std::size_t& _height, sf::Render
             glb::cm.update<sf::Int64>("input delay",elapsedtime.getElapsedTime().asMicroseconds()-delaycalc);
             delaycalc=elapsedtime.getElapsedTime().asMicroseconds();
 
-            window.clear();//adds 30microseconds
-            tilerend.drawmod(window, _state);
+            //window.clear();//adds 30microseconds
+            tilerend.drawmod(window, state);
 
             glb::cm.update<sf::Int64>("draw delay",elapsedtime.getElapsedTime().asMicroseconds()-delaycalc);
             delaycalc=elapsedtime.getElapsedTime().asMicroseconds();

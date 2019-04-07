@@ -3,6 +3,7 @@
 #include"enums.h"
 #include"random.h"
 #include<cstdio>
+#include<sstream>
 
 PieceContainer::PieceContainer(TileContainer * _tilecont, const nes_ushort& _frameappearance)
 :Renderer(_tilecont, _frameappearance),
@@ -92,8 +93,8 @@ void PieceContainer::inputManager(const ActiveInputs& _inputs, const PFMatrix& p
     temppiece=currentpiece;
     if (_inputs.getHold(glb::DOWN)&&!downinterrupted) {
         ++holddowncounter;
-        ++holddownpoints;
         if (holddowncounter>=3) {
+            ++holddownpoints;
             alreadymoveddown=true;
             ++temppiece.y;
             holddowncounter-=2;
@@ -121,14 +122,10 @@ const Piece& PieceContainer::getPiece() const{
 }
 
 void PieceContainer::rendernextpiece(const nes_uchar& _level) {
-    for (std::size_t x=glb::nextpiecex; x<glb::nextpiecex+4;++x)
-        for (std::size_t y=glb::nextpiecey; y<glb::nextpiecey+4;++y)
-            tilecont->at(x,y)=tiletype();
     if (!hidenextpiece) {
-        typedef std::tuple<nes_schar, nes_schar, std::size_t> triple;
-        std::vector<triple> nextpiecepos=nextpiece.nextpiecePos();
+        std::vector<std::pair<std::size_t, std::size_t> >  nextpiecepos=nextpiece.nextpiecePos();
         for (const auto& i:nextpiecepos) {
-            tilecont->at(std::get<0>(i),std::get<1>(i))=tiletype(std::get<2>(i),0x0d, 0x30, 0x12, 0x00);
+            tilecont->renderExtra(i.first,i.second,tiletype(_level,nextpiece.color()),0.6);
         }
     }
 }

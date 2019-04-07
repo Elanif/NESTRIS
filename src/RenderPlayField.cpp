@@ -30,6 +30,7 @@ void RenderPlayField::update(const ActiveInputs& _input, const nes_ushort& _fram
         nes_uchar linescleared=matrixhandler.lockpiece(piecehandler.lastdroppedpiece,_framecounter); //for some reason the locked piece doesnt appear at first
         scorehandler.lineclear(level,linescleared);
         scorehandler.softdrop(piecehandler.holddownpoints);
+        glb::cm.update<std::string>("system","hold down points= "+std::to_string(piecehandler.holddownpoints));
         piecehandler.lockpiece(piecehandler.lastdroppedpiece.y);
         piecehandler.dropped=false;
         if (linescleared) {
@@ -54,6 +55,7 @@ void RenderPlayField::update(const ActiveInputs& _input, const nes_ushort& _fram
 void RenderPlayField::renderimage(bool blink) {
     if (blink) {
         playfield_blink=true;
+        tilecont->at(30,23)=tiletype(65,0x0d,0x3c,0x00,0x20);
         tilecont->at(23,23)=tiletype(65,0x0d,0x3c,0x00,0x20);
         tilecont->at(24,17)=tilecont->at(25,17)=tilecont->at(26,17)=tilecont->at(27,17)=tilecont->at(12,25)=tilecont->at(13,25)=tilecont->at(14,25)=tilecont->at(15,25)=tilecont->at(16,25)=tilecont->at(17,25)=tilecont->at(18,25)=tilecont->at(19,25)=tilecont->at(20,25)=tilecont->at(21,25)=tiletype(628,0x0d,0x3c,0x20,0x00);
         tilecont->at(22,5)=tilecont->at(22,6)=tilecont->at(22,7)=tilecont->at(22,8)=tilecont->at(22,9)=tilecont->at(22,10)=tilecont->at(22,11)=tilecont->at(22,12)=tilecont->at(28,12)=tilecont->at(22,13)=tilecont->at(28,13)=tilecont->at(22,14)=tilecont->at(28,14)=tilecont->at(22,15)=tilecont->at(28,15)=tilecont->at(22,16)=tilecont->at(28,16)=tilecont->at(22,17)=tilecont->at(22,18)=tilecont->at(22,19)=tilecont->at(22,20)=tilecont->at(22,21)=tilecont->at(22,22)=tilecont->at(22,23)=tilecont->at(22,24)=tiletype(626,0x0d,0x3c,0x20,0x00);
@@ -155,7 +157,7 @@ void RenderPlayField::render(const nes_ushort& _framecounter) {
 void RenderPlayField::resetPlayField(const nes_uchar& _level){
     //todo next piece
     level=_level;
-
+    tilecont->reset();
     renderimage(false);
     piecehandler = PieceContainer(tilecont, frameappearance);
     matrixhandler = MatrixContainer(tilecont, frameappearance);

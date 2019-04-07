@@ -65,14 +65,17 @@ namespace glb {
     extern nes_uchar updatingmatrix;
     constexpr std::size_t playfieldx=12;
     constexpr std::size_t playfieldy=5;
-    constexpr std::size_t nextpiecex=24;//FIX
-    constexpr std::size_t nextpiecey=13;//FIX
+    /*constexpr std::size_t nextpiecex=204;//FIX
+    constexpr std::size_t nextpiecey=110;//FIX*/
+    const sf::Vector2u nextpiece_coords[7]={{204,112},{204,112},{204,112},{208,112},{204,112},{204,112},{208,112}};
     constexpr std::size_t linesx=19;
     constexpr std::size_t linesy=2;
     constexpr std::size_t levelx=26;
     constexpr std::size_t levely=5;//FIX
-    constexpr std::size_t scorex=10;
-    constexpr std::size_t scorey=10;
+    constexpr std::size_t topscorex=29;
+    constexpr std::size_t topscorey=4;
+    constexpr std::size_t scorex=29;
+    constexpr std::size_t scorey=7;
     const sf::Vector2u tilesize={8,8};
     constexpr int spritemode=1;
     constexpr std::size_t maxcolor=4;

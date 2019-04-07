@@ -92,6 +92,14 @@ TileContainer::TileContainer(const std::size_t& _width, const std::size_t& _heig
     }
 }
 
+void TileContainer::reset() {
+    if (tilegrid==NULL) return;
+    for (std::size_t i=0; i<width*height; ++i) {
+        tilegrid[i].tilenumber=87;
+        tilegrid[i].palette_color[0]=0x0d;
+    }
+}
+
 TileContainer::TileContainer()
 :tilegrid(NULL), height(0), width(0)
 {}

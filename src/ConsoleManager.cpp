@@ -2,6 +2,10 @@
 #include<rlutil.h>
 #include<iostream>
 #include<SFML/System/Sleep.hpp>
+#include<chrono>
+#include<ctime>
+#include<sstream>
+
 
 void gotoxycm(std::size_t x, std::size_t y) {
     gotoxy(x+1,y+1);
@@ -26,7 +30,7 @@ void OutputInfo::set_position(const sf::Vector2u& _position)
 {
     outputposition=_position;
 }
-sf::Vector2u OutputInfo::print(sf::Vector2u currentposition, int conwidth)
+sf::Vector2u OutputInfo::print(sf::Vector2u currentposition, int conwidth, FILE*error_log)
 {
     if (currentposition.x!=0) {
         currentposition.x=0;
@@ -36,6 +40,14 @@ sf::Vector2u OutputInfo::print(sf::Vector2u currentposition, int conwidth)
     gotoxycm(currentposition.x,currentposition.y);
     currentposition.x+=outputstring.size();
     std::cout<<outputstring;
+    if (name==std::string("error")) {
+        auto clock = std::chrono::system_clock::now();
+        std::time_t current_time = std::chrono::system_clock::to_time_t(clock);
+        std::string time_str=std::ctime(&current_time);
+        time_str.resize(time_str.length()-1);
+        fprintf(error_log,"%s %s\n",time_str.c_str(),outputstring.c_str());
+        fflush(error_log);
+    }
     return sf::Vector2u(currentposition.x%conwidth,currentposition.y+currentposition.x/conwidth);
 }
 
@@ -83,6 +95,7 @@ private:
 
 ConsoleManager::ConsoleManager()
 {
+    error_log=fopen("error_log.txt","a");
     rlutil::cls();
     //std::cout.sync_with_stdio(false); messes up with rlutil
     OutputInfoLow<double> _fps("fps","hz",true);
@@ -138,11 +151,16 @@ void ConsoleManager::print() {
         //rlutil::cls();
         sf::Vector2u pos={0,0};
         for (auto info:CMmap) {
-            pos=info.second.print(pos,rlutil::tcols());
+            pos=info.second.print(pos,rlutil::tcols(),error_log);
         }
     }
 }
 
+
+ConsoleManager::~ConsoleManager() {
+    if (error_log)
+        fclose(error_log);
+}
 /*template<>
 void ConsoleManager::OutputInfo::set_value<std::__cxx11::basic_string<char> >(const std::__cxx11::basic_string<char>& t) {
 }*/

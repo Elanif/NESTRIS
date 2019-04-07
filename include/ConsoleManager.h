@@ -42,7 +42,7 @@ public:
     }
 
     void set_position(const sf::Vector2u& _position);
-    virtual sf::Vector2u print(sf::Vector2u currentposition, int conwidth);
+    virtual sf::Vector2u print(sf::Vector2u currentposition, int conwidth, FILE* error_log=NULL);
 
 };
 
@@ -74,9 +74,13 @@ class ConsoleManager : public sf::NonCopyable
             }
             else {
                 CMmap[info].set_value<T>(t);
+                if (info==std::string("error")) {
+                    print();
+                }
             }
         }
         void print();
+        ~ConsoleManager();
 
     private:
         unsigned char framecounter=0;
@@ -84,5 +88,6 @@ class ConsoleManager : public sf::NonCopyable
         OutputInfo& add_value(std::string info, std::string unit);
         OutputInfo& add_value(const OutputInfo& outputinfo);
         std::unordered_map<std::string, OutputInfo> CMmap;
+        FILE* error_log;
 };
 #endif // CONSOLEMANAGER_H
