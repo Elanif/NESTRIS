@@ -120,14 +120,10 @@ const Piece& PieceContainer::getPiece() const{
     return currentpiece;
 }
 
-void PieceContainer::deletenextpiece() {
-
-}
-
 void PieceContainer::rendernextpiece(const nes_uchar& _level) {
     for (size_t x=glb::nextpiecex; x<glb::nextpiecex+4;++x)
         for (size_t y=glb::nextpiecey; y<glb::nextpiecey+4;++y)
-            tilecont->at(x,y)=tiletype(0,0);
+            tilecont->at(x,y)=tiletype();
     if (!hidenextpiece) {
         std::vector<std::pair<nes_schar, nes_schar> > piecepositions = nextpiece.nextpiecePos();
         for (std::vector<std::pair<nes_schar, nes_schar> >::size_type i=0; i<piecepositions.size(); ++i) { //TODO decide how it handles position
@@ -143,7 +139,9 @@ void PieceContainer::render(const nes_ushort& _framecounter, const nes_uchar& _l
         --hidecounter;
         return;
     }
-    if (glb::lineclearframecounter>0) return;
+    if (glb::lineclearframecounter>0) {
+        return;
+    }
     if (hidecountercurrentpiece>0) {
         --hidecountercurrentpiece;
     }
@@ -157,7 +155,6 @@ void PieceContainer::render(const nes_ushort& _framecounter, const nes_uchar& _l
             }
         }
     }
-    deletenextpiece();
     rendernextpiece(_level);
 }
 

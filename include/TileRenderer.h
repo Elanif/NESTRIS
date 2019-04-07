@@ -53,6 +53,7 @@ private:
     size_t texturenumber;
     void add_frequent_textures();
     size_t add_or_find_texture(const tiletype& newtile, sf::Image* prerendering) ;
+    void load_palette(const std::string& path);
     FILE*newtextures;
 
 };

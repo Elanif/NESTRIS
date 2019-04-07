@@ -134,7 +134,7 @@ OutputInfo& ConsoleManager::add_value(const OutputInfo& outputinfo) {
 
 
 void ConsoleManager::print() {
-    if (framecounter++%32==0) {
+    if (framecounter++%4==0) {
         //rlutil::cls();
         sf::Vector2u pos={0,0};
         for (auto info:CMmap) {

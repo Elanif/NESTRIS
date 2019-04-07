@@ -24,7 +24,6 @@ public:
     void doDrop();
     void lockpiece(const nes_uchar& _lockheight);
     const Piece& getPiece() const;
-    void deletenextpiece();
     void render(const nes_ushort& _framecounter, const nes_uchar& _level);
     void rendernextpiece(const nes_uchar& _level);
     bool dropped;
@@ -34,15 +33,15 @@ public:
 
 private:
 
-    nes_uchar hidecountercurrentpiece;
+    nes_uchar hidecountercurrentpiece=0;
 
     std::vector<std::pair<nes_uchar, nes_uchar> > lastrenderedpos;
-    size_t spawncount;
+    size_t spawncount=0; //TODO check spawncount
     nes_uchar spawnpiececounter;
     void spawnPiece(const nes_uchar& _spawndelay);
 
-    bool downinterrupted, hidenextpiece;
-    nes_uchar das, downcounter, holddowncounter;
+    bool downinterrupted=false, hidenextpiece; //TODO does select carry after new games?
+    nes_uchar das=0, downcounter=0, holddowncounter=0;
     Piece currentpiece, nextpiece;
 
     static nes_uchar spawn_table[7];

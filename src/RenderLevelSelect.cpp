@@ -16,7 +16,7 @@ int RenderLevelSelect::updateLevelSelect(const ActiveInputs& _input) {
     unsigned int tempblink=blink;
     blink=0;
     if (_input.getPress(glb::START)) {
-        if (_input.getHold(glb::A)&&!_input.getPress(glb::A)) return currentlevel+10;
+        if (_input.getHold(glb::A)&&!_input.getPress(glb::A)) return currentlevel+10;//A has to be held 1 frame earlier
         return currentlevel;
     }
     else if (_input.getPress(glb::LEFT)) {

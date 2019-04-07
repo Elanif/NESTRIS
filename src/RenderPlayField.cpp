@@ -7,8 +7,6 @@
 RenderPlayField::RenderPlayField(TileContainer * _tilecont, const nes_ushort& _frameappearance, nes_uchar _level):Renderer(_tilecont, _frameappearance), level(_level){
     init_assets();
     piecehandler = PieceContainer(_tilecont, frameappearance);
-    piecehandler.hide(0);
-    piecehandler.sleep(0);
     matrixhandler = MatrixContainer(_tilecont, frameappearance);
     scorehandler = Score(_tilecont, frameappearance, true);
     levellineshandler = LevelLines(_tilecont, frameappearance, _level);
@@ -21,7 +19,7 @@ RenderPlayField::RenderPlayField(TileContainer * _tilecont, const nes_ushort& _f
     for (size_t i=29; i<255; ++i) gravity[i]=1;
 
     glb::lineclearframecounter=0;
-    firstframeis4=tetris=false;
+    playfield_blink=firstframeis4=tetris=false;
 
 }
 
@@ -36,7 +34,7 @@ void RenderPlayField::update(const ActiveInputs& _input, const nes_ushort& _fram
         piecehandler.dropped=false;
         if (linescleared) {
             glb::lineclearframecounter=5;
-            if (getframemod4()==0) firstframeis4=true;
+            if (getframemod4()==0) firstframeis4=true; //normally rendering happens before inputs, since I do it right after input managing I have to account for the frame being already eligible for blinking
             else firstframeis4=false;
             //nes_uchar _spawndelay=20;
             //piecehandler.sleep(_spawndelay);
@@ -54,7 +52,9 @@ void RenderPlayField::update(const ActiveInputs& _input, const nes_ushort& _fram
 }
 
 void RenderPlayField::renderimage(bool blink) {
-    if (blink) {tilecont->at(23,23)=tiletype(65,0x0d,0x3c,0x00,0x20);
+    if (blink) {
+        playfield_blink=true;
+        tilecont->at(23,23)=tiletype(65,0x0d,0x3c,0x00,0x20);
         tilecont->at(24,17)=tilecont->at(25,17)=tilecont->at(26,17)=tilecont->at(27,17)=tilecont->at(12,25)=tilecont->at(13,25)=tilecont->at(14,25)=tilecont->at(15,25)=tilecont->at(16,25)=tilecont->at(17,25)=tilecont->at(18,25)=tilecont->at(19,25)=tilecont->at(20,25)=tilecont->at(21,25)=tiletype(628,0x0d,0x3c,0x20,0x00);
         tilecont->at(22,5)=tilecont->at(22,6)=tilecont->at(22,7)=tilecont->at(22,8)=tilecont->at(22,9)=tilecont->at(22,10)=tilecont->at(22,11)=tilecont->at(22,12)=tilecont->at(28,12)=tilecont->at(22,13)=tilecont->at(28,13)=tilecont->at(22,14)=tilecont->at(28,14)=tilecont->at(22,15)=tilecont->at(28,15)=tilecont->at(22,16)=tilecont->at(28,16)=tilecont->at(22,17)=tilecont->at(22,18)=tilecont->at(22,19)=tilecont->at(22,20)=tilecont->at(22,21)=tilecont->at(22,22)=tilecont->at(22,23)=tilecont->at(22,24)=tiletype(626,0x0d,0x3c,0x20,0x00);
         tilecont->at(5,5)=tilecont->at(31,14)=tilecont->at(24,25)=tilecont->at(18,27)=tiletype(95,0x0d,0x3c,0x00,0x20);
@@ -90,7 +90,8 @@ void RenderPlayField::renderimage(bool blink) {
         tilecont->at(12,3)=tilecont->at(13,3)=tilecont->at(14,3)=tilecont->at(15,3)=tilecont->at(16,3)=tilecont->at(17,3)=tilecont->at(18,3)=tilecont->at(19,3)=tilecont->at(20,3)=tilecont->at(21,3)=tilecont->at(3,4)=tilecont->at(4,4)=tilecont->at(5,4)=tilecont->at(6,4)=tilecont->at(7,4)=tilecont->at(8,4)=tilecont->at(24,9)=tilecont->at(25,9)=tilecont->at(26,9)=tilecont->at(27,9)=tilecont->at(28,9)=tilecont->at(29,9)=tilecont->at(24,21)=tilecont->at(25,21)=tilecont->at(26,21)=tilecont->at(27,21)=tilecont->at(28,21)=tilecont->at(2,25)=tilecont->at(3,25)=tilecont->at(4,25)=tilecont->at(5,25)=tilecont->at(6,25)=tilecont->at(7,25)=tilecont->at(8,25)=tilecont->at(9,25)=tiletype(636,0x0d,0x3c,0x20,0x00);
     }
     else {
-            tilecont->at(23,23)=tiletype(65,0x0d,0x31,0x00,0x00);
+        playfield_blink=false;
+        tilecont->at(23,23)=tiletype(65,0x0d,0x31,0x00,0x00);
         tilecont->at(24,17)=tilecont->at(25,17)=tilecont->at(26,17)=tilecont->at(27,17)=tilecont->at(12,25)=tilecont->at(13,25)=tilecont->at(14,25)=tilecont->at(15,25)=tilecont->at(16,25)=tilecont->at(17,25)=tilecont->at(18,25)=tilecont->at(19,25)=tilecont->at(20,25)=tilecont->at(21,25)=tiletype(628,0x0d,0x31,0x00,0x00);
         tilecont->at(22,5)=tilecont->at(22,6)=tilecont->at(22,7)=tilecont->at(22,8)=tilecont->at(22,9)=tilecont->at(22,10)=tilecont->at(22,11)=tilecont->at(22,12)=tilecont->at(28,12)=tilecont->at(22,13)=tilecont->at(28,13)=tilecont->at(22,14)=tilecont->at(28,14)=tilecont->at(22,15)=tilecont->at(28,15)=tilecont->at(22,16)=tilecont->at(28,16)=tilecont->at(22,17)=tilecont->at(22,18)=tilecont->at(22,19)=tilecont->at(22,20)=tilecont->at(22,21)=tilecont->at(22,22)=tilecont->at(22,23)=tilecont->at(22,24)=tiletype(626,0x0d,0x31,0x00,0x00);
         tilecont->at(5,5)=tilecont->at(31,14)=tilecont->at(24,25)=tilecont->at(18,27)=tiletype(95,0x0d,0x31,0x00,0x00);
@@ -130,25 +131,25 @@ void RenderPlayField::renderimage(bool blink) {
 void RenderPlayField::render(const nes_ushort& _framecounter) {
     //renderimage(false); more optimization to be done
     if (glb::lineclearframecounter>0) {
-        if (tetris&&!firstframeis4) {
-            if (getframemod4()==0){
+        if (tetris) {
+            if (getframemod4()==0&&!firstframeis4){
                 renderimage(true);
             }
-            else if (getframemod4()==1) {
+            else if (playfield_blink) {
                 renderimage(false);
             }
         }
     }
     else if (tetris) {
         tetris=false;
-        renderimage(false);
+        if (playfield_blink) renderimage(false);
     }
     levellineshandler.render();
     matrixhandler.render(level);
     piecehandler.render(_framecounter,level);
     scorehandler.render();
-    if (glb::lineclearframecounter>0 && !firstframeis4 && getframemod4()==0) glb::lineclearframecounter--;
-    if (glb::lineclearframecounter>0 && getframemod4()==0) firstframeis4=false;
+    if (glb::lineclearframecounter>0 && !firstframeis4 && getframemod4()==0) glb::lineclearframecounter--; //TODO pause itneraction
+    firstframeis4=false;
 }
 
 void RenderPlayField::resetPlayField(const nes_uchar& _level){

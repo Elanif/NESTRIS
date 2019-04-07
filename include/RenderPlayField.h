@@ -33,6 +33,7 @@ class RenderPlayField : public Renderer
 
         bool firstframeis4;
         bool paused;
+        bool playfield_blink=false;
         nes_uchar pausecounter;
 
         void init_assets();
