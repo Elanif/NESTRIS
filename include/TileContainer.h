@@ -3,6 +3,7 @@
 #include"enums.h"
 #include"stddef.h"
 #include<SFML/System/NonCopyable.hpp>
+#include<functional>
 
 class tiletype {
     public:
@@ -26,8 +27,30 @@ class tiletype {
             palette_color[3]=colors[_level][3];
         }
     }
+
+    bool operator==(const tiletype& t2) const {
+        return (this->tilenumber==t2.tilenumber)&&(this->palette_color[0]==t2.palette_color[0])&&(this->palette_color[1]==t2.palette_color[1])&&(this->palette_color[2]==t2.palette_color[2])&&(this->palette_color[3]==t2.palette_color[3]);
+    }
+
+    sf::Int64 convertToI64() const {
+        size_t colors=64-8;
+        return sf::Int64(palette_color[0]+colors*(palette_color[1]+colors*(palette_color[2]+colors*(palette_color[3]+colors*(tilenumber)))));
+    }
+
     static unsigned char colors[10][4];
 };
+
+namespace std {
+    template<>
+    struct hash<tiletype>
+    {
+        std::size_t operator()(const tiletype& t) const noexcept
+        {
+           return std::hash<sf::Int64>()(t.convertToI64());
+        }
+    };
+};
+
 class TileContainer : sf::NonCopyable //TODO CHANGE WHEN CLONE
 {
     private:

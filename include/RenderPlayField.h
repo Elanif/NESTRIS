@@ -33,7 +33,7 @@ class RenderPlayField : public Renderer
 
         bool firstframeis4;
         bool paused;
-        nes_uchar pausecounter;/*
+        nes_uchar pausecounter;
 
 
         /*

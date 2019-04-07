@@ -6,10 +6,10 @@ Window::Window(const size_t& _width, const size_t& _height, sf::RenderStates _st
     sf::Vector2f windowtransformation(4.0f,4.0f);//_state.transform().
     sf::RenderWindow window(sf::VideoMode(_width*4, _height*4), "Nestris");
 
-    TileRenderer tilerend(_width/8,_height/8);
+    TileRenderer tilerend(_width/8,_height/8,TileRenderer::DRAWIMAGE);
     tilerend.load("sprites.txt");
-    printf("sizeof long long=%d\n",sizeof(long long));
     Engine _engine= Engine(tilerend.getTileContainer(),10); //TODO change 10
+
     sf::Event event;
     sf::Int64 smallesttimeunit=sf::Int64(0);
     sf::Clock onesecondinit;
@@ -21,9 +21,8 @@ Window::Window(const size_t& _width, const size_t& _height, sf::RenderStates _st
         if (_timetemp>smallesttimeunit)smallesttimeunit=_timetemp;
     }
     sf::Int64 microsecondsperframe=1000000.L/60.0988L;
-    printf("%d\n",(int)smallesttimeunit);
     elapsedtime.restart();
-    //while I can't do a proper algorithm ill do this    smallesttimeunit*=5;
+
     while (window.isOpen()) {
         if (elapsedtime.getElapsedTime().asMicroseconds()>=microsecondsperframe) {
             printf("fps=%f\n",(double)sf::Int64(1000000)/(double)elapsedtime.getElapsedTime().asMicroseconds());
@@ -31,6 +30,7 @@ Window::Window(const size_t& _width, const size_t& _height, sf::RenderStates _st
             _engine.frame(inputManager.getInput());
             //SFML update window
             //window.clear();
+            printf("%I64d before drawmod\n",elapsedtime.getElapsedTime().asMicroseconds());
             tilerend.drawmod(window, _state);
             printf("%I64d before display\n",elapsedtime.getElapsedTime().asMicroseconds());
             window.display();

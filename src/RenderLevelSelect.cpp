@@ -39,7 +39,7 @@ void RenderLevelSelect::renderLevelSelect(const bool& _reload) {
     printf("levelselect=%d\n",currentlevel);
     tiletype test;
     //levelselect
-    test.palette_color[0]=0x0F;
+    test.palette_color[0]=0x0D;
     test.palette_color[1]=0x2A;
     test.palette_color[2]=0x2A;
     test.palette_color[3]=0x2A;
@@ -77,7 +77,7 @@ void RenderLevelSelect::renderLevelSelect(const bool& _reload) {
     if (_reload) reload();
     for (size_t x=0; x<3; ++x) {
         for (size_t y=0; y<3; ++y) {
-            tilecont->at(6+x+(lastrenderedlevel%5)*2,9+y+(lastrenderedlevel/5)*2).palette_color[0]=0x0F;
+            tilecont->at(6+x+(lastrenderedlevel%5)*2,9+y+(lastrenderedlevel/5)*2).palette_color[0]=0x0D;
         }
     }
     if (blink++%4<2) {
