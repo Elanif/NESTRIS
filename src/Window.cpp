@@ -9,7 +9,7 @@ Window::Window(const size_t& _width, const size_t& _height, sf::RenderStates _st
     sf::RenderWindow window(sf::VideoMode(_width*4, _height*4), "Nestris");
     sf::Vector2u tilesize(8,8);
     TileRenderer tilerend(_width/8,_height/8,tilesize,TileRenderer::DRAWTEXTURE);
-    tilerend.load("sprites.txt");
+    tilerend.load("Sprites.txt");
     Engine _engine= Engine(tilerend.getTileContainer(),10); //TODO change 10
 
     sf::Event event;
@@ -135,7 +135,7 @@ scanf("%d",&datawidth);
 
 /*
 Nes-like Graphics Emulator
-I'm working on a nes project and taking inspiration from the tutorials I tried to create a tilemap[hyperlink]. The problem is that nes tiles work like this:link. This means that each tile in the texture has a variable color and I couldn't think of a smart way to convert the texture to the color I want each time, it seems impossible with my sf::Color and sf::Texture. I decided to build an sf::Image, convert it to a texture and draw it each frame, which resulted in 4fps. I thought that updating the whole image every frame was the culprit, but even after removing that part in the program the fps only went up to ~10fps. I resolved to using textures and I had this idea: since creating a texture for each color (50 different colors on the NES, 4 colors per tile, hundreds of sprites) is impossible, I thought of creating a dynamically updated texture that updates when a new tile/color combination is requested, managed with a hash map or a container that lets me find the required texture in O(1) time. The problem is that I couldn't find a way to dynamically update a texture. Afterwards I realized that there's probably a way to render from multiple textures, should I create a sprite for each tile and
+I'm working on a nes project and taking inspiration from the tutorials I tried to create a tilemap[hyperlink]. The problem is that nes tiles work like this:link. This means that each tile in the texture has a variable color and I couldn't think of a smart way to convert the texture to the color I want each time, it seems impossible with my sf::Color and sf::Texture. I decided to build an sf::Image, convert it to a texture and draw it each frame, which resulted in 4fps. I thought that updating the whole image every frame was the culprit, but even after removing that part in the program the fps only went up to ~10fps. I resolved to using textures and I had this idea: since creating a texture for each color (50 different colors on the NES, 4 colors per tile, hundreds of Sprites) is impossible, I thought of creating a dynamically updated texture that updates when a new tile/color combination is requested, managed with a hash map or a container that lets me find the required texture in O(1) time. The problem is that I couldn't find a way to dynamically update a texture. Afterwards I realized that there's probably a way to render from multiple textures, should I create a Sprite for each tile and
  tie it to its texture?
 Does anybody have a better idea?
 For reference the nes (ntsc at least)
@@ -147,7 +147,7 @@ Window::Window(const size_t& _width, const size_t& _height, const bool& optimize
     //inputManager=initInput();
     sf::RenderWindow window(sf::VideoMode(_width, _height), "Nestris");
     TileRenderer tilerend(_width/8,_height/8);
-    tilerend.load("sprites.txt");
+    tilerend.load("Sprites.txt");
     Engine _engine= Engine(tilerend.getTileContainer(),10); //TODO change 10
     sf::Event event;
     sf::Int64 smallesttimeunit=sf::Int64(0);

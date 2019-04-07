@@ -30,13 +30,12 @@ void MatrixContainer::render(const nes_uchar& _level) {
             for (size_t i=0; i<linescleared; ++i ){
                 size_t x=glb::lineclearframecounter-1;
                 size_t y=linesclearedarray[i];
-                matrix(x,y)=0;
-                tilecont->at(x,y-2)=tiletype(_level,matrix(x,y));
+                matrix(x,y)=0; //was y-2
+                //tilecont->at(x,y)=tiletype(_level,matrix(x,y));
 
                 x=10-glb::lineclearframecounter;
-                //size_t y=linesclearedarray[i];
-                matrix(x,y)=0;
-                tilecont->at(x,y-2)=tiletype(_level,matrix(x,y));
+                matrix(x,y)=0; //was y-2
+                //tilecont->at(x,y)=tiletype(_level,matrix(x,y));
             }
         }
     }

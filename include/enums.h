@@ -63,17 +63,19 @@ namespace glb {
     extern ConsoleManager cm;
     extern nes_uchar lineclearframecounter;
     extern nes_uchar updatingmatrix;
-    const size_t playfieldx=12;
-    const size_t playfieldy=5;
-    const size_t nextpiecex=24;//FIX
-    const size_t nextpiecey=13;//FIX
-    const size_t linesx=19;
-    const size_t linesy=2;
-    const size_t levelx=26;
-    const size_t levely=5;//FIX
-    const size_t scorex=10;
-    const size_t scorey=10;
-
+    constexpr size_t playfieldx=12;
+    constexpr size_t playfieldy=5;
+    constexpr size_t nextpiecex=24;//FIX
+    constexpr size_t nextpiecey=13;//FIX
+    constexpr size_t linesx=19;
+    constexpr size_t linesy=2;
+    constexpr size_t levelx=26;
+    constexpr size_t levely=5;//FIX
+    constexpr size_t scorex=10;
+    constexpr size_t scorey=10;
+    const sf::Vector2u tilesize={8,8};
+    constexpr int spritemode=1;
+    constexpr size_t maxcolor=4;
 }
 
 #endif // ENUMS_H

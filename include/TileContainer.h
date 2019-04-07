@@ -21,7 +21,7 @@ class tiletype {
             palette_color[0]=palette_color[1]=palette_color[2]= palette_color[3]=0x0D;
         }
         else {
-            tilenumber=891+_blocktype;
+            tilenumber=678+_blocktype;
             palette_color[0]=colors[_level][0];
             palette_color[1]=colors[_level][1];
             palette_color[2]=colors[_level][2];
@@ -46,6 +46,7 @@ namespace std {
         std::size_t operator()(const tiletype& t) const noexcept
         {
             size_t colors=64-8;
+            //TODO remove trailing colors
             return std::hash<sf::Int64>()(t.palette_color[0]+colors*(t.palette_color[1]+colors*(t.palette_color[2]+colors*(t.palette_color[3]+colors*(t.tilenumber)))));
         }
     };
