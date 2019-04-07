@@ -3,7 +3,7 @@
 #include<string>
 #include<list>
 #include<SFML/System/Vector2.hpp>
-#include"enums.h"
+
 class OutputInfo
 {
 public:
@@ -14,10 +14,10 @@ public:
     OutputInfo();
     virtual ~OutputInfo();
     OutputInfo(const std::string& _name,const std::string &_unit);
-    void set_value(const glb::const_string_literal& t);
+    virtual void set_value(const char* const& t);
     template<typename T>
     void set_value(const T& t);
-    virtual sf::Vector2u print(sf::Vector2u currentposition, int conwidth, FILE* error_log=NULL);
+    virtual sf::Vector2u print(sf::Vector2u currentposition, int conwidth);
 
 };
 
@@ -27,12 +27,12 @@ inline void OutputInfo::set_value<std::string>(const std::string& t) {
 }
 
 template<>
-inline void OutputInfo::set_value<glb::const_string_literal>(const glb::const_string_literal& t) {
+inline void OutputInfo::set_value<const char*>(const char* const& t) {
     value=std::string(t);
 }
 
 template<>
-inline void OutputInfo::set_value<glb::string_literal>(const glb::string_literal& t) {
+inline void OutputInfo::set_value<char*>(char* const& t) {
     value=std::string(t);
 }
 
@@ -43,6 +43,7 @@ public:
     ~OutputInfoLow();
     OutputInfoLow(const std::string& _name,const std::string &_unit, const bool& _low); //if _low==true stores the lowest only
     void set_value(const T& t);
+    //virtual void set_value(const char* t);
     sf::Vector2u print(sf::Vector2u currentposition, int conwidth);
 private:
     T lowest_value={};
@@ -55,13 +56,10 @@ class OutputInfoError: public OutputInfo {
 public:
     ~OutputInfoError();
     OutputInfoError(const std::string& _name, const std::size_t& _max_error_number=1); //if _low==true stores the lowest only
-    template<typename T>
-    void set_value(const T& t);
-    void set_value(const glb::const_string_literal& t);
-    sf::Vector2u print(sf::Vector2u currentposition, int conwidth);
+    virtual void set_value(const char* t);
+    virtual sf::Vector2u print(sf::Vector2u currentposition, int conwidth);
 private:
     std::size_t max_error_number=1;
-    std::size_t current_errors_stored=0;
     std::list<std::string> error_list;
 };
 
@@ -70,12 +68,13 @@ namespace ntris {
     std::string to_string(const T& t) {
         return std::to_string(t);
     }
+    //TODO OVERLOAD?
     template<>
     inline std::string to_string<std::string>(const std::string& t) {
         return t;
     }
     template<>
-    inline std::string to_string<glb::const_string_literal>(const glb::const_string_literal& t) {
+    inline std::string to_string<const char*>(const char* const& t) {
         return std::string(t);
     }
 }

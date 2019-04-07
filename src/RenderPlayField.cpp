@@ -68,9 +68,6 @@ void RenderPlayField::update(const ActiveInputs& _input, const nes_ushort& _fram
 
 
 void RenderPlayField::render(const nes_ushort& _framecounter) {
-    if (glb::updatingmatrix>0) {
-        auto tmpupdatingmatrix=glb::updatingmatrix;
-    }
     //renderimage(false); more optimization to be done
     if (glb::lineclearframecounter>0) {
         if (tetris) {

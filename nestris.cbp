@@ -54,7 +54,7 @@
 			<Add option="-Wswitch-default" />
 			<Add option="-pedantic" />
 			<Add option="-Wall" />
-			<Add option="-std=c++11" />
+			<Add option="-std=c++14" />
 			<Add directory="src" />
 			<Add directory="include" />
 			<Add directory="../nestris" />

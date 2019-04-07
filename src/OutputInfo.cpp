@@ -2,7 +2,7 @@
 #include<chrono>
 #include<ctime>
 #include<rlutil.h>
-
+#include<SFML/System/Sleep.hpp>
 void gotoxycm(std::size_t x, std::size_t y) {
     gotoxy(x+1,y+1);
 }
@@ -18,9 +18,9 @@ OutputInfo::OutputInfo(const std::string& _name,const std::string &_unit)
 template<typename T>
 void OutputInfo::set_value(const T& t)
 {
-    value=ntris::to_string(t);
+    set_value(ntris::to_string(t).c_str());
 }
-void OutputInfo::set_value(const glb::const_string_literal& t)
+void OutputInfo::set_value(const char* const& t)
 {
     value=ntris::to_string(t);
 }
@@ -37,13 +37,14 @@ void print_time(FILE* output, tm t, Duration fraction) {
                 t.tm_mon + 1, t.tm_mday, t.tm_hour, t.tm_min, t.tm_sec,
                 static_cast<unsigned>(fraction / milliseconds(1)));
 }
-sf::Vector2u OutputInfo::print(sf::Vector2u currentposition, int conwidth, FILE*error_log)
+sf::Vector2u OutputInfo::print(sf::Vector2u currentposition, int conwidth)
 {
     std::string outputstring=name+"="+value+unit;
     gotoxycm(currentposition.x,currentposition.y);
     currentposition.x+=outputstring.size();
     std::cout<<outputstring;
-    if (name==std::string("error")&&value!=std::string("0")&&value.length()>0) {
+    //TODO REMOVE
+    /*if (name==std::string("error")&&value!=std::string("0")&&value.length()>0) {
         auto clock = std::chrono::system_clock::now();
         std::time_t current_time = std::chrono::system_clock::to_time_t(clock);
         using namespace std::chrono;
@@ -53,7 +54,7 @@ sf::Vector2u OutputInfo::print(sf::Vector2u currentposition, int conwidth, FILE*
         print_time(error_log,*localtime(&current_time), tp);
         fprintf(error_log,"%s\n",outputstring.c_str());
         fflush(error_log);
-    }
+    }*/
     value="";
     return sf::Vector2u(currentposition.x%conwidth,currentposition.y+currentposition.x/conwidth);
 }
@@ -69,6 +70,7 @@ OutputInfoLow<T>::OutputInfoLow(const std::string& _name,const std::string &_uni
     low(_low)
 {}
 
+//TODO non template
 template<typename T>
 void OutputInfoLow<T>::set_value(const T& t) {
     if (t>highest_value) highest_value=t;
@@ -106,19 +108,12 @@ OutputInfoError::OutputInfoError(const std::string& _name, const std::size_t& _m
     max_error_number(_max_error_number)
 {}
 
-template<typename T>
-void OutputInfoError::set_value(const T& t) {
-    while (current_errors_stored>=max_error_number) {
+void OutputInfoError::set_value(const char *t) {
+    while (error_list.size()>=max_error_number) {
         error_list.pop_front();
     }
     error_list.push_back(ntris::to_string(t));
 }
-
-template void OutputInfoError::set_value<glb::const_string_literal>(const glb::const_string_literal& t) ;
-template void OutputInfoError::set_value<std::string>(const std::string& t) ;
-template void OutputInfoError::set_value<double>(const double& t) ;
-template void OutputInfoError::set_value<long long>(const long long& t) ;
-template void OutputInfoError::set_value<unsigned long long>(const unsigned long long& t) ;
 
 sf::Vector2u OutputInfoError::print(sf::Vector2u currentposition, int conwidth) {
     std::cout<<name<<"=";
