@@ -99,7 +99,8 @@ void TileRenderer::load_palette(const std::string& path) {
         if (counter>=16*4) break;
     }
     //TODO CARE FOR TRANSPARENCY
-    palette_temp[1][0xd]=(palette_temp[1][0xd]>>8)<<8;
+    palette_temp[1][0xd]=0xff00ff70;
+    palette_temp[0][5]&=0xffffff70;
     if (counter>=64) {
         for (std::size_t i=0; i<4;++i) {
             for (std::size_t j=0; j<16;++j) {
@@ -159,10 +160,10 @@ bool TileRenderer::load(const std::string& tilefile){
 std::size_t TileRenderer::add_or_find_texture(const tiletype& newtile, sf::Image* prerendering=NULL) {
     std::size_t whereisthistexture=0;
     tiletype temptile=newtile;
-    if ((temptile.palette_color[0]&0x0F)>=0x0D) temptile.palette_color[0]=0x0D;
-    if ((temptile.palette_color[1]&0x0F)>=0x0D) temptile.palette_color[1]=0x0D;
-    if ((temptile.palette_color[2]&0x0F)>=0x0D) temptile.palette_color[2]=0x0D;
-    if ((temptile.palette_color[3]&0x0F)>=0x0D) temptile.palette_color[3]=0x0D;
+    if ((temptile.palette_color[0]&0x0F)>=0x0D) temptile.palette_color[0]=temptile.palette_color[0]&0xf0+0x0D;
+    if ((temptile.palette_color[1]&0x0F)>=0x0D) temptile.palette_color[1]=temptile.palette_color[1]&0xf0+0x0D;
+    if ((temptile.palette_color[2]&0x0F)>=0x0D) temptile.palette_color[2]=temptile.palette_color[2]&0xf0+0x0D;
+    if ((temptile.palette_color[3]&0x0F)>=0x0D) temptile.palette_color[3]=temptile.palette_color[3]&0xf0+0x0D;
 
     if (texturemap.find(temptile)==texturemap.end()) { //new texture
 
@@ -291,9 +292,9 @@ void TileRenderer::drawtexture(sf::RenderTarget& target, sf::RenderStates states
             }
         }
     }
-    //renderExtraTiles(headline[0],  tilecont.extra_tiles.x,     extra_render.x);
+    renderExtraTiles(headline[0],  tilecont.extra_tiles.x,     extra_render.x);
     renderExtraTiles(headline[1],  tilecont.extra_tiles.y,     extra_render.y);
-    //renderExtraTiles(headline[3],  tilecont.extra_tiles.z,     extra_render.z);
+    renderExtraTiles(headline[3],  tilecont.extra_tiles.z,     extra_render.z);
 
     states.transform *= getTransform();
     states.texture = &tiletexture;
