@@ -22,7 +22,18 @@ nes_uchar MatrixContainer::getBlock(const nes_uchar& x, const nes_uchar& y) {
 }
 
 void MatrixContainer::render(const nes_uchar& _level) {
-    //ifnothide
+    if (hidecounter>0) {
+        --hidecounter;
+        return;
+    }
+    if (blinkscreencounter>0) {    //TODO how does pause interact with the clear animation?
+        for (size_t i=0; i<linescleared; ++i ){
+            matrix(blinkscreencounter/4,linesclearedarray[i])=0;
+            matrix(9-blinkscreencounter/4,linesclearedarray[i])=0;
+        }
+        --blinkscreencounter;
+        return;
+    }
     if (updatingmatrix>0) {
         for (nes_uchar y=2+(5-updatingmatrix)*4; y<2+(5-(updatingmatrix-1))*4; ++y)
             for (nes_uchar x=0; x<10; ++x)
@@ -62,7 +73,7 @@ bool MatrixContainer::collision(const Piece& _piece) const{
     return collision;
 }
 
-nes_uchar MatrixContainer::lockpiece(const Piece& _piece) {
+nes_uchar MatrixContainer::lockpiece(const Piece& _piece, const nes_ushort&  _framecounter) {
     std::vector<std::pair<nes_uchar, nes_uchar> > piecepositions = _piece.getPos();
     for (std::vector<std::pair<nes_uchar, nes_uchar> >::size_type i=0; i<piecepositions.size(); ++i) {
         size_t _xx=piecepositions[i].first;
@@ -71,7 +82,8 @@ nes_uchar MatrixContainer::lockpiece(const Piece& _piece) {
     }
     char _tempclearedlines=clearlines();
     if (_tempclearedlines) {
-        //animation
+        blinkscreencounter=((_framecounter+1)/5)*4;
+        updatingmatrix=5;
 
     }
     return _tempclearedlines;
@@ -80,8 +92,9 @@ nes_uchar MatrixContainer::lockpiece(const Piece& _piece) {
 
 nes_uchar MatrixContainer::clearlines() {
     bool whichlines[22];
+    //TODO if row 2 is cleared also row 21 is cleared (bug)
     size_t lowestline=0;
-    nes_uchar linescleared=0;
+    linescleared=0;
     for (size_t row=0; row<22; ++row) {
         bool clearedline=true;
         for (size_t column=0; column<10; ++column) {
@@ -108,7 +121,6 @@ nes_uchar MatrixContainer::clearlines() {
             newmatrix(j,i)=newmatrix(j,rowcounter);
         }
     }
-    if (linescleared>0) updatingmatrix=5;
     return linescleared;
 }
 

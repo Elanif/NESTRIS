@@ -24,15 +24,23 @@ RenderPlayField::RenderPlayField(SDL_Window * _window, const nes_ushort& _framea
 ;*/
 }
 
-void RenderPlayField::update(const ActiveInputs& _input) {
+void RenderPlayField::update(const ActiveInputs& _input, const nes_ushort& _framecounter) {
     //printf("renderplayfield::update\n");
     piecehandler.inputManager(_input, matrixhandler.getMatrix(), gravity[level]);
     if (piecehandler.dropped) {
-
-        scorehandler.lineclear(level,matrixhandler.lockpiece(piecehandler.lastdroppedpiece));
+        nes_uchar linescleared=matrixhandler.lockpiece(piecehandler.lastdroppedpiece,_framecounter);
+        scorehandler.lineclear(level,linescleared);
         scorehandler.softdrop(piecehandler.holddownpoints);
         piecehandler.lockpiece(piecehandler.lastdroppedpiece.y);
+        piecehandler.dropped=false;
+        if (linescleared>=4) {
+            blinkingscrencounter=((_framecounter+1)/5)*4-_framecounter+1; //+1 so the extra frame it renders the normal scren
+        //in render
+        //if %4==3 bilnk
+        //if %4==0 no blink
+        //--
 
+        }
     }
     /*if piecehandler.dropped
         score add points piecehandler.holddownpoints //prima o dopo animazione?

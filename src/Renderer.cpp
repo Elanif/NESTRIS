@@ -10,3 +10,10 @@ Renderer::Renderer()
     window=NULL;
     renderSurface=NULL;
 }
+
+ void Renderer::hide(const nes_uchar& _hidecounter) {
+     hidecounter=_hidecounter;
+ }
+ void Renderer::sleep(const nes_uchar& _sleepcounter) {
+     sleepcounter=_sleepcounter;
+ }

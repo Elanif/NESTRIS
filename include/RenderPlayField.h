@@ -14,7 +14,7 @@ class RenderPlayField : public Renderer
 {
     public:
         RenderPlayField(SDL_Window * _window, const nes_ushort& _frameappearance, nes_uchar _level);
-        void update(const ActiveInputs& _input) ;
+        void update(const ActiveInputs& _input, const nes_ushort& _framecounter) ;
         void render(const nes_ushort& framecounter) ;
         void resetPlayField(const nes_uchar& _level);
         void renderPlayField(const unsigned long long& framecounter);

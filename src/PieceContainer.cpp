@@ -30,8 +30,11 @@ bool collision(const PFMatrix& _pfmatrix, const Piece& _piece) {
 }
 
 void PieceContainer::inputManager(const ActiveInputs& _inputs, const PFMatrix& pfmatrix, const nes_uchar& _gravity) {
-    //ifnot sleep
     dropped=false;
+    if (sleepcounter>0) {
+        --sleepcounter;
+        return;
+    }
     ++downcounter;
     //MOVE
     Piece temppiece=currentpiece;
@@ -116,7 +119,30 @@ void PieceContainer::deletepiece() {
     }
 }
 
+void PieceContainer::deletenextpiece() {
+    for (nes_uchar x=0; x<3; ++x)
+        for (nes_uchar y=0; y<3; ++y)
+            BlockRenderer::block(renderSurface, 0, 0, NEXTPIECEX+x*8, NEXTPIECEY+y*8);
+
+}
+
+void PieceContainer::rendernextpiece(const nes_uchar& _level) {
+    for (size_t i=0; i<4; ++i) {
+        nes_uchar _xx=Piece::rotationmatrix[nextpiece.piecetype*4+nextpiece.rotation%4][i][0];
+        nes_uchar _yy=Piece::rotationmatrix[nextpiece.piecetype*4+nextpiece.rotation%4][i][1];
+        _xx=_xx*8+NEXTPIECEX+8;
+        _yy=_yy*8+NEXTPIECEY+8;
+        BlockRenderer::block(renderSurface, nextpiece.color, _level, _xx,_yy);
+    }
+
+}
+
 void PieceContainer::render(const nes_ushort& _framecounter, const nes_uchar& _level) {
+    if (hidecounter>0) {
+        printf("hidecounter=%d\n",hidecounter);
+        --hidecounter;
+        return;
+    }
     lastrenderedpos.clear();
     for (size_t i=0; i<4; ++i) {
         nes_uchar _xx=currentpiece.x+Piece::rotationmatrix[currentpiece.piecetype*4+currentpiece.rotation%4][i][0];
@@ -131,10 +157,12 @@ void PieceContainer::render(const nes_ushort& _framecounter, const nes_uchar& _l
     for (size_t i=0; i<4; ++i) {
         nes_uchar _xx=currentpiece.x+Piece::rotationmatrix[currentpiece.piecetype*4+currentpiece.rotation%4][i][0];
         nes_uchar _yy=currentpiece.y+Piece::rotationmatrix[currentpiece.piecetype*4+currentpiece.rotation%4][i][1];
-            _xx=_xx*8+PLAYFIELDX;
-            _yy=(_yy-2)*8+PLAYFIELDY;
-            BlockRenderer::block(renderSurface, currentpiece.color, _level, _xx,_yy);
+        _xx=_xx*8+PLAYFIELDX;
+        _yy=(_yy-2)*8+PLAYFIELDY;
+        BlockRenderer::block(renderSurface, currentpiece.color, _level, _xx,_yy);
     }
+    deletenextpiece();
+    rendernextpiece(_level);
 }
 
 
@@ -169,12 +197,14 @@ void PieceContainer::spawnPiece(const nes_uchar& _spawndelay) {
     //printf("spawnid=%d\n",spawnID);
     nextpiece.piecetype=spawnID;
     downcounter=holddowncounter=0;
-    spawnpiececounter=_spawndelay; //10~18 TODO
 }
 
 void PieceContainer::lockpiece(const nes_uchar& _lockheight) {
     printf("Lockpiece\n");
-    nes_uchar _spawndelay=10+(_lockheight+2)/4; //TODO
+    nes_uchar _spawndelay=10+((_lockheight+3)/5)*2; //TODO fidn true formula
     spawnPiece(_spawndelay);
+    downinterrupted=true; //TODO where to put this
+    sleep(_spawndelay);
+    hide(_spawndelay-1);
 }
 

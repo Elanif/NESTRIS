@@ -19,12 +19,12 @@ class MatrixContainer : public Renderer
         const PFMatrix& getMatrix() const {return matrix;};
         nes_uchar getBlock(const nes_uchar& x, const nes_uchar& y);
         void render(const nes_uchar& _level);
+        nes_uchar blinkscreencounter;
     protected:
 
     private:
-        nes_uchar blinkscreencounter;
         nes_uchar linesclearedarray[22];
-        nes_schar updatingmatrix;
+        nes_schar updatingmatrix, linescleared;
         PFMatrix newmatrix;
         PFMatrix matrix;
 };

@@ -25,6 +25,8 @@ public:
     const Piece& getPiece() const;
     void deletepiece() ;
     void render(const nes_ushort& _framecounter, const nes_uchar& _level);
+    void deletenextpiece();
+    void rendernextpiece(const nes_uchar& _level);
     bool dropped;
     Piece lastdroppedpiece;
     nes_uchar holddownpoints;

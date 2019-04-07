@@ -35,7 +35,7 @@ void Engine::frame(const ActiveInputs& _inputs) {
         break;
     case PLAYFIELD:
 
-        RPF->update(_inputs);
+        RPF->update(_inputs, framecounter);
         RPF->render(framecounter);
         break;
     }
