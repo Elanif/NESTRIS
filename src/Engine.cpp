@@ -10,7 +10,7 @@ Engine::Engine(TileContainer* _tilecont, const size_t& _startingmenu)
 
     levelselectreload=true;
 
-    //RPF = RenderPlayField(framecounter, 0);
+    RPF = RenderPlayField(framecounter, 0);
     framecounter=0;
     printf("Engine init\n");
 }

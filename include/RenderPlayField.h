@@ -1,26 +1,26 @@
 #pragma once
 #ifndef RENDERPLAYFIELD_H
 #define RENDERPLAYFIELD_H
-#include "SDL.h"
+#include"TileContainer.h"
 #include "Renderer.h"
 #include"ActiveInputs.h"
 #include "Score.h"
-#include"PieceContainer.h"
-#include"MatrixContainer.h"
-#include"LevelLines.h"
+//#include"PieceContainer.h"
+//#include"MatrixContainer.h"
+//#include"LevelLines.h"
 #include"enums.h"
 
 class RenderPlayField : public Renderer
 {
     public:
-        RenderPlayField(SDL_Window * _window, const nes_ushort& _frameappearance, nes_uchar _level);
+        RenderPlayField(TileContainer* _tilecont, const size_t& _frameappearance, nes_uchar _level);
         void update(const ActiveInputs& _input, const nes_ushort& _framecounter) ;
         void render(const nes_ushort& framecounter) ;
         void resetPlayField(const nes_uchar& _level);
         void renderPlayField(const unsigned long long& framecounter);
     private:
         void renderimage(bool blink);
-        MatrixContainer matrixhandler;
+        /*MatrixContainer matrixhandler;
         bool tetris;
         PieceContainer piecehandler;
 
@@ -33,7 +33,9 @@ class RenderPlayField : public Renderer
 
         bool firstframeis4;
         bool paused;
-        nes_uchar pausecounter;
+        nes_uchar pausecounter;*/
+
+
         /*
         int lockpiece();
         int updatePlayField(const ActiveInputs& _input) ;

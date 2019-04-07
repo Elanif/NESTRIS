@@ -1,9 +1,6 @@
 #include "RenderPlayField.h"
-#include"BlockRenderer.h"
-#include"SquareRenderer.h"
 #include"random.h"
 #include"PieceContainer.h"
-#include"SDL_Image.h"
 #include<cstdio>
 
 

@@ -7893,3 +7893,138 @@
 1550249700 source:f:\nestris project\project versions\20190213 sfml rebuild from 0\src\tilerenderer.cpp
 	"TileRenderer.h"
 
+1550248908 source:f:\nestris project\project versions\20190215sfmlrebuilt\nestris.cpp
+	<cstdio>
+	"Window.h"
+	<SFML/Graphics.hpp>
+
+1550248916 f:\nestris project\project versions\20190215sfmlrebuilt\include\window.h
+	"Input.h"
+	<SFML/Graphics.hpp>
+	"Engine.h"
+	<cstdio>
+
+1550075948 f:\nestris project\project versions\20190215sfmlrebuilt\include\input.h
+	"ActiveInputs.h"
+	"enums.h"
+	<vector>
+	<utility>
+	<SFML/Window/Event.hpp>
+
+1550075694 f:\nestris project\project versions\20190215sfmlrebuilt\include\activeinputs.h
+	"stddef.h"
+
+1549977796 f:\nestris project\project versions\20190215sfmlrebuilt\include\enums.h
+
+1550251102 f:\nestris project\project versions\20190215sfmlrebuilt\include\engine.h
+	"Input.h"
+	"ActiveInputs.h"
+	<SFML/Graphics.hpp>
+	"TileContainer.h"
+	"TileRenderer.h"
+	"RenderLevelSelect.h"
+	"RenderPlayField.h"
+
+1550172566 f:\nestris project\project versions\20190215sfmlrebuilt\include\tilecontainer.h
+	"enums.h"
+	"stddef.h"
+
+1550249602 f:\nestris project\project versions\20190215sfmlrebuilt\include\tilerenderer.h
+	"TileContainer.h"
+	<SFML/Graphics.hpp>
+	"enums.h"
+	<vector>
+	<string>
+	<cstdio>
+
+1550158548 f:\nestris project\project versions\20190215sfmlrebuilt\include\renderlevelselect.h
+	"ActiveInputs.h"
+	<SFML/Graphics.hpp>
+	"TileContainer.h"
+	"Renderer.h"
+
+1550158540 f:\nestris project\project versions\20190215sfmlrebuilt\include\renderer.h
+	"stddef.h"
+	<SFML/Graphics.hpp>
+	"TileContainer.h"
+	"enums.h"
+
+1550076582 source:f:\nestris project\project versions\20190215sfmlrebuilt\src\activeinputs.cpp
+	"ActiveInputs.h"
+	<cstdio>
+	"enums.h"
+
+1549977796 source:f:\nestris project\project versions\20190215sfmlrebuilt\src\enums.cpp
+	"enums.h"
+
+1550075930 source:f:\nestris project\project versions\20190215sfmlrebuilt\src\input.cpp
+	"Input.h"
+	<cstdio>
+	<SFML/Window/Keyboard.hpp>
+
+1550076996 source:f:\nestris project\project versions\20190215sfmlrebuilt\src\random.cpp
+	"random.h"
+	<cstdio>
+
+1548932828 f:\nestris project\project versions\20190215sfmlrebuilt\include\random.h
+	"enums.h"
+
+1550158572 source:f:\nestris project\project versions\20190215sfmlrebuilt\src\renderer.cpp
+	"Renderer.h"
+
+1550249664 source:f:\nestris project\project versions\20190215sfmlrebuilt\src\renderlevelselect.cpp
+	"RenderLevelSelect.h"
+	<cstdio>
+
+1550173194 source:f:\nestris project\project versions\20190215sfmlrebuilt\src\tilecontainer.cpp
+	"TileContainer.h"
+	<cstdio>
+
+1550249700 source:f:\nestris project\project versions\20190215sfmlrebuilt\src\tilerenderer.cpp
+	"TileRenderer.h"
+
+1550248884 source:f:\nestris project\project versions\20190215sfmlrebuilt\src\window.cpp
+	"Window.h"
+	<cmath>
+
+1550251206 f:\nestris project\project versions\20190215sfmlrebuilt\include\renderplayfield.h
+	"TileContainer.h"
+	"Renderer.h"
+	"ActiveInputs.h"
+	"Score.h"
+	"enums.h"
+
+1549126482 f:\nestris project\project versions\20190215sfmlrebuilt\include\score.h
+	<cstdio>
+	"Renderer.h"
+	"enums.h"
+
+1549898464 f:\nestris project\project versions\20190215sfmlrebuilt\include\piececontainer.h
+	"enums.h"
+	"PFMatrix.h"
+	"Piece.h"
+	"Renderer.h"
+	<vector>
+	<utility>
+	"ActiveInputs.h"
+
+1549207030 f:\nestris project\project versions\20190215sfmlrebuilt\include\pfmatrix.h
+	<cstdio>
+
+1549985812 f:\nestris project\project versions\20190215sfmlrebuilt\include\piece.h
+	"enums.h"
+	<vector>
+	<utility>
+
+1550251114 f:\nestris project\project versions\20190215sfmlrebuilt\include\matrixcontainer.h
+	"enums.h"
+	"Renderer.h"
+	"PieceContainer.h"
+	"PFMatrix.h"
+	"Piece.h"
+	<cstdio>
+
+1548931872 f:\nestris project\project versions\20190215sfmlrebuilt\include\levellines.h
+	"Renderer.h"
+	"enums.h"
+

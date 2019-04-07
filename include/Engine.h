@@ -8,7 +8,7 @@
 #include "TileRenderer.h"
 //#include "Renderer.h"
 #include "RenderLevelSelect.h"
-//#include "RenderPlayField.h"
+#include "RenderPlayField.h"
 
 class Engine
 {
@@ -19,7 +19,7 @@ class Engine
     private:
         TileContainer* tilecont;
         RenderLevelSelect RLS;
-        //RenderPlayField RPF;
+        RenderPlayField RPF;
         enum MenuType {
             LEVELSELECT=10,
             PLAYFIELD=11
