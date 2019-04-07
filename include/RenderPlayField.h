@@ -17,6 +17,7 @@ class RenderPlayField : public Renderer
         void update(const ActiveInputs& _input) ;
         void render(const nes_ushort& framecounter) ;
         void resetPlayField(const nes_uchar& _level);
+        void renderPlayField(const unsigned long long& framecounter);
     private:
 
         MatrixContainer matrixhandler;
@@ -28,7 +29,6 @@ class RenderPlayField : public Renderer
         /*
         int lockpiece();
         int updatePlayField(const ActiveInputs& _input) ;
-        void renderPlayField(const unsigned long long& framecounter);
         int** pfmatrix;
         void renderSquare(const Uint8& red, const Uint8& green, const Uint8& blue, const Uint8& alpha, const size_t& x, const size_t& y, const size_t& w, const size_t& h);
         unsigned int das;

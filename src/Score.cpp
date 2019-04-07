@@ -58,7 +58,7 @@ void Score::bytecheckhighdigit(const size_t& byte, const bool& andop) {
     }
 }
 
-void Score::sofdrop(nes_uchar helddownpoints) { //helddownpoints used in calculations so value
+void Score::softdrop(nes_uchar helddownpoints) { //helddownpoints used in calculations so value
     if (helddownpoints>=2) {
         --helddownpoints; //it should add heldpoints-1 to the score
         score[0]+=helddownpoints;

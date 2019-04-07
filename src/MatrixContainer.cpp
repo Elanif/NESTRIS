@@ -20,7 +20,7 @@ nes_uchar MatrixContainer::getBlock(const nes_uchar& x, const nes_uchar& y) {
     return matrix(x,y);
 }
 
-void MatrixContainer::render() {
+void MatrixContainer::render(const nes_uchar& _level) {
     //ifnothide
     if (blinkscreencounter--%4==3) {//postfix or prefix?
         SDL_Surface * surfacePlayField = IMG_Load( "playfieldblink.png" );
@@ -30,9 +30,9 @@ void MatrixContainer::render() {
         }
         SDL_BlitSurface(surfacePlayField, NULL, renderSurface, NULL);
     }
-    for (size_t x=0; x<10; ++x) { //TODO maybe optimize to render only new stuff around piece
-        for (size_t y=3 ; y<22; ++y) {
-            BlockRenderer::block(renderSurface,matrix(x,y),1,PLAYFIELDX+x*8,PLAYFIELDY+(y-3)*8);
+    for (nes_uchar x=0; x<10; ++x) { //TODO maybe optimize to render only new stuff around piece
+        for (nes_uchar y=0; y<22; ++y) {
+            BlockRenderer::block(renderSurface,matrix(x,y),_level,PLAYFIELDX+x*8,PLAYFIELDY+(y)*8);
         }
     }
     //TODO
@@ -65,7 +65,7 @@ nes_uchar MatrixContainer::lockpiece(const Piece& _piece) {
         size_t _yy=piecepositions[i].second;
         matrix(_xx,_yy)=_piece.color;
     }
-    char _tempclearedlines=clearlines();
+    char _tempclearedlines=0;//clearlines();
     if (_tempclearedlines) {
         //animation
 

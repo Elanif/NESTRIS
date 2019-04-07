@@ -27,6 +27,13 @@ RenderPlayField::RenderPlayField(SDL_Window * _window, const nes_ushort& _framea
 void RenderPlayField::update(const ActiveInputs& _input) {
     //printf("renderplayfield::update\n");
     piecehandler.inputManager(_input, matrixhandler.getMatrix(), gravity[level]);
+    if (piecehandler.dropped) {
+
+        scorehandler.lineclear(level,matrixhandler.lockpiece(piecehandler.lastdroppedpiece));
+        scorehandler.softdrop(piecehandler.holddownpoints);
+        piecehandler.lockpiece(piecehandler.lastdroppedpiece.y);
+
+    }
     /*if piecehandler.dropped
         score add points piecehandler.holddownpoints //prima o dopo animazione?
         matrix.lockpiece(piecehandelr last dropped piece)
@@ -39,7 +46,7 @@ void RenderPlayField::update(const ActiveInputs& _input) {
 void RenderPlayField::render(const nes_ushort& _framecounter) {
     //levellineshandler.render(_framecounter);
     piecehandler.deletepiece();
-    matrixhandler.render();
+    matrixhandler.render(level);
     piecehandler.render(_framecounter,levellineshandler.getlevel());
     //scorehandler.render(_framecounter);
 }
@@ -115,14 +122,12 @@ int RenderPlayField::updatePlayField(const ActiveInputs& _input) {
 
 
 
-
-void RenderPlayField::resetPlayField(const size_t& _level){
+*/
+void RenderPlayField::resetPlayField(const nes_uchar& _level){
     //todo next piece
     level=_level;
-    spawnCount=0;
-    for (size_t i=0; i<10; ++i) {
-        for (size_t j=0; j< 22;++j) {
-            pfmatrix[i][j]=0;
-        }
-    }
-}*/
+    piecehandler = PieceContainer(window, frameappearance);
+    matrixhandler = MatrixContainer(window, frameappearance);
+    scorehandler = Score(window, frameappearance, true);
+    levellineshandler = LevelLines(window, frameappearance, _level);
+}

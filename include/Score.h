@@ -12,7 +12,7 @@ class Score : public Renderer
         Score(SDL_Window * _window, const nes_ushort& _frameappearance);
         Score(SDL_Window * _window, const nes_ushort& _frameappearance, const bool& _maxout);
         unsigned int getscore();
-        void sofdrop(nes_uchar);
+        void softdrop(nes_uchar);
         void lineclear(const nes_uchar& level, const nes_uchar& linescleared) ; //TODO var type
     protected:
 

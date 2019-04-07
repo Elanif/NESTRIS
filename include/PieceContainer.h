@@ -25,6 +25,9 @@ public:
     const Piece& getPiece() const;
     void deletepiece() ;
     void render(const nes_ushort& _framecounter, const nes_uchar& _level);
+    bool dropped;
+    Piece lastdroppedpiece;
+    nes_uchar holddownpoints;
 private:
 
     std::vector<std::pair<nes_uchar, nes_uchar> > lastrenderedpos;
@@ -32,8 +35,8 @@ private:
     nes_uchar spawnpiececounter;
     void spawnPiece(const nes_uchar& _spawndelay);
 
-    bool downinterrupted, dropped;
-    nes_uchar das, downcounter, holddowncounter, holddownpoints;
+    bool downinterrupted;
+    nes_uchar das, downcounter, holddowncounter;
     Piece currentpiece, nextpiece;
 };
 #endif // PIECE_H

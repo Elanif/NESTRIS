@@ -11,6 +11,7 @@ public:
                 matrix[i][j]=0;
     }
     static bool inbounds(const size_t& column, const size_t& row) {return column>=0 && column<10 && row>=0 && row<=22;}
+    static bool visible(const size_t& column, const size_t& row) {return column>=0 && column<10 && row>=3 && row<=22;}
     nes_uchar& operator()(const size_t& column, const size_t& row){
         if (inbounds(column,row)) return matrix[column][row];
         printf("ERROR: ACCESSING INVALID MATRIX INDEX: col= %d, row= %d\n", column, row);

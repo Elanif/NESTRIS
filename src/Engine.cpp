@@ -30,7 +30,7 @@ void Engine::frame(const ActiveInputs& _inputs) {
         levelselect=RLS->updateLevelSelect(_inputs);
         if (levelselect>=0) {
             currentmenu=PLAYFIELD;
-            //RPF->resetPlayField(levelselect);
+            RPF->resetPlayField(levelselect);
         }
         break;
     case PLAYFIELD:

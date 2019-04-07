@@ -18,7 +18,7 @@ class MatrixContainer : public Renderer
         nes_uchar clearlines();
         const PFMatrix& getMatrix() const {return matrix;};
         nes_uchar getBlock(const nes_uchar& x, const nes_uchar& y);
-        void render();
+        void render(const nes_uchar& _level);
     protected:
 
     private:
