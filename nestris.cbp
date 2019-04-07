@@ -78,6 +78,7 @@
 		<Unit filename="include/Input.h" />
 		<Unit filename="include/LevelLines.h" />
 		<Unit filename="include/MatrixContainer.h" />
+		<Unit filename="include/OutputInfo.h" />
 		<Unit filename="include/PFMatrix.h" />
 		<Unit filename="include/Piece.h" />
 		<Unit filename="include/PieceContainer.h" />
@@ -98,6 +99,7 @@
 		<Unit filename="src/Input.cpp" />
 		<Unit filename="src/LevelLines.cpp" />
 		<Unit filename="src/MatrixContainer.cpp" />
+		<Unit filename="src/OutputInfo.cpp" />
 		<Unit filename="src/PFMatrix.cpp" />
 		<Unit filename="src/Piece.cpp" />
 		<Unit filename="src/PieceContainer.cpp" />

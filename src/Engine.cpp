@@ -2,6 +2,7 @@
 #include<cstdio>
 #include"random.h"
 #include"ConsoleManager.h"
+#include<string>
 Engine::Engine(TileContainer* _tilecont, const std::size_t& _startingmenu):
 tilecont(_tilecont),
 currentmenu(_startingmenu),
@@ -37,7 +38,7 @@ void Engine::frame(const ActiveInputs& _inputs) {
         RPF.render(framecounter);
         break;
     default:
-        glb::cm.update<std::string>("error","ERROR default frame case in switch");
+        glb::cm.update_error(std::string("ERROR default frame case in switch"));
         break;
     }
 }

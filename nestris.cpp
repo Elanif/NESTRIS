@@ -1,7 +1,8 @@
+#include"enums.h"
+#include"ConsoleManager.h"
 #include<cstdio>
 #include"Window.h"
 #include<SFML/Graphics.hpp>
-
 const int SCREEN_WIDTH = 256;
 const int SCREEN_HEIGHT = 224;
 

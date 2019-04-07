@@ -108,7 +108,7 @@ void TileRenderer::load_palette(const std::string& path) {
         }
     }
     else {
-        glb::cm.update<std::string>("error", path+" palette couldn't be loaded, using default palette"+std::to_string(counter));
+        glb::cm.update_error( path+" palette couldn't be loaded, using default palette"+std::to_string(counter));
     }
 }
 
@@ -116,7 +116,7 @@ bool TileRenderer::load(const std::string& tilefile){
     load_palette("YPbPr.pal");
     FILE * Spritefile=fopen(tilefile.c_str(),"r");
     if (!Spritefile) {
-        glb::cm.update<std::string>("error","Couldn't open sprite file: "+tilefile);
+        glb::cm.update_error("Couldn't open sprite file: "+tilefile);
         return false;
     }
     std::size_t spritenumber=spritevector.size();
@@ -167,7 +167,7 @@ std::size_t TileRenderer::add_or_find_texture(const tiletype& newtile, sf::Image
     if (texturemap.find(temptile)==texturemap.end()) { //new texture
 
         if (itoyrect(texturenumber,texturesize,texturesize,tilesize.x,tilesize.x)>texturesize) {
-            glb::cm.update<std::string>("error",std::string("Too many textures"));
+            glb::cm.update_error(std::string("Too many textures"));
             throw texturenumber; //TODOBETTER
         }
 
@@ -464,7 +464,7 @@ void TileRenderer::drawimage(sf::RenderTarget& target, sf::RenderStates states){
 void TileRenderer::add_frequent_textures() {
     std::ifstream previous_textures("Pre-rendered textures.txt");
     if (!previous_textures) {
-        glb::cm.update<std::string>("error","Couldn't open previous textures");
+        glb::cm.update_error("Couldn't open previous textures");
     }
 
     sf::Image texture_image;
@@ -507,7 +507,7 @@ void TileRenderer::drawmod(sf::RenderTarget& target, sf::RenderStates states)
         drawvertex(target, states);
         break;
     default:
-        glb::cm.update<std::string>("error","Warning, default drawmod");
+        glb::cm.update_error("Warning, default drawmod");
         drawimage(target,states);
         break;
     }

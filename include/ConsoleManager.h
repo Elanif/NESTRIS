@@ -7,87 +7,28 @@
 #include<SFML/System/Vector2.hpp>
 #include<utility>
 #include"rlutil.h"
-/*
-template<typename T>
-std::string set_value_priv(const T& t){
-    return std::to_string(t);
-}
-
-typedef std::__cxx11::basic_string<char> string_literal;
-template<>
-std::string set_value_priv(const string_literal& t){
-    return std::string(t);
-}
-typedef char* string_literal;
-template<>
-std::string set_value_priv(const string_literal& t){
-    return std::string(t);
-}*/
-class OutputInfo
-{
-public:
-    std::string name;
-    std::string value;
-    std::string unit;
-    std::size_t last_render_length;
-    sf::Vector2u outputposition;
-    OutputInfo();
-    virtual ~OutputInfo();
-    OutputInfo(const std::string& _name,const std::string &_unit);
-    void set_value(const std::__cxx11::basic_string<char>& t);
-    template<typename T>
-    void set_value(const T& t)
-    {
-        value=std::to_string(t);
-    }
-
-    void set_position(const sf::Vector2u& _position);
-    virtual sf::Vector2u print(sf::Vector2u currentposition, int conwidth, FILE* error_log=NULL);
-
-};
-
-template<>
-inline void OutputInfo::set_value<std::string>(const std::string& t) {
-    value=t;
-}
-
-typedef const char* const_string_literal;
-template<>
-inline void OutputInfo::set_value<const_string_literal>(const const_string_literal& t) {
-    value=std::string(t);
-}
-
-typedef char* string_literal;
-template<>
-inline void OutputInfo::set_value<string_literal>(const string_literal& t) {
-    value=std::string(t);
-}
+#include"OutputInfo.h"
 
 class ConsoleManager : public sf::NonCopyable
 {
     public:
         ConsoleManager();
         template<class T>
-        void update(std::string info, const T& t) {
-            if (CMmap.find(info)==CMmap.end()) {
-                //error message somewhere
-            }
-            else {
-                CMmap[info].set_value<T>(t);
-                if (info==std::string("error")) {
-                    error_print=true;
-                }
-            }
-        }
+        void update(std::string info, const T& t) ;
+        void update(std::string info, const char* const& t) ;
+        template<class T>
+        void update_error(const T& t) ;
+        void update_error(const char* t);
         void print(bool always_print=false);
         ~ConsoleManager();
 
     private:
         unsigned char framecounter=0;
         bool error_print=false;
-        OutputInfo& add_value(std::string info, std::string unit);
-        OutputInfo& add_value(const OutputInfo& outputinfo);
-        std::unordered_map<std::string, OutputInfo> CMmap;
+        std::size_t add_value(std::string info, std::string unit);
+        std::size_t add_value(const OutputInfo& outputinfo);
+        std::vector<OutputInfo> CMvector;
+        std::unordered_map<std::string, std::size_t> CMmap;
         FILE* error_log;
 };
 #endif // CONSOLEMANAGER_H

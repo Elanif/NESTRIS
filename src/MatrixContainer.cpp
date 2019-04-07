@@ -21,6 +21,11 @@ nes_uchar MatrixContainer::getBlock(const nes_uchar& x, const nes_uchar& y) {
 }
 
 void MatrixContainer::render(const nes_uchar& _level) {
+    /*if (hidecounter>0 || glb::lineclearframecounter>0 || glb::updatingmatrix) {
+        auto tmphidecounter=hidecounter;
+        auto tmplineclearframecounter=glb::lineclearframecounter;
+        auto tmpupdatingmatrix=glb::updatingmatrix;
+    }*/
     if (hidecounter>0) {
         --hidecounter;
         return;
@@ -41,7 +46,7 @@ void MatrixContainer::render(const nes_uchar& _level) {
     }
     else if (glb::updatingmatrix>0) {
         std::size_t update_iter=5-glb::updatingmatrix;
-        glb::cm.update<std::size_t>("error",glb::updatingmatrix);
+        glb::cm.update_error<std::size_t>(glb::updatingmatrix);
         if (update_iter==0u) {
             for (std::size_t y=0; y<6; ++y) {
                 for (std::size_t x=0; x<10; ++x) {
@@ -150,27 +155,3 @@ void MatrixContainer::reset(){
         }
     }
 }
-
-/*void RenderPlayField::renderPlayField(const unsigned long long& framecounter) {
-    //TODO blinking clear delay
-    if (blinkscreencounter-->0) {//postfix or prefix?
-        for (std::size_t i=0; i<linescleared; ++i ){
-            matrix(blinkscreencounter/4,linesclearedarray[i)]=0;
-            matrix(9-blinkscreencounter/4,linesclearedarray[i)]=0;
-        }
-        if (blinkscreencounter==0) {
-            for (std::size_t i=0; i<10; ++i)
-                for (std::size_t j=0; j<22; ++j)
-                    matrix(i,j)=newmatrix(i,j);
-        }
-    }
-    for (std::size_t x=0; x<10; ++x) { //TODO maybe optimize to render only new stuff around piece
-        for (std::size_t y=3 ; y<22; ++y) {
-            if ((blinkscreencounter%4>1)&&matrix(x,y)==0) //TODO wht if it just became 0
-                BlockRenderer::block(renderSurface,matrix(x,y),10, x*8,y*8);
-            BlockRenderer::block(renderSurface,matrix(x,y),level, x*8,y*8);
-        }
-    }
-    //TODO
-    if (spawnpiececounter--<=0) renderPiece(piece);//postfix or prefix?
-}*/

@@ -31,9 +31,13 @@
 #define incframe glb::FrameCounter::inc
 #endif // incframe
 #include <cstddef>
+#include<SFML/System/Vector2.hpp>
+class tuple;
 #include"ConsoleManager.h"
 class tiletype;
-namespace glb {
+namespace glb { //todo make into ntris
+    typedef const char* const_string_literal;
+    typedef char* string_literal;
     enum BTN {
         LEFT,
         UP,
