@@ -3,18 +3,17 @@
 #include"random.h"
 #include"ConsoleManager.h"
 #include<string>
-Engine::Engine(TileContainer* _tilecont, const std::size_t& _startingmenu):
+Engine::Engine(TileContainer* _tilecont, const MenuType& _startingmenu):
 tilecont(_tilecont),
 currentmenu(_startingmenu),
 RLS(_tilecont,0,0),
-RPF(_tilecont, framecounter, 0)
+RPF(_tilecont, framecounter, 0),
+RHS(_tilecont, framecounter)
 {
-    //renderer=new Renderer(_window);
-
     levelselectreload=true;
 
     framecounter=0;
-    glb::cm.update<std::string>("system",std::string("Engine init"));
+    ConsoleManager::update<std::string>("system",std::string("Engine init"));
 }
 
 
@@ -23,6 +22,7 @@ void Engine::frame(const ActiveInputs& _inputs) {
     incframe();
     random::prng();
     switch(currentmenu) {
+
     case LEVELSELECT:
         RLS.renderLevelSelect(levelselectreload);
         levelselectreload=false;
@@ -32,13 +32,24 @@ void Engine::frame(const ActiveInputs& _inputs) {
             RPF.resetPlayField(levelselect);
         }
         break;
+
     case PLAYFIELD:
 
         RPF.update(_inputs, framecounter);
         RPF.render(framecounter);
+        if (RPF.gameOver()) {
+            RHS.resetHighScore(RPF.matrixhandler, RPF.piecehandler, RPF.scorehandler, RPF.levellineshandler, RPF.statisticshandler);
+            currentmenu=HIGHSCORE;
+        }
         break;
+
+    case HIGHSCORE:
+        RHS.update(_inputs, framecounter);
+        RHS.render(framecounter);
+        break;
+
     default:
-        glb::cm.update_error(std::string("ERROR default frame case in switch"));
+        ConsoleManager::update_error("ERROR default frame case in switch");
         break;
     }
 }

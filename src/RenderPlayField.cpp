@@ -43,7 +43,10 @@ void RenderPlayField::update(const ActiveInputs& _input, const nes_ushort& _fram
     //printf("renderplayfield::update\n");
     piecehandler.inputManager(_input, matrixhandler.getMatrix(), gravity[levellineshandler.get_real_level()]);
 
-    if (piecehandler.spawned_event) statisticshandler.incrementPiece(piecehandler.getPiece().piecetype);
+    if (piecehandler.spawned_event) {
+        statisticshandler.incrementPiece(piecehandler.getPiece().piecetype);
+        game_over=piecehandler.gameOver(matrixhandler.getMatrix());
+    }
 
     if (piecehandler.dropped_event) {
         nes_uchar linescleared=matrixhandler.lockpiece(piecehandler.lastdroppedpiece,_framecounter);
@@ -129,6 +132,14 @@ void RenderPlayField::resetPlayField(const nes_uchar& _level){
     levellineshandler = LevelLines(tilecont, frameappearance, _level);
     statisticshandler = Statistics(tilecont, frameappearance, _level);
     statisticshandler.render(true);
+}
+
+bool RenderPlayField::gameOver() {
+    return game_over;
+}
+
+ScoreContainer RenderPlayField::getScore() {
+    return scorehandler.getScore();
 }
 
 void RenderPlayField::renderimage(bool blink) {

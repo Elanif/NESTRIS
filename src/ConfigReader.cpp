@@ -1,5 +1,4 @@
 #include "ConfigReader.hpp"
-#include<functional>
 #include<iostream>
 #include<regex>
 
@@ -16,6 +15,12 @@ T from_string(const std::string& str) {
 template<>
 std::string from_string<std::string>(const std::string& str) {
     return str;
+}
+
+template<>
+char from_string<char>(const std::string& str) {
+    if (str.length()>0) return str[0];
+    else return (char)0;
 }
 
 template<>
@@ -180,9 +185,19 @@ bool ConfigReader::close() {
 
 template std::vector<double> ConfigReader::get(char* name);
 template std::vector<double> ConfigReader::get(const std::string& name);
+//template std::vector<float> ConfigReader::get(char* name);
+//template std::vector<float> ConfigReader::get(const std::string& name);
 template std::vector<bool> ConfigReader::get(char* name);
 template std::vector<bool> ConfigReader::get(const std::string& name);
+//template std::vector<long long> ConfigReader::get(char* name);
+//template std::vector<long long> ConfigReader::get(const std::string& name);
+//template std::vector<unsigned long long> ConfigReader::get(char* name);
+//template std::vector<unsigned long long> ConfigReader::get(const std::string& name);
 template std::vector<int> ConfigReader::get(char* name);
 template std::vector<int> ConfigReader::get(const std::string& name);
+//template std::vector<unsigned int> ConfigReader::get(char* name);
+//template std::vector<unsigned int> ConfigReader::get(const std::string& name);
+template std::vector<char> ConfigReader::get(char* name);
+template std::vector<char> ConfigReader::get(const std::string& name);
 template std::vector<std::string> ConfigReader::get(char* name);
 template std::vector<std::string> ConfigReader::get(const std::string& name);

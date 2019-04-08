@@ -6,12 +6,33 @@
 #include<sstream>
 #include<limits>
 
+unsigned char ConsoleManager::framecounter=0;
+bool ConsoleManager::error_print=false;
+std::vector<std::unique_ptr<OutputInfo> > ConsoleManager::CMvector;
+std::unordered_map<std::string, std::size_t> ConsoleManager::CMmap;
+FILE* ConsoleManager::error_log;
+
 template <typename Duration>
 void print_time(FILE* output, tm t, Duration fraction) {
     using namespace std::chrono;
     std::fprintf(output,"%04u-%02u-%02u %02u:%02u:%02u.%03u ", t.tm_year + 1900,
                 t.tm_mon + 1, t.tm_mday, t.tm_hour, t.tm_min, t.tm_sec,
                 static_cast<unsigned>(fraction / milliseconds(1)));
+}
+
+void ConsoleManager::print_error(const std::string& error_string) {
+    print_error(error_string.c_str());
+}
+void ConsoleManager::print_error(const char* error_string) {
+    auto clock = std::chrono::system_clock::now();
+    std::time_t current_time = std::chrono::system_clock::to_time_t(clock);
+    using namespace std::chrono;
+    system_clock::time_point now = system_clock::now();
+    system_clock::duration tp = now.time_since_epoch();
+    tp -= duration_cast<seconds>(tp);
+    print_time(error_log,*localtime(&current_time), tp);
+    fprintf(error_log,"%s\n",error_string);
+    fflush(error_log);
 }
 
 void lowercase_str(std::string& str) { //TODO make it portable with 16bitchar
@@ -24,7 +45,7 @@ void lowercase_str(std::string& str) { //TODO make it portable with 16bitchar
 template<typename T>
 void ConsoleManager::update(std::string info, const T& t) {
     if (CMmap.find(info)==CMmap.end()) {
-        //error message somewhere
+        print_error(std::string("No OutpufInfo of type ")+info+std::string(" found"));
     }
     else {
         CMvector[CMmap[info]]->set_value(t);
@@ -42,13 +63,12 @@ template<typename T>
 void ConsoleManager::update_error(const T& t) {
     error_print=true;
     if (CMmap.find("error")==CMmap.end()) {
-        fprintf(error_log, "No OutputInfo of type error found\n");
-        fflush(error_log);
+        print_error("No OutputInfo of type error found");
     }
     else {
         std::string error_string=ntris::to_string(t);
         if (error_string.length()>0 && error_string!="0") {
-            auto clock = std::chrono::system_clock::now();
+            /*auto clock = std::chrono::system_clock::now();
             std::time_t current_time = std::chrono::system_clock::to_time_t(clock);
             using namespace std::chrono;
             system_clock::time_point now = system_clock::now();
@@ -56,7 +76,7 @@ void ConsoleManager::update_error(const T& t) {
             tp -= duration_cast<seconds>(tp);
             print_time(error_log,*localtime(&current_time), tp);
             fprintf(error_log,"%s\n",error_string.c_str());
-            fflush(error_log);
+            fflush(error_log);*/
         }
         CMvector[CMmap["error"]]->set_value(error_string);
     }
@@ -72,7 +92,7 @@ template void ConsoleManager::update_error(const long long& t);
 template void ConsoleManager::update_error(const double& t);
 
 
-ConsoleManager::ConsoleManager()
+void ConsoleManager::init()
 {
     error_log=fopen("error_log.txt","a");
     rlutil::cls();

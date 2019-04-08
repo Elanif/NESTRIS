@@ -2,7 +2,7 @@
 #ifndef SCORE_H
 #define SCORE_H
 #include<cstdio>
-#include "Renderer.h"
+#include"Renderer.h"
 #include"enums.h"
 #include"TileContainer.h"
 
@@ -40,6 +40,7 @@ public:
     nes_uchar& operator[](const std::size_t& i) {
         return score[i];
     }
+    std::string getScoreString();
 };
 class Score : public Renderer
 {
@@ -47,10 +48,12 @@ class Score : public Renderer
         Score(){};
         Score(TileContainer *_tilecont, const nes_ushort& _frameappearance);
         Score(TileContainer *_tilecont, const nes_ushort& _frameappearance, const bool& _maxout);
-        unsigned int getscore();
+
         void softdrop(nes_uchar);
         void lineclear(const nes_uchar& level, const nes_uchar& linescleared) ; //TODO var type
         void render();
+
+        ScoreContainer getScore();
     protected:
 
     private:

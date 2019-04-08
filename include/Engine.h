@@ -9,22 +9,26 @@
 //#include "Renderer.h"
 #include "RenderLevelSelect.h"
 #include "RenderPlayField.h"
+#include"RenderHighScore.hpp"
 
 class Engine
 {
     public:
-        Engine(TileContainer* _tilecont, const std::size_t& _startingmenu);
+        enum MenuType {
+            LEVELSELECT,
+            PLAYFIELD,
+            HIGHSCORE,
+        };
+        Engine(TileContainer* _tilecont, const MenuType& _startingmenu);
         void frame(const ActiveInputs& _inputs);
     protected:
     private:
-        RenderLevelSelect RLS;
         TileContainer* tilecont;
+        MenuType currentmenu;
+
+        RenderLevelSelect RLS;
         RenderPlayField RPF;
-        enum MenuType {
-            LEVELSELECT=10,
-            PLAYFIELD=11
-        };
-        std::size_t currentmenu;
+        RenderHighScore RHS;
 
         //levelselect
         int levelselect;

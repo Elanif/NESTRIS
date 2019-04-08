@@ -2,134 +2,19 @@
 <CodeBlocks_layout_file>
 	<FileVersion major="1" minor="0" />
 	<ActiveTarget name="Release" />
-	<File name="src\TextWriter.cpp" open="0" top="0" tabpos="13" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="820" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="src\Window.cpp" open="1" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="83" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="src\ActiveInputs.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="718" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="src\LevelLines.cpp" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="725" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="src\MatrixContainer.cpp" open="1" top="0" tabpos="11" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1259" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="include\Window.h" open="0" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="269" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="src\Sound.cpp" open="1" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1204" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="src\Engine.cpp" open="0" top="0" tabpos="11" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1031" topLine="12" />
-		</Cursor>
-	</File>
-	<File name="src\PieceContainer.cpp" open="1" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="3087" topLine="66" />
-		</Cursor>
-	</File>
-	<File name="src\PFMatrix.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2" topLine="0" />
-		</Cursor>
-	</File>
 	<File name="src\RenderLevelSelect.cpp" open="0" top="0" tabpos="18" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="529" topLine="3" />
 		</Cursor>
 	</File>
-	<File name="include\Score.h" open="0" top="0" tabpos="12" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="src\Renderer.cpp" open="0" top="0" tabpos="11" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="445" topLine="0" />
+			<Cursor1 position="87" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="src\Sprite.cpp" open="0" top="0" tabpos="15" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="src\RenderPlayField.cpp" open="1" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="241" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="include\Renderer.h" open="0" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="524" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="src\Statistics.cpp" open="1" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1222" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="src\OutputInfo.cpp" open="0" top="0" tabpos="15" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="400" topLine="30" />
-		</Cursor>
-	</File>
-	<File name="include\RenderPlayField.h" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2224" topLine="25" />
-		</Cursor>
-	</File>
-	<File name="src\Score.cpp" open="0" top="0" tabpos="14" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1358" topLine="18" />
-		</Cursor>
-	</File>
-	<File name="include\Sprite.h" open="0" top="0" tabpos="14" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2593" topLine="68" />
-		</Cursor>
-	</File>
-	<File name="nestris.cpp" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="212" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="include\LevelLines.h" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1639" topLine="14" />
-		</Cursor>
-	</File>
-	<File name="src\Input.cpp" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="3948" topLine="51" />
-		</Cursor>
-	</File>
-	<File name="include\RenderLevelSelect.h" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="745" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="src\Piece.cpp" open="0" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="39" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="include\Piece.h" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="418" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="src\TileContainer.cpp" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="111" topLine="0" />
+			<Cursor1 position="6229" topLine="15" />
 		</Cursor>
 	</File>
 	<File name="include\ActiveInputs.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -137,34 +22,59 @@
 			<Cursor1 position="65" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="include\PFMatrix.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="src\Score.cpp" open="1" top="1" tabpos="13" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="845" topLine="0" />
+			<Cursor1 position="605" topLine="12" />
 		</Cursor>
 	</File>
-	<File name="src\TileRenderer.cpp" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="include\ConfigReader.hpp" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="5317" topLine="94" />
+			<Cursor1 position="787" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="src\random.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="src\Sound.cpp" open="0" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="106" topLine="0" />
+			<Cursor1 position="1204" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="include\Input.h" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="include\ConsoleManager.h" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="550" topLine="0" />
+			<Cursor1 position="862" topLine="5" />
 		</Cursor>
 	</File>
-	<File name="include\TileContainer.h" open="0" top="0" tabpos="13" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="src\Sprite.cpp" open="0" top="0" tabpos="15" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="3013" topLine="48" />
+			<Cursor1 position="241" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="include\Sound.hpp" open="1" top="1" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="include\Engine.h" open="1" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="610" topLine="0" />
+			<Cursor1 position="286" topLine="9" />
+		</Cursor>
+	</File>
+	<File name="src\Statistics.cpp" open="0" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1222" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="include\Input.h" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="654" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="src\TextWriter.cpp" open="0" top="0" tabpos="13" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1475" topLine="11" />
+		</Cursor>
+	</File>
+	<File name="include\LevelLines.h" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1239" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="src\TileContainer.cpp" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="3701" topLine="0" />
 		</Cursor>
 	</File>
 	<File name="include\MatrixContainer.h" open="0" top="0" tabpos="13" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -172,24 +82,44 @@
 			<Cursor1 position="143" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="src\RenderPlayField.cpp" open="1" top="0" tabpos="12" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="src\TileRenderer.cpp" open="0" top="0" tabpos="14" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="157" topLine="0" />
+			<Cursor1 position="25010" topLine="513" />
 		</Cursor>
 	</File>
 	<File name="include\OutputInfo.h" open="0" top="0" tabpos="19" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="2423" topLine="27" />
+			<Cursor1 position="2423" topLine="47" />
 		</Cursor>
 	</File>
-	<File name="src\ConsoleManager.cpp" open="0" top="0" tabpos="14" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="src\Window.cpp" open="1" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="1438" topLine="6" />
+			<Cursor1 position="714" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="include\PieceContainer.h" open="0" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="include\PFMatrix.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="1116" topLine="0" />
+			<Cursor1 position="845" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="src\enums.cpp" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="18" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="include\TileContainer.h" open="0" top="0" tabpos="13" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1724" topLine="46" />
+		</Cursor>
+	</File>
+	<File name="include\Piece.h" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="418" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="src\random.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="106" topLine="0" />
 		</Cursor>
 	</File>
 	<File name="include\TileRenderer.h" open="0" top="0" tabpos="12" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -197,19 +127,79 @@
 			<Cursor1 position="2018" topLine="31" />
 		</Cursor>
 	</File>
-	<File name="include\ConsoleManager.h" open="0" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="include\PieceContainer.h" open="1" top="0" tabpos="16" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="902" topLine="0" />
+			<Cursor1 position="1288" topLine="23" />
 		</Cursor>
 	</File>
-	<File name="include\TextWriter.h" open="0" top="0" tabpos="12" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="include\Window.h" open="0" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="259" topLine="0" />
+			<Cursor1 position="269" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="src\enums.cpp" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="include\RenderHighScore.hpp" open="1" top="0" tabpos="14" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="302" topLine="0" />
+			<Cursor1 position="563" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="include\enums.h" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1871" topLine="60" />
+		</Cursor>
+	</File>
+	<File name="include\RenderLevelSelect.h" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="745" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="include\RenderPlayField.h" open="1" top="0" tabpos="11" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="858" topLine="12" />
+		</Cursor>
+	</File>
+	<File name="nestris.cpp" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="490" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="include\Renderer.h" open="1" top="0" tabpos="18" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="574" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="src\ActiveInputs.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="718" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="include\Score.h" open="1" top="0" tabpos="12" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1283" topLine="18" />
+		</Cursor>
+	</File>
+	<File name="src\ConfigReader.cpp" open="1" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="5136" topLine="153" />
+		</Cursor>
+	</File>
+	<File name="include\Sound.hpp" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="447" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="src\ConsoleManager.cpp" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="925" topLine="6" />
+		</Cursor>
+	</File>
+	<File name="include\Sprite.h" open="0" top="0" tabpos="14" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2593" topLine="68" />
+		</Cursor>
+	</File>
+	<File name="src\Engine.cpp" open="1" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1163" topLine="21" />
 		</Cursor>
 	</File>
 	<File name="include\Statistics.h" open="0" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -217,19 +207,49 @@
 			<Cursor1 position="401" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="include\enums.h" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="src\Input.cpp" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="1925" topLine="56" />
+			<Cursor1 position="11150" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="include\Engine.h" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="include\TextWriter.h" open="0" top="0" tabpos="12" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="653" topLine="0" />
+			<Cursor1 position="259" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="src\Renderer.cpp" open="0" top="0" tabpos="11" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="src\LevelLines.cpp" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="87" topLine="0" />
+			<Cursor1 position="725" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="src\MatrixContainer.cpp" open="0" top="0" tabpos="11" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1259" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="src\OutputInfo.cpp" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="400" topLine="30" />
+		</Cursor>
+	</File>
+	<File name="src\PFMatrix.cpp" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="src\Piece.cpp" open="0" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="39" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="src\PieceContainer.cpp" open="1" top="0" tabpos="17" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="7293" topLine="200" />
+		</Cursor>
+	</File>
+	<File name="src\RenderHighScore.cpp" open="1" top="0" tabpos="15" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="466" topLine="0" />
 		</Cursor>
 	</File>
 </CodeBlocks_layout_file>

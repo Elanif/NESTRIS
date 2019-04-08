@@ -32,8 +32,8 @@
 #endif // incframe
 #include <cstddef>
 #include<SFML/System/Vector2.hpp>
-class tuple;
-#include"ConsoleManager.h"
+#include<tuple>
+
 class tiletype;
 namespace glb { //todo make into ntris
     typedef const char* const_string_literal;
@@ -64,7 +64,6 @@ namespace glb { //todo make into ntris
             return framecountlittle%4;
         }
     };
-    extern ConsoleManager cm;
     extern nes_uchar lineclearframecounter;
     extern nes_uchar updatingmatrix;
     extern nes_uchar ARE;
@@ -77,9 +76,9 @@ namespace glb { //todo make into ntris
     constexpr std::size_t linesy=2;
     constexpr std::size_t levelx=24;
     constexpr std::size_t levely=19;
-    constexpr std::size_t topscorex=29;
+    constexpr std::size_t topscorex=24;
     constexpr std::size_t topscorey=4;
-    constexpr std::size_t scorex=29;
+    constexpr std::size_t scorex=24;
     constexpr std::size_t scorey=7;
     constexpr std::size_t nextx=24;
     constexpr std::size_t nexty=12;
@@ -103,7 +102,7 @@ namespace glb { //todo make into ntris
     {0x0D ,0x30 ,0x05 ,0x13},
     {0x0D ,0x30 ,0x16 ,0x12},
     {0x0D ,0x30 ,0x27 ,0x16}
-};
+    };
 }
 
 #endif // ENUMS_H

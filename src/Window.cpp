@@ -4,11 +4,7 @@
 #include<string>
 Window::Window(const std::size_t& _width, const std::size_t& _height, sf::Vector2f _scale, const bool& optimized)
 {
-    bool fourthirds=false;
     sf::Transform state;
-    if (fourthirds) {
-        _scale.y*=(double)_width/_height*3./4.;
-    }
     state.scale(_scale);
     sf::RenderWindow window(sf::VideoMode(_width*_scale.x, _height*_scale.y), "Nestris");
     sf::Vector2u tilesize(8,8);
@@ -16,7 +12,7 @@ Window::Window(const std::size_t& _width, const std::size_t& _height, sf::Vector
     TileRenderer tilerend(_width/8,_height/8,tilesize,TileRenderer::DRAWTEXTURE,extra_render);
     tilerend.load("texturesprite/sprites.txt");
     //tilerend.load("texturesprite/sprites.txtupdated");
-    Engine _engine= Engine(tilerend.getTileContainer(),10); //TODO change 10
+    Engine _engine= Engine(tilerend.getTileContainer(),Engine::LEVELSELECT);
 
     sf::Event event;
     sf::Int64 smallesttimeunit=sf::Int64(0);
@@ -33,32 +29,32 @@ Window::Window(const std::size_t& _width, const std::size_t& _height, sf::Vector
     while (window.isOpen()) {
         if (elapsedtime.getElapsedTime().asMicroseconds()>=microsecondsperframe) {
 
-            glb::cm.update<double>("fps",(double)sf::Int64(1000000)/(double)elapsedtime.getElapsedTime().asMicroseconds());
+            ConsoleManager::update<double>("fps",(double)sf::Int64(1000000)/(double)elapsedtime.getElapsedTime().asMicroseconds());
 
             elapsedtime.restart();
             sf::Int64 delaycalc=0;
             _engine.frame(inputManager.getInput());
 
-            glb::cm.update<sf::Int64>("input delay",elapsedtime.getElapsedTime().asMicroseconds()-delaycalc);
+            ConsoleManager::update<sf::Int64>("input delay",elapsedtime.getElapsedTime().asMicroseconds()-delaycalc);
             delaycalc=elapsedtime.getElapsedTime().asMicroseconds();
 
             window.clear();//adds 15microseconds
             tilerend.drawmod(window, state);
 
-            glb::cm.update<sf::Int64>("draw delay",elapsedtime.getElapsedTime().asMicroseconds()-delaycalc);
+            ConsoleManager::update<sf::Int64>("draw delay",elapsedtime.getElapsedTime().asMicroseconds()-delaycalc);
             delaycalc=elapsedtime.getElapsedTime().asMicroseconds();
 
             window.display();
 
             delaycalc=elapsedtime.getElapsedTime().asMicroseconds();
-            glb::cm.update<sf::Int64>("display delay",elapsedtime.getElapsedTime().asMicroseconds()-delaycalc);
+            ConsoleManager::update<sf::Int64>("display delay",elapsedtime.getElapsedTime().asMicroseconds()-delaycalc);
 
             while (window.pollEvent(event))
             {
                 if (event.type == sf::Event::Closed)
                     window.close();
             }
-            glb::cm.print();
+            ConsoleManager::print();
         }
         else {
             sf::Int64 delaystart=elapsedtime.getElapsedTime().asMicroseconds();
@@ -84,8 +80,8 @@ Window::Window(const std::size_t& _width, const std::size_t& _height, sf::Vector
             }
         }
     }
-    glb::cm.update<std::string>("system",std::string("Window terminating"));
-    glb::cm.print(true);
+    ConsoleManager::update<std::string>("system",std::string("Window terminating"));
+    ConsoleManager::print(true);
 }
 
 

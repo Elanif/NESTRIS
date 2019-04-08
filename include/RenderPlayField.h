@@ -11,6 +11,9 @@
 #include"Statistics.h"
 #include"enums.h"
 
+//class Score; //todo fwd decl
+//class LevelLines;
+//class PieceContainer;
 class RenderPlayField : public Renderer
 {
     public:
@@ -19,11 +22,11 @@ class RenderPlayField : public Renderer
         void render(const nes_ushort& framecounter) ;
         void resetPlayField(const nes_uchar& _level);
         void renderPlayField(const unsigned long long& framecounter);
-    private:
-        void renderimage(bool blink);
-        void renderBackground(const nes_uchar& _color1, const nes_uchar& _color2);
+        bool gameOver();
+        ScoreContainer getScore();
+
         MatrixContainer matrixhandler;
-        bool tetris;
+
         PieceContainer piecehandler;
 
         Score scorehandler;
@@ -31,6 +34,10 @@ class RenderPlayField : public Renderer
         LevelLines levellineshandler;
 
         Statistics statisticshandler;
+    private:
+        void renderimage(bool blink);
+        void renderBackground(const nes_uchar& _color1, const nes_uchar& _color2);
+        bool tetris;
 
         nes_uchar level;
         nes_uchar gravity[255];
@@ -38,6 +45,7 @@ class RenderPlayField : public Renderer
         bool firstframeis4;
         bool paused;
         bool playfield_blink=false;
+        bool game_over=false;
         nes_uchar pausecounter;
 
         void init_assets();

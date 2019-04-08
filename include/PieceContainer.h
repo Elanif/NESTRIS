@@ -33,12 +33,14 @@ public:
     Piece lastdroppedpiece;
     nes_uchar holddownpoints;
 
+    bool gameOver(const PFMatrix& pfmatrix);
     bool dropped_event=false;
     bool spawned_event=false;
 
 private:
 
     nes_uchar hidecountercurrentpiece=0;
+    bool collision(const PFMatrix& _pfmatrix, const Piece& _piece);
 
     std::vector<std::pair<nes_uchar, nes_uchar> > lastrenderedpos;
     std::size_t spawncount=0; //TODO check spawncount

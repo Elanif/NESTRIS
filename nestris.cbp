@@ -57,6 +57,8 @@
 			<Add option="-pedantic" />
 			<Add option="-Wall" />
 			<Add option="-std=c++14" />
+			<Add option="-static-libgcc" />
+			<Add option="-static-libstdc++" />
 			<Add directory="src" />
 			<Add directory="include" />
 			<Add directory="../nestris" />
@@ -85,6 +87,7 @@
 		<Unit filename="include/PFMatrix.h" />
 		<Unit filename="include/Piece.h" />
 		<Unit filename="include/PieceContainer.h" />
+		<Unit filename="include/RenderHighScore.hpp" />
 		<Unit filename="include/RenderLevelSelect.h" />
 		<Unit filename="include/RenderPlayField.h" />
 		<Unit filename="include/Renderer.h" />
@@ -110,6 +113,7 @@
 		<Unit filename="src/PFMatrix.cpp" />
 		<Unit filename="src/Piece.cpp" />
 		<Unit filename="src/PieceContainer.cpp" />
+		<Unit filename="src/RenderHighScore.cpp" />
 		<Unit filename="src/RenderLevelSelect.cpp" />
 		<Unit filename="src/RenderPlayField.cpp" />
 		<Unit filename="src/Renderer.cpp" />

@@ -1,5 +1,9 @@
 #include "Score.h"
 #include"TextWriter.h"
+#include"ConsoleManager.h"
+#include<sstream>
+#include<iomanip>
+
 Score::Score(TileContainer *_tilecont, const nes_ushort& _frameappearance)
 :Renderer(_tilecont, _frameappearance),
 maxout(true)
@@ -23,36 +27,37 @@ void Score::render() {
     }
     else {
         using namespace std::string_literals;
-        glb::cm.update<std::string>("system","score[0]="s+ntris::to_string(score[0]));
+        ConsoleManager::update<std::string>("system","score[0]="s+ntris::to_string(score[0]));
         if (glb::lineclearframecounter>0) {
-            for (std::size_t i=0; i<3; i++) {
-                TextWriter::write_hex(topscores[0][i],tilecont,{glb::topscorex-i*2-1,glb::topscorey},2);
-            }
-            for (std::size_t i=0; i<3; i++) {
-                TextWriter::write_hex(scoretemp[i],tilecont,{glb::scorex-i*2-1,glb::scorey},2);
-            }
+            TextWriter::write(topscores[0].getScoreString(),tilecont,{glb::topscorex,glb::topscorey}); //these 2 lines
+            TextWriter::write(scoretemp.getScoreString(),tilecont,{glb::scorex,glb::scorey}); //are useless right now
         }
         else {
             scoretemp=score;
-            for (std::size_t i=0; i<3; i++) {
-                TextWriter::write_hex(topscores[0][i],tilecont,{glb::topscorex-i*2-1,glb::topscorey},2);
-            }
-            for (std::size_t i=0; i<3; i++) {
-                TextWriter::write_hex(score[i],tilecont,{glb::scorex-i*2-1,glb::scorey},2);
-            }
+            TextWriter::write(topscores[0].getScoreString(),tilecont,{glb::topscorex,glb::topscorey});
+            TextWriter::write(score.getScoreString(),tilecont,{glb::scorex,glb::scorey});
         }
     }
 }
 
 
-unsigned int Score::getscore() {
+ScoreContainer Score::getScore() {
+    return score;
+    /*
     unsigned int result=(score[0]&0x0f)+((score[0]&0xf0)/0x0f)*10;
     result+=(score[1]&0x0f)*100+((score[1]&0xf0)/0x0f)*1000;
     result+=(score[2]&0x0f)*10000+((score[2]&0xf0)/0x0f)*100000;
-    return result;
+    return result;*/
 }
 
-void Score::lastdigitcheck() {
+std::string ScoreContainer::getScoreString() {
+    std::stringstream _tmpstream;
+    for (std::size_t i=3; i-->0;)
+        _tmpstream<<std::setfill('0')<<std::setw(2)<<std::hex<<(unsigned int)score[i];
+    return _tmpstream.str();
+}
+
+void Score::lastdigitcheck() { //TODO make ScoreContainer specific
     if (maxout) {
         nes_uchar A=score[2]&0xF0;
         if (A-0xA0>=0) score[0]=score[1]=score[2]=0x99;
@@ -74,20 +79,18 @@ void Score::bytecheckhighdigit(const std::size_t& byte, const bool& andop) {
     }
 }
 
-void Score::softdrop(nes_uchar helddownpoints) { //helddownpoints used in calculations so value
+void Score::softdrop(nes_uchar helddownpoints) {
     if (helddownpoints>=2) {
-        --helddownpoints; //it should add heldpoints-1 to the score
+        --helddownpoints;
         score[0]+=helddownpoints;
-        //lowbytecheck();
         bytechecklowdigit(0,true);
-        //lowbytecheck2();
         bytecheckhighdigit(0,true);
     }
 }
 void Score::lineclear(const nes_uchar& level, const nes_uchar& linescleared) {
     for (std::size_t i=0; i<=level; ++i) {
         score[0]+=pointsarray[linescleared*2];
-        bytecheckhighdigit(0,false); //for some reason it doesn't do &0xf0
+        bytecheckhighdigit(0,false); //for some reason it doesn't do &0xf0 in the original assembly code
         score[1]+=pointsarray[linescleared*2+1];
         bytechecklowdigit(1,true);
         bytecheckhighdigit(1,true);
@@ -95,23 +98,6 @@ void Score::lineclear(const nes_uchar& level, const nes_uchar& linescleared) {
         lastdigitcheck();
     }
 }
-/*void Score::lowbytecheck() {
-    unsigned char A=lowbyte&0x0f; //but the score is stored in 3 bytes and each of the numbers in the byte's hex rappresentation is used as a decimal unit
-    if (A-0x0A>=0) { //checks if last digit overflows and adds 6 to "fix" it
-        A=lowbyte;
-        A+=0x06;
-    }//example 12_dec+12_hex=1A_hex->1E+6=24, it works but it doesnt detect overflow all the time, example 9_dec+9_hex=[12]_hex, no overflow in the last digit so it thinks 9+9=12
-    lowbyte = A;
-}
-
-void Score::lowbytecheck2() {
-    unsigned char A=lowbyte%0xf0
-    if (A-0xA0>=0) {
-        A+=0x60;
-        ++midbyte;
-    }
-    lowbyte=A;
-}*/
 
 nes_uchar Score::pointsarray[10]= {
     00, 00,

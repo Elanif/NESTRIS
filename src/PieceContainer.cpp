@@ -18,7 +18,7 @@ hidenextpiece(false)
     spawnPiece();
     hidecounter=sleepcounter=0;
 }
-bool collision(const PFMatrix& _pfmatrix, const Piece& _piece) {
+bool PieceContainer::collision(const PFMatrix& _pfmatrix, const Piece& _piece) {
     bool collision = false;
     std::vector<std::pair<nes_uchar, nes_uchar> > piecepositions = _piece.getPos();
     for (std::vector<std::pair<nes_uchar, nes_uchar> >::size_type i=0; i<piecepositions.size(); ++i) {
@@ -215,6 +215,10 @@ void PieceContainer::spawnPiece() {
     }
     nextpiece.piecetype=realID;
     downcounter=holddowncounter=0;
+}
+bool PieceContainer::gameOver(const PFMatrix& pfmatrix) {
+    if (collision(pfmatrix, currentpiece))return true;
+    return false;
 }
 
 void PieceContainer::lockpiece() {

@@ -17568,3 +17568,439 @@
 	<SFML/Audio/Export.hpp>
 	<string>
 
+1551714618 source:g:\nestris\project_versions\20190407sound\src\activeinputs.cpp
+	"ActiveInputs.h"
+	<cstdio>
+	"enums.h"
+
+1551714630 g:\nestris\project_versions\20190407sound\include\activeinputs.h
+	"enums.h"
+
+1554737492 g:\nestris\project_versions\20190407sound\include\enums.h
+	<cstddef>
+	<SFML/System/Vector2.hpp>
+	<tuple>
+
+1554712656 g:\nestris\project_versions\20190407sound\include\consolemanager.h
+	<vector>
+	<unordered_map>
+	<string>
+	<SFML/System/NonCopyable.hpp>
+	<SFML/System/Vector2.hpp>
+	<utility>
+	<memory>
+	"rlutil.h"
+	"OutputInfo.h"
+
+1464932968 g:\nestris\project_versions\20190407sound\include\rlutil.h
+	<iostream>
+	<string>
+	<cstdio>
+	<stdio.h>
+	<string.h>
+	<windows.h>
+	<conio.h>
+	<termios.h>
+	<unistd.h>
+	<sys/ioctl.h>
+	<sys/types.h>
+	<sys/time.h>
+
+1553868416 g:\nestris\project_versions\20190407sound\include\outputinfo.h
+	<string>
+	<list>
+	<SFML/System/Vector2.hpp>
+	<SFML/System/Time.hpp>
+
+1554715320 source:g:\nestris\project_versions\20190407sound\src\configreader.cpp
+	"ConfigReader.hpp"
+	<iostream>
+	<regex>
+
+1554712912 g:\nestris\project_versions\20190407sound\include\configreader.hpp
+	<string>
+	<unordered_map>
+	<vector>
+	<tuple>
+	<fstream>
+
+1554712656 source:g:\nestris\project_versions\20190407sound\src\consolemanager.cpp
+	"ConsoleManager.h"
+	<chrono>
+	<ctime>
+	<iostream>
+	<SFML/System/Sleep.hpp>
+	<sstream>
+	<limits>
+
+1554733204 source:g:\nestris\project_versions\20190407sound\src\engine.cpp
+	"Engine.h"
+	<cstdio>
+	"random.h"
+	"ConsoleManager.h"
+	<string>
+
+1554720122 g:\nestris\project_versions\20190407sound\include\engine.h
+	"Input.h"
+	"ActiveInputs.h"
+	<SFML/Graphics.hpp>
+	"TileContainer.h"
+	"TileRenderer.h"
+	"RenderLevelSelect.h"
+	"RenderPlayField.h"
+	"RenderHighScore.hpp"
+
+1554708618 g:\nestris\project_versions\20190407sound\include\input.h
+	"ActiveInputs.h"
+	"enums.h"
+	<vector>
+	<array>
+	<utility>
+	<SFML/Window/Event.hpp>
+	<SFML/Window/Keyboard.hpp>
+	<SFML/Window/Joystick.hpp>
+	<unordered_map>
+
+1552396000 g:\nestris\project_versions\20190407sound\include\tilecontainer.h
+	"enums.h"
+	"stddef.h"
+	<SFML/System/NonCopyable.hpp>
+	<functional>
+	<map>
+	<SFML/System/Vector3.hpp>
+
+1552293358 g:\nestris\project_versions\20190407sound\include\tilerenderer.h
+	"TileContainer.h"
+	<SFML/Graphics.hpp>
+	"enums.h"
+	<vector>
+	<string>
+	<cstdio>
+	<unordered_map>
+	"Sprite.h"
+
+1551714714 g:\nestris\project_versions\20190407sound\include\sprite.h
+	"enums.h"
+	<SFML/System/Utf.hpp>
+	<SFML/Graphics.hpp>
+	<climits>
+
+1554452974 g:\nestris\project_versions\20190407sound\include\renderlevelselect.h
+	"ActiveInputs.h"
+	<SFML/Graphics.hpp>
+	"TileContainer.h"
+	"Renderer.h"
+
+1551714608 g:\nestris\project_versions\20190407sound\include\renderer.h
+	"stddef.h"
+	<SFML/Graphics.hpp>
+	"TileContainer.h"
+	"enums.h"
+
+1554732896 g:\nestris\project_versions\20190407sound\include\renderplayfield.h
+	"TileContainer.h"
+	"Renderer.h"
+	"ActiveInputs.h"
+	"Score.h"
+	"PieceContainer.h"
+	"MatrixContainer.h"
+	"LevelLines.h"
+	"Statistics.h"
+	"enums.h"
+
+1554735626 g:\nestris\project_versions\20190407sound\include\score.h
+	<cstdio>
+	"Renderer.h"
+	"enums.h"
+	"TileContainer.h"
+
+1554725262 g:\nestris\project_versions\20190407sound\include\piececontainer.h
+	"enums.h"
+	"PFMatrix.h"
+	"Piece.h"
+	"Renderer.h"
+	<vector>
+	<utility>
+	"ActiveInputs.h"
+	"TileContainer.h"
+
+1551714608 g:\nestris\project_versions\20190407sound\include\pfmatrix.h
+	<cstdio>
+
+1552038464 g:\nestris\project_versions\20190407sound\include\piece.h
+	"enums.h"
+	"TileContainer.h"
+	<vector>
+	<utility>
+
+1550588352 g:\nestris\project_versions\20190407sound\include\matrixcontainer.h
+	"enums.h"
+	"Renderer.h"
+	"PieceContainer.h"
+	"PFMatrix.h"
+	"Piece.h"
+	<cstdio>
+
+1554709994 g:\nestris\project_versions\20190407sound\include\levellines.h
+	"Renderer.h"
+	"TileContainer.h"
+	"enums.h"
+
+1554213892 g:\nestris\project_versions\20190407sound\include\statistics.h
+	"Renderer.h"
+	"enums.h"
+
+1548932828 g:\nestris\project_versions\20190407sound\include\random.h
+	"enums.h"
+
+1554708590 source:g:\nestris\project_versions\20190407sound\src\enums.cpp
+	"enums.h"
+
+1554210544 source:g:\nestris\project_versions\20190407sound\src\levellines.cpp
+	"LevelLines.h"
+	"TextWriter.h"
+	<string>
+
+1554216650 g:\nestris\project_versions\20190407sound\include\textwriter.h
+	"enums.h"
+
+1553878762 source:g:\nestris\project_versions\20190407sound\src\outputinfo.cpp
+	"OutputInfo.h"
+	<rlutil.h>
+	<algorithm>
+
+1549030012 source:g:\nestris\project_versions\20190407sound\src\pfmatrix.cpp
+
+1554213908 source:g:\nestris\project_versions\20190407sound\src\piece.cpp
+	"Piece.h"
+
+1550076996 source:g:\nestris\project_versions\20190407sound\src\random.cpp
+	"random.h"
+	<cstdio>
+
+1551714598 source:g:\nestris\project_versions\20190407sound\src\renderer.cpp
+	"Renderer.h"
+
+1554452974 source:g:\nestris\project_versions\20190407sound\src\renderlevelselect.cpp
+	"RenderLevelSelect.h"
+	<cstdio>
+
+1554734600 source:g:\nestris\project_versions\20190407sound\src\score.cpp
+	"Score.h"
+	"TextWriter.h"
+	"ConsoleManager.h"
+	<sstream>
+	<iomanip>
+
+1551714606 source:g:\nestris\project_versions\20190407sound\src\sprite.cpp
+	"Sprite.h"
+
+1554216648 source:g:\nestris\project_versions\20190407sound\src\textwriter.cpp
+	"TextWriter.h"
+	<string>
+	<sstream>
+	"TileContainer.h"
+	<SFML/System/Vector2.hpp>
+	<iomanip>
+
+1554709648 source:g:\nestris\project_versions\20190407sound\src\tilecontainer.cpp
+	"TileContainer.h"
+	<cstdio>
+	"ConsoleManager.h"
+	<string>
+	<sstream>
+
+1554708450 source:g:\nestris\project_versions\20190407sound\nestris.cpp
+	"enums.h"
+	"ConsoleManager.h"
+	<cstdio>
+	"Window.h"
+	<SFML/Graphics.hpp>
+	"TextWriter.h"
+	<SFML/Window/Joystick.hpp>
+	<cstdlib>
+	"Sound.hpp"
+
+1552039570 g:\nestris\project_versions\20190407sound\include\window.h
+	"Input.h"
+	<SFML/Graphics.hpp>
+	"Engine.h"
+	<cstdio>
+
+1554664726 g:\nestris\project_versions\20190407sound\include\sound.hpp
+	<SFML/Audio.hpp>
+	<unordered_map>
+
+1525808420 g:\nestris\project_versions\sfml-2.5.1\include\sfml\audio.hpp
+	<SFML/System.hpp>
+	<SFML/Audio/InputSoundFile.hpp>
+	<SFML/Audio/Listener.hpp>
+	<SFML/Audio/Music.hpp>
+	<SFML/Audio/OutputSoundFile.hpp>
+	<SFML/Audio/Sound.hpp>
+	<SFML/Audio/SoundBuffer.hpp>
+	<SFML/Audio/SoundBufferRecorder.hpp>
+	<SFML/Audio/SoundFileFactory.hpp>
+	<SFML/Audio/SoundFileReader.hpp>
+	<SFML/Audio/SoundFileWriter.hpp>
+	<SFML/Audio/SoundRecorder.hpp>
+	<SFML/Audio/SoundSource.hpp>
+	<SFML/Audio/SoundStream.hpp>
+
+1525808420 g:\nestris\project_versions\sfml-2.5.1\include\sfml\audio\inputsoundfile.hpp
+	<SFML/Audio/Export.hpp>
+	<SFML/System/NonCopyable.hpp>
+	<SFML/System/Time.hpp>
+	<string>
+	<algorithm>
+
+1525808420 g:\nestris\project_versions\sfml-2.5.1\include\sfml\audio\export.hpp
+	<SFML/Config.hpp>
+
+1525808420 g:\nestris\project_versions\sfml-2.5.1\include\sfml\audio\listener.hpp
+	<SFML/Audio/Export.hpp>
+	<SFML/System/Vector3.hpp>
+
+1525808420 g:\nestris\project_versions\sfml-2.5.1\include\sfml\audio\music.hpp
+	<SFML/Audio/Export.hpp>
+	<SFML/Audio/SoundStream.hpp>
+	<SFML/Audio/InputSoundFile.hpp>
+	<SFML/System/Mutex.hpp>
+	<SFML/System/Time.hpp>
+	<string>
+	<vector>
+
+1525808420 g:\nestris\project_versions\sfml-2.5.1\include\sfml\audio\soundstream.hpp
+	<SFML/Audio/Export.hpp>
+	<SFML/Audio/SoundSource.hpp>
+	<SFML/System/Thread.hpp>
+	<SFML/System/Time.hpp>
+	<SFML/System/Mutex.hpp>
+	<cstdlib>
+
+1525808420 g:\nestris\project_versions\sfml-2.5.1\include\sfml\audio\soundsource.hpp
+	<SFML/Audio/Export.hpp>
+	<SFML/Audio/AlResource.hpp>
+	<SFML/System/Vector3.hpp>
+
+1525808420 g:\nestris\project_versions\sfml-2.5.1\include\sfml\audio\alresource.hpp
+	<SFML/Audio/Export.hpp>
+
+1525808420 g:\nestris\project_versions\sfml-2.5.1\include\sfml\audio\outputsoundfile.hpp
+	<SFML/Audio/Export.hpp>
+	<SFML/System/NonCopyable.hpp>
+	<string>
+
+1525808420 g:\nestris\project_versions\sfml-2.5.1\include\sfml\audio\sound.hpp
+	<SFML/Audio/Export.hpp>
+	<SFML/Audio/SoundSource.hpp>
+	<SFML/System/Time.hpp>
+	<cstdlib>
+
+1525808420 g:\nestris\project_versions\sfml-2.5.1\include\sfml\audio\soundbuffer.hpp
+	<SFML/Audio/Export.hpp>
+	<SFML/Audio/AlResource.hpp>
+	<SFML/System/Time.hpp>
+	<string>
+	<vector>
+	<set>
+
+1525808420 g:\nestris\project_versions\sfml-2.5.1\include\sfml\audio\soundbufferrecorder.hpp
+	<SFML/Audio/Export.hpp>
+	<SFML/Audio/SoundBuffer.hpp>
+	<SFML/Audio/SoundRecorder.hpp>
+	<vector>
+
+1525808420 g:\nestris\project_versions\sfml-2.5.1\include\sfml\audio\soundrecorder.hpp
+	<SFML/Audio/Export.hpp>
+	<SFML/Audio/AlResource.hpp>
+	<SFML/System/Thread.hpp>
+	<SFML/System/Time.hpp>
+	<vector>
+	<string>
+
+1525808420 g:\nestris\project_versions\sfml-2.5.1\include\sfml\audio\soundfilefactory.hpp
+	<SFML/Audio/Export.hpp>
+	<string>
+	<vector>
+	<SFML/Audio/SoundFileFactory.inl>
+
+1525808420 g:\nestris\project_versions\sfml-2.5.1\include\sfml\audio\soundfilefactory.inl
+
+1525808420 g:\nestris\project_versions\sfml-2.5.1\include\sfml\audio\soundfilereader.hpp
+	<SFML/Audio/Export.hpp>
+	<string>
+
+1525808420 g:\nestris\project_versions\sfml-2.5.1\include\sfml\audio\soundfilewriter.hpp
+	<SFML/Audio/Export.hpp>
+	<string>
+
+1554709432 source:g:\nestris\project_versions\20190407sound\src\input.cpp
+	"Input.h"
+	<cstdio>
+	<SFML/Window/Keyboard.hpp>
+	"ConfigReader.hpp"
+	"ConsoleManager.h"
+
+1554666924 source:g:\nestris\project_versions\20190407sound\src\matrixcontainer.cpp
+	"MatrixContainer.h"
+	"enums.h"
+	<vector>
+	<utility>
+	<cstdio>
+	"Sound.hpp"
+
+1554725266 source:g:\nestris\project_versions\20190407sound\src\piececontainer.cpp
+	"PieceContainer.h"
+	<stddef.h>
+	"enums.h"
+	"random.h"
+	<cstdio>
+	<sstream>
+	"Sound.hpp"
+
+1554721328 source:g:\nestris\project_versions\20190407sound\src\renderplayfield.cpp
+	"RenderPlayField.h"
+	"random.h"
+	"PieceContainer.h"
+	<cstdio>
+	"TextWriter.h"
+	<string>
+	"Sound.hpp"
+
+1554665646 source:g:\nestris\project_versions\20190407sound\src\sound.cpp
+	"Sound.hpp"
+	<string>
+
+1554665988 source:g:\nestris\project_versions\20190407sound\src\statistics.cpp
+	"Statistics.h"
+	"TextWriter.h"
+
+1554709252 source:g:\nestris\project_versions\20190407sound\src\tilerenderer.cpp
+	"TileRenderer.h"
+	"ConsoleManager.h"
+	"enums.h"
+	<string>
+	<fstream>
+	<sstream>
+
+1554718346 source:g:\nestris\project_versions\20190407sound\src\window.cpp
+	"Window.h"
+	<cmath>
+	"ConsoleManager.h"
+	<string>
+
+1554733070 source:g:\nestris\project_versions\20190407sound\src\renderhighscore.cpp
+	"RenderHighScore.hpp"
+	"TextWriter.h"
+	<string>
+
+1554737490 g:\nestris\project_versions\20190407sound\include\renderhighscore.hpp
+	"Renderer.h"
+	"TileContainer.h"
+	"Score.h"
+	"LevelLines.h"
+	"Statistics.h"
+	"ActiveInputs.h"
+	"MatrixContainer.h"
+

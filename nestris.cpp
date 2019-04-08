@@ -14,6 +14,7 @@ const int SCREEN_HEIGHT = 224;
 int main(int argc, char** args) {
     TextWriter::init();
     Sound::init();
+    ConsoleManager::init();
     sf::Vector2f scale(5,4);
     while(false) { //joystick testing
         sf::Joystick::update();

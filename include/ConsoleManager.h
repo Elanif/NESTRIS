@@ -13,23 +13,25 @@
 class ConsoleManager : public sf::NonCopyable
 {
     public:
-        ConsoleManager();
+        static void init();
         template<class T>
-        void update(std::string info, const T& t) ;
-        void update(std::string info, const char* const& t) ;
+        static void update(std::string info, const T& t) ;
+        static void update(std::string info, const char* const& t) ;
         template<class T>
-        void update_error(const T& t) ;
-        void update_error(const char* t);
-        void print(bool always_print=false);
+        static void update_error(const T& t) ;
+        static void update_error(const char* t);
+        static void print(bool always_print=false);
         ~ConsoleManager();
 
     private:
-        unsigned char framecounter=0;
-        bool error_print=false;
-        std::size_t add_value(std::string info, std::string unit);
-        std::size_t add_value(std::unique_ptr<OutputInfo>&& outputinfo);
-        std::vector<std::unique_ptr<OutputInfo> > CMvector;
-        std::unordered_map<std::string, std::size_t> CMmap;
-        FILE* error_log;
+        static unsigned char framecounter;
+        static bool error_print;
+        static void print_error(const char* error_string);
+        static void print_error(const std::string& error_string);
+        static std::size_t add_value(std::string info, std::string unit);
+        static std::size_t add_value(std::unique_ptr<OutputInfo>&& outputinfo);
+        static std::vector<std::unique_ptr<OutputInfo> > CMvector;
+        static std::unordered_map<std::string, std::size_t> CMmap;
+        static FILE* error_log;
 };
 #endif // CONSOLEMANAGER_H

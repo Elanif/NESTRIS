@@ -36,14 +36,14 @@ extra_render(_extra_render) //TODO EXTRA RENDER FOR MORE STUFF THAN DRAWTEXTUR
 {
     if (drawmethod==DRAWSPRITE) {
         quadretti=new uint8container[width*height];
-        if (!temptexclass.create(width*tilesize.x,height*tilesize.y)) {
-            //error
-        }
+        if (!temptexclass.create(width*tilesize.x,height*tilesize.y))
+            ConsoleManager::update_error<std::string>(std::string("Failed to create texture for DRAWSPRITE render mode"));
         tempspriteclass.setTexture(temptexclass, true);
     }
     else if (drawmethod==DRAWIMAGE) {
         finalimageclass.create(width*tilesize.x,height*tilesize.y);
-        temptexclass.loadFromImage(finalimageclass);
+        if (!temptexclass.loadFromImage(finalimageclass))
+            ConsoleManager::update_error<std::string>(std::string("Failed to load texture for DRAWIMAGE render mode"));
         tempspriteclass.setTexture(temptexclass, true);
     }
     else if (drawmethod==DRAWVERTEX){
@@ -58,9 +58,8 @@ extra_render(_extra_render) //TODO EXTRA RENDER FOR MORE STUFF THAN DRAWTEXTUR
     }
     else if (drawmethod==DRAWTEXTURE) { //TODO DYNAMICALLY CHOOSE SIZE && check if size<8
         texturesize=sf::Texture::getMaximumSize()<512?sf::Texture::getMaximumSize():512;
-        if (!tiletexture.create(texturesize,texturesize)) {
-            //TODO ERROR
-        }
+        if (!tiletexture.create(texturesize,texturesize))
+            ConsoleManager::update_error<std::string>(std::string("Failed to create texture for DRAWTEXTURE render mode"));
         verteximage=sf::VertexArray(sf::Quads,width*height*4+(extra_render.x+extra_render.y+extra_render.z)*4);
         const std::size_t headline=4*(extra_render.x+extra_render.y);
         for (std::size_t i=0; i<width; ++i) {
@@ -108,7 +107,7 @@ void TileRenderer::load_palette(const std::string& path) {
         }
     }
     else {
-        glb::cm.update_error( path+" palette couldn't be loaded, using default palette"+std::to_string(counter));
+        ConsoleManager::update_error( path+" palette couldn't be loaded, using default palette"+std::to_string(counter));
     }
 }
 
@@ -116,7 +115,7 @@ bool TileRenderer::load(const std::string& tilefile){
     load_palette("palette/YPbPr.pal");
     FILE * Spritefile=fopen(tilefile.c_str(),"r");
     if (!Spritefile) {
-        glb::cm.update_error("Couldn't open sprite file: "+tilefile);
+        ConsoleManager::update_error("Couldn't open sprite file: "+tilefile);
         return false;
     }
     std::size_t spritenumber=spritevector.size();
@@ -140,7 +139,7 @@ bool TileRenderer::load(const std::string& tilefile){
                 if (spritemap.find(newsprite)==spritemap.end()) {
                     spritemap[newsprite]=spritenumber;
                     spritevector.push_back(newsprite);
-                    spritenumber++; //what if pushback fails?
+                    spritenumber++;
                 }
             }
             else if (glb::spritemode==0) {
@@ -159,6 +158,7 @@ bool TileRenderer::load(const std::string& tilefile){
 std::size_t TileRenderer::add_or_find_texture(const tiletype& newtile, sf::Image* prerendering=NULL) {
     std::size_t whereisthistexture=0;
     tiletype temptile=newtile;
+    //TODO black control
     /*if ((temptile.palette_color[0]&0x0F)>0x0D) temptile.palette_color[0]=temptile.palette_color[0]&0xf0+0x0D;
     if ((temptile.palette_color[1]&0x0F)>0x0D) temptile.palette_color[1]=temptile.palette_color[1]&0xf0+0x0D;
     if ((temptile.palette_color[2]&0x0F)>0x0D) temptile.palette_color[2]=temptile.palette_color[2]&0xf0+0x0D;
@@ -167,11 +167,11 @@ std::size_t TileRenderer::add_or_find_texture(const tiletype& newtile, sf::Image
     if (texturemap.find(temptile)==texturemap.end()) { //new texture
 
         if (itoyrect(texturenumber,texturesize,texturesize,tilesize.x,tilesize.x)>texturesize) {
-            glb::cm.update_error(std::string("Too many textures"));
+            ConsoleManager::update_error(std::string("Too many textures"));
             throw texturenumber; //TODOBETTER
         }
 
-        glb::cm.update<std::string>("system",std::string("Creating new texture"));
+        ConsoleManager::update<std::string>("system",std::string("Creating new texture"));
 
         if (!prerendering) { //TODO USE OFSTREAM
             fprintf(newtextures,"%d %x %x %x %x\n",temptile.tilenumber,temptile.palette_color[0],temptile.palette_color[1],temptile.palette_color[2],temptile.palette_color[3]);
@@ -247,7 +247,7 @@ std::size_t TileRenderer::add_or_find_texture(const tiletype& newtile, sf::Image
 }
 
 void TileRenderer::renderExtraTiles(std::size_t offset, const decltype(tilecont.extra_tiles.x)& extra_tiles, const std::size_t max_extra) {
-    std::size_t extra_render_counter=0; //TODO separate function
+    std::size_t extra_render_counter=0;
     for (const auto&i: extra_tiles) {
         const glb::triple& triple_it=std::get<1>(i);
         const std::size_t& x=std::get<0>(triple_it);
@@ -352,7 +352,6 @@ void TileRenderer::drawvertex(sf::RenderTarget& target, sf::RenderStates states)
                 for (std::size_t pixelx=0; pixelx<tilesize.x; ++pixelx) {
                     for (std::size_t pixely=0; pixely<tilesize.y; ++pixely) {
                         nes_uchar tiletypetemp=spritetemp->arr[pixelx][pixely];
-                        //if (colortemp.a!=0)
                         const std::size_t tempi=xytoi(x*tilesize.x+pixelx,y*tilesize.y+pixely,width*tilesize.x,height*tilesize.y)*4;
                         verteximage[tempi].color=sfcolor[tiletypetemp];
                         verteximage[tempi+1].color=sfcolor[tiletypetemp];
@@ -449,7 +448,6 @@ void TileRenderer::drawimage(sf::RenderTarget& target, sf::RenderStates states){
                 for (std::size_t pixelx=0; pixelx<tilesize.x; ++pixelx) {
                     for (std::size_t pixely=0; pixely<tilesize.y; ++pixely) {
                         nes_uchar tiletypetemp=spritetemp->arr[pixelx][pixely];
-                        //if (colortemp.a!=0)
                         finalimageclass.setPixel(x*tilesize.x+pixelx,y*tilesize.y+pixely,sfcolor[tiletypetemp]); //sf::Color(color[Spritevector[tilecont(x,y).tilenumber].arr[pixelx][pixely]]
                     }
                 }
@@ -464,7 +462,7 @@ void TileRenderer::drawimage(sf::RenderTarget& target, sf::RenderStates states){
 void TileRenderer::add_frequent_textures() {
     std::ifstream previous_textures("texturesprite/Pre-rendered textures.txt");
     if (!previous_textures) {
-        glb::cm.update_error("Couldn't open previous textures");
+        ConsoleManager::update_error("Couldn't open previous textures");
     }
 
     sf::Image texture_image;
@@ -507,7 +505,7 @@ void TileRenderer::drawmod(sf::RenderTarget& target, sf::RenderStates states)
         drawvertex(target, states);
         break;
     default:
-        glb::cm.update_error("Warning, default drawmod");
+        ConsoleManager::update_error("Warning, default drawmod");
         drawimage(target,states);
         break;
     }

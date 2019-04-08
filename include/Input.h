@@ -9,6 +9,7 @@
 #include<SFML/Window/Event.hpp>
 #include<SFML/Window/Keyboard.hpp>
 #include<SFML/Window/Joystick.hpp>
+#include<unordered_map>
 
 struct input_union {
     union {
