@@ -47,13 +47,14 @@
 		</Build>
 		<Compiler>
 			<Add option="-Wnon-virtual-dtor" />
+			<Add option="-Winit-self" />
 			<Add option="-Wredundant-decls" />
 			<Add option="-Wundef" />
 			<Add option="-Wfloat-equal" />
-			<Add option="-Winline" />
 			<Add option="-Wunreachable-code" />
 			<Add option="-Wswitch-enum" />
 			<Add option="-Wswitch-default" />
+			<Add option="-pedantic-errors" />
 			<Add option="-pedantic" />
 			<Add option="-Wall" />
 			<Add option="-std=c++14" />
@@ -76,6 +77,7 @@
 			<Add option="-static" />
 			<Add directory="../SFML-2.5.1/lib" />
 		</Linker>
+		<Unit filename="include/APU.h" />
 		<Unit filename="include/ActiveInputs.h" />
 		<Unit filename="include/ConfigReader.hpp" />
 		<Unit filename="include/ConsoleManager.h" />
@@ -102,6 +104,7 @@
 		<Unit filename="include/enums.h" />
 		<Unit filename="include/random.h" />
 		<Unit filename="nestris.cpp" />
+		<Unit filename="src/APU.cpp" />
 		<Unit filename="src/ActiveInputs.cpp" />
 		<Unit filename="src/ConfigReader.cpp" />
 		<Unit filename="src/ConsoleManager.cpp" />

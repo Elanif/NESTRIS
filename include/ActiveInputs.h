@@ -9,6 +9,7 @@ class ActiveInputs {
         bool getLAR() const;
 
     private:
+
         std::size_t maxbuttons;
         bool leftandright;
         bool prevactiveinputs[8];

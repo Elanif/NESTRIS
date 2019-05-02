@@ -69,7 +69,7 @@ void RenderPlayField::update(const ActiveInputs& _input, const nes_ushort& _fram
             else firstframeis4=false;
         }
         else {
-            glb::ARE=10+((piecehandler.lastdroppedpiece.y+2)/5)*2; //TODO find true formula
+            glb::ARE=20-((piecehandler.lastdroppedpiece.y+3)/4)*2; //TODO find true formula
         }
         if (linescleared>=4) {
             tetris=true;

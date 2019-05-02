@@ -15,7 +15,7 @@ class RenderHighScore : public Renderer
         RenderHighScore(TileContainer* _tilecont, const nes_ushort& _frameappearance);
         void update(const ActiveInputs& _input, const nes_ushort& _framecounter) ;
         void render(const nes_ushort& framecounter) ;
-
+        bool submitted=false;
         //TODO is there a faster way to do this?
         void resetHighScore(const MatrixContainer& _matrixhandler, const PieceContainer& _piecehandler, const Score& _scorehandler, const LevelLines& _levellineshandler, const Statistics& _statisticshandler);
 

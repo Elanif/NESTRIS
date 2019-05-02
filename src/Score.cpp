@@ -27,7 +27,6 @@ void Score::render() {
     }
     else {
         using namespace std::string_literals;
-        ConsoleManager::update<std::string>("system","score[0]="s+ntris::to_string(score[0]));
         if (glb::lineclearframecounter>0) {
             TextWriter::write(topscores[0].getScoreString(),tilecont,{glb::topscorex,glb::topscorey}); //these 2 lines
             TextWriter::write(scoretemp.getScoreString(),tilecont,{glb::scorex,glb::scorey}); //are useless right now

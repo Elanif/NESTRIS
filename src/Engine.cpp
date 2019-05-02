@@ -46,6 +46,11 @@ void Engine::frame(const ActiveInputs& _inputs) {
     case HIGHSCORE:
         RHS.update(_inputs, framecounter);
         RHS.render(framecounter);
+        if (RHS.submitted) {
+            currentmenu=LEVELSELECT;
+            levelselectreload=true;
+            RHS.submitted=false;
+        }
         break;
 
     default:

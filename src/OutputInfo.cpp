@@ -44,6 +44,10 @@ void OutputInfo::set_value(const double& t)
 {
     value=ntris::to_string(t);
 }
+void OutputInfo::set_value(const long double& t)
+{
+    value=ntris::to_string(t);
+}
 sf::Vector2u OutputInfo::print(sf::Vector2u currentposition, unsigned int conwidth)
 {
     if (currentposition.x>0) {
@@ -71,6 +75,10 @@ void OutputInfoLowDouble::set_value(const double& t) {
     value_list.push_front(t);
 }
 
+void OutputInfoLowDouble::set_value(const long double& t) {
+    value_list.push_front(t);
+}
+
 OutputInfoLowI64::~OutputInfoLowI64() {}
 
 OutputInfoLowI64::OutputInfoLowI64(const std::string& _name,const std::string &_unit, const bool& _low)
@@ -89,7 +97,7 @@ sf::Vector2u OutputInfoLowDouble::print(sf::Vector2u currentposition, unsigned i
     }
     gotoxycm(currentposition);
     std::string outputstring;
-    double print_value={};
+    long double print_value={};
     if (value_list.size()>0) {
         if (low) print_value=*std::min_element(value_list.cbegin(), value_list.cend());
         else print_value=*std::max_element(value_list.cbegin(), value_list.cend());

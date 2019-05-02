@@ -9,12 +9,13 @@ Renderer(_tilecont, _frameappearance)
 }
 
 void RenderHighScore::update(const ActiveInputs& _input, const nes_ushort& _framecounter) {
-
+    if (_input.getPress(glb::Start)) submitted=true;
 }
 
-
 void RenderHighScore::render(const nes_ushort& _framecounter) {
+    tilecont->reset();
     TextWriter::write(std::string("GAME OVER"), tilecont, {10,10}, 0x30);
+
 
 }
 

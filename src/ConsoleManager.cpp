@@ -58,6 +58,7 @@ template void ConsoleManager::update(std::string info, const std::size_t& t);
 template void ConsoleManager::update(std::string info, const unsigned long long& t);
 template void ConsoleManager::update(std::string info, const long long& t);
 template void ConsoleManager::update(std::string info, const double& t);
+template void ConsoleManager::update(std::string info, const long double& t);
 
 template<typename T>
 void ConsoleManager::update_error(const T& t) {
@@ -68,15 +69,7 @@ void ConsoleManager::update_error(const T& t) {
     else {
         std::string error_string=ntris::to_string(t);
         if (error_string.length()>0 && error_string!="0") {
-            /*auto clock = std::chrono::system_clock::now();
-            std::time_t current_time = std::chrono::system_clock::to_time_t(clock);
-            using namespace std::chrono;
-            system_clock::time_point now = system_clock::now();
-            system_clock::duration tp = now.time_since_epoch();
-            tp -= duration_cast<seconds>(tp);
-            print_time(error_log,*localtime(&current_time), tp);
-            fprintf(error_log,"%s\n",error_string.c_str());
-            fflush(error_log);*/
+            print_error(error_string);
         }
         CMvector[CMmap["error"]]->set_value(error_string);
     }
@@ -90,6 +83,7 @@ template void ConsoleManager::update_error(const std::size_t& t);
 template void ConsoleManager::update_error(const unsigned long long& t);
 template void ConsoleManager::update_error(const long long& t);
 template void ConsoleManager::update_error(const double& t);
+template void ConsoleManager::update_error(const long double& t);
 
 
 void ConsoleManager::init()

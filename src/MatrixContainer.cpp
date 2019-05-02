@@ -12,7 +12,7 @@ MatrixContainer::MatrixContainer(TileContainer * _tilecont, const nes_ushort& _f
     linescleared=0;
     for (int i=0; i<9;++i) {
         for (int j=10; j<22; ++j) {
-            matrix(i,j)=1; //staring wtih a tetris
+            //matrix(i,j)=1; //staring wtih a tetris
         }
     }
 }

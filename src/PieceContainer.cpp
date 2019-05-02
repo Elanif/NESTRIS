@@ -1,6 +1,7 @@
 #include "PieceContainer.h"
 #include<stddef.h>
 #include"enums.h"
+#include"ConsoleManager.h"
 #include"random.h"
 #include<cstdio>
 #include<sstream>
@@ -51,6 +52,9 @@ void PieceContainer::inputManager(const ActiveInputs& _inputs, const PFMatrix& p
     if (glb::lineclearframecounter>0||glb::updatingmatrix>0||glb::ARE>0) return; //TODO 1 frame error? updating>1?
     ++downcounter;
     //MOVE
+    if (!_inputs.getHold(glb::Down)) {
+        holddowncounter=holddownpoints=0;
+    }
     Piece temppiece=currentpiece;
     if (_inputs.getPress(glb::Down)) {
         downinterrupted=false;
@@ -61,7 +65,6 @@ void PieceContainer::inputManager(const ActiveInputs& _inputs, const PFMatrix& p
         if (_inputs.getPress(glb::Right)||_inputs.getPress(glb::Left)||_inputs.getHold(glb::Right)||_inputs.getHold(glb::Left)) downinterrupted=true;
     }
     else {
-        holddowncounter=holddownpoints=0;
         if (_inputs.getPress(glb::Right)) {
             piece_changed=true;
             das=0;
@@ -112,13 +115,12 @@ void PieceContainer::inputManager(const ActiveInputs& _inputs, const PFMatrix& p
 
     //ifnot holding down or have been holding down
     //DROP
-    bool alreadymoveddown=false;
     temppiece=currentpiece;
     if (_inputs.getHold(glb::Down)&&!downinterrupted) {
         ++holddowncounter;
         if (holddowncounter>=3) {
+            downcounter=0;
             ++holddownpoints;
-            alreadymoveddown=true;
             ++temppiece.y;
             holddowncounter-=2;
             if (collision(pfmatrix,temppiece)) {
@@ -129,7 +131,7 @@ void PieceContainer::inputManager(const ActiveInputs& _inputs, const PFMatrix& p
             else currentpiece=temppiece;
         }
     }
-    if (downcounter>=_gravity &&!alreadymoveddown &&init_delay==0) { //TODO does it wait 96+gravity[frame] for the first piece or only 96?
+    if (downcounter>=_gravity &&init_delay==0) { //TODO does it wait 96+gravity[frame] for the first piece or only 96?
         ++temppiece.y;
         downcounter=0;
         if (collision(pfmatrix,temppiece)) {
@@ -164,7 +166,7 @@ void PieceContainer::render(const nes_ushort& _framecounter, const nes_uchar& _l
     }
     rendernextpiece(_level);
     if (glb::lineclearframecounter>0||glb::updatingmatrix>0||glb::ARE>0) return;
-    else {
+    else if (true){
         std::vector<std::pair<nes_uchar, nes_uchar> > piecepositions = currentpiece.getPos();
         for (std::vector<std::pair<nes_uchar, nes_uchar> >::size_type i=0; i<piecepositions.size(); ++i) {
             std::size_t _xx=piecepositions[i].first;

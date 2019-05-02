@@ -22,6 +22,7 @@ public:
     virtual void set_value(const sf::Int64& t);
     virtual void set_value(const int& t);
     virtual void set_value(const double& t);
+    virtual void set_value(const long double& t);
     virtual sf::Vector2u print(sf::Vector2u currentposition, unsigned int conwidth);
 };
 
@@ -31,10 +32,11 @@ public:
     ~OutputInfoLowDouble();
     OutputInfoLowDouble(const std::string& _name,const std::string &_unit, const bool& _low); //if _low==true stores the lowest only
     void set_value(const double& t);
+    void set_value(const long double& t);
     sf::Vector2u print(sf::Vector2u currentposition, unsigned int conwidth);
 private:
     bool low;
-    std::list<double> value_list;
+    std::list<long double> value_list;
 };
 
 class OutputInfoLowI64: public OutputInfo {

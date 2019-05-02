@@ -7,15 +7,19 @@
 #include<SFML/Window/Joystick.hpp>
 #include<cstdlib>
 #include"Sound.hpp"
+#include"APU.h"
 const int SCREEN_WIDTH = 256;
 const int SCREEN_HEIGHT = 224;
 
 
 int main(int argc, char** args) {
+    /*APU::init();
+    APU::test();
+    sf::sleep(sf::milliseconds(10000));*/
     TextWriter::init();
     Sound::init();
     ConsoleManager::init();
-    sf::Vector2f scale(5,4);
+    sf::Vector2f scale(3.5,3);
     while(false) { //joystick testing
         sf::Joystick::update();
         std::cout<<"X"<<sf::Joystick::getAxisPosition(0,sf::Joystick::X)<<" ";
@@ -33,7 +37,7 @@ int main(int argc, char** args) {
         sf::sleep(sf::milliseconds(1000));
         system("CLS");
     }
-    Window finestra(SCREEN_WIDTH,SCREEN_HEIGHT,scale,true);
+    Window finestra(SCREEN_WIDTH,SCREEN_HEIGHT,scale,Window::GENERAL);
 }
 
 /*

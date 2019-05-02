@@ -39,7 +39,7 @@ namespace glb { //todo make into ntris
     typedef const char* const_string_literal;
     typedef char* string_literal;
     enum BTN {
-        Left,
+        Left=0,
         Up,
         Right,
         Down,
@@ -90,6 +90,11 @@ namespace glb { //todo make into ntris
     constexpr std::size_t maxbuttons=8;
     constexpr nes_uchar trnspr=0x1d;
     typedef std::tuple<std::size_t, std::size_t, tiletype> triple;
+    constexpr long double color_subcarrier_frequency=21477272.72727272727272727272727272L;
+    constexpr long double clock_divisor = 12.L;
+    constexpr double ntsc_fps_odd=color_subcarrier_frequency/clock_divisor/(341*262-1)*3;
+    constexpr double ntsc_fps_even=color_subcarrier_frequency/clock_divisor/(341*262)*3;
+    constexpr double ntsc_fps=2.L/(1.L/ntsc_fps_even+1.L/ntsc_fps_odd);
 
     constexpr nes_uchar block_colors[10][4]={
     {0x0D ,0x30 ,0x21 ,0x12},

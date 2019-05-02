@@ -37,7 +37,6 @@ int RenderLevelSelect::updateLevelSelect(const ActiveInputs& _input) {
 
 void RenderLevelSelect::renderLevelSelect(const bool& _reload) {
 
-
     if (_reload) reload();
     const std::size_t levelselecttilex=6+(lastrenderedlevel%5)*2;
     const std::size_t levelselecttiley=9+(lastrenderedlevel/5)*2;
@@ -54,6 +53,7 @@ void RenderLevelSelect::renderLevelSelect(const bool& _reload) {
 }
 
 void RenderLevelSelect::reload() {
+    tilecont->reset();
     //green stuff in the middle
     tilecont->at(15,10)=tiletype(5,0x1d,0x16,0x00,0x00);
     tilecont->at(11,10)=tiletype(3,0x1d,0x16,0x00,0x00);

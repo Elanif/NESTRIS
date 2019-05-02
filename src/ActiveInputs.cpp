@@ -4,7 +4,7 @@
 ActiveInputs::ActiveInputs(const std::size_t& _buttons, bool *_prevactiveinputs, bool *_activeinputs, bool _leftandright)
     :maxbuttons(_buttons), leftandright(_leftandright)
 {
-    //memcpy?
+    //todo use std::copy
     //opposing axis handling
     for (std::size_t buttoninit=0; buttoninit<_buttons; ++buttoninit)
         prevactiveinputs[buttoninit]=_prevactiveinputs[buttoninit];
@@ -13,7 +13,7 @@ ActiveInputs::ActiveInputs(const std::size_t& _buttons, bool *_prevactiveinputs,
 
 }
 
-bool ActiveInputs::getHold(const std::size_t& _button) const{
+bool ActiveInputs::getHold(const std::size_t& _button) const{ //todo maybe && prevactiveinputs?
     return activeinputs[_button];
 }
 
