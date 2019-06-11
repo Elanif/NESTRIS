@@ -1,0 +1,2 @@
+﻿  NESTRIS.cpp
+D:\Users\Giacomo Ravanetti\source\NESTRIS\NESTRIS.cpp(2): fatal error C1083: Non è possibile aprire il file inclusione: 'SFML/Graphics.hpp': No such file or directory

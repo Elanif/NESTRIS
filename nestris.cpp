@@ -1,13 +1,14 @@
-#include"enums.h"
-#include"ConsoleManager.h"
+#include"enums.hpp"
+#include"ConsoleManager.hpp"
 #include<cstdio>
-#include"Window.h"
+#include"Window.hpp"
 #include<SFML/Graphics.hpp>
-#include"TextWriter.h"
+#include"TextWriter.hpp"
 #include<SFML/Window/Joystick.hpp>
-#include<cstdlib>
+#include<cstdlib> 
 #include"Sound.hpp"
-#include"APU.h"
+#include"APU.hpp"
+#include<iostream>
 const int SCREEN_WIDTH = 256;
 const int SCREEN_HEIGHT = 224;
 
@@ -19,7 +20,7 @@ int main(int argc, char** args) {
     TextWriter::init();
     Sound::init();
     ConsoleManager::init();
-    sf::Vector2f scale(3.5,3);
+    sf::Vector2f scale(1,1);
     while(false) { //joystick testing
         sf::Joystick::update();
         std::cout<<"X"<<sf::Joystick::getAxisPosition(0,sf::Joystick::X)<<" ";

@@ -1,9 +1,11 @@
 #include "RenderHighScore.hpp"
-#include"TextWriter.h"
+#include"TextWriter.hpp"
 #include<string>
 
-RenderHighScore::RenderHighScore(TileContainer * _tilecont, const nes_ushort& _frameappearance) :
-Renderer(_tilecont, _frameappearance)
+RenderHighScore::RenderHighScore(TileContainer * _tilecont, const nes_ushort& _frameappearance)
+	:Renderer(_tilecont, _frameappearance),
+	matrixhandler( _tilecont, _frameappearance),
+	scorehandler(_tilecont, _frameappearance)
 {
 
 }

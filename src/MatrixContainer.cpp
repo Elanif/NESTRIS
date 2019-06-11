@@ -1,5 +1,5 @@
-#include "MatrixContainer.h"
-#include"enums.h"
+#include "MatrixContainer.hpp"
+#include"enums.hpp"
 #include<vector>
 #include<utility>
 #include<cstdio>
@@ -8,8 +8,6 @@
 MatrixContainer::MatrixContainer(TileContainer * _tilecont, const nes_ushort& _frameappearance)
     :Renderer(_tilecont, _frameappearance)
 {
-    hidecounter=sleepcounter=0;
-    linescleared=0;
     for (int i=0; i<9;++i) {
         for (int j=10; j<22; ++j) {
             //matrix(i,j)=1; //staring wtih a tetris
@@ -103,16 +101,10 @@ nes_uchar MatrixContainer::clearlines() {
         whichlines[row]=clearedline;
         if(whichlines[row]) {
             lowestline=row;
-            //blinkscreencounter=19;
             linesclearedarray[linescleared++]=row;
         }
     }
-    //TODO clearanimation
-    for (std::size_t i=0; i<10; ++i) {
-        for (std::size_t j=0; j<22; ++j) {
-            newmatrix(i,j)=matrix(i,j);
-        }
-    }
+	newmatrix = matrix;
     for (std::size_t i=lowestline, rowcounter=lowestline; i>=1&&rowcounter>=1; --i,--rowcounter) { //20 because glb::playfield isn't saved over 20
         while(rowcounter>=1&&whichlines[rowcounter]) --rowcounter;
         for (std::size_t j=0; j<10; ++j) {

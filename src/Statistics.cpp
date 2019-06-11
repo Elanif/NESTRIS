@@ -1,5 +1,5 @@
-#include "Statistics.h"
-#include "TextWriter.h"
+#include "Statistics.hpp"
+#include "TextWriter.hpp"
 
 Statistics::Statistics(TileContainer * _tilecont, const nes_ushort& _frameappearance, const nes_uchar& _level)
     :Renderer(_tilecont, _frameappearance), level(_level)
@@ -22,8 +22,8 @@ void Statistics::render(const nes_uchar& _level) {
         const std::size_t topstatx=7;
         const std::size_t topstaty=11;
         for (std::size_t i=0; i<7; ++i) {
-            TextWriter::write_hex(stats[i].high_byte,tilecont,{topstatx-1,topstaty+i*2},1,0x16);
-            TextWriter::write_hex(stats[i].low_byte,tilecont,{topstatx,topstaty+i*2},2,0x16);
+            TextWriter::write_hex(stats[i].high_byte,tilecont,sf::Vector2u(topstatx-1,topstaty+i*2),1,0x16);
+            TextWriter::write_hex(stats[i].low_byte,tilecont, sf::Vector2u(topstatx,topstaty+i*2),2,0x16);
         }
     }
 }

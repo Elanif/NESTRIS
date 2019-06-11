@@ -1,7 +1,7 @@
-#include "TextWriter.h"
+#include "TextWriter.hpp"
 #include<string>
 #include<sstream>
-#include"TileContainer.h"
+#include"TileContainer.hpp"
 #include<SFML/System/Vector2.hpp>
 #include<iomanip>
 

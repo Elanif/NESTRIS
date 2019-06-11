@@ -1,8 +1,8 @@
-#include "PieceContainer.h"
-#include<stddef.h>
-#include"enums.h"
-#include"ConsoleManager.h"
-#include"random.h"
+#include "PieceContainer.hpp"
+#include<cstddef>
+#include"enums.hpp"
+#include"ConsoleManager.hpp"
+#include"random.hpp"
 #include<cstdio>
 #include<sstream>
 #include"Sound.hpp"

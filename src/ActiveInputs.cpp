@@ -1,6 +1,6 @@
-#include "ActiveInputs.h"
+#include "ActiveInputs.hpp"
 #include<cstdio>
-#include"enums.h"
+#include"enums.hpp"
 ActiveInputs::ActiveInputs(const std::size_t& _buttons, bool *_prevactiveinputs, bool *_activeinputs, bool _leftandright)
     :maxbuttons(_buttons), leftandright(_leftandright)
 {

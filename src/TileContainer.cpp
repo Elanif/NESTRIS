@@ -1,6 +1,6 @@
-#include "TileContainer.h"
+#include "TileContainer.hpp"
 #include<cstdio>
-#include"ConsoleManager.h"
+#include"ConsoleManager.hpp"
 #include<string>
 #include<sstream>
 unsigned char tiletype::colors[10][4]={

@@ -1,17 +1,20 @@
-#include "RenderPlayField.h"
-#include"random.h"
-#include"PieceContainer.h"
+#include "RenderPlayField.hpp"
+#include"random.hpp"
+#include"PieceContainer.hpp"
 #include<cstdio>
-#include"TextWriter.h"
+#include"TextWriter.hpp"
 #include<string>
 #include"Sound.hpp"
-RenderPlayField::RenderPlayField(TileContainer * _tilecont, const nes_ushort& _frameappearance, nes_uchar _level):Renderer(_tilecont, _frameappearance), level(_level){
+RenderPlayField::RenderPlayField(TileContainer * _tilecont, const nes_ushort& _frameappearance, nes_uchar _level)
+	:Renderer(_tilecont, _frameappearance),
+	level(_level),
+	piecehandler(_tilecont, frameappearance),
+	matrixhandler(_tilecont, frameappearance),
+	scorehandler(_tilecont, frameappearance, true),
+	levellineshandler(_tilecont, frameappearance, _level),
+	statisticshandler(_tilecont, frameappearance, _level)
+{
     init_assets();
-    piecehandler = PieceContainer(_tilecont, frameappearance);
-    matrixhandler = MatrixContainer(_tilecont, frameappearance);
-    scorehandler = Score(_tilecont, frameappearance, true);
-    levellineshandler = LevelLines(_tilecont, frameappearance, _level);
-    statisticshandler = Statistics(_tilecont, frameappearance, _level); //these should all be in init list
 
     nes_uchar _tempgravity[19]={48,43,38,33,28,23,18,13,8,6,5,5,5,4,4,4,3,3,3};
     for (std::size_t i=0; i<19; ++i) gravity[i]=_tempgravity[i];

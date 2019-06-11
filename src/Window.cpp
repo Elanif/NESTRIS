@@ -1,9 +1,11 @@
-#include"Window.h"
+#include"Window.hpp"
 #include<cmath>
-#include"ConsoleManager.h"
+#include"ConsoleManager.hpp"
 #include<chrono>
 #include<thread>
 #include<string>
+#include<limits>
+#include"enums.hpp"
 #define SLEEP_SFML //high resolution clock isn't very high resolution
 #define SLEEP_MICROSECONDS
 constexpr unsigned long long MIN_DELAY_ERROR=1000; //todo put in enums as constexpr
@@ -17,7 +19,7 @@ class MyClock {
     sf::Clock clock;
     #endif // SLEEP_SFML
     public:
-    sf::Int64 elapsedTime() {
+    largest_uint elapsedTime() {
         #ifdef SLEEP_CX11
             #ifdef SLEEP_MILLISECONDS
                 return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now()-starting_time).count();
@@ -63,7 +65,7 @@ Window::Window(const std::size_t& _width, const std::size_t& _height, sf::Vector
     sf::Transform state;
     state.scale(_scale);
     sf::RenderWindow window(sf::VideoMode(_width*_scale.x, _height*_scale.y), "Nestris");
-    sf::Vector2u tilesize(8,8);
+	std::pair<largest_uint, largest_uint>  tilesize(8,8);
     const sf::Vector3<std::size_t> extra_render(16,16,64);
     TileRenderer tilerend(_width/8,_height/8,tilesize,TileRenderer::DRAWTEXTURE,extra_render);
     tilerend.load("texturesprite/sprites.txt");
@@ -73,19 +75,19 @@ Window::Window(const std::size_t& _width, const std::size_t& _height, sf::Vector
     sf::Event event;
 
     #ifdef SLEEP_MILLISECONDS
-    sf::Int64 partspersecond=1000ll;
+	largest_uint partspersecond{ 1000 };
     #endif // SLEEP_MILLISECONDS
     #ifdef SLEEP_MICROSECONDS
-    sf::Int64 partspersecond=1000000ll;
+	largest_uint partspersecond{ 1000000 };
     #endif // SLEEP_MICROSECONDS
     #ifdef SLEEP_NANOSECONDS
-    sf::Int64 partspersecond=1000000000ll;
+	largest_uint partspersecond = { 1000000000 };
     #endif // SLEEP_NANOSECONDS
-    //sf::Int64 timeperframe_avg=(long double) (partspersecond)/glb::ntsc_fps;
-    sf::Int64 timeperframe_odd=(long double) (partspersecond)/glb::ntsc_fps_odd;
-    sf::Int64 timeperframe_even=(long double) (partspersecond)/glb::ntsc_fps_even;
+    //largest_uint timeperframe_avg=(long double) (partspersecond)/glb::ntsc_fps;
+    largest_uint timeperframe_odd=(long double) (partspersecond)/glb::ntsc_fps_odd;
+    largest_uint timeperframe_even=(long double) (partspersecond)/glb::ntsc_fps_even;
     bool odd_frame=false;
-    sf::Int64 timeperframe=timeperframe_odd;
+    largest_uint timeperframe=timeperframe_odd;
     MyClock elapsedtime;
     while (window.isOpen()) {
         odd_frame=!odd_frame; //all this could be unrolled into 2 if's in the cycle
@@ -96,29 +98,40 @@ Window::Window(const std::size_t& _width, const std::size_t& _height, sf::Vector
             if (elapsedtime.elapsedTime()>0) ConsoleManager::update<long double>("fps",partspersecond/(long double)elapsedtime.elapsedTime());
 
             elapsedtime.restart();
-            sf::Int64 delaycalc=0;
+            largest_uint delaycalc=0;
             _engine.frame(inputManager.getInput());
 
-            ConsoleManager::update<sf::Int64>("input delay",elapsedtime.elapsedTime()-delaycalc);
+            ConsoleManager::update<largest_uint>("input delay",elapsedtime.elapsedTime()-delaycalc);
             delaycalc=elapsedtime.elapsedTime();
 
             window.clear();//adds 15microseconds
             tilerend.drawmod(window, state);
 
-            ConsoleManager::update<sf::Int64>("draw delay",elapsedtime.elapsedTime()-delaycalc);
+            ConsoleManager::update<largest_uint>("draw delay",elapsedtime.elapsedTime()-delaycalc);
             delaycalc=elapsedtime.elapsedTime();
 
             window.display();
 
             delaycalc=elapsedtime.elapsedTime();
-            ConsoleManager::update<sf::Int64>("display delay",elapsedtime.elapsedTime()-delaycalc);
+            ConsoleManager::update<largest_uint>("display delay",elapsedtime.elapsedTime()-delaycalc);
 
             while (window.pollEvent(event))
             {
-                if (event.type == sf::Event::Closed)
-                    window.close();
+				switch (event.type) {
+				case sf::Event::Closed:
+					window.close();
+				break;
+				case sf::Event::KeyPressed:
+					if (event.key.code == sf::Keyboard::F1) {
+						ConsoleManager::toggle_info_window();
+						if (!ConsoleManager::is_window_open())
+							window.requestFocus();
+					}
+				break;
+				}
+				
             }
-            ConsoleManager::print();
+            ConsoleManager::refresh();
         }
         else {
             switch(optimized) {
@@ -152,68 +165,68 @@ Window::Window(const std::size_t& _width, const std::size_t& _height, sf::Vector
         }
     }
     ConsoleManager::update<std::string>("system",std::string("Window terminating"));
-    ConsoleManager::print(true);
+    ConsoleManager::refresh(true);
 }
 
 
-void Window::general_delay_manager(sf::Int64 target_delay) {
-    static sf::Int64 max_extra_delay=MIN_DELAY_ERROR;
+void Window::general_delay_manager(largest_uint target_delay) {
+    static largest_uint max_extra_delay=MIN_DELAY_ERROR;
     if (target_delay<=max_extra_delay) return;
-    sf::Int64 real_delay=sleep_for_how_long(target_delay-max_extra_delay);
+    largest_uint real_delay=sleep_for_how_long(target_delay-max_extra_delay);
     if (real_delay>target_delay) {
         max_extra_delay=real_delay-target_delay+max_extra_delay;
     }
 }
 
-void Window::smallest_delay_manager(sf::Int64 target_delay) {
-    static sf::Int64 max_extra_delay=MIN_DELAY_ERROR;
+void Window::smallest_delay_manager(largest_uint target_delay) {
+    static largest_uint max_extra_delay=MIN_DELAY_ERROR;
     if (target_delay<=max_extra_delay) return;
-    sf::Int64 real_delay=sleep_for_how_long(target_delay-max_extra_delay);
+    largest_uint real_delay=sleep_for_how_long(target_delay-max_extra_delay);
     if (real_delay>max_extra_delay) {
         max_extra_delay=real_delay;
     }
 }
 
-void Window::array_delay_manager(sf::Int64 target_delay) {
+void Window::array_delay_manager(largest_uint target_delay) {
     MyClock clock;
-    constexpr std::size_t max_delay_size=1000000; //todo maybe group delays together
-    static sf::Int64 arr_delay[max_delay_size]={MIN_DELAY_ERROR};
+	constexpr std::size_t max_delay_size{ 1000000 }; //todo maybe group delays together
+    static largest_uint arr_delay[max_delay_size]={MIN_DELAY_ERROR};
     if (target_delay>=max_delay_size) target_delay=max_delay_size-1;
-    sf::Int64 reduced_delay=target_delay-clock.elapsedTime();
+    largest_uint reduced_delay=target_delay-clock.elapsedTime();
     while (clock.elapsedTime()<target_delay&& reduced_delay<=arr_delay[reduced_delay]) {
         reduced_delay=target_delay-clock.elapsedTime();
     };
     if (reduced_delay<=0) return;
-    sf::Int64 real_delay=sleep_for_how_long(reduced_delay-arr_delay[reduced_delay]);
+    largest_uint real_delay=sleep_for_how_long(reduced_delay-arr_delay[reduced_delay]);
     if (real_delay>reduced_delay) {
         arr_delay[reduced_delay]=real_delay-reduced_delay;
     }
 }
 
-void Window::array_delay_manager_bucket(sf::Int64 target_delay) {
+void Window::array_delay_manager_bucket(largest_uint target_delay) {
     //MyClock clock;
-//    static sf::Int64 max_iterations=0;
-//    static sf::Int64 max_clock=0;
-//    static sf::Int64 sum_iterations=0;
-//    static sf::Int64 sum_clock=0;
-//    static sf::Int64 tot_iterations=0;
+//    static largest_uint max_iterations=0;
+//    static largest_uint max_clock=0;
+//    static largest_uint sum_iterations=0;
+//    static largest_uint sum_clock=0;
+//    static largest_uint tot_iterations=0;
     #ifdef SLEEP_MILLISECONDS
-    constexpr sf::Int64 partsperframe=1000/glb::ntsc_fps;
+	constexpr largest_uint partsperframe = largest_uint{ 1000 } / glb::ntsc_fps;
     #endif // SLEEP_MILLISECONDS
     #ifdef SLEEP_MICROSECONDS
-    constexpr sf::Int64 partsperframe=1000000/glb::ntsc_fps;
+    constexpr largest_uint partsperframe= largest_uint{ 1000000 } /glb::ntsc_fps;
     #endif // SLEEP_MICROSECONDS
     #ifdef SLEEP_NANOSECONDS
-    constexpr sf::Int64 partsperframe=1000000000/glb::ntsc_fps;
+    constexpr largest_uint partsperframe= largest_uint{ 1000000000 } /glb::ntsc_fps;
     #endif // SLEEP_NANOSECONDS
-    constexpr sf::Int64 bucket_size=200;
-    static sf::Int64 arr_delay[partsperframe/bucket_size+2]={1};
+	constexpr largest_uint bucket_size{ 200 };
+    static largest_uint arr_delay[partsperframe/bucket_size+2]={1};
     if (target_delay<=0) return;
     if (target_delay>=partsperframe) target_delay=partsperframe;
-    auto bucket_finder = [&bucket_size](sf::Int64 index) {
+    auto bucket_finder = [&bucket_size](largest_uint index) {
         return index/bucket_size;
     };
-    //sf::Int64 counter=0;
+    //largest_uint counter=0;
     //target_delay-=clock.elapsedTime();
     while (target_delay>0 && target_delay<arr_delay[bucket_finder(target_delay)]) {
         target_delay-=bucket_size;
@@ -228,13 +241,20 @@ void Window::array_delay_manager_bucket(sf::Int64 target_delay) {
     using namespace std::string_literals;
     //ConsoleManager::update("system","max:"s+std::to_string(max_iterations)+"   avg iter:"+std::to_string((long double)sum_iterations/(long double)tot_iterations)+"   avg clock:"s+std::to_string((long double)sum_clock/(long double) tot_iterations)+ "   max clock:"s+std::to_string(max_clock));
     if (target_delay<0) return;
-    sf::Int64 real_delay = sleep_for_how_long(bucket_finder(target_delay)*bucket_size-arr_delay[bucket_finder(target_delay)]);
+    largest_uint real_delay = sleep_for_how_long(bucket_finder(target_delay)*bucket_size-arr_delay[bucket_finder(target_delay)]);
     if (real_delay>bucket_finder(target_delay)*bucket_size) arr_delay[bucket_finder(target_delay)]=real_delay-bucket_finder(target_delay)*bucket_size;
 }
 
+constexpr largest_uint log2(largest_uint _logarg) {
+	constexpr std::size_t max_bits = std::numeric_limits<unsigned long long>::digits;
+	for (std::size_t i = 0; i < max_bits && _logarg>0; ++i) {
+		_logarg <<= std::size_t{ 1 };
+	}
+	return _logarg;
+}
 
 
-void Window::array_delay_manager_log(sf::Int64 target_delay) {
+void Window::array_delay_manager_log(largest_uint target_delay) {
     #ifdef SLEEP_MILLISECONDS
     constexpr unsigned long long partsperframe=1000/glb::ntsc_fps;
     #endif // SLEEP_MILLISECONDS
@@ -244,9 +264,9 @@ void Window::array_delay_manager_log(sf::Int64 target_delay) {
     #ifdef SLEEP_NANOSECONDS
     constexpr unsigned long long partsperframe=1000000000/glb::ntsc_fps;
     #endif // SLEEP_NANOSECONDS
-    constexpr std::size_t array_length=std::log2(partsperframe)+1; //constexpr std::size_t array_length=std::ceil(std::log2(partsperframe)); //ceil isn't constexpr for some reason
-    static sf::Int64 arr_delay[array_length]={MIN_DELAY_ERROR};
-    constexpr sf::Int64 max_delay_allowed=1u<<array_length;
+	constexpr std::size_t array_length = log2(partsperframe) + 1; //constexpr std::size_t array_length=std::ceil(std::log2(partsperframe)); //ceil isn't constexpr for some reason
+    static largest_uint arr_delay[array_length]={MIN_DELAY_ERROR};
+	constexpr largest_uint max_delay_allowed = largest_uint{ 1 } << array_length;
     if (target_delay<=0) return;
     std::size_t index=0;
     std::size_t result_index=-1;
@@ -258,44 +278,44 @@ void Window::array_delay_manager_log(sf::Int64 target_delay) {
         index++;
     }
     if (result_index>=array_length||result_index<0) return;
-    target_delay=1u<<result_index;
+    target_delay=largest_uint(1)<<result_index;
     //ConsoleManager::update("system", std::to_string(target_delay)+std::string("    "));
-    sf::Int64 real_delay=sleep_for_how_long(target_delay-arr_delay[result_index]);
+    largest_uint real_delay=sleep_for_how_long(target_delay-arr_delay[result_index]);
     if (real_delay>target_delay) arr_delay[result_index]=real_delay-target_delay;
 }
 
-void Window::spam_delay_manager(sf::Int64 target_delay) {
-    static sf::Int64 smallest_delay_possible=MIN_DELAY_ERROR;
+void Window::spam_delay_manager(largest_uint target_delay) {
+    static largest_uint smallest_delay_possible=MIN_DELAY_ERROR;
     MyClock clock;
-    sf::Int64 _late_time=clock.elapsedTime();
+    largest_uint _late_time=clock.elapsedTime();
     while(_late_time+smallest_delay_possible<target_delay) {
-        sf::Int64 _prev_time = _late_time;
+        largest_uint _prev_time = _late_time;
         sleep(1);
-        sf::Int64 _late_time=clock.elapsedTime();
+        largest_uint _late_time=clock.elapsedTime();
         if (_late_time-_prev_time>smallest_delay_possible)smallest_delay_possible=_late_time-_prev_time;
     }
 }
 
-void Window::full_thread_delay_manager(sf::Int64 target_delay) {
-    static sf::Int64 smallesttimeunit=MIN_DELAY_ERROR;
+void Window::full_thread_delay_manager(largest_uint target_delay) {
+    static largest_uint smallesttimeunit=MIN_DELAY_ERROR;
     MyClock clock;
-    sf::Int64 _last_time=clock.elapsedTime();
+    largest_uint _last_time=clock.elapsedTime();
     while(clock.elapsedTime()+smallesttimeunit<target_delay) {
-        sf::Int64 __temp=(clock.elapsedTime()-_last_time);
+        largest_uint __temp=(clock.elapsedTime()-_last_time);
         if (__temp>smallesttimeunit) smallesttimeunit=__temp;
     };
 }
 
-void Window::nothing_delay_manager(sf::Int64 target_delay) {
+void Window::nothing_delay_manager(largest_uint target_delay) {
 }
 
-sf::Int64 Window::sleep_for_how_long(sf::Int64 _delay) {
+largest_uint Window::sleep_for_how_long(largest_uint _delay) {
     static MyClock clock;
     clock.restart();
     sleep(_delay);
     return clock.elapsedTime();
 }
-void Window::sleep(sf::Int64 _delay) {
+void Window::sleep(largest_uint _delay) {
     if (_delay<=0) return;
     #ifdef SLEEP_CX11
         #ifdef SLEEP_MILLISECONDS
@@ -330,16 +350,16 @@ void Window::sleep(sf::Int64 _delay) {
 }
 
 /* data analysis
-sf::Int64 smallesttimeunit=sf::Int64(0);
-    sf::Int64 totaltimewaited=0;
+largest_uint smallesttimeunit=largest_uint(0);
+    largest_uint totaltimewaited=0;
     sf::Clock onesecondinit;
     sf::Clock elapsedtime=sf::Clock();
-    sf::Int64 testnumber=0;
-    std::vector<sf::Int64> timetests;
+    largest_uint testnumber=0;
+    std::vector<largest_uint> timetests;
     while (onesecondinit.getElapsedTime()<sf::Time(sf::milliseconds(1000))) {
         elapsedtime.restart();
         sf::sleep(sf::microseconds(1));
-        sf::Int64 _timetemp=elapsedtime.getElapsedTime().asMicroseconds();
+        largest_uint _timetemp=elapsedtime.getElapsedTime().asMicroseconds();
         timetests.push_back(_timetemp);
         //printf("%d ",(int)_timetemp);
         totaltimewaited+= _timetemp;
@@ -348,7 +368,7 @@ sf::Int64 smallesttimeunit=sf::Int64(0);
     }
     double mean=(double)totaltimewaited/(double)testnumber;
     double variance=0;
-    for (sf::Int64 i=0; i<testnumber; ++i) {
+    for (largest_uint i=0; i<testnumber; ++i) {
         variance+=(timetests[i]-mean)*(timetests[i]-mean);
     }
     variance/=(double)testnumber-1;
@@ -357,14 +377,14 @@ sf::Int64 smallesttimeunit=sf::Int64(0);
     */
 
 /* data renderer
-sf::Int64 datawidth;
+largest_uint datawidth;
     window.clear();
     for (datawidth=0; datawidth<_width;++datawidth) {
         int rectheight=0;
         sf::RectangleShape istogramma;
-        sf::Int64 widthtemp=smallesttimeunit/_width;
-        sf::Int64 left=datawidth*widthtemp;
-        sf::Int64 right=datawidth*(widthtemp+1);
+        largest_uint widthtemp=smallesttimeunit/_width;
+        largest_uint left=datawidth*widthtemp;
+        largest_uint right=datawidth*(widthtemp+1);
         for (std::size_t i=0; i<timetests.size(); ++i) {
             if (timetests[i]>=left&&timetests[i]<right) {
                 rectheight++;
@@ -396,33 +416,33 @@ Window::Window(const std::size_t& _width, const std::size_t& _height, const bool
     tilerend.load("Sprites.txt");
     Engine _engine= Engine(tilerend.getTileContainer(),10); //TODO change 10
     sf::Event event;
-    sf::Int64 smallesttimeunit=sf::Int64(0);
+    largest_uint smallesttimeunit=largest_uint(0);
     sf::Clock onesecondinit;
     sf::Clock elapsedtime=sf::Clock();
     while (onesecondinit.getElapsedTime()<sf::Time(sf::milliseconds(1000))) {
         elapsedtime.restart();
         sf::sleep(sf::microseconds(1));
-        sf::Int64 _timetemp = elapsedtime.getElapsedTime().asMicroseconds();
+        largest_uint _timetemp = elapsedtime.getElapsedTime().asMicroseconds();
         if (_timetemp>smallesttimeunit) smallesttimeunit=_timetemp;
     }
-    sf::Int64 timeperframe=1000000./60.0988;
+    largest_uint timeperframe=1000000./60.0988;
     printf("%d\n",(int)smallesttimeunit);
     elapsedtime.restart();
     while (window.isOpen()) {
         if (optimized) {
-            sf::Int64 sleeptime=timeperframe-elapsedtime.getElapsedTime().asMicroseconds();
+            largest_uint sleeptime=timeperframe-elapsedtime.getElapsedTime().asMicroseconds();
             sleeptime-=smallesttimeunit;
             sf::sleep(sf::microseconds(sleeptime));
         }
         else {
-            sf::Int64 cycleduration=(timeperframe-elapsedtime.getElapsedTime().asMicroseconds())/smallesttimeunit;
-            for (sf::Int64 i=0; i<cycleduration; ++i)
+            largest_uint cycleduration=(timeperframe-elapsedtime.getElapsedTime().asMicroseconds())/smallesttimeunit;
+            for (largest_uint i=0; i<cycleduration; ++i)
                 sf::sleep(sf::microseconds(1));
             /COMMENTSTARTif (timeperframe-elapsedtime.getElapsedTime().asMicroseconds()<smallesttimeunit)
                 sf::sleep(sf::microseconds(1));COMMENTEND/
         }
-        if (elapsedtime.getElapsedTime().asMicroseconds()+sf::Int64(1)>=timeperframe) {
-            printf("fps=%f\n",(double)sf::Int64(1000000)/(double)elapsedtime.getElapsedTime().asMicroseconds());
+        if (elapsedtime.getElapsedTime().asMicroseconds()+largest_uint(1)>=timeperframe) {
+            printf("fps=%f\n",(double)largest_uint(1000000)/(double)elapsedtime.getElapsedTime().asMicroseconds());
             elapsedtime.restart();
             _engine.frame(inputManager.getInput());
             //SFML update window

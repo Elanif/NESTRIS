@@ -1,13 +1,13 @@
-#include "Renderer.h"
+#include "Renderer.hpp"
 
 Renderer::Renderer(TileContainer* _tilecont, const std::size_t& _frameappearance)
     :tilecont(_tilecont), frameappearance(_frameappearance)
 {
 
 }
-Renderer::Renderer()
+Renderer::Renderer(TileContainer* _tilecont)
+	:tilecont(_tilecont)
 {
-    tilecont=NULL;
 }
 
  void Renderer::hide(const nes_uchar& _hidecounter) {

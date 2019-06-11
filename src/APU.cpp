@@ -1,4 +1,4 @@
-#include "APU.h"
+#include "APU.hpp"
 #include<cmath>
 
 std::vector<sf::Int16> APU::square_vector;

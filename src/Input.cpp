@@ -1,8 +1,8 @@
-#include "Input.h"
+#include "Input.hpp"
 #include<cstdio>
 #include<SFML/Window/Keyboard.hpp>
 #include"ConfigReader.hpp"
-#include"ConsoleManager.h"
+#include"ConsoleManager.hpp"
 
 Input::Input()
     :leftandright(false)

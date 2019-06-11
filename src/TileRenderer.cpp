@@ -1,6 +1,6 @@
-#include "TileRenderer.h"
-#include"ConsoleManager.h"
-#include"enums.h"
+#include "TileRenderer.hpp"
+#include"ConsoleManager.hpp"
+#include"enums.hpp"
 #include<string>
 #include<fstream>
 #include<sstream>
@@ -24,7 +24,7 @@ constexpr std::size_t xytoi(const std::size_t& x, const std::size_t& y, const st
 constexpr std::size_t xytoi(const std::size_t& x, const std::size_t& y, const std::size_t& width, const std::size_t& height, const std::size_t& rectwidth, const std::size_t& rectheight) {
     return x+y*width;
 }
-TileRenderer::TileRenderer(const std::size_t& _width, const std::size_t& _height, sf::Vector2u _tilesize, const int& _drawmethod, const sf::Vector3<std::size_t>& _extra_render)
+TileRenderer::TileRenderer(const std::size_t& _width, const std::size_t& _height, std::pair<largest_uint,largest_uint> _tilesize, const int& _drawmethod, const sf::Vector3<std::size_t>& _extra_render)
 :tilecont(_width,_height,_extra_render),
 width(_width),
 height(_height),
@@ -36,23 +36,23 @@ extra_render(_extra_render) //TODO EXTRA RENDER FOR MORE STUFF THAN DRAWTEXTUR
 {
     if (drawmethod==DRAWSPRITE) {
         quadretti=new uint8container[width*height];
-        if (!temptexclass.create(width*tilesize.x,height*tilesize.y))
+        if (!temptexclass.create(width*tilesize.first,height*tilesize.first))
             ConsoleManager::update_error<std::string>(std::string("Failed to create texture for DRAWSPRITE render mode"));
         tempspriteclass.setTexture(temptexclass, true);
     }
     else if (drawmethod==DRAWIMAGE) {
-        finalimageclass.create(width*tilesize.x,height*tilesize.y);
+        finalimageclass.create(width*tilesize.first,height*tilesize.second);
         if (!temptexclass.loadFromImage(finalimageclass))
             ConsoleManager::update_error<std::string>(std::string("Failed to load texture for DRAWIMAGE render mode"));
         tempspriteclass.setTexture(temptexclass, true);
     }
     else if (drawmethod==DRAWVERTEX){
-        verteximage=sf::VertexArray(sf::Quads,width*height*4*tilesize.x*tilesize.y);
-        for (std::size_t i=0; i<width*height*4*tilesize.x*tilesize.y; i+=4) {
-            verteximage[i].position=sf::Vector2f(itox(i/4,width*tilesize.x,height*tilesize.y),itoy(i/4,width*tilesize.x,height*tilesize.y));
-            verteximage[i+1].position=sf::Vector2f(itox(i/4,width*tilesize.x,height*tilesize.y)+1,itoy(i/4,width*tilesize.x,height*tilesize.y));
-            verteximage[i+2].position=sf::Vector2f(itox(i/4,width*tilesize.x,height*tilesize.y)+1,itoy(i/4,width*tilesize.x,height*tilesize.y)+1);
-            verteximage[i+3].position=sf::Vector2f(itox(i/4,width*tilesize.x,height*tilesize.y),itoy(i/4,width*tilesize.x,height*tilesize.y)+1);
+        verteximage=sf::VertexArray(sf::Quads,width*height*4*tilesize.first*tilesize.second);
+        for (std::size_t i=0; i<width*height*4*tilesize.first*tilesize.second; i+=4) {
+            verteximage[i].position=sf::Vector2f(itox(i/4,width*tilesize.first,height*tilesize.second),itoy(i/4,width*tilesize.first,height*tilesize.second));
+            verteximage[i+1].position=sf::Vector2f(itox(i/4,width*tilesize.first,height*tilesize.second)+1,itoy(i/4,width*tilesize.first,height*tilesize.second));
+            verteximage[i+2].position=sf::Vector2f(itox(i/4,width*tilesize.first,height*tilesize.second)+1,itoy(i/4,width*tilesize.first,height*tilesize.second)+1);
+            verteximage[i+3].position=sf::Vector2f(itox(i/4,width*tilesize.first,height*tilesize.second),itoy(i/4,width*tilesize.first,height*tilesize.second)+1);
             verteximage[i].color=verteximage[i+1].color=verteximage[i+2].color=verteximage[i+3].color=sf::Color::Black;
         }
     }
@@ -67,10 +67,10 @@ extra_render(_extra_render) //TODO EXTRA RENDER FOR MORE STUFF THAN DRAWTEXTUR
 
                 sf::Vertex* quad = &verteximage[(i + j * width) * 4+headline];
 
-                quad[0].position = sf::Vector2f(i * tilesize.x, j * tilesize.y);
-                quad[1].position = sf::Vector2f((i + 1) * tilesize.x, j * tilesize.y);
-                quad[2].position = sf::Vector2f((i + 1) * tilesize.x, (j + 1) * tilesize.y);
-                quad[3].position = sf::Vector2f(i * tilesize.x, (j + 1) * tilesize.y);
+                quad[0].position = sf::Vector2f(i * tilesize.first, j * tilesize.second);
+                quad[1].position = sf::Vector2f((i + 1) * tilesize.first, j * tilesize.second);
+                quad[2].position = sf::Vector2f((i + 1) * tilesize.first, (j + 1) * tilesize.second);
+                quad[3].position = sf::Vector2f(i * tilesize.first, (j + 1) * tilesize.second);
             }
         }
     }
@@ -113,28 +113,28 @@ void TileRenderer::load_palette(const std::string& path) {
 
 bool TileRenderer::load(const std::string& tilefile){
     load_palette("palette/YPbPr.pal");
-    FILE * Spritefile=fopen(tilefile.c_str(),"r");
-    if (!Spritefile) {
+    std::ifstream spritefile(tilefile.c_str(),std::ios::in);
+    if (!spritefile) {
         ConsoleManager::update_error("Couldn't open sprite file: "+tilefile);
         return false;
     }
     std::size_t spritenumber=spritevector.size();
-    while (!feof(Spritefile)) {
+    while (!spritefile.eof()) {
         std::size_t characters=0;
         Sprite newsprite;
-        for (characters=0; characters<tilesize.y*2&&!feof(Spritefile); ++characters) {
+        for (characters=0; characters<tilesize.second*2&&!spritefile.eof(); ++characters) {
             unsigned int hex;
-            fscanf(Spritefile,"%x",&hex);
-            if (characters<tilesize.y) {
-                for (std::size_t i=0; i<tilesize.x; ++i)
-                newsprite.arr[tilesize.x-i-1][characters]=(hex >> i) & 1U;
+			spritefile >> std::hex >> hex;
+            if (characters<tilesize.second) {
+                for (std::size_t i=0; i<tilesize.first; ++i)
+                newsprite.arr[tilesize.first-i-1][characters]=(hex >> i) & 1U;
             }
             else {
-                for (std::size_t i=0; i<tilesize.x; ++i)
-                newsprite.arr[tilesize.x-i-1][characters-8]+=((hex >> i) & 1U)<<1;
+                for (std::size_t i=0; i<tilesize.first; ++i)
+                newsprite.arr[tilesize.first-i-1][characters-tilesize.second]+=((hex >> i) & 1U)<<1;
             }
         }
-        if (characters>=tilesize.y*2) {
+        if (characters>=tilesize.second*2) {
             if (glb::spritemode==1) {
                 if (spritemap.find(newsprite)==spritemap.end()) {
                     spritemap[newsprite]=spritenumber;
@@ -166,15 +166,15 @@ std::size_t TileRenderer::add_or_find_texture(const tiletype& newtile, sf::Image
 
     if (texturemap.find(temptile)==texturemap.end()) { //new texture
 
-        if (itoyrect(texturenumber,texturesize,texturesize,tilesize.x,tilesize.x)>texturesize) {
-            ConsoleManager::update_error(std::string("Too many textures"));
+        if (itoyrect(texturenumber,texturesize,texturesize,tilesize.first,tilesize.first)>texturesize) {
+            ConsoleManager::update_error("Too many textures");
             throw texturenumber; //TODOBETTER
         }
 
-        ConsoleManager::update<std::string>("system",std::string("Creating new texture"));
+        ConsoleManager::update("system",std::string("Creating new texture"));
 
         if (!prerendering) { //TODO USE OFSTREAM
-            fprintf(newtextures,"%d %x %x %x %x\n",temptile.tilenumber,temptile.palette_color[0],temptile.palette_color[1],temptile.palette_color[2],temptile.palette_color[3]);
+			newtextures << temptile.tilenumber << std::hex << temptile.palette_color[0] << temptile.palette_color[1] << temptile.palette_color[2] << temptile.palette_color[3] << std::dec << "\n\r";
         }
 
         uint8container newtexture;
@@ -207,9 +207,9 @@ std::size_t TileRenderer::add_or_find_texture(const tiletype& newtile, sf::Image
         Sprite* spritetemp=&spritevector[temptile.tilenumber];
         if (!prerendering) {
             sf::Uint8* tempquadretto=newtexture.getQuadretto(); //quadretto means small square in Italian
-            for (std::size_t pixelx=0; pixelx<tilesize.x; ++pixelx) {
-                for (std::size_t pixely=0; pixely<tilesize.y; ++pixely) {
-                    std::size_t tempi=xytoi(pixelx,pixely,tilesize.x,tilesize.y)*4;
+            for (std::size_t pixelx=0; pixelx<tilesize.first; ++pixelx) {
+                for (std::size_t pixely=0; pixely<tilesize.second; ++pixely) {
+                    std::size_t tempi=xytoi(pixelx,pixely,tilesize.first,tilesize.second)*4;
                     nes_uchar tiletypetemp=spritetemp->arr[pixelx][pixely];
                     tempquadretto[tempi]=rgba[tiletypetemp][0];
                     tempquadretto[tempi+1]=rgba[tiletypetemp][1];
@@ -218,17 +218,17 @@ std::size_t TileRenderer::add_or_find_texture(const tiletype& newtile, sf::Image
                 }
             }
             tiletexture.update(tempquadretto,
-                               tilesize.x,
-                               tilesize.y,
-                               itoxrect(texturenumber,texturesize,texturesize,tilesize.x,tilesize.y),
-                               itoyrect(texturenumber,texturesize,texturesize,tilesize.x,tilesize.y));
+                               tilesize.first,
+                               tilesize.second,
+                               itoxrect(texturenumber,texturesize,texturesize,tilesize.first,tilesize.second),
+                               itoyrect(texturenumber,texturesize,texturesize,tilesize.first,tilesize.second));
         }
         else {
-            for (std::size_t pixelx=0; pixelx<tilesize.x; ++pixelx) {
-                for (std::size_t pixely=0; pixely<tilesize.y; ++pixely) {
+            for (std::size_t pixelx=0; pixelx<tilesize.first; ++pixelx) {
+                for (std::size_t pixely=0; pixely<tilesize.second; ++pixely) {
                     nes_uchar tiletypetemp=spritetemp->arr[pixelx][pixely];
-                    prerendering->setPixel(pixelx+itoxrect(texturenumber,texturesize,texturesize,tilesize.x,tilesize.y),
-                                        pixely+itoyrect(texturenumber,texturesize,texturesize,tilesize.x,tilesize.y),
+                    prerendering->setPixel(pixelx+itoxrect(texturenumber,texturesize,texturesize,tilesize.first,tilesize.second),
+                                        pixely+itoyrect(texturenumber,texturesize,texturesize,tilesize.first,tilesize.second),
                                         sf::Color(rgba[tiletypetemp][0],
                                                   rgba[tiletypetemp][1],
                                                   rgba[tiletypetemp][2],
@@ -256,17 +256,17 @@ void TileRenderer::renderExtraTiles(std::size_t offset, const decltype(tilecont.
         std::size_t whereisthistexture=add_or_find_texture(t);
         const std::size_t tempi=offset+extra_render_counter*4;
         const sf::Vector2u texturesize=tiletexture.getSize();
-        std::size_t tu = whereisthistexture % (texturesize.x / tilesize.x);
-        std::size_t tv = whereisthistexture / (texturesize.x / tilesize.x);
+        std::size_t tu = whereisthistexture % (texturesize.x / tilesize.first);
+        std::size_t tv = whereisthistexture / (texturesize.x / tilesize.first);
         verteximage[tempi].position=sf::Vector2f(x,y);
-        verteximage[tempi+1].position=sf::Vector2f(x+tilesize.x,y);
-        verteximage[tempi+2].position=sf::Vector2f(x+tilesize.x,y+tilesize.y);
-        verteximage[tempi+3].position=sf::Vector2f(x,y+tilesize.y);
+        verteximage[tempi+1].position=sf::Vector2f(x+tilesize.first,y);
+        verteximage[tempi+2].position=sf::Vector2f(x+tilesize.first,y+tilesize.second);
+        verteximage[tempi+3].position=sf::Vector2f(x,y+tilesize.second);
 
-        verteximage[tempi].texCoords=sf::Vector2f(tu*tilesize.x,tv*tilesize.x);
-        verteximage[tempi+1].texCoords=sf::Vector2f((tu+1)*tilesize.x,tv*tilesize.x);
-        verteximage[tempi+2].texCoords=sf::Vector2f((tu+1)*tilesize.x,(tv+1)*tilesize.x);
-        verteximage[tempi+3].texCoords=sf::Vector2f(tu*tilesize.x,(tv+1)*tilesize.x);
+        verteximage[tempi].texCoords=sf::Vector2f(tu*tilesize.first,tv*tilesize.first);
+        verteximage[tempi+1].texCoords=sf::Vector2f((tu+1)*tilesize.first,tv*tilesize.first);
+        verteximage[tempi+2].texCoords=sf::Vector2f((tu+1)*tilesize.first,(tv+1)*tilesize.first);
+        verteximage[tempi+3].texCoords=sf::Vector2f(tu*tilesize.first,(tv+1)*tilesize.first);
         extra_render_counter++;
         if (extra_render_counter>max_extra) break;
     }
@@ -281,13 +281,13 @@ void TileRenderer::drawtexture(sf::RenderTarget& target, sf::RenderStates states
                 std::size_t whereisthistexture=add_or_find_texture(tilecont.atconst(x,y));
                 const std::size_t tempi=xytoi(x,y,width,height)*4+headline[2];
                 const sf::Vector2u texturesize=tiletexture.getSize();
-                std::size_t tu = whereisthistexture % (texturesize.x / tilesize.x);
-                std::size_t tv = whereisthistexture / (texturesize.x / tilesize.x);
+                std::size_t tu = whereisthistexture % (texturesize.x / tilesize.first);
+                std::size_t tv = whereisthistexture / (texturesize.x / tilesize.first);
 
-                verteximage[tempi].texCoords=sf::Vector2f(tu*tilesize.x,tv*tilesize.x);
-                verteximage[tempi+1].texCoords=sf::Vector2f((tu+1)*tilesize.x,tv*tilesize.x);
-                verteximage[tempi+2].texCoords=sf::Vector2f((tu+1)*tilesize.x,(tv+1)*tilesize.x);
-                verteximage[tempi+3].texCoords=sf::Vector2f(tu*tilesize.x,(tv+1)*tilesize.x);
+                verteximage[tempi].texCoords=sf::Vector2f(tu*tilesize.first,tv*tilesize.first);
+                verteximage[tempi+1].texCoords=sf::Vector2f((tu+1)*tilesize.first,tv*tilesize.first);
+                verteximage[tempi+2].texCoords=sf::Vector2f((tu+1)*tilesize.first,(tv+1)*tilesize.first);
+                verteximage[tempi+3].texCoords=sf::Vector2f(tu*tilesize.first,(tv+1)*tilesize.first);
             }
         }
     }
@@ -349,10 +349,10 @@ void TileRenderer::drawvertex(sf::RenderTarget& target, sf::RenderStates states)
                     sf::Color(color[3])
                 };
                 Sprite* spritetemp=&spritevector[tilecont.atconst(x,y).tilenumber];
-                for (std::size_t pixelx=0; pixelx<tilesize.x; ++pixelx) {
-                    for (std::size_t pixely=0; pixely<tilesize.y; ++pixely) {
+                for (std::size_t pixelx=0; pixelx<tilesize.first; ++pixelx) {
+                    for (std::size_t pixely=0; pixely<tilesize.second; ++pixely) {
                         nes_uchar tiletypetemp=spritetemp->arr[pixelx][pixely];
-                        const std::size_t tempi=xytoi(x*tilesize.x+pixelx,y*tilesize.y+pixely,width*tilesize.x,height*tilesize.y)*4;
+                        const std::size_t tempi=xytoi(x*tilesize.first+pixelx,y*tilesize.second+pixely,width*tilesize.first,height*tilesize.second)*4;
                         verteximage[tempi].color=sfcolor[tiletypetemp];
                         verteximage[tempi+1].color=sfcolor[tiletypetemp];
                         verteximage[tempi+2].color=sfcolor[tiletypetemp];
@@ -398,9 +398,9 @@ void TileRenderer::drawsprite(sf::RenderTarget& target, sf::RenderStates states)
                 }
                 Sprite* spritetemp=&spritevector[tilecont.atconst(x,y).tilenumber];
                 sf::Uint8* tempquadretto=quadretti[xytoi(x,y,width,height)].getQuadretto();
-                for (std::size_t pixelx=0; pixelx<tilesize.x; ++pixelx) {
-                    for (std::size_t pixely=0; pixely<tilesize.y; ++pixely) {
-                        std::size_t tempi=xytoi(pixelx,pixely,tilesize.x,tilesize.y)*4;
+                for (std::size_t pixelx=0; pixelx<tilesize.first; ++pixelx) {
+                    for (std::size_t pixely=0; pixely<tilesize.second; ++pixely) {
+                        std::size_t tempi=xytoi(pixelx,pixely,tilesize.first,tilesize.second)*4;
                         nes_uchar tiletypetemp=spritetemp->arr[pixelx][pixely];
                         tempquadretto[tempi]=rgba[tiletypetemp][0];
                         tempquadretto[tempi+1]=rgba[tiletypetemp][1];
@@ -408,7 +408,7 @@ void TileRenderer::drawsprite(sf::RenderTarget& target, sf::RenderStates states)
                         tempquadretto[tempi+3]=rgba[tiletypetemp][3];
                     }
                 }
-                temptexclass.update(tempquadretto,tilesize.x,tilesize.y,x*tilesize.x,y*tilesize.y);
+                temptexclass.update(tempquadretto,tilesize.first,tilesize.second,x*tilesize.first,y*tilesize.second);
             }
         }
     }
@@ -445,10 +445,10 @@ void TileRenderer::drawimage(sf::RenderTarget& target, sf::RenderStates states){
                     sf::Color(color[3])
                 };
                 Sprite *spritetemp=&spritevector[tilecont.atconst(x,y).tilenumber];
-                for (std::size_t pixelx=0; pixelx<tilesize.x; ++pixelx) {
-                    for (std::size_t pixely=0; pixely<tilesize.y; ++pixely) {
+                for (std::size_t pixelx=0; pixelx<tilesize.first; ++pixelx) {
+                    for (std::size_t pixely=0; pixely<tilesize.second; ++pixely) {
                         nes_uchar tiletypetemp=spritetemp->arr[pixelx][pixely];
-                        finalimageclass.setPixel(x*tilesize.x+pixelx,y*tilesize.y+pixely,sfcolor[tiletypetemp]); //sf::Color(color[Spritevector[tilecont(x,y).tilenumber].arr[pixelx][pixely]]
+                        finalimageclass.setPixel(x*tilesize.first+pixelx,y*tilesize.second+pixely,sfcolor[tiletypetemp]); //sf::Color(color[Spritevector[tilecont(x,y).tilenumber].arr[pixelx][pixely]]
                     }
                 }
             }
@@ -486,7 +486,7 @@ void TileRenderer::add_frequent_textures() {
         add_or_find_texture(block, &texture_image);
     }
     tiletexture.loadFromImage(texture_image);
-    newtextures=fopen("texturesprite/Pre-rendered textures.txt","a");
+    newtextures.open("texturesprite/Pre-rendered textures.txt",std::ios::app);
 }
 
 void TileRenderer::drawmod(sf::RenderTarget& target, sf::RenderStates states)
@@ -512,7 +512,6 @@ void TileRenderer::drawmod(sf::RenderTarget& target, sf::RenderStates states)
 }
 
 TileRenderer::~TileRenderer() {
-    if (newtextures) fclose(newtextures);
     if (quadretti) delete[]quadretti;
 }
 

@@ -1,0 +1,34 @@
+﻿  NESTRIS.cpp
+  ActiveInputs.cpp
+  APU.cpp
+  ConfigReader.cpp
+  ConsoleManager.cpp
+  Engine.cpp
+  enums.cpp
+  Input.cpp
+C:\Users\Owner\Downloads\appunti (1)\appunti\NESTRIS - Copia\src\Input.cpp(31): warning C4390: ';': empty controlled statement found; is this the intent?
+  LevelLines.cpp
+  MatrixContainer.cpp
+  OutputInfo.cpp
+  PFMatrix.cpp
+  Piece.cpp
+  PieceContainer.cpp
+  random.cpp
+  Renderer.cpp
+  RenderHighScore.cpp
+  RenderLevelSelect.cpp
+  RenderPlayField.cpp
+  Score.cpp
+  Generating Code...
+  Compiling...
+  Sound.cpp
+C:\Users\Owner\Downloads\appunti (1)\appunti\NESTRIS - Copia\src\Sound.cpp(15): warning C4390: ';': empty controlled statement found; is this the intent?
+C:\Users\Owner\Downloads\appunti (1)\appunti\NESTRIS - Copia\src\Sound.cpp(20): warning C4390: ';': empty controlled statement found; is this the intent?
+  Sprite.cpp
+  Statistics.cpp
+  TextWriter.cpp
+  TileContainer.cpp
+  TileRenderer.cpp
+  Window.cpp
+  Generating Code...
+  NESTRIS.vcxproj -> C:\Users\Owner\Downloads\appunti (1)\appunti\NESTRIS - Copia\x64\Debug\NESTRIS.exe

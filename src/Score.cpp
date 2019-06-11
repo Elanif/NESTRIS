@@ -1,6 +1,6 @@
-#include "Score.h"
-#include"TextWriter.h"
-#include"ConsoleManager.h"
+#include "Score.hpp"
+#include"TextWriter.hpp"
+#include"ConsoleManager.hpp"
 #include<sstream>
 #include<iomanip>
 

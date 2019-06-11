@@ -1,7 +1,7 @@
-#include "Engine.h"
+#include "Engine.hpp"
 #include<cstdio>
-#include"random.h"
-#include"ConsoleManager.h"
+#include"random.hpp"
+#include"ConsoleManager.hpp"
 #include<string>
 Engine::Engine(TileContainer* _tilecont, const MenuType& _startingmenu):
 tilecont(_tilecont),

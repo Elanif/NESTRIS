@@ -1,5 +1,5 @@
-#include "LevelLines.h"
-#include"TextWriter.h"
+#include "LevelLines.hpp"
+#include"TextWriter.hpp"
 #include<string>
 LevelLines::LevelLines(TileContainer * _tilecont, const nes_ushort& _frameappearance, const nes_uchar& _level)
     :Renderer(_tilecont, _frameappearance), real_level(_level), lines(0u)

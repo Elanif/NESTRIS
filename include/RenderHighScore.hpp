@@ -1,13 +1,13 @@
 #ifndef RENDERHIGHSCORE_H
 #define RENDERHIGHSCORE_H
 
-#include"Renderer.h"
-#include"TileContainer.h"
-#include"Score.h"
-#include"LevelLines.h"
-#include"Statistics.h"
-#include"ActiveInputs.h"
-#include"MatrixContainer.h"
+#include"Renderer.hpp"
+#include"TileContainer.hpp"
+#include"Score.hpp"
+#include"LevelLines.hpp"
+#include"Statistics.hpp"
+#include"ActiveInputs.hpp"
+#include"MatrixContainer.hpp"
 
 class RenderHighScore : public Renderer
 {
