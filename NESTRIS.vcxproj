@@ -172,10 +172,11 @@
     <ClCompile Include="src\ConfigReader.cpp" />
     <ClCompile Include="src\ConsoleManager.cpp" />
     <ClCompile Include="src\Engine.cpp" />
-    <ClCompile Include="src\enums.cpp" />
     <ClCompile Include="src\Input.cpp" />
     <ClCompile Include="src\LevelLines.cpp" />
+    <ClCompile Include="src\Log.cpp" />
     <ClCompile Include="src\MatrixContainer.cpp" />
+    <ClCompile Include="src\ntris.cpp" />
     <ClCompile Include="src\OutputInfo.cpp" />
     <ClCompile Include="src\PFMatrix.cpp" />
     <ClCompile Include="src\Piece.cpp" />
@@ -201,10 +202,11 @@
     <ClInclude Include="include\ConfigReader.hpp" />
     <ClInclude Include="include\ConsoleManager.hpp" />
     <ClInclude Include="include\Engine.hpp" />
-    <ClInclude Include="include\enums.hpp" />
     <ClInclude Include="include\Input.hpp" />
     <ClInclude Include="include\LevelLines.hpp" />
+    <ClInclude Include="include\Log.hpp" />
     <ClInclude Include="include\MatrixContainer.hpp" />
+    <ClInclude Include="include\ntris.hpp" />
     <ClInclude Include="include\OutputInfo.hpp" />
     <ClInclude Include="include\PFMatrix.hpp" />
     <ClInclude Include="include\Piece.hpp" />

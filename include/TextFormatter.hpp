@@ -3,7 +3,7 @@
 #define TEXTFORMATTER_HPP
 #include<SFML/Graphics/Text.hpp>
 #include<SFML/Graphics/Font.hpp>
-#include"enums.hpp"
+#include"ntris.hpp"
 #include<string>
 #include<vector>
 #include<unordered_map>

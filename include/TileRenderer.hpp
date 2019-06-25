@@ -2,7 +2,7 @@
 #define TILERENDERER_H
 #include"TileContainer.hpp"
 #include<SFML/Graphics.hpp>
-#include"enums.hpp"
+#include"ntris.hpp"
 #include<vector>
 #include<string>
 #include<fstream>

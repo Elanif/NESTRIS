@@ -1,6 +1,6 @@
 #include"TileRenderer.hpp"
 #include"Log.hpp"
-#include"enums.hpp"
+#include"ntris.hpp"
 #include<string>
 #include<fstream>
 #include<sstream>
@@ -135,14 +135,14 @@ bool TileRenderer::load(const std::string& tilefile){
             }
         }
         if (characters>=tilesize.second*2) {
-            if (glb::spritemode==1) {
+            if (ntris::spritemode==1) {
                 if (spritemap.find(newsprite)==spritemap.end()) {
                     spritemap[newsprite]=spritenumber;
                     spritevector.push_back(newsprite);
                     spritenumber++;
                 }
             }
-            else if (glb::spritemode==0) {
+            else if (ntris::spritemode==0) {
                 if (spritemap.find(newsprite)==spritemap.end()) {
                     spritemap[newsprite]=spritenumber;
                 }
@@ -174,7 +174,7 @@ std::size_t TileRenderer::add_or_find_texture(const tiletype& newtile, sf::Image
         Log::update("system",std::string("Creating new texture"));
 
         if (!prerendering) { //TODO USE OFSTREAM
-			newtextures << temptile.tilenumber << std::hex << temptile.palette_color[0] << temptile.palette_color[1] << temptile.palette_color[2] << temptile.palette_color[3] << std::dec << glb::newline;
+			newtextures << temptile.tilenumber << std::hex << temptile.palette_color[0] << temptile.palette_color[1] << temptile.palette_color[2] << temptile.palette_color[3] << std::dec << ntris::newline;
         }
 
         uint8container newtexture;
@@ -249,7 +249,7 @@ std::size_t TileRenderer::add_or_find_texture(const tiletype& newtile, sf::Image
 void TileRenderer::renderExtraTiles(std::size_t offset, const decltype(tilecont.extra_tiles.x)& extra_tiles, const std::size_t max_extra) {
     std::size_t extra_render_counter=0;
     for (const auto&i: extra_tiles) {
-        const glb::triple& triple_it=std::get<1>(i);
+        const ntris::triple& triple_it=std::get<1>(i);
         const std::size_t& x=std::get<0>(triple_it);
         const std::size_t& y=std::get<1>(triple_it);
         const tiletype& t=std::get<2>(triple_it);
@@ -536,7 +536,7 @@ sf::Uint32 TileRenderer::palette[4][16]= { //RGB PALLETE
 	{0xffffffff,0xb6dbffff,0xdbb6ffff,0xffb6ffff,0xff92ffff,0xffb6b6ff,0xffdb92ff,0xffff49ff,0xffff6dff,0xb6ff49ff,0x92ff6dff,0x49ffdbff,0x92dbffff,0x929292ff,0xff,0xff}
 };*/
 
-sf::Uint32 TileRenderer::palette[4][16]= { //YPrBr palette //with glb::trnspr transparent
+sf::Uint32 TileRenderer::palette[4][16]= { //YPrBr palette //with ntris::trnspr transparent
     {0x7C7C7CFF ,0x0000FCFF ,0x0000BCFF ,0x4428BCFF ,0x940084FF ,0xA80020FF ,0xA81000FF ,0x881400FF ,0x503000FF ,0x007800FF ,0x006800FF ,0x005800FF ,0x004058FF ,0x000000FF ,0x000000FF ,0x000000FF},
     {0xBCBCBCFF ,0x0078F8FF ,0x0058F8FF ,0x6844FCFF ,0xD800CCFF ,0xE40058FF ,0xF83800FF ,0xE45C10FF ,0xAC7C00FF ,0x00B800FF ,0x00A800FF ,0x00A844FF ,0x008888FF ,0x00000000 ,0x000000FF ,0x000000FF},
     {0xF8F8F8FF ,0x3CBCFCFF ,0x6888FCFF ,0x9878F8FF ,0xF878F8FF ,0xF85898FF ,0xF87858FF ,0xFCA044FF ,0xF8B800FF ,0xB8F818FF ,0x58D854FF ,0x58F898FF ,0x00E8D8FF ,0x787878FF ,0x000000FF ,0x000000FF},

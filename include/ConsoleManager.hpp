@@ -18,9 +18,10 @@ public:
 	void toggle_info_window();
 	bool is_window_open();
 	~ConsoleManager();
-	void refresh(bool always_print = false);
+	bool refresh(bool always_print = false); //returns true if info_window is open
 
 private:
+	float getCharacterSize();
 	sf::RenderWindow info_window{};
 	sf::Font info_window_font{};
 	TextFormatter<string_character> text_formatter;
@@ -29,17 +30,25 @@ private:
 		SETTINGS
 	} current_menu;
 	std::stack<MENU> menu_stack;
+	bool is_menu_unlocked(MENU const& from_menu, std::string const& to_menu); // returns false if there is no menu with that name
 	std::string text_entered{};
 	bool detecting_text_entered{ true };
 	bool detecting_hotkey_input{ false };
 	void handle_menu(MENU const& menu);
-	void render_menu(MENU const& menu);
-	void basic_handler(sf::Event const& event);
+	sf::Vector2f render_menu(MENU const& menu);
+	bool basic_handler(sf::Event const& event); //returns true if it handled an event, false otherwise
 
 	void handleHOME(sf::Event const& event);
-	void renderHOME();
+	void renderHOME(sf::Vector2f pos);
 
 	unsigned char framecounter{ 0 };
 	bool error_print{ false };
+	
+	std::unordered_map<std::string, MENU> text_to_menu_map;
+	
+	std::unordered_map<MENU, std::unordered_map<MENU, bool> > unlocked_tree_map;
+
+	void init_unlocked_tree_map();
+
 };
 #endif // CONSOLEMANAGER_H

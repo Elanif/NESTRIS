@@ -1,6 +1,6 @@
 #ifndef ACTIVEINPUTS_H
 #define ACTIVEINPUTS_H
-#include"enums.hpp"
+#include"ntris.hpp"
 class ActiveInputs {
     public:
         ActiveInputs(const std::size_t& _buttons, bool *_prevactiveinputs, bool *_activeinputs, bool _leftandright=false);

@@ -1,6 +1,6 @@
 #ifndef PIECECONTAINER_H
 #define PIECECONTAINER_H
-#include"enums.hpp"
+#include"ntris.hpp"
 #include"PFMatrix.hpp"
 #include"Piece.hpp"
 #include"Renderer.hpp"

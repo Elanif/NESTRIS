@@ -21,7 +21,7 @@ RenderPlayField::RenderPlayField(TileContainer * _tilecont, const nes_ushort& _f
     for (std::size_t i=19; i<29; ++i) gravity[i]=2;
     for (std::size_t i=29; i<255; ++i) gravity[i]=1;
 
-    glb::lineclearframecounter=0;
+    ntris::lineclearframecounter=0;
     playfield_blink=firstframeis4=tetris=false;
 
 }
@@ -55,8 +55,8 @@ void RenderPlayField::update(const ActiveInputs& _input, const nes_ushort& _fram
         nes_uchar linescleared=matrixhandler.lockpiece(piecehandler.lastdroppedpiece,_framecounter);
         if (linescleared) {
             levellineshandler.addlines(linescleared);
-            glb::lineclearframecounter=5; //deletes the columns starting from the middle, 5 times, once every fram%4==0
-            glb::updatingmatrix=0; //this is updaetd later
+            ntris::lineclearframecounter=5; //deletes the columns starting from the middle, 5 times, once every fram%4==0
+            ntris::updatingmatrix=0; //this is updaetd later
             //then it updates the vram of the matrix, it takes 5 frames of copying from top to bottom
         }
 
@@ -67,12 +67,12 @@ void RenderPlayField::update(const ActiveInputs& _input, const nes_ushort& _fram
         piecehandler.dropped_event=false;
 
         if (linescleared) {
-            glb::lineclearframecounter=5;
+            ntris::lineclearframecounter=5;
             if (getframemod4()==0) firstframeis4=true; //normally rendering happens before inputs, since I do it right after input managing I have to account for the frame being already eligible for blinking
             else firstframeis4=false;
         }
         else {
-            glb::ARE=20-((piecehandler.lastdroppedpiece.y+3)/4)*2; //TODO find true formula
+            ntris::ARE=20-((piecehandler.lastdroppedpiece.y+3)/4)*2; //TODO find true formula
         }
         if (linescleared>=4) {
             tetris=true;
@@ -84,7 +84,7 @@ void RenderPlayField::update(const ActiveInputs& _input, const nes_ushort& _fram
 void RenderPlayField::render(const nes_ushort& _framecounter) {
     piecehandler.spawned_event=false;
     //renderimage(false); more optimization to be done
-    if (glb::lineclearframecounter>0) {
+    if (ntris::lineclearframecounter>0) {
         if (tetris) {
             if (getframemod4()==0&&!firstframeis4){
                 renderimage(true);
@@ -104,20 +104,20 @@ void RenderPlayField::render(const nes_ushort& _framecounter) {
     statisticshandler.render(levellineshandler.get_shown_level()); //same thing
     scorehandler.render(); //shown score and real score are handled internally by scorehandler for now
     //if it's clear lines time and !(by coincidence the first frame it fell the frame was dividible by 4)
-    if (glb::lineclearframecounter>0 && !firstframeis4 && getframemod4()==0) {
+    if (ntris::lineclearframecounter>0 && !firstframeis4 && getframemod4()==0) {
         if (tetris) Sound::play(Sound::tetris);
         else Sound::play(Sound::clear_line);
-        glb::lineclearframecounter--; //TODO pause interaction
-        if (glb::lineclearframecounter==0) glb::updatingmatrix=5;
+        ntris::lineclearframecounter--; //TODO pause interaction
+        if (ntris::lineclearframecounter==0) ntris::updatingmatrix=5;
     }
-    else if (glb::updatingmatrix>0) { //doesnt happen in the same frame as lineclearedframecounter--
-        --glb::updatingmatrix;
-        if (glb::updatingmatrix==0) piecehandler.spawnPiece();//if it's the last frame of the 5-frame matrix update it spawns a new piece for the next frame, [frame discrepancy?]
+    else if (ntris::updatingmatrix>0) { //doesnt happen in the same frame as lineclearedframecounter--
+        --ntris::updatingmatrix;
+        if (ntris::updatingmatrix==0) piecehandler.spawnPiece();//if it's the last frame of the 5-frame matrix update it spawns a new piece for the next frame, [frame discrepancy?]
     }
     firstframeis4=false;
-    if (glb::ARE>0) { // if entry delay>0 //should this be in render or update?
-        glb::ARE--;
-        if (glb::ARE==0) {
+    if (ntris::ARE>0) { // if entry delay>0 //should this be in render or update?
+        ntris::ARE--;
+        if (ntris::ARE==0) {
             piecehandler.spawnPiece();//if it's the last entry delay frame it spawns a new piece for the next frame, [frame discrepancy?]
             piecehandler.spawned_event=true;
         }
@@ -155,12 +155,12 @@ void RenderPlayField::renderimage(bool blink) {
         playfield_blink=false;
         renderBackground(0x31,0x00);
     }
-    TextWriter::write("NEXT"s ,tilecont,{glb::nextx,glb::nexty});
+    TextWriter::write("NEXT"s ,tilecont,{ntris::nextx,ntris::nexty});
     TextWriter::write("TOP"s ,tilecont,{24,3}); //TODO USECONSTEXPR
     TextWriter::write("SCORE"s ,tilecont,{24,6});
-    TextWriter::write("LINES-"s ,tilecont,{glb::linesx-6,glb::linesy});
-    TextWriter::write("LEVEL"s ,tilecont,{glb::levelx,glb::levely});
-    TextWriter::write("A-TYPE"s ,tilecont,{glb::typex,glb::typey});
+    TextWriter::write("LINES-"s ,tilecont,{ntris::linesx-6,ntris::linesy});
+    TextWriter::write("LEVEL"s ,tilecont,{ntris::levelx,ntris::levely});
+    TextWriter::write("A-TYPE"s ,tilecont,{ntris::typex,ntris::typey});
     //STATISTICS
     tilecont->at(9,8)=tiletype(664,0x0d,0x00,0x00,0x30);
     tilecont->at(8,8)=tiletype(677,0x0d,0x00,0x00,0x30);

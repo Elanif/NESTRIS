@@ -15,20 +15,20 @@ int RenderLevelSelect::updateLevelSelect(const ActiveInputs& _input) {
 //todo manage priorities
     unsigned int tempblink=blink;
     blink=0;
-    if (_input.getPress(glb::Start)) {
-        if (_input.getHold(glb::A)&&!_input.getPress(glb::A)) return currentlevel+10;//A has to be held 1 frame earlier
+    if (_input.getPress(ntris::Start)) {
+        if (_input.getHold(ntris::A)&&!_input.getPress(ntris::A)) return currentlevel+10;//A has to be held 1 frame earlier
         return currentlevel;
     }
-    else if (_input.getPress(glb::Left)) {
+    else if (_input.getPress(ntris::Left)) {
         if (currentlevel>0) --currentlevel;
     }
-    else if (_input.getPress(glb::Right)) {
+    else if (_input.getPress(ntris::Right)) {
         if (currentlevel<9) ++currentlevel;
     }
-    else if (_input.getPress(glb::Up)) {
+    else if (_input.getPress(ntris::Up)) {
         if (currentlevel>4) currentlevel-=5;
     }
-    else if (_input.getPress(glb::Down)) {
+    else if (_input.getPress(ntris::Down)) {
         if (currentlevel<5) currentlevel+=5;
     }
     else blink=tempblink;

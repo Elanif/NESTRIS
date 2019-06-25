@@ -55,17 +55,17 @@ void TileContainer::renderExtra(const std::size_t pixelx, const std::size_t pixe
             Log::update_error(errorstream.str());
         }
         else {
-            extra_tiles.y.insert(std::make_pair(priority,glb::triple(pixelx,pixely,t)));
+            extra_tiles.y.insert(std::make_pair(priority,ntris::triple(pixelx,pixely,t)));
         }
         for (const auto& i:t.palette_color) {
-            if (i==glb::trnspr &&false) {
+            if (i==ntris::trnspr &&false) {
                 if (extra_tiles.x.size()>=extra_render.x) {
                     std::stringstream errorstream;
                     errorstream<<"Too many extra trnspr tiles, pixelx,pixely="<<pixelx<<","<<pixely<<" tiletype="<<t.tilenumber;
                     Log::update_error(errorstream.str());
                 }
                 else {
-                    extra_tiles.x.insert(std::make_pair(priority,glb::triple(pixelx,pixely,tiletype(87,0x0d,0x0d,0x0d,0x0d))));
+                    extra_tiles.x.insert(std::make_pair(priority,ntris::triple(pixelx,pixely,tiletype(87,0x0d,0x0d,0x0d,0x0d))));
                 }
                 break;
             }
@@ -79,7 +79,7 @@ void TileContainer::renderExtra(const std::size_t pixelx, const std::size_t pixe
             Log::update_error(errorstream.str());
         }
         else{
-            extra_tiles.z.insert(std::make_pair(priority,glb::triple(pixelx,pixely,t)));
+            extra_tiles.z.insert(std::make_pair(priority,ntris::triple(pixelx,pixely,t)));
         }
     }
 

@@ -2,7 +2,7 @@
 #define LEVELLINES_H
 #include"Renderer.hpp"
 #include"TileContainer.hpp"
-#include"enums.hpp"
+#include"ntris.hpp"
 
 class LinesContainer {
 public:

@@ -22,13 +22,13 @@ void Input::update(const std::size_t& _buttons) {
             }
         }
     }
-    if (activeinputs[glb::Right]) {
-        if (activeinputs[glb::Left]) {
-            activeinputs[glb::Left]=false;
+    if (activeinputs[ntris::Right]) {
+        if (activeinputs[ntris::Left]) {
+            activeinputs[ntris::Left]=false;
             leftandright=true;
         }
     }
-    if (activeinputs[glb::Down]&&activeinputs[glb::Up]); //TODO up and down stop working until both are held up
+    if (activeinputs[ntris::Down]&&activeinputs[ntris::Up]); //TODO up and down stop working until both are held up
 }
 
 ActiveInputs Input::getInput() {
@@ -41,13 +41,13 @@ void Input::setup() {
     for (std::size_t i=0; i<sf::Joystick::AxisCount; ++i)
         joystick_axis_deadzone[0][i]=(0.5);
 
-    glb::BTN btn_arr[]={glb::Left,glb::Right,glb::Down,glb::Up,glb::Start,glb::Select,glb::A,glb::B};
+    ntris::BTN btn_arr[]={ntris::Left,ntris::Right,ntris::Down,ntris::Up,ntris::Start,ntris::Select,ntris::A,ntris::B};
     using namespace std::string_literals;
     std::string s_btn_arr[]={"left_button"s,"right_button"s,"down_button"s,"up_button"s,"start_button"s,"select_button"s,"a_button"s,"b_button"s};
     ConfigReader keybinds("settings/keybinds.ini");
 
     initMap();
-    for (std::size_t i=0; i<glb::maxbuttons; ++i) {
+    for (std::size_t i=0; i<ntris::maxbuttons; ++i) {
         std::vector<std::string> keybinds_get=keybinds.get<std::string>(s_btn_arr[i]);
         for (const auto& values:keybinds_get)
             inputdependancies[btn_arr[i]].push_back(keybinds_lookup_table[values]);

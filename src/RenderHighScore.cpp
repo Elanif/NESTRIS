@@ -11,7 +11,7 @@ RenderHighScore::RenderHighScore(TileContainer * _tilecont, const nes_ushort& _f
 }
 
 void RenderHighScore::update(const ActiveInputs& _input, const nes_ushort& _framecounter) {
-    if (_input.getPress(glb::Start)) submitted=true;
+    if (_input.getPress(ntris::Start)) submitted=true;
 }
 
 void RenderHighScore::render(const nes_ushort& _framecounter) {

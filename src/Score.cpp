@@ -26,14 +26,14 @@ void Score::render() {
     }
     else {
         using namespace std::string_literals;
-        if (glb::lineclearframecounter>0) {
-            TextWriter::write(topscores[0].getScoreString(),tilecont,{glb::topscorex,glb::topscorey}); //these 2 lines
-            TextWriter::write(scoretemp.getScoreString(),tilecont,{glb::scorex,glb::scorey}); //are useless right now
+        if (ntris::lineclearframecounter>0) {
+            TextWriter::write(topscores[0].getScoreString(),tilecont,{ntris::topscorex,ntris::topscorey}); //these 2 lines
+            TextWriter::write(scoretemp.getScoreString(),tilecont,{ntris::scorex,ntris::scorey}); //are useless right now
         }
         else {
             scoretemp=score;
-            TextWriter::write(topscores[0].getScoreString(),tilecont,{glb::topscorex,glb::topscorey});
-            TextWriter::write(score.getScoreString(),tilecont,{glb::scorex,glb::scorey});
+            TextWriter::write(topscores[0].getScoreString(),tilecont,{ntris::topscorex,ntris::topscorey});
+            TextWriter::write(score.getScoreString(),tilecont,{ntris::scorex,ntris::scorey});
         }
     }
 }

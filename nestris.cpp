@@ -1,4 +1,4 @@
-#include"enums.hpp"
+#include"ntris.hpp"
 #include<cstdio>
 #include"Window.hpp"
 #include<SFML/Graphics.hpp>
@@ -34,7 +34,7 @@ int main(int argc, char** args) {
         sf::sleep(sf::milliseconds(1000));
         system("CLS");
     }
-    Window finestra(glb::ntsc_tiles_x,glb::ntsc_tiles_y,glb::window_scale,Window::GENERAL);
+    Window finestra(ntris::ntsc_tiles_x,ntris::ntsc_tiles_y,ntris::window_scale,Window::GENERAL);
 }
 
 /*

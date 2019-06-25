@@ -4,7 +4,7 @@
 #include<cstddef>
 #include<SFML/Graphics.hpp>
 #include"TileContainer.hpp"
-#include"enums.hpp"
+#include"ntris.hpp"
 
 class Renderer
 {

@@ -7,7 +7,7 @@
 #include<string>
 #include<limits>
 #include<iostream>
-#include"enums.hpp"
+#include"ntris.hpp"
 #define SLEEP_SFML //high resolution clock isn't very high resolution
 #define SLEEP_MICROSECONDS
 
@@ -65,7 +65,7 @@ Window::Window(const std::size_t& _width, const std::size_t& _height, sf::Vector
 
     sf::Transform state;
     state.scale(_scale);
-    sf::RenderWindow window(sf::VideoMode(_width*glb::tilesize.x*_scale.x, _height * glb::tilesize.y *_scale.y), "Nestris");
+    sf::RenderWindow window(sf::VideoMode(_width*ntris::tilesize.x*_scale.x, _height * ntris::tilesize.y *_scale.y), "Nestris");
 
 	std::pair<largest_uint, largest_uint>  tilesize(8,8);
     const sf::Vector3<std::size_t> extra_render(16,16,64);
@@ -87,8 +87,8 @@ Window::Window(const std::size_t& _width, const std::size_t& _height, sf::Vector
 	largest_uint partspersecond = { 1000000000 };
     #endif // SLEEP_NANOSECONDS
 
-    largest_uint timeperframe_odd=(long double) (partspersecond)/glb::ntsc_fps_odd;
-    largest_uint timeperframe_even=(long double) (partspersecond)/glb::ntsc_fps_even;
+    largest_uint timeperframe_odd=(long double) (partspersecond)/ntris::ntsc_fps_odd;
+    largest_uint timeperframe_even=(long double) (partspersecond)/ntris::ntsc_fps_even;
     bool odd_frame=false;
     largest_uint timeperframe=timeperframe_odd;
 
@@ -108,18 +108,18 @@ Window::Window(const std::size_t& _width, const std::size_t& _height, sf::Vector
 
             Log::update<sf::Int64>("input delay",elapsedtime.elapsedTime()-delaycalc);
             delaycalc=elapsedtime.elapsedTime();
-			//std::cout <<"input delay"<< elapsedtime.elapsedTime() - delaycalc << glb::newline;
+			//std::cout <<"input delay"<< elapsedtime.elapsedTime() - delaycalc << ntris::newline;
             window.clear();//adds 15microseconds
             tilerend.drawmod(window, state);
 
             Log::update<sf::Int64>("draw delay",elapsedtime.elapsedTime()-delaycalc);
-			//std::cout << "draw delay"<<elapsedtime.elapsedTime() - delaycalc << glb::newline;
+			//std::cout << "draw delay"<<elapsedtime.elapsedTime() - delaycalc << ntris::newline;
             delaycalc=elapsedtime.elapsedTime();
 
             window.display();
 
             Log::update<sf::Int64>("display delay",elapsedtime.elapsedTime()-delaycalc);
-			//std::cout << "display delay"<<elapsedtime.elapsedTime() - delaycalc << glb::newline;
+			//std::cout << "display delay"<<elapsedtime.elapsedTime() - delaycalc << ntris::newline;
 			delaycalc = elapsedtime.elapsedTime();
 
             while (window.pollEvent(event))
@@ -129,7 +129,7 @@ Window::Window(const std::size_t& _width, const std::size_t& _height, sf::Vector
 					window.close();
 				break;
 				case sf::Event::KeyPressed:
-					if (event.key.code == sf::Keyboard::F1) {
+					if (event.key.code == sf::Keyboard::F1 && window.hasFocus()) {
 						cm.toggle_info_window();
 						if (!cm.is_window_open())
 							window.requestFocus();
@@ -138,7 +138,8 @@ Window::Window(const std::size_t& _width, const std::size_t& _height, sf::Vector
 				}
 				
             }
-            cm.refresh();
+            bool is_info_window_open=cm.refresh();
+			if (!is_info_window_open) window.requestFocus();
         }
         else {
             switch(optimized) {
@@ -173,10 +174,11 @@ Window::Window(const std::size_t& _width, const std::size_t& _height, sf::Vector
     }
     Log::update<std::string>("system",std::string("Window terminating"));
     cm.refresh(true);
+	cm.close_info_window();
 }
 
 void Window::general_delay_manager(largest_uint target_delay) {
-    static largest_uint max_extra_delay=glb::MIN_DELAY_ERROR;
+    static largest_uint max_extra_delay=ntris::MIN_DELAY_ERROR;
     if (target_delay<=max_extra_delay) return;
     largest_uint real_delay=sleep_for_how_long(target_delay-max_extra_delay);
     if (real_delay>target_delay) {
@@ -185,7 +187,7 @@ void Window::general_delay_manager(largest_uint target_delay) {
 }
 
 void Window::smallest_delay_manager(largest_uint target_delay) {
-    static largest_uint max_extra_delay=glb::MIN_DELAY_ERROR;
+    static largest_uint max_extra_delay=ntris::MIN_DELAY_ERROR;
     if (target_delay<=max_extra_delay) return;
     largest_uint real_delay=sleep_for_how_long(target_delay-max_extra_delay);
     if (real_delay>max_extra_delay) {
@@ -196,7 +198,7 @@ void Window::smallest_delay_manager(largest_uint target_delay) {
 void Window::array_delay_manager(largest_uint target_delay) {
     MyClock clock;
 	constexpr std::size_t max_delay_size{ 1000000 }; //todo maybe group delays together
-    static largest_uint arr_delay[max_delay_size]={glb::MIN_DELAY_ERROR};
+    static largest_uint arr_delay[max_delay_size]={ntris::MIN_DELAY_ERROR};
     if (target_delay>=max_delay_size) target_delay=max_delay_size-1;
     largest_uint reduced_delay=target_delay-clock.elapsedTime();
     while (clock.elapsedTime()<target_delay&& reduced_delay<=arr_delay[reduced_delay]) {
@@ -217,13 +219,13 @@ void Window::array_delay_manager_bucket(largest_uint target_delay) {
 //    static largest_uint sum_clock=0;
 //    static largest_uint tot_iterations=0;
     #ifdef SLEEP_MILLISECONDS
-	constexpr largest_uint partsperframe = largest_uint{ 1000 } / glb::ntsc_fps;
+	constexpr largest_uint partsperframe = largest_uint{ 1000 } / ntris::ntsc_fps;
     #endif // SLEEP_MILLISECONDS
     #ifdef SLEEP_MICROSECONDS
-    constexpr largest_uint partsperframe= largest_uint{ 1000000 } /glb::ntsc_fps;
+    constexpr largest_uint partsperframe= largest_uint{ 1000000 } /ntris::ntsc_fps;
     #endif // SLEEP_MICROSECONDS
     #ifdef SLEEP_NANOSECONDS
-    constexpr largest_uint partsperframe= largest_uint{ 1000000000 } /glb::ntsc_fps;
+    constexpr largest_uint partsperframe= largest_uint{ 1000000000 } /ntris::ntsc_fps;
     #endif // SLEEP_NANOSECONDS
 	constexpr largest_uint bucket_size{ 200 };
     static largest_uint arr_delay[partsperframe/bucket_size+2]={1};
@@ -262,16 +264,16 @@ constexpr largest_uint log2(largest_uint _logarg) {
 
 void Window::array_delay_manager_log(largest_uint target_delay) {
     #ifdef SLEEP_MILLISECONDS
-    constexpr unsigned long long partsperframe=1000/glb::ntsc_fps;
+    constexpr unsigned long long partsperframe=1000/ntris::ntsc_fps;
     #endif // SLEEP_MILLISECONDS
     #ifdef SLEEP_MICROSECONDS
-    constexpr unsigned long long partsperframe=1000000/glb::ntsc_fps;
+    constexpr unsigned long long partsperframe=1000000/ntris::ntsc_fps;
     #endif // SLEEP_MICROSECONDS
     #ifdef SLEEP_NANOSECONDS
-    constexpr unsigned long long partsperframe=1000000000/glb::ntsc_fps;
+    constexpr unsigned long long partsperframe=1000000000/ntris::ntsc_fps;
     #endif // SLEEP_NANOSECONDS
 	constexpr std::size_t array_length = log2(partsperframe) + 1; //constexpr std::size_t array_length=std::ceil(std::log2(partsperframe)); //ceil isn't constexpr for some reason
-    static largest_uint arr_delay[array_length]={glb::MIN_DELAY_ERROR};
+    static largest_uint arr_delay[array_length]={ntris::MIN_DELAY_ERROR};
 	constexpr largest_uint max_delay_allowed = largest_uint{ 1 } << array_length;
     if (target_delay<=0) return;
     std::size_t index=0;
@@ -291,7 +293,7 @@ void Window::array_delay_manager_log(largest_uint target_delay) {
 }
 
 void Window::spam_delay_manager(largest_uint target_delay) {
-    static largest_uint smallest_delay_possible=glb::MIN_DELAY_ERROR;
+    static largest_uint smallest_delay_possible=ntris::MIN_DELAY_ERROR;
     MyClock clock;
     largest_uint _late_time=clock.elapsedTime();
     while(_late_time+smallest_delay_possible<target_delay) {
@@ -303,7 +305,7 @@ void Window::spam_delay_manager(largest_uint target_delay) {
 }
 
 void Window::full_thread_delay_manager(largest_uint target_delay) {
-    static largest_uint smallesttimeunit=glb::MIN_DELAY_ERROR;
+    static largest_uint smallesttimeunit=ntris::MIN_DELAY_ERROR;
     MyClock clock;
     largest_uint _last_time=clock.elapsedTime();
     while(clock.elapsedTime()+smallesttimeunit<target_delay) {

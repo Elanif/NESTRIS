@@ -4,7 +4,7 @@
 #include"Input.hpp"
 #include<SFML/Graphics.hpp>
 #include"Engine.hpp"
-#include"enums.hpp"
+#include"ntris.hpp"
 
 class Window : public sf::NonCopyable
 {

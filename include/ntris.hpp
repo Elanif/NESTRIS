@@ -1,5 +1,5 @@
-#ifndef ENUMS_H
-#define ENUMS_H
+#ifndef NTRIS_H
+#define NTRIS_H
 #include<cstdint>
 #ifndef nes_uchar
 #define nes_uchar std::uint_least8_t
@@ -29,20 +29,21 @@
 #define NEXTPIECEY 111
 #endif // NEXTPIECEY
 #ifndef getframemod4 //TODO REMOVE THIS DEFINE
-#define getframemod4 glb::FrameCounter::mod4
+#define getframemod4 ntris::FrameCounter::mod4
 #endif // getframemod
 #ifndef incframe
-#define incframe glb::FrameCounter::inc
+#define incframe ntris::FrameCounter::inc
 #endif // incframe
 #include<cstddef>
 #include<SFML/System/Vector2.hpp>
 #include<tuple>
 #include<string>
+#include<memory>
 
 typedef char string_character;
 
 class tiletype;
-namespace glb { //todo make into ntris
+namespace ntris {
     typedef const char* const_string_literal;
     typedef char* string_literal;
     enum BTN {
@@ -110,6 +111,7 @@ namespace glb { //todo make into ntris
 	constexpr float info_window_character_size = 8;
 	constexpr largest_uint MIN_DELAY_ERROR = 1000; 
 	const std::string newline = { "\r\n" };
+	constexpr std::size_t max_string_length = 30;
 
     constexpr nes_uchar block_colors[10][4]={
     {0x0D ,0x30 ,0x21 ,0x12},
@@ -125,6 +127,9 @@ namespace glb { //todo make into ntris
     };
 
 	void lowercase_str(std::string& str); //TODO make it portable with 16bitchar
+
+	template<typename ... Args>
+	std::string string_format(const std::string& format, Args ... args);
 }
 
-#endif // ENUMS_H
+#endif // NTRIS_H

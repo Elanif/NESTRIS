@@ -3,7 +3,7 @@
 #define SCORE_H
 #include<cstdio>
 #include"Renderer.hpp"
-#include"enums.hpp"
+#include"ntris.hpp"
 #include"TileContainer.hpp"
 
 class ScoreContainer {

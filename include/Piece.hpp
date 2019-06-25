@@ -1,6 +1,6 @@
 #ifndef PIECE_H
 #define PIECE_H
-#include"enums.hpp"
+#include"ntris.hpp"
 #include"TileContainer.hpp"
 #include<vector>
 #include<utility>

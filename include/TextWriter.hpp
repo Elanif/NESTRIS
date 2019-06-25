@@ -1,6 +1,6 @@
 #ifndef TEXTWRITER_H
 #define TEXTWRITER_H
-#include"enums.hpp"
+#include"ntris.hpp"
 #include<string>
 class TileContainer;
 

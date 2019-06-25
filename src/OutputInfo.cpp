@@ -127,7 +127,7 @@ std::string OutputInfoError::print(bool const& clear) {
 	std::stringstream outputstring;
 	outputstring << name <<"=";
     for (const auto& i:error_list) {
-        outputstring<<"\t\t\t"<< i<<glb::newline;
+        outputstring<<"\t\t\t"<< i<<ntris::newline;
     }
 	if (clear && !error_list.empty()) error_list.pop_front();
 	return outputstring.str();

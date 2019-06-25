@@ -1,6 +1,6 @@
 #ifndef TILECONTAINER_H
 #define TILECONTAINER_H
-#include"enums.hpp"
+#include"ntris.hpp"
 #include<cstddef>
 #include<SFML/System/NonCopyable.hpp>
 #include<functional>
@@ -79,7 +79,7 @@ class TileContainer : sf::NonCopyable
     public:
         //TODO make private
         void reset();
-        sf::Vector3<std::multimap<double, glb::triple> > extra_tiles={{},{},{}};
+        sf::Vector3<std::multimap<double, ntris::triple> > extra_tiles={{},{},{}};
         const tiletype& at(const std::size_t& x, const std::size_t& y) const;
         tiletype& at(const std::size_t& x, const std::size_t& y);
         const tiletype& atconst(const std::size_t& x, const std::size_t& y) const {return at(x,y);}

@@ -9,7 +9,7 @@
 #include"MatrixContainer.hpp"
 #include"LevelLines.hpp"
 #include"Statistics.hpp"
-#include"enums.hpp"
+#include"ntris.hpp"
 
 //class Score; //todo fwd decl
 //class LevelLines;

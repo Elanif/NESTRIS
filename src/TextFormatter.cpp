@@ -144,7 +144,7 @@ bool TextFormatter<CharType>::fitString(float const& character_size)
 		}
 		
 		if (str_it < m_string.length()) {
-			m_formatted_string += glb::newline;
+			m_formatted_string += ntris::newline;
 		}
 
 		if (text_width > total_text_width) total_text_width = text_width;
@@ -173,7 +173,7 @@ bool TextFormatter<CharType>::fitStringApprox(float const& character_size)
 		std::size_t prev_it = str_it;
 		std::size_t sub_str_it = 0;
 		if (str_it+char_width<m_string.length()) 
-			m_formatted_string.insert(str_it + char_width, glb::newline);
+			m_formatted_string.insert(str_it + char_width, ntris::newline);
 		str_it += char_width + 2;
 	}
 	m_elaborated = true;

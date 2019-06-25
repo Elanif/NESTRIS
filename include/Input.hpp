@@ -2,7 +2,7 @@
 #define INPUT_H
 #define MAXBUTTONS 8
 #include"ActiveInputs.hpp"
-#include"enums.hpp"
+#include"ntris.hpp"
 #include<vector>
 #include<array>
 #include<utility>

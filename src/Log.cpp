@@ -1,5 +1,4 @@
 #include"Log.hpp"
-
 #include<chrono>
 #include<ctime>
 #include<iostream>
@@ -41,7 +40,7 @@ void Log::print_error(const char* error_string) {
 	system_clock::duration tp = now.time_since_epoch();
 	tp -= duration_cast<seconds>(tp);
 	error_log << print_time(*localtime(&current_time), tp);
-	error_log << error_string << glb::newline;
+	error_log << error_string << ntris::newline;
 	error_log.flush();
 }
 
@@ -89,14 +88,14 @@ template void Log::update_error(const double& t);
 template void Log::update_error(const long double& t);
 
 std::size_t Log::add_value(std::string info, std::string unit) {
-	glb::lowercase_str(info);
-	glb::lowercase_str(unit);
+	ntris::lowercase_str(info);
+	ntris::lowercase_str(unit);
 	std::unique_ptr<OutputInfo> fpsinfo = std::make_unique<OutputInfo>(info, unit);
 	return add_value(std::move(fpsinfo));
 }
 
 std::size_t Log::add_value(std::unique_ptr<OutputInfo>&& outputinfo) {
-	glb::lowercase_str(outputinfo->name);
+	ntris::lowercase_str(outputinfo->name);
 	std::size_t CMvector_size = log_vector.size();
 	bool push_back_error = false;
 	try {
@@ -104,12 +103,12 @@ std::size_t Log::add_value(std::unique_ptr<OutputInfo>&& outputinfo) {
 	}
 	catch (std::exception const& bad_alloc_exception) {
 		push_back_error = true;
-		error_log << "OutputInfo pushback exception " << bad_alloc_exception.what() << glb::newline;
+		error_log << "OutputInfo pushback exception " << bad_alloc_exception.what() << ntris::newline;
 		error_log.flush();
 	}
 	if (!push_back_error && CMvector_size == log_vector.size()) {
 		push_back_error = true;
-		error_log << "OutputInfo pushback failed" << glb::newline;
+		error_log << "OutputInfo pushback failed" << ntris::newline;
 		error_log.flush();
 	}
 	if (push_back_error) return (std::size_t) - 1;

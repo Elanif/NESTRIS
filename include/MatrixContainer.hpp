@@ -1,6 +1,6 @@
 #ifndef MATRIXCONTAINER_H
 #define MATRIXCONTAINER_H
-#include"enums.hpp"
+#include"ntris.hpp"
 #include"Renderer.hpp"
 #include"PieceContainer.hpp"
 #include"PFMatrix.hpp"

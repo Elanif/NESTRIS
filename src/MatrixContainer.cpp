@@ -1,5 +1,5 @@
 #include"MatrixContainer.hpp"
-#include"enums.hpp"
+#include"ntris.hpp"
 #include<vector>
 #include<utility>
 #include<cstdio>
@@ -24,22 +24,22 @@ void MatrixContainer::render(const nes_uchar& _level) {
         --hidecounter;
         return;
     }
-    if (glb::lineclearframecounter>0) {    //TODO how does pause interact with the clear animation?
+    if (ntris::lineclearframecounter>0) {    //TODO how does pause interact with the clear animation?
         if (getframemod4()==0) {
             //Sound::play(Sound::clear_line);
             for (std::size_t i=0; i<linescleared; ++i ){
-                std::size_t x=glb::lineclearframecounter-1;
+                std::size_t x=ntris::lineclearframecounter-1;
                 std::size_t y=linesclearedarray[i];
                 matrix(x,y)=0;
 
-                x=10-glb::lineclearframecounter;
+                x=10-ntris::lineclearframecounter;
                 matrix(x,y)=0;
             }
         }
     }
-    else if (glb::updatingmatrix>0) {
+    else if (ntris::updatingmatrix>0) {
         //Sound::play(Sound::tetris);
-        std::size_t update_iter=5-glb::updatingmatrix;
+        std::size_t update_iter=5-ntris::updatingmatrix;
         for (std::size_t y=0; y<4; ++y) {
             for (std::size_t x=0; x<10; ++x) {
                 matrix(x,y+update_iter*4+2)=newmatrix(x,y+update_iter*4+2);
@@ -48,7 +48,7 @@ void MatrixContainer::render(const nes_uchar& _level) {
     }
     for (nes_uchar x=0; x<10; ++x) { //TODO maybe optimize to render only new stuff around piece
         for (nes_uchar y=2; y<22; ++y) {
-            tilecont->at(glb::playfieldx+x,glb::playfieldy+y-2)=tiletype(_level,matrix(x,y));
+            tilecont->at(ntris::playfieldx+x,ntris::playfieldy+y-2)=tiletype(_level,matrix(x,y));
         }
     }
     //TODO
@@ -105,7 +105,7 @@ nes_uchar MatrixContainer::clearlines() {
         }
     }
 	newmatrix = matrix;
-    for (std::size_t i=lowestline, rowcounter=lowestline; i>=1&&rowcounter>=1; --i,--rowcounter) { //20 because glb::playfield isn't saved over 20
+    for (std::size_t i=lowestline, rowcounter=lowestline; i>=1&&rowcounter>=1; --i,--rowcounter) { //20 because ntris::playfield isn't saved over 20
         while(rowcounter>=1&&whichlines[rowcounter]) --rowcounter;
         for (std::size_t j=0; j<10; ++j) {
             newmatrix(j,i)=newmatrix(j,rowcounter);

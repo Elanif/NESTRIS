@@ -1,6 +1,6 @@
 #ifndef SPRITE_H
 #define SPRITE_H
-#include"enums.hpp"
+#include"ntris.hpp"
 #include<SFML/System/Utf.hpp>
 #include<SFML/Graphics.hpp>
 #include<climits>
@@ -24,18 +24,18 @@ struct SpriteEqual {
 		auto lookup = [&](unsigned char const& color, unsigned char* const& palette_color, std::size_t const& colors_found) -> std::size_t {
 			for (std::size_t i = 0; i < colors_found; ++i)
 				if (palette_color[i] == color) return i;
-			return glb::maxcolor;
+			return ntris::maxcolor;
 		};
         std::size_t colors_found=0;
-        unsigned char palette_color1[glb::maxcolor];//={0,0,0,0};
-        unsigned char palette_color2[glb::maxcolor];//={0,0,0,0};
-        for (std::size_t x=0; x<glb::tilesize.x; ++x) {
-            for (std::size_t y=0; y<glb::tilesize.y; ++y) {
+        unsigned char palette_color1[ntris::maxcolor];//={0,0,0,0};
+        unsigned char palette_color2[ntris::maxcolor];//={0,0,0,0};
+        for (std::size_t x=0; x<ntris::tilesize.x; ++x) {
+            for (std::size_t y=0; y<ntris::tilesize.y; ++y) {
                 std::size_t lookup1=lookup(img1.arr[x][y],palette_color1,colors_found);
                 std::size_t lookup2=lookup(img2.arr[x][y],palette_color2,colors_found);
                 if (lookup1!=lookup2) return false;
-                if (lookup1== glb::maxcolor) {
-					if (colors_found >= glb::maxcolor) throw "Too many colors in sprite equal"; //ERROR
+                if (lookup1== ntris::maxcolor) {
+					if (colors_found >= ntris::maxcolor) throw "Too many colors in sprite equal"; //ERROR
                     palette_color1[colors_found]=img1.arr[x][y];
                     palette_color2[colors_found]=img2.arr[x][y];
 					++colors_found;
@@ -73,19 +73,19 @@ namespace std
         std::size_t operator()(const Sprite& t) const noexcept
         {
             std::size_t colors_found=0;
-            unsigned char palette_color1[glb::maxcolor];
+            unsigned char palette_color1[ntris::maxcolor];
 			auto lookup = [&](unsigned char const& color, unsigned char* const& palette_color, std::size_t const& colors_found) -> std::size_t {
 				for (std::size_t i = 0; i < colors_found; ++i)
 					if (palette_color[i] == color) return i;
-				return glb::maxcolor;
+				return ntris::maxcolor;
 			};
             unsigned long long temphash=0;
             unsigned long long rotations=0;
-            for (std::size_t x=0; x<glb::tilesize.x; ++x) {
-                for (std::size_t y=0; y<glb::tilesize.y; ++y) {
+            for (std::size_t x=0; x<ntris::tilesize.x; ++x) {
+                for (std::size_t y=0; y<ntris::tilesize.y; ++y) {
                     std::size_t lookup1=lookup(t.arr[x][y],palette_color1,colors_found);
-                    if (lookup1>=glb::maxcolor) {
-						if (colors_found>=glb::maxcolor) Log::update_error("Too many colors in sprite hash, sprite number: ");
+                    if (lookup1>=ntris::maxcolor) {
+						if (colors_found>=ntris::maxcolor) Log::update_error("Too many colors in sprite hash, sprite number: ");
 						else palette_color1[colors_found]=t.arr[x][y];
 						++colors_found;
                     }

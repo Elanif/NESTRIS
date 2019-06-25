@@ -10,23 +10,23 @@ LevelLines::LevelLines(TileContainer * _tilecont, const nes_ushort& _frameappear
 }
 
 void LevelLines::render() {
-    if (glb::updatingmatrix<=0 && glb::lineclearframecounter <=0) shown_level=real_level;
+    if (ntris::updatingmatrix<=0 && ntris::lineclearframecounter <=0) shown_level=real_level;
     if (hidecounter>0) {
         --hidecounter;
         return;
     }
     else {
-        if (glb::lineclearframecounter) { //IT UPDATES AFTER LINECLEARFRAMECOUNTER AND BEFORE UPDATINGAMATRIX
-            TextWriter::write_hex(linestemp[0], tilecont, {glb::linesx+1,glb::linesy},2);
-            TextWriter::write_hex(linestemp[1], tilecont, {glb::linesx,glb::linesy},1);
+        if (ntris::lineclearframecounter) { //IT UPDATES AFTER LINECLEARFRAMECOUNTER AND BEFORE UPDATINGAMATRIX
+            TextWriter::write_hex(linestemp[0], tilecont, {ntris::linesx+1,ntris::linesy},2);
+            TextWriter::write_hex(linestemp[1], tilecont, {ntris::linesx,ntris::linesy},1);
 
-            TextWriter::write_hex(level_hex[shown_level],tilecont,{glb::levelx+2,glb::levely+1},2);
+            TextWriter::write_hex(level_hex[shown_level],tilecont,{ntris::levelx+2,ntris::levely+1},2);
         }
         else {
-            TextWriter::write_hex(lines[0], tilecont, {glb::linesx+1,glb::linesy},2);
-            TextWriter::write_hex(lines[1], tilecont, {glb::linesx,glb::linesy},1);
+            TextWriter::write_hex(lines[0], tilecont, {ntris::linesx+1,ntris::linesy},2);
+            TextWriter::write_hex(lines[1], tilecont, {ntris::linesx,ntris::linesy},1);
 
-            TextWriter::write_hex(level_hex[real_level],tilecont,{glb::levelx+2,glb::levely+1},2);
+            TextWriter::write_hex(level_hex[real_level],tilecont,{ntris::levelx+2,ntris::levely+1},2);
         }
     }
 }

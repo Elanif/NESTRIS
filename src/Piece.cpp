@@ -91,8 +91,8 @@ std::vector<std::pair<std::size_t, std::size_t> > Piece::nextpiecePos() const {
     std::vector<std::pair<std::size_t, std::size_t> > result;
     if (piecetype<0 || piecetype>6) return result;
     for (std::vector<std::pair<nes_uchar,nes_uchar> >::size_type i=0; i< 4; ++i) {
-        std::size_t nextpiecex=glb::nextpiece_coords[piecetype].x+rotationmatrix[piecetype*4+rotation%4][i][0]*8;
-        std::size_t nextpiecey=glb::nextpiece_coords[piecetype].y+rotationmatrix[piecetype*4+rotation%4][i][1]*8;
+        std::size_t nextpiecex=ntris::nextpiece_coords[piecetype].x+rotationmatrix[piecetype*4+rotation%4][i][0]*8;
+        std::size_t nextpiecey=ntris::nextpiece_coords[piecetype].y+rotationmatrix[piecetype*4+rotation%4][i][1]*8;
         result.push_back(std::make_pair(nextpiecex,nextpiecey));
     }
     return result;

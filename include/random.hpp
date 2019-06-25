@@ -1,7 +1,7 @@
 #pragma once
 #ifndef RANDOM_H
 #define RANDOM_H
-#include"enums.hpp"
+#include"ntris.hpp"
 
 class random
 {

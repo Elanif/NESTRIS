@@ -4,7 +4,7 @@
 #include<list>
 #include<SFML/System/Vector2.hpp>
 #include<SFML/System/Time.hpp>
-#include"enums.hpp"
+#include"ntris.hpp"
 
 class OutputInfo
 {

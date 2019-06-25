@@ -1,7 +1,7 @@
 #ifndef STATISTICS_H
 #define STATISTICS_H
 #include"Renderer.hpp"
-#include"enums.hpp"
+#include"ntris.hpp"
 
 class StatisticsContainer {
     public:

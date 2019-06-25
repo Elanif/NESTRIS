@@ -8,7 +8,7 @@
 #include<unordered_map>
 #include"OutputInfo.hpp"
 #include<fstream>
-#include"enums.hpp"
+#include"ntris.hpp"
 
 class Log : public sf::NonCopyable {
 public:

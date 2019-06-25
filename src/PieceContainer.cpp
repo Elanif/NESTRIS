@@ -1,6 +1,6 @@
 #include"PieceContainer.hpp"
 #include<cstddef>
-#include"enums.hpp"
+#include"ntris.hpp"
 #include"random.hpp"
 #include<cstdio>
 #include<sstream>
@@ -43,38 +43,38 @@ void PieceContainer::inputManager(const ActiveInputs& _inputs, const PFMatrix& p
     if (init_delay>0) {
         init_delay--; //TODO before or after, frame discrepancy?
     }
-    if (_inputs.getPress(glb::Select)) hidenextpiece=!hidenextpiece;
+    if (_inputs.getPress(ntris::Select)) hidenextpiece=!hidenextpiece;
     if (sleepcounter>0) {
         --sleepcounter;
         return;
     }
-    if (glb::lineclearframecounter>0||glb::updatingmatrix>0||glb::ARE>0) return; //TODO 1 frame error? updating>1?
+    if (ntris::lineclearframecounter>0||ntris::updatingmatrix>0||ntris::ARE>0) return; //TODO 1 frame error? updating>1?
     ++downcounter;
     //MOVE
-    if (!_inputs.getHold(glb::Down)) {
+    if (!_inputs.getHold(ntris::Down)) {
         holddowncounter=holddownpoints=0;
     }
     Piece temppiece=currentpiece;
-    if (_inputs.getPress(glb::Down)) {
+    if (_inputs.getPress(ntris::Down)) {
         downinterrupted=false;
         init_delay=0;
     }
-    if (_inputs.getHold(glb::Down)) {
+    if (_inputs.getHold(ntris::Down)) {
         init_delay=0;
-        if (_inputs.getPress(glb::Right)||_inputs.getPress(glb::Left)||_inputs.getHold(glb::Right)||_inputs.getHold(glb::Left)) downinterrupted=true;
+        if (_inputs.getPress(ntris::Right)||_inputs.getPress(ntris::Left)||_inputs.getHold(ntris::Right)||_inputs.getHold(ntris::Left)) downinterrupted=true;
     }
     else {
-        if (_inputs.getPress(glb::Right)) {
+        if (_inputs.getPress(ntris::Right)) {
             piece_changed=true;
             das=0;
             ++temppiece.x;
         }
-        else if (_inputs.getPress(glb::Left)) {
+        else if (_inputs.getPress(ntris::Left)) {
             piece_changed=true;
             das=0;
             --temppiece.x;
         }
-        else if (_inputs.getHold(glb::Right)) {
+        else if (_inputs.getHold(ntris::Right)) {
             ++das;
             if (das>=16) {
                 piece_changed=true;
@@ -82,7 +82,7 @@ void PieceContainer::inputManager(const ActiveInputs& _inputs, const PFMatrix& p
                 das=10;
             }
         }
-        else if (_inputs.getHold(glb::Left)) {
+        else if (_inputs.getHold(ntris::Left)) {
             ++das;
             if (das>=16) {
                 piece_changed=true;
@@ -96,14 +96,14 @@ void PieceContainer::inputManager(const ActiveInputs& _inputs, const PFMatrix& p
         if (piece_changed) Sound::play(Sound::move_piece);
         currentpiece=temppiece;
     }
-    //ROTglb::ATE
+    //ROTATE
     temppiece=currentpiece;
     piece_changed=false;
-    if (_inputs.getPress(glb::A)) {
+    if (_inputs.getPress(ntris::A)) {
         piece_changed=true;
         temppiece.rotation=(temppiece.rotation+1)%4;
     }
-    else if (_inputs.getPress(glb::B)) {
+    else if (_inputs.getPress(ntris::B)) {
         piece_changed=true;
         temppiece.rotation=(temppiece.rotation-1)%4;
     }
@@ -115,7 +115,7 @@ void PieceContainer::inputManager(const ActiveInputs& _inputs, const PFMatrix& p
     //ifnot holding down or have been holding down
     //DROP
     temppiece=currentpiece;
-    if (_inputs.getHold(glb::Down)&&!downinterrupted) {
+    if (_inputs.getHold(ntris::Down)&&!downinterrupted) {
         ++holddowncounter;
         if (holddowncounter>=3) {
             downcounter=0;
@@ -140,7 +140,6 @@ void PieceContainer::inputManager(const ActiveInputs& _inputs, const PFMatrix& p
         }
         else currentpiece=temppiece;
     }
-    //printf("das=%d\n",das);
 }
 
 const Piece& PieceContainer::getPiece() const{
@@ -164,14 +163,14 @@ void PieceContainer::render(const nes_ushort& _framecounter, const nes_uchar& _l
         return;
     }
     rendernextpiece(_level);
-    if (glb::lineclearframecounter>0||glb::updatingmatrix>0||glb::ARE>0) return;
+    if (ntris::lineclearframecounter>0||ntris::updatingmatrix>0||ntris::ARE>0) return;
     else if (true){
         std::vector<std::pair<nes_uchar, nes_uchar> > piecepositions = currentpiece.getPos();
         for (std::vector<std::pair<nes_uchar, nes_uchar> >::size_type i=0; i<piecepositions.size(); ++i) {
             std::size_t _xx=piecepositions[i].first;
             std::size_t _yy=piecepositions[i].second;
             if (PFMatrix::visible(_xx,_yy)) {
-                tilecont->at(glb::playfieldx+_xx,glb::playfieldy+_yy-2)=tiletype(_level,currentpiece.color());
+                tilecont->at(ntris::playfieldx+_xx,ntris::playfieldy+_yy-2)=tiletype(_level,currentpiece.color());
             }
         }
     }
