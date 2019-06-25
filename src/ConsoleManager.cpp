@@ -4,14 +4,11 @@
 #include"TextFormatter.hpp"
 #include"Log.hpp"
 
-sf::Font ConsoleManager::info_window_font;
-unsigned char ConsoleManager::framecounter=0;
-bool ConsoleManager::error_print=false;
-
-sf::RenderWindow ConsoleManager::info_window;
-
 void ConsoleManager::open_info_window() {
-	if (!info_window.isOpen()) info_window.create(sf::VideoMode(glb::ntsc_screen_width * glb::window_scale.x, glb::ntsc_screen_height * glb::window_scale.y), "Information");
+	if (!info_window.isOpen()) {
+		info_window.create(sf::VideoMode(glb::ntsc_screen_width * glb::window_scale.x, glb::ntsc_screen_height * glb::window_scale.y), "Information");
+		if (menu_stack.empty()) menu_stack.push(MENU::HOME);
+	}
 }
 
 void ConsoleManager::close_info_window() {
@@ -38,45 +35,12 @@ void ConsoleManager::init()
 	open_info_window();
 }
 
-TextFormatter<string_character> ConsoleManager::text_formatter;
-
 void ConsoleManager::refresh(bool always_print) {
 	static nes_uchar counter = 0;
 	static std::string text_test = "";
 	if (info_window.isOpen()) {
-		sf::Event event;
-		while (info_window.pollEvent(event))
-		{
-			switch (event.type) {
-			case sf::Event::Closed:
-				close_info_window();
-				return;
-				break;
-			case sf::Event::TextEntered:
-				if (info_window.hasFocus()) {
-					// Handle ASCII characters only
-					if (event.text.unicode < 128)
-					{
-						if (event.text.unicode == 8 && text_test.length() > 0) {
-							text_test.pop_back();
-						}
-						else text_test += static_cast<char>(event.text.unicode);
-						std::cout << text_test << glb::newline;
-					}
-				}
-			break;
-			case sf::Event::KeyPressed:
-				switch (event.key.code) {
-				case sf::Keyboard::F1: {
-						toggle_info_window();
-						if (is_window_open())
-							info_window.requestFocus();
-					}
-					break;
-				}
-			}
-
-		}
+		handle_menu(current_menu);
+		render_menu(current_menu);
 		info_window.clear();
 		sf::Vector2f pos{ 0,0 };
 		bool reset = false;
@@ -98,7 +62,7 @@ void ConsoleManager::refresh(bool always_print) {
 	}
 }
 
-void ConsoleManager::handle_and_render_menu(MENU const& menu)
+void ConsoleManager::handle_menu(MENU const& menu)
 {
 	sf::Event event;
 
@@ -110,18 +74,27 @@ void ConsoleManager::handle_and_render_menu(MENU const& menu)
 			basic_handler(event);
 			handleHOME(event);
 		}
-		renderHOME();
-		break;
+
+	break;
 
 	}
 }
 
 void ConsoleManager::handleHOME(sf::Event const& event)
 {
-}
-
-void ConsoleManager::renderHOME()
-{
+	switch (event.type) {
+	case sf::Event::KeyPressed:
+		switch (event.key.code) {
+		case sf::Keyboard::F1:
+			if (detecting_text_entered && !detecting_hotkey_input) {
+				toggle_info_window();
+				if (is_window_open())
+					info_window.requestFocus();
+			}
+		break;
+		}
+	break;
+	}
 }
 
 void ConsoleManager::basic_handler(sf::Event const& event) {
@@ -131,29 +104,40 @@ void ConsoleManager::basic_handler(sf::Event const& event) {
 		return;
 		break;
 	case sf::Event::TextEntered:
-		if (info_window.hasFocus()) {
+		if (info_window.hasFocus()&&detecting_text_entered&&!detecting_hotkey_input) {
 			// Handle ASCII characters only
 			if (event.text.unicode < 128)
 			{
 				if (event.text.unicode == 8 && text_entered.length() > 0) {
 					text_entered.pop_back();
 				}
-				else text_entered += static_cast<char>(event.text.unicode);
+				else if (26 < event.text.unicode) {
+					text_entered += static_cast<char>(event.text.unicode);
+				}
 				std::cout << text_entered << glb::newline;
 			}
 		}
-		break;
+	break;
 	case sf::Event::KeyPressed:
-		switch (event.key.code) {
-		case sf::Keyboard::F1: {
-			toggle_info_window();
-			if (is_window_open())
-				info_window.requestFocus();
-			}
+		if (detecting_text_entered && !detecting_hotkey_input) {
+			switch (event.key.code) {
+			case sf::Keyboard::F1:
+				toggle_info_window();
+				if (is_window_open())
+					info_window.requestFocus();
 			break;
+			}
 		}
-		break;
+	break;
 	}
+}
+
+void ConsoleManager::render_menu(MENU const& menu) {
+
+}
+
+void ConsoleManager::renderHOME()
+{
 }
 
 ConsoleManager::~ConsoleManager() {

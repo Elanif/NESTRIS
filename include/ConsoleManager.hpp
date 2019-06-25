@@ -4,38 +4,42 @@
 #include<SFML/System/NonCopyable.hpp>
 #include<SFML/System/Vector2.hpp>
 #include<utility>
+#include<stack>
 #include<SFML/Graphics.hpp>
 #include"TextFormatter.hpp"
 
 class ConsoleManager : public sf::NonCopyable
 {
-    public:
-        static void init();
-		static void close_info_window();
-		static void open_info_window();
-		static void toggle_info_window();
-		static bool is_window_open();
-		~ConsoleManager();
-        static void refresh(bool always_print=false);
+public:
+	ConsoleManager() { init(); }
+	void init();
+	void close_info_window();
+	void open_info_window();
+	void toggle_info_window();
+	bool is_window_open();
+	~ConsoleManager();
+	void refresh(bool always_print = false);
 
-    private:
-		static sf::RenderWindow info_window;
-		static sf::Font info_window_font;
-		static TextFormatter<string_character> text_formatter;
-		enum MENU {
-			HOME,
-			SETTINGS
-		};
-		static std::string text_entered;
-		static bool detecting_text_entered = true;
-		static bool detecting_hotkey_input = false;
-		static void handle_and_render_menu(MENU const& menu);
-		static void basic_handler(sf::Event const& event);
+private:
+	sf::RenderWindow info_window{};
+	sf::Font info_window_font{};
+	TextFormatter<string_character> text_formatter;
+	enum MENU {
+		HOME,
+		SETTINGS
+	} current_menu;
+	std::stack<MENU> menu_stack;
+	std::string text_entered{};
+	bool detecting_text_entered{ true };
+	bool detecting_hotkey_input{ false };
+	void handle_menu(MENU const& menu);
+	void render_menu(MENU const& menu);
+	void basic_handler(sf::Event const& event);
 
-		static void handleHOME(sf::Event const& event);
-		static void renderHOME();
+	void handleHOME(sf::Event const& event);
+	void renderHOME();
 
-        static unsigned char framecounter;
-        static bool error_print;
+	unsigned char framecounter{ 0 };
+	bool error_print{ false };
 };
 #endif // CONSOLEMANAGER_H

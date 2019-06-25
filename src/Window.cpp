@@ -61,6 +61,8 @@ class MyClock {
 
 Window::Window(const std::size_t& _width, const std::size_t& _height, sf::Vector2f _scale, const OPT& optimized)
 {
+	ConsoleManager cm{};
+
     sf::Transform state;
     state.scale(_scale);
     sf::RenderWindow window(sf::VideoMode(_width*glb::tilesize.x*_scale.x, _height * glb::tilesize.y *_scale.y), "Nestris");
@@ -128,15 +130,15 @@ Window::Window(const std::size_t& _width, const std::size_t& _height, sf::Vector
 				break;
 				case sf::Event::KeyPressed:
 					if (event.key.code == sf::Keyboard::F1) {
-						ConsoleManager::toggle_info_window();
-						if (!ConsoleManager::is_window_open())
+						cm.toggle_info_window();
+						if (!cm.is_window_open())
 							window.requestFocus();
 					}
 				break;
 				}
 				
             }
-            ConsoleManager::refresh();
+            cm.refresh();
         }
         else {
             switch(optimized) {
@@ -170,7 +172,7 @@ Window::Window(const std::size_t& _width, const std::size_t& _height, sf::Vector
         }
     }
     Log::update<std::string>("system",std::string("Window terminating"));
-    ConsoleManager::refresh(true);
+    cm.refresh(true);
 }
 
 void Window::general_delay_manager(largest_uint target_delay) {

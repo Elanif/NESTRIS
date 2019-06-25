@@ -1,5 +1,4 @@
 #include"enums.hpp"
-#include"ConsoleManager.hpp"
 #include<cstdio>
 #include"Window.hpp"
 #include<SFML/Graphics.hpp>
@@ -17,7 +16,6 @@ int main(int argc, char** args) {
     sf::sleep(sf::milliseconds(10000));*/
     TextWriter::init();
     Sound::init();
-    ConsoleManager::init();
 	Log::init();
     while(false) { //joystick testing
         sf::Joystick::update();
