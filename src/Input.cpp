@@ -52,6 +52,8 @@ void Input::setup() {
         for (const auto& values:keybinds_get)
             inputdependancies[btn_arr[i]].push_back(keybinds_lookup_table[values]);
     }
+	keybinds.append("test","test"s);
+	keybinds.save();
 }
 
 bool Input::isActive(const input_union& _input_union) const {

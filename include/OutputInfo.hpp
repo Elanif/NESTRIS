@@ -63,20 +63,5 @@ private:
     std::list<std::string> error_list;
 };
 
-namespace ntris {
-    template<typename T>
-    std::string to_string(const T& t) {
-        return std::to_string(t);
-    }
-    //TODO OVERLOAD?
-    template<>
-    inline std::string to_string<std::string>(const std::string& t) {
-        return t;
-    }
-    template<>
-    inline std::string to_string<const char*>(const char* const& t) {
-        return std::string(t);
-    }
-}
 
 #endif // OUTPUTINFO_H

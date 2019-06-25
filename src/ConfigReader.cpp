@@ -1,15 +1,30 @@
 #include"ConfigReader.hpp"
 #include<iostream>
 #include<regex>
+#include<filesystem>
+#include"ntris.hpp"
 
+void lowercase_str(std::string& str) { //TODO make it portable with 16bitchar
+	for (auto& c : str)
+	{
+		c = std::tolower(c);
+	}
+}
+
+void uppercase_str(std::string& str) { //TODO make it portable with 16bitchar
+	for (auto& c : str)
+	{
+		c = std::toupper(c);
+	}
+}
 template<typename T>
 T from_string(char* const& str) {
-    return std::move(from_string<T>(std::string(str)));
+    return from_string<T>(std::string(str));
 }
 
 template<typename T>
 T from_string(const std::string& str) {
-    return T(str);
+	return T{str};
 }
 
 template<>
@@ -93,42 +108,66 @@ std::istream& safeGetline(std::istream& is, std::string& t)
 }
 
 ConfigReader::ConfigReader(const std::string& file_location) {
-    is_open=open(file_location);
+	file_path = file_location;
+	is_open = open(file_location);
+}
+
+ConfigReader::ConfigReader(const std::string& file_location, CaseType const& _m_case) 
+	:m_case(_m_case)
+{
+	file_path = file_location;
+	is_open = open(file_location);
 }
 
 void ConfigReader::elaborate() {
     //for (decltype(line_vector.size()) i=0; i<line_vector.size();  ++i) {
     std::regex r_variable_name("^\\s*([^\\s\\=]*)\\s*\\=");
     std::regex r_variable_values("([^,]*),");
-    std::regex r_variable_values_end("([^,]*)");
+    std::regex r_variable_values_end("([^,]+)");
     for (auto& line_string: line_vector) {
 
         std::smatch matches;
         std::regex_search(line_string, matches, r_variable_name);
 
         if (!matches.empty()) {
+			std::string variable_name = matches[1];
 
-            std::string variable_name=matches[1];
+			line_vector_map.push_back(std::vector<std::string>());
+			name_map_map[variable_name] = line_vector_map.size() - 1;
+
             if (name_map.find(variable_name)==name_map.end()) {
-                name_map[variable_name]=std::vector<std::string>();
+                //name_map[variable_name]=std::vector<std::string>();
+				line_vector_map[line_vector_map.size()-1].push_back(variable_name);
             }
-            std::vector<std::string>& value_vector_ref=name_map[variable_name];
+            //std::vector<std::string>& value_vector_ref=name_map[variable_name];
 
             std::smatch value_matches;
 
             decltype(matches[0].second) start_it=matches[0].second;
             while (std::regex_search(start_it,line_string.cend(),value_matches,r_variable_values)) {
 
-                value_vector_ref.push_back(value_matches[1]);
+                //value_vector_ref.push_back(value_matches[1]);
+
+				line_vector_map[line_vector_map.size() - 1].push_back(value_matches[1]);
 
                 start_it=value_matches[0].second;
             }
             if (std::regex_search(start_it,line_string.cend(),value_matches,r_variable_values_end))
             {
-                value_vector_ref.push_back(value_matches[1]);
+                //value_vector_ref.push_back(value_matches[1]);
+
+				line_vector_map[line_vector_map.size() - 1].push_back(value_matches[1]);
             }
+			else {
+				//value_vector_ref.push_back("");
+
+				line_vector_map[line_vector_map.size() - 1].push_back("");
+			}
 
         }
+		else {
+			line_vector_map.push_back(std::vector<std::string>(1, line_string));
+		}
 
     }
 }
@@ -140,6 +179,16 @@ bool ConfigReader::open(const std::string& file_location) {
 
     std::string line="";
     while(!safeGetline(file_data, line).eof()) {
+		switch (m_case) {
+		case CaseType::Lower:
+			lowercase_str(line);
+			break;
+		case CaseType::Upper:
+			uppercase_str(line);
+			break;
+		default:
+			break;
+		}
         line_vector.push_back(line);
     }
     elaborate();
@@ -148,22 +197,98 @@ bool ConfigReader::open(const std::string& file_location) {
 
 template<typename T>
 std::vector<T> ConfigReader::get(char* name) {
-    return std::move(get<T>(std::string(name)));
+	return std::move(get<T>(std::string(name)));
 }
 template<typename T>
 std::vector<T> ConfigReader::get(const std::string& name) {
-    std::vector<T> result;
+	std::vector<T> result;
+	if (!is_loaded) return result;
+	std::string cased_name = name;
+	switch (m_case) {
+	case CaseType::Lower:
+		lowercase_str(cased_name);
+		break;
+	case CaseType::Upper:
+		uppercase_str(cased_name);
+		break;
+	default:
+		break;
+	}
+	//if (name_map.find(cased_name)==name_map.end()) return result;
+	if (name_map_map.find(cased_name) == name_map_map.end()) return result;
 
-    if (!is_loaded) return std::move(result);
-    if (name_map.find(name)==name_map.end()) return std::move(result);
+	//std::vector<std::string> const& value_vector_ref=name_map[cased_name];
+	std::vector<std::string> const& value_vector_ref = line_vector_map[name_map_map[cased_name]];
+	//result.resize(value_vector_ref.size());
+	result.resize(value_vector_ref.size()-1);
 
-    std::vector<std::string> const& value_vector_ref=name_map[name];
-    result.resize(value_vector_ref.size());
+	/*for (decltype(value_vector_ref.size()) i = 0; i < value_vector_ref.size(); ++i) {
+		result[i] = from_string<T>(value_vector_ref[i]);
+	}*/
+	for (decltype(value_vector_ref.size()) i = 1; i < value_vector_ref.size(); ++i) {
+		result[i-1] = from_string<T>(value_vector_ref[i]);
+	}
+	return result;
+}
 
-    for (decltype(value_vector_ref.size()) i=0; i<value_vector_ref.size(); ++i) {
-        result[i]=from_string<T>(value_vector_ref[i]);
-    }
-    return std::move(result);
+template<typename T>
+void ConfigReader::append(char* name, T const& t) {
+	return append<T>(std::string(name), t);
+}
+template<typename T>
+void ConfigReader::append(std::string const& name, T const& t) {
+	if (!is_loaded) return;
+	std::string cased_name = name;
+	switch (m_case) {
+	case CaseType::Lower:
+		lowercase_str(cased_name);
+		break;
+	case CaseType::Upper:
+		uppercase_str(cased_name);
+		break;
+	default:
+		break;
+	}
+
+	if (name_map_map.find(cased_name) == name_map_map.end()) {
+		line_vector_map.push_back(std::vector<std::string>(1, cased_name));
+		name_map_map[cased_name] = line_vector_map.size() - 1;
+	}
+
+	line_vector_map[name_map_map[cased_name]].push_back(ntris::to_string(t));
+}
+
+template<typename T>
+void ConfigReader::overwrite(char* name, std::vector<T> const& t) {
+	return std::move(overwrite<T>(std::string(name), t));
+}
+template<typename T>
+void ConfigReader::overwrite(std::string const& name, std::vector<T> const& t) {
+	if (!is_loaded) return;
+	std::string cased_name = name;
+	switch (m_case) {
+	case CaseType::Lower:
+		lowercase_str(cased_name);
+		break;
+	case CaseType::Upper:
+		uppercase_str(cased_name);
+		break;
+	default:
+		break;
+	}
+
+	if (name_map_map.find(cased_name) == name_map_map.end()) return;
+
+	line_vector_map[name_map_map[cased_name]] = t;
+}
+
+template<typename T>
+void ConfigReader::overwrite(char* name,T const& t) {
+	return std::move(overwrite<T>(std::string(name), std::vector<T>(1,t)));
+}
+template<typename T>
+void ConfigReader::overwrite(std::string const& name, T const& t) {
+	return std::move(overwrite<T>(name, std::vector<T>(1, t)));
 }
 
 void ConfigReader::print() {
@@ -181,6 +306,40 @@ bool ConfigReader::close() {
     file_data.close();
     is_open=file_data.is_open();
     return !is_open;
+}
+
+bool ConfigReader::save() {
+	try {
+		std::filesystem::path final_p = std::filesystem::current_path() / file_path;
+		std::filesystem::path tmp_p = std::filesystem::current_path() / (file_path+std::string(".tmp"));
+		std::ofstream file_data_output(tmp_p, std::ios::out);
+		for (const auto& line : line_vector_map) {
+			file_data_output << line[0];
+			if (line.size() >= 2) {
+				file_data_output << "=";
+				for (std::size_t i = 1; i < line.size() - 1; ++i) {
+					file_data_output << line[i] << ",";
+				}
+				file_data_output << line[line.size() - 1];
+			}
+			file_data_output << "\n";
+		}
+
+		file_data_output.close();
+
+		if (file_data.is_open()) file_data.close();
+
+		std::filesystem::path bak_p = std::filesystem::current_path() / (file_path+std::string(".bak"));
+		std::filesystem::rename(final_p, bak_p);
+
+		std::filesystem::rename(tmp_p, final_p);
+
+		std::filesystem::remove(bak_p);
+	}
+	catch (std::exception ex) {
+		return false;
+	}
+	return true;
 }
 
 template std::vector<double> ConfigReader::get(char* name);
@@ -201,3 +360,22 @@ template std::vector<char> ConfigReader::get(char* name);
 template std::vector<char> ConfigReader::get(const std::string& name);
 template std::vector<std::string> ConfigReader::get(char* name);
 template std::vector<std::string> ConfigReader::get(const std::string& name);
+
+template void ConfigReader::append(char* name, double const&);
+template void ConfigReader::append(const std::string& name, double const&);
+//template void ConfigReader::append(char* name, float const&);
+//template void ConfigReader::append(const std::string& name, float const&);
+template void ConfigReader::append(char* name, bool const&);
+template void ConfigReader::append(const std::string& name, bool const&);
+//template ConfigReader::append(char* name, unsigned long const&);
+//template ConfigReader::append(const std::string& name, unsigned long);
+//template std::vector<unsigned long long> ConfigReader::append(char* name);
+//template std::vector<unsigned long long> ConfigReader::append(const std::string& name);
+template void ConfigReader::append(char* name, int const&);
+template void ConfigReader::append(const std::string& name, int const&);
+//template std::vector<unsigned int> ConfigReader::append(char* name);
+//template std::vector<unsigned int> ConfigReader::append(const std::string& name);
+template void ConfigReader::append(char* name, char const&);
+template void ConfigReader::append(const std::string& name, char const&);
+template void ConfigReader::append(char* name, std::string const&);
+template void ConfigReader::append(const std::string& name, std::string const&);

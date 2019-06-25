@@ -127,9 +127,24 @@ namespace ntris {
     };
 
 	void lowercase_str(std::string& str); //TODO make it portable with 16bitchar
+	void uppercase_str(std::string& str); //TODO make it portable with 16bitchar
 
 	template<typename ... Args>
 	std::string string_format(const std::string& format, Args ... args);
+
+	template<typename T>
+	std::string to_string(const T& t) {
+		return std::to_string(t);
+	}
+	//TODO OVERLOAD?
+	template<>
+	inline std::string to_string<std::string>(const std::string& t) {
+		return t;
+	}
+	template<>
+	inline std::string to_string<const char*>(const char* const& t) {
+		return std::string(t);
+	}
 }
 
 #endif // NTRIS_H

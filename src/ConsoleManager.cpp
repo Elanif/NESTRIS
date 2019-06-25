@@ -175,7 +175,7 @@ ConsoleManager::~ConsoleManager() {
 }
 
 float ConsoleManager::getCharacterSize() {
-	return ntris::info_window_character_size * sqrt((double)ntris::window_scale.x * ntris::window_scale.y);
+	return ntris::info_window_character_size * ntris::window_scale.y;// sqrt((double)ntris::window_scale.x * ntris::window_scale.y);
 }
 
 bool ConsoleManager::is_menu_unlocked(MENU const& from_menu, std::string const& to_menu) {
