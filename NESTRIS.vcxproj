@@ -189,6 +189,7 @@
     <ClCompile Include="src\Sound.cpp" />
     <ClCompile Include="src\Sprite.cpp" />
     <ClCompile Include="src\Statistics.cpp" />
+    <ClCompile Include="src\TextFormatter.cpp" />
     <ClCompile Include="src\TextWriter.cpp" />
     <ClCompile Include="src\TileContainer.cpp" />
     <ClCompile Include="src\TileRenderer.cpp" />
@@ -218,6 +219,7 @@
     <ClInclude Include="include\Sound.hpp" />
     <ClInclude Include="include\Sprite.hpp" />
     <ClInclude Include="include\Statistics.hpp" />
+    <ClInclude Include="include\TextFormatter.hpp" />
     <ClInclude Include="include\TextWriter.hpp" />
     <ClInclude Include="include\TileContainer.hpp" />
     <ClInclude Include="include\TileRenderer.hpp" />

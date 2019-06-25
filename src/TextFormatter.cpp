@@ -81,8 +81,7 @@ template<typename CharType>
 bool TextFormatter<CharType>::fitString(float const& character_size)
 {
 	if (!calculated) calc_font_sizes();
-	//todo height boundary
-	float text_size_multiplier = character_size/m_character_size;
+	float text_size_multiplier = m_character_size/character_size;
 
 	if (m_boundaries.x <= 0 && m_boundaries.y<=0) {
 		m_formatted_string = m_string;
@@ -119,7 +118,12 @@ bool TextFormatter<CharType>::fitString(float const& character_size)
 			if (character_size_map.find(m_string[str_it])!=character_size_map.end()) char_size=character_size_map[m_string[str_it]] * text_size_multiplier;
 			text_width += char_size.x;
 			//getKerning doesn't work
-			if (str_it > prev_it) text_width += m_font->getKerning(m_formatted_string[m_formatted_string.length() - 1], m_string[str_it], character_size);
+			//if (str_it > prev_it) text_width += m_font->getKerning(m_formatted_string[m_formatted_string.length() - 1], m_string[str_it], character_size);
+			if (str_it > prev_it) {
+				std::string kerning_string{ m_formatted_string[m_formatted_string.length() - 1] };
+				kerning_string += m_string[str_it];
+				text_width += kerning_map[kerning_string] * text_size_multiplier;
+			}
 
 			if (m_boundaries.x>0 && text_width > m_boundaries.x) {
 
@@ -209,6 +213,16 @@ void TextFormatter<CharType>::calc_font_sizes() {
 		sf::Vector2f char_bounds = { t.getGlobalBounds().width, t.getGlobalBounds().height };
 		character_size_map[_char] = char_bounds;
 		if (char_bounds.y > max_character_height) max_character_height = char_bounds.y;
+	}
+
+	for (string_character _char_1 = (string_character)(std::size_t{ 32 }); _char_1 <= (string_character)(std::size_t{ 126 }); ++_char_1) {
+		for (string_character _char_2 = (string_character)(std::size_t{ 32 }); _char_2 <= (string_character)(std::size_t{ 126 }); ++_char_2) {
+			std::string kerning_string{ _char_1 };
+			kerning_string += _char_2;
+			t.setString(kerning_string);
+			sf::Vector2f char_bounds = { t.getGlobalBounds().width, t.getGlobalBounds().height };
+			kerning_map[kerning_string] = char_bounds.x - character_size_map[_char_1].x - character_size_map[_char_2].x;
+		}
 	}
 	calculated = true;
 }

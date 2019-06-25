@@ -37,13 +37,14 @@ public:
 private:
 
 	std::unordered_map<string_character, sf::Vector2f> character_size_map;
+	std::unordered_map<std::basic_string<string_character>, float> kerning_map;
 	float max_character_height=0;
 	bool calculated=0;
 
 	std::basic_string<CharType> m_string = "";
 	std::basic_string<CharType> m_formatted_string = "";
 	double m_character_size=30;
-	sf::Font const * m_font;
+	sf::Font const * m_font = nullptr;
 	sf::Color m_fill_color=sf::Color::White;
 	sf::Vector2f m_position = { 0, 0 }; 
 	sf::Vector2f m_boundaries = { 0, 0 };//if one dimension has <=0 boundary it doesnt count

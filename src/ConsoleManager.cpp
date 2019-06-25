@@ -46,13 +46,6 @@ void ConsoleManager::print_error(const char* error_string) {
 	error_log.flush();
 }
 
-void lowercase_str(std::string& str) { //TODO make it portable with 16bitchar
-    for(auto& c : str)
-    {
-       c = std::tolower(c);
-    }
-}
-
 template<typename T>
 void ConsoleManager::update(std::string info, const T& t) {
     if (CMmap.find(info)==CMmap.end()) {
@@ -155,14 +148,14 @@ void ConsoleManager::init()
 }
 
 std::size_t ConsoleManager::add_value(std::string info, std::string unit) {
-    lowercase_str(info);
-    lowercase_str(unit);
+    glb::lowercase_str(info);
+    glb::lowercase_str(unit);
     std::unique_ptr<OutputInfo> fpsinfo=std::make_unique<OutputInfo>(info,unit);
     return add_value(std::move(fpsinfo));
 }
 
 std::size_t ConsoleManager::add_value(std::unique_ptr<OutputInfo>&& outputinfo) {
-    lowercase_str(outputinfo->name);
+    glb::lowercase_str(outputinfo->name);
     std::size_t CMvector_size=CMvector.size();
     bool push_back_error=false;
     try {

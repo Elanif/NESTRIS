@@ -122,6 +122,8 @@ namespace glb { //todo make into ntris
     {0x0D ,0x30 ,0x16 ,0x12},
     {0x0D ,0x30 ,0x27 ,0x16}
     };
+
+	void lowercase_str(std::string& str); //TODO make it portable with 16bitchar
 }
 
 #endif // ENUMS_H

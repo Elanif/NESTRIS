@@ -9,9 +9,6 @@
 #include"Sound.hpp"
 #include"APU.hpp"
 #include<iostream>
-const int SCREEN_WIDTH = 256;
-const int SCREEN_HEIGHT = 224;
-
 
 int main(int argc, char** args) {
     /*APU::init();
@@ -20,7 +17,6 @@ int main(int argc, char** args) {
     TextWriter::init();
     Sound::init();
     ConsoleManager::init();
-    sf::Vector2f scale(1,1);
     while(false) { //joystick testing
         sf::Joystick::update();
         std::cout<<"X"<<sf::Joystick::getAxisPosition(0,sf::Joystick::X)<<" ";
@@ -38,7 +34,7 @@ int main(int argc, char** args) {
         sf::sleep(sf::milliseconds(1000));
         system("CLS");
     }
-    Window finestra(SCREEN_WIDTH,SCREEN_HEIGHT,scale,Window::GENERAL);
+    Window finestra(glb::ntsc_tiles_x,glb::ntsc_tiles_y,glb::window_scale,Window::GENERAL);
 }
 
 /*

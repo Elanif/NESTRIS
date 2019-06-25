@@ -21,12 +21,12 @@ private:
 };
 
 struct SpriteEqual {
-    std::size_t lookup(unsigned char color, unsigned char* palette_color, std::size_t colors_found) const{
-        for (std::size_t i=0; i<colors_found; ++i)
-            if (palette_color[i]==color) return i;
-        return (std::size_t)-1;
-    }
     bool operator()(const Sprite& img1, const Sprite& img2) const{
+		auto lookup = [&](unsigned char const& color, unsigned char* const& palette_color, std::size_t const& colors_found) -> std::size_t {
+			for (std::size_t i = 0; i < colors_found; ++i)
+				if (palette_color[i] == color) return i;
+			return glb::maxcolor;
+		};
         std::size_t colors_found=0;
         unsigned char palette_color1[glb::maxcolor];//={0,0,0,0};
         unsigned char palette_color2[glb::maxcolor];//={0,0,0,0};
@@ -35,11 +35,11 @@ struct SpriteEqual {
                 std::size_t lookup1=lookup(img1.arr[x][y],palette_color1,colors_found);
                 std::size_t lookup2=lookup(img2.arr[x][y],palette_color2,colors_found);
                 if (lookup1!=lookup2) return false;
-                if (lookup1==(std::size_t)-1) {
-                    if (colors_found>=glb::maxcolor) throw "Too many colors in sprite equal"; //ERROR
+                if (lookup1== glb::maxcolor) {
+					if (colors_found >= glb::maxcolor) throw "Too many colors in sprite equal"; //ERROR
                     palette_color1[colors_found]=img1.arr[x][y];
                     palette_color2[colors_found]=img2.arr[x][y];
-                    ++colors_found;
+					++colors_found;
                 }
             }
         }
@@ -73,24 +73,22 @@ namespace std
     struct hash<Sprite> {
         std::size_t operator()(const Sprite& t) const noexcept
         {
-            struct funcholder {
-                static std::size_t lookup(unsigned char color, unsigned char* palette_color, std::size_t colors_found) {
-                    for (std::size_t i=0; i<colors_found; ++i)
-                        if (palette_color[i]==color) return i;
-                    return glb::maxcolor;
-                }
-            };
             std::size_t colors_found=0;
             unsigned char palette_color1[glb::maxcolor];
+			auto lookup = [&](unsigned char const& color, unsigned char* const& palette_color, std::size_t const& colors_found) -> std::size_t {
+				for (std::size_t i = 0; i < colors_found; ++i)
+					if (palette_color[i] == color) return i;
+				return glb::maxcolor;
+			};
             unsigned long long temphash=0;
             unsigned long long rotations=0;
             for (std::size_t x=0; x<glb::tilesize.x; ++x) {
                 for (std::size_t y=0; y<glb::tilesize.y; ++y) {
-                    std::size_t lookup1=funcholder::lookup(t.arr[x][y],palette_color1,colors_found);
+                    std::size_t lookup1=lookup(t.arr[x][y],palette_color1,colors_found);
                     if (lookup1>=glb::maxcolor) {
-						++colors_found;
 						if (colors_found>=glb::maxcolor) ConsoleManager::update_error("Too many colors in sprite hash, sprite number: ");
 						else palette_color1[colors_found]=t.arr[x][y];
+						++colors_found;
                     }
                     temphash+=rol<unsigned long long>(lookup1,rotations++);
                 }

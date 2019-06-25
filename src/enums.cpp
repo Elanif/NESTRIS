@@ -11,3 +11,9 @@ nes_uchar glb::shown_level=0;
 
 sf::Vector2f glb::window_scale = { 2,2 };
 
+void glb::lowercase_str(std::string& str) { //TODO make it portable with 16bitchar
+	for (auto& c : str)
+	{
+		c = std::tolower(c);
+	}
+}
