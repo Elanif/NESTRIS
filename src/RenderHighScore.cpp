@@ -1,4 +1,4 @@
-#include "RenderHighScore.hpp"
+#include"RenderHighScore.hpp"
 #include"TextWriter.hpp"
 #include<string>
 

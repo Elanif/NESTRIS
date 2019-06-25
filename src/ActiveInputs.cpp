@@ -1,4 +1,4 @@
-#include "ActiveInputs.hpp"
+#include"ActiveInputs.hpp"
 #include<cstdio>
 #include"enums.hpp"
 ActiveInputs::ActiveInputs(const std::size_t& _buttons, bool *_prevactiveinputs, bool *_activeinputs, bool _leftandright)

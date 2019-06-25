@@ -2,7 +2,7 @@
 #define WINDOW_H
 
 #include"Input.hpp"
-#include <SFML/Graphics.hpp>
+#include<SFML/Graphics.hpp>
 #include"Engine.hpp"
 #include"enums.hpp"
 

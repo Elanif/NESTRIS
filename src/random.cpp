@@ -1,4 +1,4 @@
-#include "random.hpp"
+#include"random.hpp"
 #include<cstdio>
 nes_ushort random::randomvalue=0x8988; //starting rng value of the original tetris rom
 

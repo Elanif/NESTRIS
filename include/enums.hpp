@@ -34,7 +34,7 @@
 #ifndef incframe
 #define incframe glb::FrameCounter::inc
 #endif // incframe
-#include <cstddef>
+#include<cstddef>
 #include<SFML/System/Vector2.hpp>
 #include<tuple>
 #include<string>
@@ -108,6 +108,7 @@ namespace glb { //todo make into ntris
 	constexpr std::size_t ntsc_tiles_y = 28;
 	extern sf::Vector2f window_scale;
 	constexpr float info_window_character_size = 8;
+	constexpr largest_uint MIN_DELAY_ERROR = 1000; 
 	const std::string newline = { "\r\n" };
 
     constexpr nes_uchar block_colors[10][4]={

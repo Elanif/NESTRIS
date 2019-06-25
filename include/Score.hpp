@@ -56,7 +56,7 @@ class Score : public Renderer
     protected:
 
     private:
-        TileContainer *_tilecont;
+        TileContainer *_tilecont=nullptr;
         bool maxout;
         void bytechecklowdigit(const std::size_t& byte, const bool& andop);
         void bytecheckhighdigit(const std::size_t& byte, const bool& andop);
@@ -64,7 +64,7 @@ class Score : public Renderer
         ScoreContainer score;
         ScoreContainer scoretemp;
         ScoreContainer topscores[3]={};
-        static nes_uchar pointsarray[10];
+		static nes_uchar pointsarray[10];
 
 };
 

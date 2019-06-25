@@ -1,8 +1,8 @@
-#include "Input.hpp"
+#include"Input.hpp"
 #include<cstdio>
 #include<SFML/Window/Keyboard.hpp>
 #include"ConfigReader.hpp"
-#include"ConsoleManager.hpp"
+#include"Log.hpp"
 
 Input::Input()
     :leftandright(false)
@@ -73,7 +73,7 @@ bool Input::isActive(const input_union& _input_union) const {
         }
         break;
         default:
-            ConsoleManager::update_error(std::string("Default case in isActive of input_button"));
+            Log::update_error(std::string("Default case in isActive of input_button"));
     }
     return false;
 }

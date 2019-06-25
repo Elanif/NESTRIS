@@ -1,4 +1,4 @@
-#include "Sound.hpp"
+#include"Sound.hpp"
 #include<string>
 std::vector<sf::SoundBuffer> Sound::sq1buffer(31);
 std::vector<sf::SoundBuffer> Sound::noibuffer(31);

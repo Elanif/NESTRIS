@@ -1,5 +1,5 @@
-#include "TileRenderer.hpp"
-#include"ConsoleManager.hpp"
+#include"TileRenderer.hpp"
+#include"Log.hpp"
 #include"enums.hpp"
 #include<string>
 #include<fstream>
@@ -37,13 +37,13 @@ extra_render(_extra_render) //TODO EXTRA RENDER FOR MORE STUFF THAN DRAWTEXTUR
     if (drawmethod==DRAWSPRITE) {
         quadretti=new uint8container[width*height];
         if (!temptexclass.create(width*tilesize.first,height*tilesize.first))
-            ConsoleManager::update_error<std::string>(std::string("Failed to create texture for DRAWSPRITE render mode"));
+            Log::update_error<std::string>(std::string("Failed to create texture for DRAWSPRITE render mode"));
         tempspriteclass.setTexture(temptexclass, true);
     }
     else if (drawmethod==DRAWIMAGE) {
         finalimageclass.create(width*tilesize.first,height*tilesize.second);
         if (!temptexclass.loadFromImage(finalimageclass))
-            ConsoleManager::update_error<std::string>(std::string("Failed to load texture for DRAWIMAGE render mode"));
+            Log::update_error<std::string>(std::string("Failed to load texture for DRAWIMAGE render mode"));
         tempspriteclass.setTexture(temptexclass, true);
     }
     else if (drawmethod==DRAWVERTEX){
@@ -59,7 +59,7 @@ extra_render(_extra_render) //TODO EXTRA RENDER FOR MORE STUFF THAN DRAWTEXTUR
     else if (drawmethod==DRAWTEXTURE) { //TODO DYNAMICALLY CHOOSE SIZE && check if size<8
         texturesize=sf::Texture::getMaximumSize()<512?sf::Texture::getMaximumSize():512;
         if (!tiletexture.create(texturesize,texturesize))
-            ConsoleManager::update_error<std::string>(std::string("Failed to create texture for DRAWTEXTURE render mode"));
+            Log::update_error<std::string>(std::string("Failed to create texture for DRAWTEXTURE render mode"));
         verteximage=sf::VertexArray(sf::Quads,width*height*4+(extra_render.x+extra_render.y+extra_render.z)*4);
         const std::size_t headline=4*(extra_render.x+extra_render.y);
         for (std::size_t i=0; i<width; ++i) {
@@ -107,7 +107,7 @@ void TileRenderer::load_palette(const std::string& path) {
         }
     }
     else {
-        ConsoleManager::update_error( path+" palette couldn't be loaded, using default palette"+std::to_string(counter));
+        Log::update_error( path+" palette couldn't be loaded, using default palette"+std::to_string(counter));
     }
 }
 
@@ -115,7 +115,7 @@ bool TileRenderer::load(const std::string& tilefile){
     load_palette("palette/YPbPr.pal");
     std::ifstream spritefile(tilefile.c_str(),std::ios::in);
     if (!spritefile) {
-        ConsoleManager::update_error("Couldn't open sprite file: "+tilefile);
+        Log::update_error("Couldn't open sprite file: "+tilefile);
         return false;
     }
     std::size_t spritenumber=spritevector.size();
@@ -167,11 +167,11 @@ std::size_t TileRenderer::add_or_find_texture(const tiletype& newtile, sf::Image
     if (texturemap.find(temptile)==texturemap.end()) { //new texture
 
         if (itoyrect(texturenumber,texturesize,texturesize,tilesize.first,tilesize.first)>texturesize) {
-            ConsoleManager::update_error("Too many textures");
+            Log::update_error("Too many textures");
             throw texturenumber; //TODOBETTER
         }
 
-        ConsoleManager::update("system",std::string("Creating new texture"));
+        Log::update("system",std::string("Creating new texture"));
 
         if (!prerendering) { //TODO USE OFSTREAM
 			newtextures << temptile.tilenumber << std::hex << temptile.palette_color[0] << temptile.palette_color[1] << temptile.palette_color[2] << temptile.palette_color[3] << std::dec << glb::newline;
@@ -462,7 +462,7 @@ void TileRenderer::drawimage(sf::RenderTarget& target, sf::RenderStates states){
 void TileRenderer::add_frequent_textures() {
     std::ifstream previous_textures("texturesprite/Pre-rendered textures.txt");
     if (!previous_textures) {
-        ConsoleManager::update_error("Couldn't open previous textures");
+        Log::update_error("Couldn't open previous textures");
     }
 
     sf::Image texture_image;
@@ -505,7 +505,7 @@ void TileRenderer::drawmod(sf::RenderTarget& target, sf::RenderStates states)
         drawvertex(target, states);
         break;
     default:
-        ConsoleManager::update_error("Warning, default drawmod");
+        Log::update_error("Warning, default drawmod");
         drawimage(target,states);
         break;
     }

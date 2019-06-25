@@ -4,13 +4,12 @@
 #include<SFML/System/Utf.hpp>
 #include<SFML/Graphics.hpp>
 #include<climits>
-#include"ConsoleManager.hpp"
+#include"Log.hpp"
 
 class Sprite {
 public:
-    Sprite();
     void print();
-    nes_uchar arr[8][8];
+	nes_uchar arr[8][8]{ 0 };
 };
 
 class uint8container {
@@ -86,7 +85,7 @@ namespace std
                 for (std::size_t y=0; y<glb::tilesize.y; ++y) {
                     std::size_t lookup1=lookup(t.arr[x][y],palette_color1,colors_found);
                     if (lookup1>=glb::maxcolor) {
-						if (colors_found>=glb::maxcolor) ConsoleManager::update_error("Too many colors in sprite hash, sprite number: ");
+						if (colors_found>=glb::maxcolor) Log::update_error("Too many colors in sprite hash, sprite number: ");
 						else palette_color1[colors_found]=t.arr[x][y];
 						++colors_found;
                     }

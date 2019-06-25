@@ -1,7 +1,7 @@
-#include "Engine.hpp"
+#include"Engine.hpp"
 #include<cstdio>
 #include"random.hpp"
-#include"ConsoleManager.hpp"
+#include"Log.hpp"
 #include<string>
 Engine::Engine(TileContainer* _tilecont, const MenuType& _startingmenu):
 tilecont(_tilecont),
@@ -13,7 +13,7 @@ RHS(_tilecont, framecounter)
     levelselectreload=true;
 
     framecounter=0;
-    ConsoleManager::update<std::string>("system",std::string("Engine init"));
+    Log::update<std::string>("system",std::string("Engine init"));
 }
 
 
@@ -54,7 +54,7 @@ void Engine::frame(const ActiveInputs& _inputs) {
         break;
 
     default:
-        ConsoleManager::update_error("ERROR default frame case in switch");
+        Log::update_error("ERROR default frame case in switch");
         break;
     }
 }

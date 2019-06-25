@@ -1,7 +1,7 @@
 #pragma once
 #ifndef PFMATRIX_H
 #define PFMATRIX_H
-#include"ConsoleManager.hpp"
+#include"Log.hpp"
 #include<string>
 #include<sstream>
 #include"enums.hpp"
@@ -14,14 +14,14 @@ public:
         if (inbounds(column,row)) return matrix[column][row];
 		std::stringstream error_stream;
 		error_stream<< "Invalid matrix index: col=" << column << ", row=" << row << glb::newline;
-		ConsoleManager::update_error(error_stream.str());
+		Log::update_error(error_stream.str());
         return matrix[0][0];
     }
     nes_uchar operator()(const std::size_t& column, const std::size_t& row) const{
         if (inbounds(column,row)) return matrix[column][row];
 		std::stringstream error_stream;
 		error_stream << "Invalid matrix index: col=" << column << ", row=" << row << glb::newline;
-		ConsoleManager::update_error(error_stream.str());
+		Log::update_error(error_stream.str());
         return 0;
     }
 	nes_uchar matrix[10][22] = { 0 };

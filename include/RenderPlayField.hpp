@@ -2,9 +2,9 @@
 #ifndef RENDERPLAYFIELD_H
 #define RENDERPLAYFIELD_H
 #include"TileContainer.hpp"
-#include "Renderer.hpp"
+#include"Renderer.hpp"
 #include"ActiveInputs.hpp"
-#include "Score.hpp"
+#include"Score.hpp"
 #include"PieceContainer.hpp"
 #include"MatrixContainer.hpp"
 #include"LevelLines.hpp"

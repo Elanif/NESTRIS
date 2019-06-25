@@ -1,4 +1,4 @@
-#include "enums.hpp"
+#include"enums.hpp"
 
 nes_schar glb::FrameCounter::framecountlittle=0;
 nes_schar glb::FrameCounter::framecountbig=0;

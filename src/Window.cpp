@@ -1,6 +1,7 @@
 #include"Window.hpp"
 #include<cmath>
 #include"ConsoleManager.hpp"
+#include"Log.hpp"
 #include<chrono>
 #include<thread>
 #include<string>
@@ -9,8 +10,6 @@
 #include"enums.hpp"
 #define SLEEP_SFML //high resolution clock isn't very high resolution
 #define SLEEP_MICROSECONDS
-constexpr unsigned long long MIN_DELAY_ERROR=1000; //todo put in enums as constexpr
-
 
 class MyClock {
     #ifdef SLEEP_CX11
@@ -60,17 +59,18 @@ class MyClock {
     }
 };
 
-
 Window::Window(const std::size_t& _width, const std::size_t& _height, sf::Vector2f _scale, const OPT& optimized)
 {
     sf::Transform state;
     state.scale(_scale);
     sf::RenderWindow window(sf::VideoMode(_width*glb::tilesize.x*_scale.x, _height * glb::tilesize.y *_scale.y), "Nestris");
+
 	std::pair<largest_uint, largest_uint>  tilesize(8,8);
     const sf::Vector3<std::size_t> extra_render(16,16,64);
     TileRenderer tilerend(_width,_height,tilesize,TileRenderer::DRAWTEXTURE,extra_render);
     tilerend.load("texturesprite/sprites.txt");
     //tilerend.load("texturesprite/sprites.txtupdated");
+
     Engine _engine= Engine(tilerend.getTileContainer(),Engine::LEVELSELECT);
 
     sf::Event event;
@@ -84,39 +84,41 @@ Window::Window(const std::size_t& _width, const std::size_t& _height, sf::Vector
     #ifdef SLEEP_NANOSECONDS
 	largest_uint partspersecond = { 1000000000 };
     #endif // SLEEP_NANOSECONDS
-    //largest_uint timeperframe_avg=(long double) (partspersecond)/glb::ntsc_fps;
+
     largest_uint timeperframe_odd=(long double) (partspersecond)/glb::ntsc_fps_odd;
     largest_uint timeperframe_even=(long double) (partspersecond)/glb::ntsc_fps_even;
     bool odd_frame=false;
     largest_uint timeperframe=timeperframe_odd;
+
     MyClock elapsedtime;
+
     while (window.isOpen()) {
-        odd_frame=!odd_frame; //all this could be unrolled into 2 if's in the cycle
+        odd_frame=!odd_frame; //I hope the compiler creates 2 different cycles
         if (odd_frame) timeperframe=timeperframe_odd;
         else timeperframe=timeperframe_even;
         if (elapsedtime.elapsedTime()>=timeperframe) {
 
-            if (elapsedtime.elapsedTime()>0) ConsoleManager::update<long double>("fps",partspersecond/(long double)elapsedtime.elapsedTime());
+            if (elapsedtime.elapsedTime()>0) Log::update<long double>("fps",partspersecond/(long double)elapsedtime.elapsedTime());
 
             elapsedtime.restart();
             sf::Int64 delaycalc=0;
             _engine.frame(inputManager.getInput());
 
-            ConsoleManager::update<sf::Int64>("input delay",elapsedtime.elapsedTime()-delaycalc);
+            Log::update<sf::Int64>("input delay",elapsedtime.elapsedTime()-delaycalc);
             delaycalc=elapsedtime.elapsedTime();
 			//std::cout <<"input delay"<< elapsedtime.elapsedTime() - delaycalc << glb::newline;
             window.clear();//adds 15microseconds
             tilerend.drawmod(window, state);
 
-            ConsoleManager::update<sf::Int64>("draw delay",elapsedtime.elapsedTime()-delaycalc);
+            Log::update<sf::Int64>("draw delay",elapsedtime.elapsedTime()-delaycalc);
 			//std::cout << "draw delay"<<elapsedtime.elapsedTime() - delaycalc << glb::newline;
             delaycalc=elapsedtime.elapsedTime();
 
             window.display();
 
-            delaycalc=elapsedtime.elapsedTime();
-            ConsoleManager::update<sf::Int64>("display delay",elapsedtime.elapsedTime()-delaycalc);
+            Log::update<sf::Int64>("display delay",elapsedtime.elapsedTime()-delaycalc);
 			//std::cout << "display delay"<<elapsedtime.elapsedTime() - delaycalc << glb::newline;
+			delaycalc = elapsedtime.elapsedTime();
 
             while (window.pollEvent(event))
             {
@@ -167,13 +169,12 @@ Window::Window(const std::size_t& _width, const std::size_t& _height, sf::Vector
             }
         }
     }
-    ConsoleManager::update<std::string>("system",std::string("Window terminating"));
+    Log::update<std::string>("system",std::string("Window terminating"));
     ConsoleManager::refresh(true);
 }
 
-
 void Window::general_delay_manager(largest_uint target_delay) {
-    static largest_uint max_extra_delay=MIN_DELAY_ERROR;
+    static largest_uint max_extra_delay=glb::MIN_DELAY_ERROR;
     if (target_delay<=max_extra_delay) return;
     largest_uint real_delay=sleep_for_how_long(target_delay-max_extra_delay);
     if (real_delay>target_delay) {
@@ -182,7 +183,7 @@ void Window::general_delay_manager(largest_uint target_delay) {
 }
 
 void Window::smallest_delay_manager(largest_uint target_delay) {
-    static largest_uint max_extra_delay=MIN_DELAY_ERROR;
+    static largest_uint max_extra_delay=glb::MIN_DELAY_ERROR;
     if (target_delay<=max_extra_delay) return;
     largest_uint real_delay=sleep_for_how_long(target_delay-max_extra_delay);
     if (real_delay>max_extra_delay) {
@@ -193,7 +194,7 @@ void Window::smallest_delay_manager(largest_uint target_delay) {
 void Window::array_delay_manager(largest_uint target_delay) {
     MyClock clock;
 	constexpr std::size_t max_delay_size{ 1000000 }; //todo maybe group delays together
-    static largest_uint arr_delay[max_delay_size]={MIN_DELAY_ERROR};
+    static largest_uint arr_delay[max_delay_size]={glb::MIN_DELAY_ERROR};
     if (target_delay>=max_delay_size) target_delay=max_delay_size-1;
     largest_uint reduced_delay=target_delay-clock.elapsedTime();
     while (clock.elapsedTime()<target_delay&& reduced_delay<=arr_delay[reduced_delay]) {
@@ -242,7 +243,7 @@ void Window::array_delay_manager_bucket(largest_uint target_delay) {
     sum_clock+=clock.elapsedTime();
     if (clock.elapsedTime()>max_clock) max_clock=clock.elapsedTime();*/
     using namespace std::string_literals;
-    //ConsoleManager::update("system","max:"s+std::to_string(max_iterations)+"   avg iter:"+std::to_string((long double)sum_iterations/(long double)tot_iterations)+"   avg clock:"s+std::to_string((long double)sum_clock/(long double) tot_iterations)+ "   max clock:"s+std::to_string(max_clock));
+    //Log::update("system","max:"s+std::to_string(max_iterations)+"   avg iter:"+std::to_string((long double)sum_iterations/(long double)tot_iterations)+"   avg clock:"s+std::to_string((long double)sum_clock/(long double) tot_iterations)+ "   max clock:"s+std::to_string(max_clock));
     if (target_delay<0) return;
     largest_uint real_delay = sleep_for_how_long(bucket_finder(target_delay)*bucket_size-arr_delay[bucket_finder(target_delay)]);
     if (real_delay>bucket_finder(target_delay)*bucket_size) arr_delay[bucket_finder(target_delay)]=real_delay-bucket_finder(target_delay)*bucket_size;
@@ -268,7 +269,7 @@ void Window::array_delay_manager_log(largest_uint target_delay) {
     constexpr unsigned long long partsperframe=1000000000/glb::ntsc_fps;
     #endif // SLEEP_NANOSECONDS
 	constexpr std::size_t array_length = log2(partsperframe) + 1; //constexpr std::size_t array_length=std::ceil(std::log2(partsperframe)); //ceil isn't constexpr for some reason
-    static largest_uint arr_delay[array_length]={MIN_DELAY_ERROR};
+    static largest_uint arr_delay[array_length]={glb::MIN_DELAY_ERROR};
 	constexpr largest_uint max_delay_allowed = largest_uint{ 1 } << array_length;
     if (target_delay<=0) return;
     std::size_t index=0;
@@ -282,13 +283,13 @@ void Window::array_delay_manager_log(largest_uint target_delay) {
     }
     if (result_index>=array_length||result_index<0) return;
     target_delay=largest_uint(1)<<result_index;
-    //ConsoleManager::update("system", std::to_string(target_delay)+std::string("    "));
+    //Log::update("system", std::to_string(target_delay)+std::string("    "));
     largest_uint real_delay=sleep_for_how_long(target_delay-arr_delay[result_index]);
     if (real_delay>target_delay) arr_delay[result_index]=real_delay-target_delay;
 }
 
 void Window::spam_delay_manager(largest_uint target_delay) {
-    static largest_uint smallest_delay_possible=MIN_DELAY_ERROR;
+    static largest_uint smallest_delay_possible=glb::MIN_DELAY_ERROR;
     MyClock clock;
     largest_uint _late_time=clock.elapsedTime();
     while(_late_time+smallest_delay_possible<target_delay) {
@@ -300,7 +301,7 @@ void Window::spam_delay_manager(largest_uint target_delay) {
 }
 
 void Window::full_thread_delay_manager(largest_uint target_delay) {
-    static largest_uint smallesttimeunit=MIN_DELAY_ERROR;
+    static largest_uint smallesttimeunit=glb::MIN_DELAY_ERROR;
     MyClock clock;
     largest_uint _last_time=clock.elapsedTime();
     while(clock.elapsedTime()+smallesttimeunit<target_delay) {

@@ -9,6 +9,7 @@
 #include"Sound.hpp"
 #include"APU.hpp"
 #include<iostream>
+#include"Log.hpp"
 
 int main(int argc, char** args) {
     /*APU::init();
@@ -17,6 +18,7 @@ int main(int argc, char** args) {
     TextWriter::init();
     Sound::init();
     ConsoleManager::init();
+	Log::init();
     while(false) { //joystick testing
         sf::Joystick::update();
         std::cout<<"X"<<sf::Joystick::getAxisPosition(0,sf::Joystick::X)<<" ";
@@ -38,13 +40,5 @@ int main(int argc, char** args) {
 }
 
 /*
-non chiamare clear
-aggiornamento dinamico del smallesttimeunit
-optzione 1: sf::Image collegato a array di bool di cose da aggiornare -> usare rendertexture?
-opzine 2:
-unordered_map di tiletype, forse ha senso mettere i blocchi colorati dei livelli all'inizio e creare un'hash comoda per questi
-<tiletype tiletodraw, std::size_t index> se tiletodraw è in map si usa la posizione di vertexpos[index] messa in VertexArray[i].Quad
-se no si fa update di texture
-usare comunque un array di bool
-thread diversi per ogni combinazione di input da fare dopo draw con pre render
+I could make a different thread for each input option to save about 100-300 microseconds
 */

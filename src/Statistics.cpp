@@ -1,5 +1,5 @@
-#include "Statistics.hpp"
-#include "TextWriter.hpp"
+#include"Statistics.hpp"
+#include"TextWriter.hpp"
 
 Statistics::Statistics(TileContainer * _tilecont, const nes_ushort& _frameappearance, const nes_uchar& _level)
     :Renderer(_tilecont, _frameappearance), level(_level)

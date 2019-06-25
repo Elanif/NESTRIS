@@ -1,6 +1,6 @@
-#include "TileContainer.hpp"
+#include"TileContainer.hpp"
 #include<cstdio>
-#include"ConsoleManager.hpp"
+#include"Log.hpp"
 #include<string>
 #include<sstream>
 unsigned char tiletype::colors[10][4]={
@@ -20,7 +20,7 @@ const tiletype& TileContainer::at(const std::size_t& x, const std::size_t& y) co
     if (x<0||x>=width||y<0||y>=height) {
         std::stringstream errorstream;
         errorstream<<"out of bounds in tilecontainer"<<x<<"/"<<width<<" "<<y<<"/"<<height;
-        ConsoleManager::update_error(errorstream.str());
+        Log::update_error(errorstream.str());
         return oob_error;
     }
     else return tilegrid[y*width+x];
@@ -30,7 +30,7 @@ tiletype& TileContainer::at(const std::size_t& x, const std::size_t& y) {
     if (x<0||x>=width||y<0||y>=height) {
         std::stringstream errorstream;
         errorstream<<"out of bounds in tilecontainer"<<x<<"/"<<width<<" "<<y<<"/"<<height;
-        ConsoleManager::update_error(errorstream.str());
+        Log::update_error(errorstream.str());
         return oob_error;
     }
     else {
@@ -52,7 +52,7 @@ void TileContainer::renderExtra(const std::size_t pixelx, const std::size_t pixe
         if (extra_tiles.y.size()>=extra_render.y) {
             std::stringstream errorstream;
             errorstream<<"Too many extra previous tiles, pixelx,pixely="<<pixelx<<","<<pixely<<" tiletype="<<t.tilenumber;
-            ConsoleManager::update_error(errorstream.str());
+            Log::update_error(errorstream.str());
         }
         else {
             extra_tiles.y.insert(std::make_pair(priority,glb::triple(pixelx,pixely,t)));
@@ -62,7 +62,7 @@ void TileContainer::renderExtra(const std::size_t pixelx, const std::size_t pixe
                 if (extra_tiles.x.size()>=extra_render.x) {
                     std::stringstream errorstream;
                     errorstream<<"Too many extra trnspr tiles, pixelx,pixely="<<pixelx<<","<<pixely<<" tiletype="<<t.tilenumber;
-                    ConsoleManager::update_error(errorstream.str());
+                    Log::update_error(errorstream.str());
                 }
                 else {
                     extra_tiles.x.insert(std::make_pair(priority,glb::triple(pixelx,pixely,tiletype(87,0x0d,0x0d,0x0d,0x0d))));
@@ -76,7 +76,7 @@ void TileContainer::renderExtra(const std::size_t pixelx, const std::size_t pixe
         if (extra_tiles.z.size()>=extra_render.z) {
             std::stringstream errorstream;
             errorstream<<"Too many extra following tiles, pixelx,pixely="<<pixelx<<","<<pixely<<" tiletype="<<t.tilenumber;
-            ConsoleManager::update_error(errorstream.str());
+            Log::update_error(errorstream.str());
         }
         else{
             extra_tiles.z.insert(std::make_pair(priority,glb::triple(pixelx,pixely,t)));

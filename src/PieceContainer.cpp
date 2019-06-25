@@ -1,7 +1,6 @@
-#include "PieceContainer.hpp"
+#include"PieceContainer.hpp"
 #include<cstddef>
 #include"enums.hpp"
-#include"ConsoleManager.hpp"
 #include"random.hpp"
 #include<cstdio>
 #include<sstream>
