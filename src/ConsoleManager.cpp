@@ -5,6 +5,7 @@
 #include<Window.hpp>
 #include<sstream>
 #include<limits>
+#include"TextFormatter.hpp"
 
 template<typename ... Args>
 std::string string_format(const std::string& format, Args ... args)
@@ -14,13 +15,6 @@ std::string string_format(const std::string& format, Args ... args)
 	snprintf(buf.get(), size, format.c_str(), args ...);
 	return std::string(buf.get(), buf.get() + size - 1); // We don't want the '\0' inside
 } //https://stackoverflow.com/a/26221725
-
-void gotoxycm(std::size_t x, std::size_t y) {
-	gotoxy(x + 1, y + 1);
-}
-void gotoxycm(const sf::Vector2u& _pos) {
-	gotoxy(_pos.x + 1, _pos.y + 1);
-}
 
 sf::Font ConsoleManager::info_window_font;
 unsigned char ConsoleManager::framecounter=0;
@@ -48,7 +42,7 @@ void ConsoleManager::print_error(const char* error_string) {
     system_clock::duration tp = now.time_since_epoch();
     tp -= duration_cast<seconds>(tp);
 	error_log<<print_time(*localtime(&current_time), tp);
-	error_log << error_string << "\n\r";
+	error_log << error_string << glb::newline;
 	error_log.flush();
 }
 
@@ -105,7 +99,7 @@ template void ConsoleManager::update_error(const long double& t);
 sf::RenderWindow ConsoleManager::info_window;
 
 void ConsoleManager::open_info_window() {
-	if (!info_window.isOpen()) info_window.create(sf::VideoMode(256, 224), "Information");
+	if (!info_window.isOpen()) info_window.create(sf::VideoMode(glb::ntsc_screen_width * glb::window_scale.x, glb::ntsc_screen_height * glb::window_scale.y), "Information");
 }
 
 void ConsoleManager::close_info_window() {
@@ -125,7 +119,6 @@ bool ConsoleManager::is_window_open() {
 void ConsoleManager::init()
 {
 	error_log.open("error_log.txt", std::ios::app);
-    rlutil::cls();
     //std::cout.sync_with_stdio(false); messes up with rlutil
     std::unique_ptr<OutputInfo> _fps(new OutputInfoLowDouble("fps","hz",true));
     std::unique_ptr<OutputInfo>& fps=CMvector[add_value(std::move(_fps))];
@@ -154,6 +147,10 @@ void ConsoleManager::init()
     add_value(std::move(_error));
 
 	info_window_font.loadFromFile("Roboto.ttf");
+	text_formatter.setCharacterSize(glb::info_window_character_size);
+	text_formatter.setFillColor(sf::Color::White);
+	text_formatter.setFont(info_window_font);
+	text_formatter.calc_font_sizes();
 	open_info_window();
 }
 
@@ -173,12 +170,12 @@ std::size_t ConsoleManager::add_value(std::unique_ptr<OutputInfo>&& outputinfo) 
     }
     catch (std::exception const& bad_alloc_exception) {
         push_back_error=true;
-		error_log << "OutputInfo pushback exception " << bad_alloc_exception.what() << "\n\r";
+		error_log << "OutputInfo pushback exception " << bad_alloc_exception.what() << glb::newline;
 		error_log.flush();
     }
     if (!push_back_error && CMvector_size==CMvector.size()) {
         push_back_error=true;
-		error_log << "OutputInfo pushback failed\n\r";
+		error_log << "OutputInfo pushback failed"<<glb::newline;
 		error_log.flush();
     }
     if (push_back_error) return (std::size_t) -1;
@@ -188,56 +185,64 @@ std::size_t ConsoleManager::add_value(std::unique_ptr<OutputInfo>&& outputinfo) 
     }
 }
 
+TextFormatter<string_character> ConsoleManager::text_formatter;
 
 void ConsoleManager::refresh(bool always_print) {
+	static nes_uchar counter = 0;
 	static std::string text_test = "";
 	if (info_window.isOpen()) {
 		sf::Event event;
 		while (info_window.pollEvent(event))
 		{
-			if (info_window.hasFocus()) {
-				// Handle ASCII characters only
-				if (event.type == sf::Event::TextEntered && event.text.unicode < 128)
-				{
-					text_test += static_cast<char>(event.text.unicode);
-					std::cout << text_test;
-				}
-			}
-			if (event.type == sf::Event::Closed) {
+			switch (event.type) {
+			case sf::Event::Closed:
 				close_info_window();
 				return;
+				break;
+			case sf::Event::TextEntered:
+				if (info_window.hasFocus()) {
+					// Handle ASCII characters only
+					if (event.text.unicode < 128)
+					{
+						if (event.text.unicode == 8 && text_test.length() > 0) {
+							text_test.pop_back();
+						}
+						else text_test += static_cast<char>(event.text.unicode);
+						std::cout << text_test << glb::newline;
+					}
+				}
+			break;
+			case sf::Event::KeyPressed:
+				switch (event.key.code) {
+				case sf::Keyboard::F1: {
+						toggle_info_window();
+						if (is_window_open())
+							info_window.requestFocus();
+					}
+					break;
+				}
 			}
 
 		}
 		info_window.clear();
+		sf::Vector2f pos{ 0,0 };
+		bool reset = false;
+		if (++counter >= 60) {
+			counter = 0;
+			reset = true;
+		}
 		for (auto& info : CMvector) {
-			std::string outputstring = info->print(true);
-			sf::Text outputstring_text;
-			outputstring_text.setFont(info_window_font);
-			outputstring_text.setString("Hello world");
-			outputstring_text.setCharacterSize(8);
-			outputstring_text.setFillColor(sf::Color::White);
-			info_window.draw(outputstring_text);
+			std::string outputstring = info->print(reset);
+			text_formatter.setString(outputstring);
+			text_formatter.setBoundaries({ 256,224 });
+			text_formatter.setPosition(pos);
+			sf::Text t= text_formatter.getFormattedText(glb::info_window_character_size * sqrt((double)glb::window_scale.x * glb::window_scale.y));
+			info_window.draw(t);
+			pos.y += text_formatter.getLastFormattedSize().y;
 		}
 		info_window.display();
+		error_print = false;
 	}
-    if (framecounter++%32==0||always_print||error_print) {
-        //rlutil::cls();
-        sf::Vector2u pos={0,0};
-        for (auto& info:CMvector) {
-            if (pos.x>0) {
-                pos.x=0;
-                pos.y++;
-            }
-            int conwidth=rlutil::tcols();
-            if (conwidth<0) conwidth=std::numeric_limits<int>::max();
-            std::string outputstring=info->print(true);
-			gotoxycm(pos);
-			std::cout << outputstring << "\n\r";
-			pos.y++;
-        }
-        error_print=false;
-    }
 }
 
 

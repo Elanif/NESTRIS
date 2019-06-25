@@ -9,3 +9,5 @@ nes_uchar glb::ARE=0;
 nes_uchar glb::real_level=0;
 nes_uchar glb::shown_level=0;
 
+sf::Vector2f glb::window_scale = { 2,2 };
+

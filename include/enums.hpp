@@ -37,6 +37,9 @@
 #include <cstddef>
 #include<SFML/System/Vector2.hpp>
 #include<tuple>
+#include<string>
+
+typedef char string_character;
 
 class tiletype;
 namespace glb { //todo make into ntris
@@ -96,9 +99,16 @@ namespace glb { //todo make into ntris
     typedef std::tuple<std::size_t, std::size_t, tiletype> triple;
     constexpr long double color_subcarrier_frequency=21477272.72727272727272727272727272L;
     constexpr long double clock_divisor = 12.L;
-    constexpr double ntsc_fps_odd=color_subcarrier_frequency/clock_divisor/(341*262-1)*3;
-    constexpr double ntsc_fps_even=color_subcarrier_frequency/clock_divisor/(341*262)*3;
-    constexpr double ntsc_fps=2.L/(1.L/ntsc_fps_even+1.L/ntsc_fps_odd);
+    constexpr long double ntsc_fps_odd=color_subcarrier_frequency/clock_divisor/(341*262-1)*3;
+    constexpr long double ntsc_fps_even=color_subcarrier_frequency/clock_divisor/(341*262)*3;
+    constexpr long double ntsc_fps=2.L/(1.L/ntsc_fps_even+1.L/ntsc_fps_odd);
+	constexpr std::size_t ntsc_screen_width = 256;
+	constexpr std::size_t ntsc_screen_height = 224;
+	constexpr std::size_t ntsc_tiles_x = 32;
+	constexpr std::size_t ntsc_tiles_y = 28;
+	extern sf::Vector2f window_scale;
+	constexpr float info_window_character_size = 8;
+	const std::string newline = { "\r\n" };
 
     constexpr nes_uchar block_colors[10][4]={
     {0x0D ,0x30 ,0x21 ,0x12},

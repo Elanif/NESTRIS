@@ -22,7 +22,7 @@ void OutputInfo::set_value(const unsigned int& t)
 {
     value=ntris::to_string(t);
 }
-void OutputInfo::set_value(const unsigned long long& t)
+void OutputInfo::set_value(const largest_uint& t)
 {
     value=ntris::to_string(t);
 }
@@ -125,11 +125,11 @@ void OutputInfoError::set_value(const std::string& t) {
 
 std::string OutputInfoError::print(bool const& clear) {
 	std::stringstream outputstring;
-	outputstring << name;
+	outputstring << name <<"=";
     for (const auto& i:error_list) {
-        outputstring<<"\t"<< i<<"\n\r";
+        outputstring<<"\t\t\t"<< i<<glb::newline;
     }
-	if (clear) error_list.clear();
+	if (clear && !error_list.empty()) error_list.pop_front();
 	return outputstring.str();
 }
 

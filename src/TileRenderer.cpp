@@ -174,7 +174,7 @@ std::size_t TileRenderer::add_or_find_texture(const tiletype& newtile, sf::Image
         ConsoleManager::update("system",std::string("Creating new texture"));
 
         if (!prerendering) { //TODO USE OFSTREAM
-			newtextures << temptile.tilenumber << std::hex << temptile.palette_color[0] << temptile.palette_color[1] << temptile.palette_color[2] << temptile.palette_color[3] << std::dec << "\n\r";
+			newtextures << temptile.tilenumber << std::hex << temptile.palette_color[0] << temptile.palette_color[1] << temptile.palette_color[2] << temptile.palette_color[3] << std::dec << glb::newline;
         }
 
         uint8container newtexture;

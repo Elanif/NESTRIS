@@ -5,6 +5,7 @@
 #include<thread>
 #include<string>
 #include<limits>
+#include<iostream>
 #include"enums.hpp"
 #define SLEEP_SFML //high resolution clock isn't very high resolution
 #define SLEEP_MICROSECONDS
@@ -64,10 +65,10 @@ Window::Window(const std::size_t& _width, const std::size_t& _height, sf::Vector
 {
     sf::Transform state;
     state.scale(_scale);
-    sf::RenderWindow window(sf::VideoMode(_width*_scale.x, _height*_scale.y), "Nestris");
+    sf::RenderWindow window(sf::VideoMode(_width*glb::tilesize.x*_scale.x, _height * glb::tilesize.y *_scale.y), "Nestris");
 	std::pair<largest_uint, largest_uint>  tilesize(8,8);
     const sf::Vector3<std::size_t> extra_render(16,16,64);
-    TileRenderer tilerend(_width/8,_height/8,tilesize,TileRenderer::DRAWTEXTURE,extra_render);
+    TileRenderer tilerend(_width,_height,tilesize,TileRenderer::DRAWTEXTURE,extra_render);
     tilerend.load("texturesprite/sprites.txt");
     //tilerend.load("texturesprite/sprites.txtupdated");
     Engine _engine= Engine(tilerend.getTileContainer(),Engine::LEVELSELECT);
@@ -98,22 +99,24 @@ Window::Window(const std::size_t& _width, const std::size_t& _height, sf::Vector
             if (elapsedtime.elapsedTime()>0) ConsoleManager::update<long double>("fps",partspersecond/(long double)elapsedtime.elapsedTime());
 
             elapsedtime.restart();
-            largest_uint delaycalc=0;
+            sf::Int64 delaycalc=0;
             _engine.frame(inputManager.getInput());
 
-            ConsoleManager::update<largest_uint>("input delay",elapsedtime.elapsedTime()-delaycalc);
+            ConsoleManager::update<sf::Int64>("input delay",elapsedtime.elapsedTime()-delaycalc);
             delaycalc=elapsedtime.elapsedTime();
-
+			//std::cout <<"input delay"<< elapsedtime.elapsedTime() - delaycalc << glb::newline;
             window.clear();//adds 15microseconds
             tilerend.drawmod(window, state);
 
-            ConsoleManager::update<largest_uint>("draw delay",elapsedtime.elapsedTime()-delaycalc);
+            ConsoleManager::update<sf::Int64>("draw delay",elapsedtime.elapsedTime()-delaycalc);
+			//std::cout << "draw delay"<<elapsedtime.elapsedTime() - delaycalc << glb::newline;
             delaycalc=elapsedtime.elapsedTime();
 
             window.display();
 
             delaycalc=elapsedtime.elapsedTime();
-            ConsoleManager::update<largest_uint>("display delay",elapsedtime.elapsedTime()-delaycalc);
+            ConsoleManager::update<sf::Int64>("display delay",elapsedtime.elapsedTime()-delaycalc);
+			//std::cout << "display delay"<<elapsedtime.elapsedTime() - delaycalc << glb::newline;
 
             while (window.pollEvent(event))
             {

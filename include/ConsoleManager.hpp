@@ -7,10 +7,10 @@
 #include<SFML/System/Vector2.hpp>
 #include<utility>
 #include<memory>
-#include"rlutil.h"
 #include"OutputInfo.hpp"
 #include<fstream>
 #include<SFML/Graphics.hpp>
+#include"TextFormatter.hpp"
 
 class ConsoleManager : public sf::NonCopyable
 {
@@ -32,6 +32,14 @@ class ConsoleManager : public sf::NonCopyable
     private:
 		static sf::RenderWindow info_window;
 		static sf::Font info_window_font;
+		static TextFormatter<string_character> text_formatter;
+		enum MENU {
+			HOME,
+			SETTINGS
+		};
+		static void render_menu(MENU const& menu);
+		static void handle_menu(MENU const& menu);
+		static std::string text_entered;
 
         static unsigned char framecounter;
         static bool error_print;

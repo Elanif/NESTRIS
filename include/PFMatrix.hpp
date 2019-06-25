@@ -4,6 +4,7 @@
 #include"ConsoleManager.hpp"
 #include<string>
 #include<sstream>
+#include"enums.hpp"
 
 class PFMatrix {
 public:
@@ -12,14 +13,14 @@ public:
     nes_uchar& operator()(const std::size_t& column, const std::size_t& row){
         if (inbounds(column,row)) return matrix[column][row];
 		std::stringstream error_stream;
-		error_stream<< "Invalid matrix index: col=" << column << ", row=" << row << "\n\r";
+		error_stream<< "Invalid matrix index: col=" << column << ", row=" << row << glb::newline;
 		ConsoleManager::update_error(error_stream.str());
         return matrix[0][0];
     }
     nes_uchar operator()(const std::size_t& column, const std::size_t& row) const{
         if (inbounds(column,row)) return matrix[column][row];
 		std::stringstream error_stream;
-		error_stream << "Invalid matrix index: col=" << column << ", row=" << row << "\n\r";
+		error_stream << "Invalid matrix index: col=" << column << ", row=" << row << glb::newline;
 		ConsoleManager::update_error(error_stream.str());
         return 0;
     }

@@ -4,6 +4,7 @@
 #include<list>
 #include<SFML/System/Vector2.hpp>
 #include<SFML/System/Time.hpp>
+#include"enums.hpp"
 
 class OutputInfo
 {
@@ -18,7 +19,7 @@ public:
     virtual void set_value(const char* const& t);
     virtual void set_value(const std::string& t);
     virtual void set_value(const unsigned int& t);
-    virtual void set_value(const unsigned long long& t);
+    virtual void set_value(const largest_uint& t);
     virtual void set_value(const sf::Int64& t);
     virtual void set_value(const int& t);
     virtual void set_value(const double& t);

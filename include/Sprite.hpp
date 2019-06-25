@@ -77,7 +77,7 @@ namespace std
                 static std::size_t lookup(unsigned char color, unsigned char* palette_color, std::size_t colors_found) {
                     for (std::size_t i=0; i<colors_found; ++i)
                         if (palette_color[i]==color) return i;
-                    return (std::size_t)-1;
+                    return glb::maxcolor;
                 }
             };
             std::size_t colors_found=0;
@@ -87,10 +87,10 @@ namespace std
             for (std::size_t x=0; x<glb::tilesize.x; ++x) {
                 for (std::size_t y=0; y<glb::tilesize.y; ++y) {
                     std::size_t lookup1=funcholder::lookup(t.arr[x][y],palette_color1,colors_found);
-                    if (lookup1==(std::size_t)-1) {
-						ConsoleManager::update_error("Too many colors in sprite hash");
-                        palette_color1[colors_found]=t.arr[x][y];
-                        ++colors_found;
+                    if (lookup1>=glb::maxcolor) {
+						++colors_found;
+						if (colors_found>=glb::maxcolor) ConsoleManager::update_error("Too many colors in sprite hash, sprite number: ");
+						else palette_color1[colors_found]=t.arr[x][y];
                     }
                     temphash+=rol<unsigned long long>(lookup1,rotations++);
                 }
