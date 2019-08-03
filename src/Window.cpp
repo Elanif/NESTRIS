@@ -93,6 +93,7 @@ Window::Window(const std::size_t& _width, const std::size_t& _height, sf::Vector
     largest_uint timeperframe=timeperframe_odd;
 
     MyClock elapsedtime;
+	std::size_t counter = 0;
 
     while (window.isOpen()) {
         odd_frame=!odd_frame; //I hope the compiler creates 2 different cycles
@@ -138,7 +139,7 @@ Window::Window(const std::size_t& _width, const std::size_t& _height, sf::Vector
 				}
 				
             }
-            bool is_info_window_open=cm.refresh();
+			bool is_info_window_open = is_info_window_open=cm.refresh();
 			if (!is_info_window_open) window.requestFocus();
         }
         else {

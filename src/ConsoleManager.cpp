@@ -53,7 +53,8 @@ bool ConsoleManager::refresh(bool always_print) {
 	if (info_window.isOpen()) {
 		handle_menu(current_menu);
 		info_window.clear();
-		render_menu(current_menu);
+		sf::Vector2f pos = render_menu(current_menu);
+		renderHOME(pos);
 		info_window.display();
 	}
 	return info_window.isOpen();
@@ -146,8 +147,8 @@ sf::Vector2f ConsoleManager::render_menu(MENU const& menu) {
 	sf::Text t = text_formatter.getFormattedText(getCharacterSize());
 	info_window.draw(t);
 	return { 0, text_formatter.getLastFormattedSize().y };
-
 }
+
 
 void ConsoleManager::renderHOME(sf::Vector2f pos)
 {
