@@ -22,12 +22,15 @@ public:
     TileContainer* getTileContainer();
 
     const std::size_t width;
+    const std::size_t width_pixels;
     const std::size_t height;
-    void drawmod(sf::RenderTarget& target, sf::RenderStates states);
-    void drawimage(sf::RenderTarget& target, sf::RenderStates states);
-    void drawsprite(sf::RenderTarget& target, sf::RenderStates states);
-    void drawvertex(sf::RenderTarget& target, sf::RenderStates states);
-    void drawtexture(sf::RenderTarget& target, sf::RenderStates states);
+    const std::size_t height_pixels;
+
+    void drawmod(sf::RenderTarget& target, sf::RenderStates states = sf::RenderStates());
+    void drawimage(sf::RenderTarget& target, sf::RenderStates states = sf::RenderStates());
+    void drawsprite(sf::RenderTarget& target, sf::RenderStates states = sf::RenderStates());
+    void drawvertex(sf::RenderTarget& target, sf::RenderStates states = sf::RenderStates());
+    void drawtexture(sf::RenderTarget& target, sf::RenderStates states = sf::RenderStates());
     enum DRAWMETHOD{
         DRAWIMAGE,
         DRAWSPRITE,
@@ -48,7 +51,7 @@ private:
     sf::Sprite tempspriteclass;
     sf::VertexArray verteximage;
     const sf::Vector3<std::size_t>& extra_render=sf::Vector3<std::size_t>();
-	std::pair<largest_uint,largest_uint> tilesize{ 8,8 };
+	std::pair<std::size_t, std::size_t> tilesize{ 8,8 };
     uint8container* quadretti;
     std::unordered_map<tiletype, std::size_t> texturemap;
     sf::Texture tiletexture;

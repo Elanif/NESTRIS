@@ -6,7 +6,7 @@
 
 void ConsoleManager::open_info_window() {
 	if (!info_window.isOpen()) {
-		info_window.create(sf::VideoMode(ntris::ntsc_screen_width * ntris::window_scale.x, ntris::ntsc_screen_height * ntris::window_scale.y), "Information");
+		info_window.create(sf::VideoMode((std::size_t) (ntris::ntsc_screen_width * ntris::window_scale.x),(std::size_t) (ntris::ntsc_screen_height * ntris::window_scale.y)), "Information");
 		if (menu_stack.empty()) menu_stack.push(MENU::HOME);
 	}
 }
@@ -44,7 +44,7 @@ void ConsoleManager::init()
 	text_formatter.setFillColor(sf::Color::White);
 	text_formatter.setFont(info_window_font);
 	text_formatter.calc_font_sizes();
-	open_info_window();
+	//open_info_window();
 }
 
 bool ConsoleManager::refresh(bool always_print) {
@@ -54,6 +54,7 @@ bool ConsoleManager::refresh(bool always_print) {
 		handle_menu(current_menu);
 		info_window.clear();
 		sf::Vector2f pos = render_menu(current_menu);
+		//sf::Vector2f pos{};
 		renderHOME(pos);
 		info_window.display();
 	}
@@ -160,7 +161,7 @@ void ConsoleManager::renderHOME(sf::Vector2f pos)
 		reset = true;
 	}
 	for (auto& info : Log::log_vector) {
-		std::string outputstring = info->print(reset);
+		std::string outputstring = info->print(reset);			
 		text_formatter.setString(outputstring);
 		text_formatter.setBoundaries({ ntris::ntsc_screen_width, ntris::ntsc_screen_height });
 		text_formatter.setPosition(pos);

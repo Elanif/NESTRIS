@@ -11,6 +11,8 @@
 #include"Log.hpp"
 
 int main(int argc, char** args) {
+	//std::cout.sync_with_stdio(false);
+	//std::cin.tie(nullptr);
     /*APU::init();
     APU::test();
     sf::sleep(sf::milliseconds(10000));*/
@@ -34,7 +36,8 @@ int main(int argc, char** args) {
         sf::sleep(sf::milliseconds(1000));
         system("CLS");
     }
-    Window finestra(ntris::ntsc_tiles_x,ntris::ntsc_tiles_y,ntris::window_scale,Window::GENERAL);
+	//TODO load configs like fourthirds (bool)
+    Window finestra(ntris::ntsc_screen_width,ntris::ntsc_screen_height,Window::GENERAL);
 }
 
 /*

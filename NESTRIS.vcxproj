@@ -216,7 +216,6 @@
     <ClInclude Include="include\RenderHighScore.hpp" />
     <ClInclude Include="include\RenderLevelSelect.hpp" />
     <ClInclude Include="include\RenderPlayField.hpp" />
-    <ClInclude Include="include\rlutil.h" />
     <ClInclude Include="include\Score.hpp" />
     <ClInclude Include="include\Sound.hpp" />
     <ClInclude Include="include\Sprite.hpp" />

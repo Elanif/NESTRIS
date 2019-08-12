@@ -29,8 +29,8 @@ struct SpriteEqual {
         std::size_t colors_found=0;
         unsigned char palette_color1[ntris::maxcolor];//={0,0,0,0};
         unsigned char palette_color2[ntris::maxcolor];//={0,0,0,0};
-        for (std::size_t x=0; x<ntris::tilesize.x; ++x) {
-            for (std::size_t y=0; y<ntris::tilesize.y; ++y) {
+        for (std::size_t x=0; x<ntris::tilesize.first; ++x) {
+            for (std::size_t y=0; y<ntris::tilesize.second; ++y) {
                 std::size_t lookup1=lookup(img1.arr[x][y],palette_color1,colors_found);
                 std::size_t lookup2=lookup(img2.arr[x][y],palette_color2,colors_found);
                 if (lookup1!=lookup2) return false;
@@ -81,8 +81,8 @@ namespace std
 			};
             unsigned long long temphash=0;
             unsigned long long rotations=0;
-            for (std::size_t x=0; x<ntris::tilesize.x; ++x) {
-                for (std::size_t y=0; y<ntris::tilesize.y; ++y) {
+            for (std::size_t x=0; x<ntris::tilesize.first; ++x) {
+                for (std::size_t y=0; y<ntris::tilesize.second; ++y) {
                     std::size_t lookup1=lookup(t.arr[x][y],palette_color1,colors_found);
                     if (lookup1>=ntris::maxcolor) {
 						if (colors_found>=ntris::maxcolor) Log::update_error("Too many colors in sprite hash, sprite number: ");

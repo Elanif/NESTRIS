@@ -11,7 +11,9 @@ namespace ntris {
 	nes_uchar real_level = 0;
 	nes_uchar shown_level = 0;
 
-	sf::Vector2f window_scale = { 1,1 };
+	bool fourthirds = true;
+
+	sf::Vector2<long double> window_scale = { 3,3 };
 
 	void lowercase_str(std::string& str) { //TODO make it portable with 16bitchar
 		for (auto& c : str)

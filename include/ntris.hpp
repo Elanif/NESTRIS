@@ -92,7 +92,7 @@ namespace ntris {
     constexpr std::size_t nexty=12;
     constexpr std::size_t typex=3;
     constexpr std::size_t typey=3;
-    const sf::Vector2u tilesize={8,8};
+    const std::pair< std::size_t, std::size_t> tilesize={8,8};
     constexpr int spritemode=1;
     constexpr std::size_t maxcolor=4;
     constexpr std::size_t maxbuttons=8;
@@ -107,7 +107,8 @@ namespace ntris {
 	constexpr std::size_t ntsc_screen_height = 224;
 	constexpr std::size_t ntsc_tiles_x = 32;
 	constexpr std::size_t ntsc_tiles_y = 28;
-	extern sf::Vector2f window_scale;
+	extern sf::Vector2<long double> window_scale;
+	extern bool fourthirds;
 	constexpr float info_window_character_size = 8;
 	constexpr largest_uint MIN_DELAY_ERROR = 1000; 
 	const std::string newline = { "\r\n" };

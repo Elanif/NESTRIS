@@ -3,6 +3,7 @@
 #include<SFML/Window/Keyboard.hpp>
 #include"ConfigReader.hpp"
 #include"Log.hpp"
+#include <iostream>
 
 Input::Input()
     :leftandright(false)
@@ -49,10 +50,15 @@ void Input::setup() {
     initMap();
     for (std::size_t i=0; i<ntris::maxbuttons; ++i) {
         std::vector<std::string> keybinds_get=keybinds.get<std::string>(s_btn_arr[i]);
-        for (const auto& values:keybinds_get)
-            inputdependancies[btn_arr[i]].push_back(keybinds_lookup_table[values]);
+		//std::cout << s_btn_arr[i] <<"=";
+		for (const auto& values : keybinds_get) {
+			inputdependancies[btn_arr[i]].push_back(keybinds_lookup_table[values]);
+			//std::cout << values << ",";
+		}
+		//std::cout << "\n";
     }
 	keybinds.append("test","test"s);
+	keybinds.print();
 	keybinds.save();
 }
 

@@ -11,6 +11,7 @@ class ConfigReader
     public:
         ConfigReader(const std::string& file_location);
 		enum CaseType {
+			Invariate,
 			Sensitive,
 			Lower,
 			Upper
@@ -41,13 +42,13 @@ class ConfigReader
         void reload();
         void print();
 
-		CaseType const m_case = CaseType::Sensitive;
+		CaseType const m_case = CaseType::Invariate;
     private:
-        std::vector<std::string> line_vector;
-        std::unordered_map<std::string, std::vector<std::string> > name_map;
+        std::vector<std::string> read_lines; //the lines read from file
+        std::unordered_map<std::string, std::size_t> name_map; //given a variable name, returns the number of the line containing such variable name in line_vector
 
-		std::unordered_map<std::string, std::size_t> name_map_map;
-		std::vector<std::vector<std::string> > line_vector_map;
+		std::vector<std::vector<std::string> > line_vector; //contains the lines in order of appearance, unless the variable_name has already been seen, then it appends
+		
 		std::vector<bool> line_has_variable;
         std::ifstream file_data;
 		std::string file_path;

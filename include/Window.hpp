@@ -19,7 +19,7 @@ class Window : public sf::NonCopyable
             ARRAYLOG,
             ARRAYBUCKET
         };
-        Window(const std::size_t& width, const std::size_t& height, sf::Vector2f _scale, const OPT& optimized);
+        Window(const std::size_t& width, const std::size_t& height, const OPT& optimized);
     private:
         void general_delay_manager(largest_uint target_delay);
         void smallest_delay_manager(largest_uint target_delay);

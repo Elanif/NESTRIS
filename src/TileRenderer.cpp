@@ -4,6 +4,16 @@
 #include<string>
 #include<fstream>
 #include<sstream>
+#include <iostream>
+template<typename ... Args>
+std::string string_format(const std::string& format, Args ... args)
+{
+	size_t size = snprintf(nullptr, 0, format.c_str(), args ...) + 1ull; // Extra space for '\0'
+	std::unique_ptr<char[]> buf(new char[size]);
+	snprintf(buf.get(), size, format.c_str(), args ...);
+	return std::string(buf.get(), buf.get() + size - 1); // We don't want the '\0' inside
+} //https://stackoverflow.com/a/26221725
+
 constexpr std::size_t itox(const std::size_t& i, const std::size_t& width, const std::size_t& height) {
     return i%width;
 }
@@ -24,15 +34,17 @@ constexpr std::size_t xytoi(const std::size_t& x, const std::size_t& y, const st
 constexpr std::size_t xytoi(const std::size_t& x, const std::size_t& y, const std::size_t& width, const std::size_t& height, const std::size_t& rectwidth, const std::size_t& rectheight) {
     return x+y*width;
 }
-TileRenderer::TileRenderer(const std::size_t& _width, const std::size_t& _height, std::pair<largest_uint,largest_uint> _tilesize, const int& _drawmethod, const sf::Vector3<std::size_t>& _extra_render)
+TileRenderer::TileRenderer(const std::size_t& _width, const std::size_t& _height, std::pair<std::size_t, std::size_t> _tilesize, const int& _drawmethod, const sf::Vector3<std::size_t>& _extra_render)
 :tilecont(_width,_height,_extra_render),
 width(_width),
 height(_height),
 drawmethod(_drawmethod),
 quadretti(NULL),
 tilesize(_tilesize),
+width_pixels(_width*_tilesize.first),
+height_pixels(_height*_tilesize.second),
 texturenumber(0),
-extra_render(_extra_render) //TODO EXTRA RENDER FOR MORE STUFF THAN DRAWTEXTUR
+extra_render(_extra_render) //TODO EXTRA RENDER FOR MORE STUFF THAN DRAWTEXTURE
 {
     if (drawmethod==DRAWSPRITE) {
         quadretti=new uint8container[width*height];
@@ -155,7 +167,7 @@ bool TileRenderer::load(const std::string& tilefile){
     return true;
 }
 
-std::size_t TileRenderer::add_or_find_texture(const tiletype& newtile, sf::Image* prerendering=NULL) {
+std::size_t TileRenderer::add_or_find_texture(const tiletype& newtile, sf::Image* prerendering=nullptr) {
     std::size_t whereisthistexture=0;
     tiletype temptile=newtile;
     //TODO black control
@@ -173,8 +185,13 @@ std::size_t TileRenderer::add_or_find_texture(const tiletype& newtile, sf::Image
 
         Log::update("system",std::string("Creating new texture"));
 
-        if (!prerendering) { //TODO USE OFSTREAM
-			newtextures << temptile.tilenumber << std::hex << temptile.palette_color[0] << temptile.palette_color[1] << temptile.palette_color[2] << temptile.palette_color[3] << std::dec << ntris::newline;
+        if (!prerendering) {
+			std::string new_texture_string;
+			new_texture_string = string_format("%d %x %x %x %x", temptile.tilenumber, temptile.palette_color[0], temptile.palette_color[1], temptile.palette_color[2], temptile.palette_color[3]);
+			newtextures << new_texture_string + ntris::newline;
+			if (temptile.tilenumber==87 ){//&& temptile.palette_color[0]==0xd && temptile.palette_color[1]==0x0 && temptile.palette_color[2]==0x0 && temptile.palette_color[3]== 0x0) {
+
+			}
         }
 
         uint8container newtexture;
@@ -223,7 +240,7 @@ std::size_t TileRenderer::add_or_find_texture(const tiletype& newtile, sf::Image
                                itoxrect(texturenumber,texturesize,texturesize,tilesize.first,tilesize.second),
                                itoyrect(texturenumber,texturesize,texturesize,tilesize.first,tilesize.second));
         }
-        else {
+        else { //adds everything to an image then lets the add_frequent_texture function save it as a texture
             for (std::size_t pixelx=0; pixelx<tilesize.first; ++pixelx) {
                 for (std::size_t pixely=0; pixely<tilesize.second; ++pixely) {
                     nes_uchar tiletypetemp=spritetemp->arr[pixelx][pixely];
@@ -460,9 +477,10 @@ void TileRenderer::drawimage(sf::RenderTarget& target, sf::RenderStates states){
 }
 
 void TileRenderer::add_frequent_textures() {
-    std::ifstream previous_textures("texturesprite/Pre-rendered textures.txt");
+    std::ifstream previous_textures("texturesprite/Pre-rendered textures.txt", std::ios::in);
     if (!previous_textures) {
         Log::update_error("Couldn't open previous textures");
+		return;
     }
 
     sf::Image texture_image;
@@ -473,9 +491,7 @@ void TileRenderer::add_frequent_textures() {
         add_or_find_texture(tiletype(tilenumber,c1,c2,c3,c4),&texture_image);
     }
     previous_textures.close();
-    tiletype block;
-    add_or_find_texture(block, &texture_image);
-    block=tiletype(0,0);
+	tiletype block{ 0,0 };
     add_or_find_texture(block, &texture_image);
     for (std::size_t level=0; level<10; ++level) {
         block=tiletype(level,1);
@@ -485,7 +501,7 @@ void TileRenderer::add_frequent_textures() {
         block=tiletype(level,3);
         add_or_find_texture(block, &texture_image);
     }
-    tiletexture.loadFromImage(texture_image);
+	tiletexture.loadFromImage(texture_image);
     newtextures.open("texturesprite/Pre-rendered textures.txt",std::ios::app);
 }
 
@@ -506,7 +522,7 @@ void TileRenderer::drawmod(sf::RenderTarget& target, sf::RenderStates states)
         break;
     default:
         Log::update_error("Warning, default drawmod");
-        drawimage(target,states);
+        drawtexture(target,states);
         break;
     }
 }

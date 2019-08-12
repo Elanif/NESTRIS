@@ -8,6 +8,7 @@
 #include<limits>
 #include<iostream>
 #include"ntris.hpp"
+#include"ConfigReader.hpp"
 #define SLEEP_SFML //high resolution clock isn't very high resolution
 #define SLEEP_MICROSECONDS
 
@@ -59,44 +60,85 @@ class MyClock {
     }
 };
 
-Window::Window(const std::size_t& _width, const std::size_t& _height, sf::Vector2f _scale, const OPT& optimized)
+Window::Window(const std::size_t& _width, const std::size_t& _height, const OPT& optimized)
 {
 	ConsoleManager cm{};
 
-    sf::Transform state;
-    state.scale(_scale);
-    sf::RenderWindow window(sf::VideoMode(_width*ntris::tilesize.x*_scale.x, _height * ntris::tilesize.y *_scale.y), "Nestris");
+	std::pair<largest_uint, largest_uint>  tilesize = { ntris::tilesize.first, ntris::tilesize.second };
+	const sf::Vector3<std::size_t> extra_render(16, 16, 64);
+	TileRenderer tilerend(ntris::ntsc_tiles_x, ntris::ntsc_tiles_y, tilesize, TileRenderer::DRAWTEXTURE, extra_render);
 
-	std::pair<largest_uint, largest_uint>  tilesize(8,8);
-    const sf::Vector3<std::size_t> extra_render(16,16,64);
-    TileRenderer tilerend(_width,_height,tilesize,TileRenderer::DRAWTEXTURE,extra_render);
-    tilerend.load("texturesprite/sprites.txt");
-    //tilerend.load("texturesprite/sprites.txtupdated");
+	if (ntris::fourthirds) {
+		ntris::window_scale.y = 3.L / 4.L * ntris::window_scale.x * tilerend.width_pixels / tilerend.height_pixels;
+	}
 
-    Engine _engine= Engine(tilerend.getTileContainer(),Engine::LEVELSELECT);
+	std::size_t window_width = tilerend.width_pixels * ntris::window_scale.x;
+	std::size_t window_height = tilerend.height_pixels * ntris::window_scale.y;
 
-    sf::Event event;
+	sf::RenderWindow window(sf::VideoMode(tilerend.width_pixels, tilerend.height_pixels), "Nestris");
 
-    #ifdef SLEEP_MILLISECONDS
+	ConfigReader cfg(std::string("settings/settings.cfg"));
+	std::vector<int> window_position = cfg.get<int>("window_position");
+	if (window_position.size() < 2) {
+		window_position.resize(2);
+		std::size_t screen_width = sf::VideoMode::getDesktopMode().width;
+		std::size_t screen_height = sf::VideoMode::getDesktopMode().height;
+		largest_uint window_pos_x = 0;
+		largest_uint window_pos_y = 0;
+		if (window_width <= screen_width) {
+			window_pos_x = (screen_width - window_width) / 2;
+		}
+		if (window_height <= screen_height) {
+			window_pos_y = (screen_height - window_height) / 2;
+		}
+		window_position[0] = window_pos_x;
+		window_position[1] = window_pos_y;
+		cfg.overwrite("window_position", window_position);
+		cfg.save();
+	}
+	window.setPosition(sf::Vector2i(window_position[0], window_position[1]));
+
+	window.setSize(sf::Vector2u(window_width, window_height));
+
+	tilerend.load("texturesprite/sprites.txt");
+	//tilerend.load("texturesprite/sprites.txtupdated");
+
+	Engine _engine = Engine(tilerend.getTileContainer(), Engine::LEVELSELECT);
+
+	sf::Event event;
+
+#ifdef SLEEP_MILLISECONDS
 	largest_uint partspersecond{ 1000 };
-    #endif // SLEEP_MILLISECONDS
-    #ifdef SLEEP_MICROSECONDS
+#endif // SLEEP_MILLISECONDS
+#ifdef SLEEP_MICROSECONDS
 	largest_uint partspersecond{ 1000000 };
-    #endif // SLEEP_MICROSECONDS
-    #ifdef SLEEP_NANOSECONDS
+#endif // SLEEP_MICROSECONDS
+#ifdef SLEEP_NANOSECONDS
 	largest_uint partspersecond = { 1000000000 };
-    #endif // SLEEP_NANOSECONDS
+#endif // SLEEP_NANOSECONDS
 
-    largest_uint timeperframe_odd=(long double) (partspersecond)/ntris::ntsc_fps_odd;
-    largest_uint timeperframe_even=(long double) (partspersecond)/ntris::ntsc_fps_even;
-    bool odd_frame=false;
-    largest_uint timeperframe=timeperframe_odd;
+	largest_uint timeperframe_odd = (long double)(partspersecond) / ntris::ntsc_fps_odd;
+	largest_uint timeperframe_even = (long double)(partspersecond) / ntris::ntsc_fps_even;
+	bool odd_frame = false;
+	largest_uint timeperframe = timeperframe_odd;
 
-    MyClock elapsedtime;
+	MyClock elapsedtime;
 	std::size_t counter = 0;
 
+	//for some reason  if you open then close the info window the lag gets better
+	/*{
+		cm.toggle_info_window();
+		for (std::size_t i = 0; i < 121; ++i) {
+			window.clear();
+			tilerend.drawmod(window);
+			window.display();
+			cm.refresh();
+		}
+		cm.toggle_info_window();
+		window.requestFocus();
+	}*/
     while (window.isOpen()) {
-        odd_frame=!odd_frame; //I hope the compiler creates 2 different cycles
+        odd_frame=!odd_frame; //Compiler should create 2 different cycles
         if (odd_frame) timeperframe=timeperframe_odd;
         else timeperframe=timeperframe_even;
         if (elapsedtime.elapsedTime()>=timeperframe) {
@@ -111,9 +153,10 @@ Window::Window(const std::size_t& _width, const std::size_t& _height, sf::Vector
             delaycalc=elapsedtime.elapsedTime();
 			//std::cout <<"input delay"<< elapsedtime.elapsedTime() - delaycalc << ntris::newline;
             window.clear();//adds 15microseconds
-            tilerend.drawmod(window, state);
+            tilerend.drawmod(window);
 
             Log::update<sf::Int64>("draw delay",elapsedtime.elapsedTime()-delaycalc);
+			std::cout << elapsedtime.elapsedTime() - delaycalc << ntris::newline;
 			//std::cout << "draw delay"<<elapsedtime.elapsedTime() - delaycalc << ntris::newline;
             delaycalc=elapsedtime.elapsedTime();
 
@@ -139,8 +182,7 @@ Window::Window(const std::size_t& _width, const std::size_t& _height, sf::Vector
 				}
 				
             }
-			bool is_info_window_open = is_info_window_open=cm.refresh();
-			if (!is_info_window_open) window.requestFocus();
+			cm.refresh();
         }
         else {
             switch(optimized) {
