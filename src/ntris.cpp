@@ -2,6 +2,14 @@
 
 namespace ntris {
 
+	void incframe() {
+		FrameCounter::inc();
+	}
+
+	nes_schar getframemod4() {
+		return FrameCounter::mod4();
+	}
+
 	nes_schar FrameCounter::framecountlittle = 0;
 	nes_schar FrameCounter::framecountbig = 0;
 
@@ -11,22 +19,27 @@ namespace ntris {
 	nes_uchar real_level = 0;
 	nes_uchar shown_level = 0;
 
-	bool fourthirds = true;
+	bool four_thirds = true;
 
-	sf::Vector2<long double> window_scale = { 3,3 };
+	sf::Vector2<long double> window_scale{ 3,3 };
+	extern sf::Vector2i window_position{ 0,0 };
 
-	void lowercase_str(std::string& str) { //TODO make it portable with 16bitchar
+	std::string lowercase_str(std::string const& str) { //TODO make it portable with 16bitchar
+		std::string res;
 		for (auto& c : str)
 		{
-			c = std::tolower(c);
+			res += std::tolower(c);
 		}
+		return res;
 	}
 
-	void uppercase_str(std::string& str) { //TODO make it portable with 16bitchar
+	std::string uppercase_str(std::string& str) { //TODO make it portable with 16bitchar
+		std::string res;
 		for (auto& c : str)
 		{
-			c = std::toupper(c);
+			res += std::toupper(c);
 		}
+		return res;
 	}
 
 	template<typename ... Args>

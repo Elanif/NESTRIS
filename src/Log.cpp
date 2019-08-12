@@ -88,14 +88,14 @@ template void Log::update_error(const double& t);
 template void Log::update_error(const long double& t);
 
 std::size_t Log::add_value(std::string info, std::string unit) {
-	ntris::lowercase_str(info);
-	ntris::lowercase_str(unit);
+	info=ntris::lowercase_str(info);
+	info=ntris::lowercase_str(unit);
 	std::unique_ptr<OutputInfo> fpsinfo = std::make_unique<OutputInfo>(info, unit);
 	return add_value(std::move(fpsinfo));
 }
 
 std::size_t Log::add_value(std::unique_ptr<OutputInfo>&& outputinfo) {
-	ntris::lowercase_str(outputinfo->name);
+	outputinfo->name=ntris::lowercase_str(outputinfo->name);
 	std::size_t CMvector_size = log_vector.size();
 	bool push_back_error = false;
 	try {

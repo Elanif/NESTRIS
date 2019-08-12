@@ -28,7 +28,7 @@ private:
 	enum MENU {
 		HOME,
 		SETTINGS
-	} current_menu;
+	} current_menu = MENU::HOME;
 	std::stack<MENU> menu_stack;
 	bool is_menu_unlocked(MENU const& from_menu, std::string const& to_menu); // returns false if there is no menu with that name
 	std::string text_entered{};

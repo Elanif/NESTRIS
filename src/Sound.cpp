@@ -19,7 +19,10 @@ void Sound::init() {
     for (const auto& i: noifiles) {
         if (!noibuffer[i].loadFromFile("sounds/"s+std::to_string(i)+"noi.wav")) ;//todo error
     }
-
+	sq1.setVolume(0);
+	sq2.setVolume(0);
+	tri.setVolume(0);
+	noi.setVolume(0);
 }
 
 void Sound::play(samples sample) {

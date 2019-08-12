@@ -8,7 +8,6 @@
 Input::Input()
     :leftandright(false)
 {
-    for (std::size_t buttoninit=0; buttoninit<MAXBUTTONS; ++buttoninit) prevactiveinputs[buttoninit]=activeinputs[buttoninit]=false;
     setup();
 }
 

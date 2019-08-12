@@ -35,9 +35,9 @@ class Input
         void setup();
         void initMap();
         sf::Event event;
-        bool prevactiveinputs[MAXBUTTONS];
-        bool activeinputs[MAXBUTTONS];
-        bool leftandright;
+		bool prevactiveinputs[MAXBUTTONS] = { false };
+		bool activeinputs[MAXBUTTONS] = { false };
+		bool leftandright = false;
         bool isActive(const input_union& _input_union) const;
         std::array<std::vector<input_union>, MAXBUTTONS >inputdependancies;
         std::size_t maxbuttons;

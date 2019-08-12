@@ -25,7 +25,7 @@ void MatrixContainer::render(const nes_uchar& _level) {
         return;
     }
     if (ntris::lineclearframecounter>0) {    //TODO how does pause interact with the clear animation?
-        if (getframemod4()==0) {
+        if (ntris::getframemod4()==0) {
             //Sound::play(Sound::clear_line);
             for (std::size_t i=0; i<linescleared; ++i ){
                 std::size_t x=ntris::lineclearframecounter-1;

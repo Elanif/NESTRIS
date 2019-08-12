@@ -29,14 +29,14 @@ RenderPlayField::RenderPlayField(TileContainer * _tilecont, const nes_ushort& _f
 /**
 TODO implement the real rendering process:
 the blinking and rendering seem to be asynchronous
-with NO PAUSE: blinking starts (8-getframemod4()) frames after the frame when collision is detected
+with NO PAUSE: blinking starts (8-ntris::getframemod4()) frames after the frame when collision is detected
 the frame after the last blinking frame the vlank(?) update begins:
 tempatrix=matrix
 first 4 visible rows of matrix = black/blank
 for i=1 to 4 {
     visible rows (i*4 to i*4+3) of matrix = visible rows (i*4-4 to i*4-1) of tempmatrix
 }
-with PAUSE: for example if the game is paused and unpaused in one of those (8-getframemod4()) frames and unpaused exactly 2 frames later:
+with PAUSE: for example if the game is paused and unpaused in one of those (8-ntris::getframemod4()) frames and unpaused exactly 2 frames later:
 matrix is updated like previously but it only shifts the matrix of 1
 then blinking starts
 when blinking is done the matrix updates correctly
@@ -68,7 +68,7 @@ void RenderPlayField::update(const ActiveInputs& _input, const nes_ushort& _fram
 
         if (linescleared) {
             ntris::lineclearframecounter=5;
-            if (getframemod4()==0) firstframeis4=true; //normally rendering happens before inputs, since I do it right after input managing I have to account for the frame being already eligible for blinking
+            if (ntris::getframemod4()==0) firstframeis4=true; //normally rendering happens before inputs, since I do it right after input managing I have to account for the frame being already eligible for blinking
             else firstframeis4=false;
         }
         else {
@@ -86,7 +86,7 @@ void RenderPlayField::render(const nes_ushort& _framecounter) {
     //renderimage(false); more optimization to be done
     if (ntris::lineclearframecounter>0) {
         if (tetris) {
-            if (getframemod4()==0&&!firstframeis4){
+            if (ntris::getframemod4()==0&&!firstframeis4){
                 renderimage(true);
             }
             else if (playfield_blink) {
@@ -104,7 +104,7 @@ void RenderPlayField::render(const nes_ushort& _framecounter) {
     statisticshandler.render(levellineshandler.get_shown_level()); //same thing
     scorehandler.render(); //shown score and real score are handled internally by scorehandler for now
     //if it's clear lines time and !(by coincidence the first frame it fell the frame was dividible by 4)
-    if (ntris::lineclearframecounter>0 && !firstframeis4 && getframemod4()==0) {
+    if (ntris::lineclearframecounter>0 && !firstframeis4 && ntris::getframemod4()==0) {
         if (tetris) Sound::play(Sound::tetris);
         else Sound::play(Sound::clear_line);
         ntris::lineclearframecounter--; //TODO pause interaction

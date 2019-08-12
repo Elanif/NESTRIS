@@ -1,39 +1,11 @@
 #ifndef NTRIS_H
 #define NTRIS_H
 #include<cstdint>
-#ifndef nes_uchar
-#define nes_uchar std::uint_least8_t
-#endif
-#ifndef nes_schar
-#define nes_schar std::int_least8_t
-#endif
-#ifndef nes_ushort
-#define nes_ushort std::uint_least16_t
-#endif
-#ifndef nes_sshort
-#define nes_sshort std::int_least16_t
-#endif
-#ifndef largest_uint
-#define largest_uint std::uint_fast64_t
-#endif
-#ifndef PLAYFIELDX
-#define PLAYFIELDX 96
-#endif // PLAYFIELDX
-#ifndef PLAYFIELDY
-#define PLAYFIELDY 40
-#endif // PLAYFIELDY
-#ifndef NEXTPIECEX
-#define NEXTPIECEX 195
-#endif // NEXTPIECEX
-#ifndef NEXTPIECEY
-#define NEXTPIECEY 111
-#endif // NEXTPIECEY
-#ifndef getframemod4 //TODO REMOVE THIS DEFINE
-#define getframemod4 ntris::FrameCounter::mod4
-#endif // getframemod
-#ifndef incframe
-#define incframe ntris::FrameCounter::inc
-#endif // incframe
+typedef std::uint_least8_t nes_uchar;
+typedef std::int_least8_t nes_schar;
+typedef std::uint_least16_t nes_ushort;
+typedef std::int_least16_t nes_sshort;
+typedef std::uint_fast64_t largest_uint;
 #include<cstddef>
 #include<SFML/System/Vector2.hpp>
 #include<tuple>
@@ -72,6 +44,11 @@ namespace ntris {
             return framecountlittle%4;
         }
     };
+
+	void incframe();
+
+	nes_schar getframemod4();
+
     extern nes_uchar lineclearframecounter;
     extern nes_uchar updatingmatrix;
     extern nes_uchar ARE;
@@ -108,7 +85,8 @@ namespace ntris {
 	constexpr std::size_t ntsc_tiles_x = 32;
 	constexpr std::size_t ntsc_tiles_y = 28;
 	extern sf::Vector2<long double> window_scale;
-	extern bool fourthirds;
+	extern sf::Vector2i window_position;
+	extern bool four_thirds;
 	constexpr float info_window_character_size = 8;
 	constexpr largest_uint MIN_DELAY_ERROR = 1000; 
 	const std::string newline = { "\r\n" };
@@ -127,8 +105,8 @@ namespace ntris {
     {0x0D ,0x30 ,0x27 ,0x16}
     };
 
-	void lowercase_str(std::string& str); //TODO make it portable with 16bitchar
-	void uppercase_str(std::string& str); //TODO make it portable with 16bitchar
+	std::string lowercase_str(std::string const& str); //TODO make it portable with 16bitchar
+	std::string uppercase_str(std::string const& str); //TODO make it portable with 16bitchar
 
 	template<typename ... Args>
 	std::string string_format(const std::string& format, Args ... args);

@@ -1,0 +1,3 @@
+window_position=299,40
+window_scale=5,5
+four_thirds=true

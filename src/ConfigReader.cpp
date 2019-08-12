@@ -80,13 +80,24 @@ std::size_t from_string<std::size_t>(const std::string& str) {
 
 template<>
 double from_string<double>(const std::string& str) {
-    double result=0;
-    try {
-        result=std::stod(str);
-    }
-    catch(std::exception e) {
-    }
-    return result;
+	double result = 0;
+	try {
+		result = std::stod(str);
+	}
+	catch (std::exception e) {
+	}
+	return result;
+}
+
+template<>
+long double from_string<long double>(const std::string& str) {
+	double result = 0;
+	try {
+		result = std::stod(str);
+	}
+	catch (std::exception e) {
+	}
+	return result;
 }
 
 template<>
@@ -160,13 +171,14 @@ bool ConfigReader::open(const std::string& file_location) {
 	} while (tries < max_tries && (!is_open || !is_loaded));
 
 	if (!is_open || !is_loaded) {
-		std::ofstream file_data(file_location);
+		{
+			std::ofstream file_data(file_location);
+		}
+		file_data.open(file_location.c_str(), std::ios::in);
+		is_open = file_data.is_open();
+		is_loaded = file_data.good() && !file_data.fail() && !file_data.bad();
 	}
 
-	file_data.open(file_location.c_str(), std::ios::in);
-	is_open = file_data.is_open();
-	is_loaded = file_data.good() && !file_data.fail() && !file_data.bad();
-	
     std::string line="";
     while(!safeGetline(file_data, line).eof()) {
 		switch (m_case) {
@@ -395,13 +407,17 @@ void ConfigReader::overwrite(std::string const& name, T const& t) {
 }
 
 void ConfigReader::print() {
-    for (const auto& i: name_map) {
-        std::cout<<i.first<<"=";
-        for (const auto& v: line_vector[i.second]) {
-            std::cout<<v<<",";
-        }
-        std::cout<<"\n";
-    }
+	for (const auto& line : line_vector) {
+		std::cout << line[0];
+		if (line.size() >= 2) {
+			std::cout << "=";
+			for (std::size_t i = 1; i < line.size() - 1; ++i) {
+				std::cout << line[i] << ",";
+			}
+			std::cout << line[line.size() - 1];
+		}
+		std::cout << "\n";
+	}
 }
 
 bool ConfigReader::close() {
@@ -447,6 +463,8 @@ bool ConfigReader::save() {
 
 template std::vector<double> ConfigReader::get(char* name);
 template std::vector<double> ConfigReader::get(const std::string& name);
+template std::vector<long double> ConfigReader::get(char* name);
+template std::vector<long double> ConfigReader::get(const std::string& name);
 //template std::vector<float> ConfigReader::get(char* name);
 //template std::vector<float> ConfigReader::get(const std::string& name);
 template std::vector<bool> ConfigReader::get(char* name);
@@ -468,6 +486,8 @@ template std::vector<std::string> ConfigReader::get(const std::string& name);
 
 template void ConfigReader::append(char* name, double const&);
 template void ConfigReader::append(const std::string& name, double const&);
+template void ConfigReader::append(char* name, long double const&);
+template void ConfigReader::append(const std::string& name, long double const&);
 //template void ConfigReader::append(char* name, float const&);
 //template void ConfigReader::append(const std::string& name, float const&);
 template void ConfigReader::append(char* name, bool const&);
@@ -489,6 +509,8 @@ template void ConfigReader::append(const std::string& name, std::string const&);
 
 template void ConfigReader::overwrite(char* name, std::vector<double> const&);
 template void ConfigReader::overwrite(const std::string& name, std::vector<double> const&);
+template void ConfigReader::overwrite(char* name, std::vector<long double> const&);
+template void ConfigReader::overwrite(const std::string& name, std::vector<long double> const&);
 //template void ConfigReader::overwrite(char* name, float const&);
 //template void ConfigReader::overwrite(const std::string& name, float const&);
 template void ConfigReader::overwrite(char* name, std::vector<bool> const&);

@@ -19,7 +19,7 @@ RHS(_tilecont, framecounter)
 
 void Engine::frame(const ActiveInputs& _inputs) {
     ++framecounter;
-    incframe();
+    ntris::incframe();
     random::prng();
     switch(currentmenu) {
 
