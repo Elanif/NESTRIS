@@ -7,6 +7,7 @@ class ActiveInputs {
         bool getPress(const std::size_t& _button) const;
         bool getHold(const std::size_t& _button) const;
         bool getLAR() const;
+		bool getHideMouse() const;
 
     private:
 
@@ -14,6 +15,7 @@ class ActiveInputs {
         bool leftandright;
         bool prevactiveinputs[8];
         bool activeinputs[8];
+		bool hide_mouse = false;
 };
 
 #endif

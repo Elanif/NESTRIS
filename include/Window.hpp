@@ -29,6 +29,7 @@ public:
 	void render(sf::RenderWindow& window, TileRenderer& tilerend);
 private:
 	std::atomic<bool> close_window;
+	std::atomic<bool> hide_cursor;
 	Input inputManager;
 	std::unique_ptr<DelayManager> delay_manager;
 	SafeQueue<sf::Event> event_queue;

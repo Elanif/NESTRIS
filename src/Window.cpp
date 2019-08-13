@@ -86,6 +86,8 @@ private:
 };
 
 void Window::render(sf::RenderWindow& window, TileRenderer& tilerend) {
+	close_window.store(false);
+	hide_cursor.store(false);
 	ConsoleManager cm;
 	Engine _engine = Engine(tilerend.getTileContainer(), Engine::LEVELSELECT);
 
@@ -97,7 +99,7 @@ void Window::render(sf::RenderWindow& window, TileRenderer& tilerend) {
 
 	MyClock elapsedtime;
 	std::size_t counter = 0;
-
+	
 	while (!close_window.load()&&window.isOpen()) {
 		odd_frame = !odd_frame; //Compiler should create 2 different cycles
 		if (odd_frame) timeperframe = timeperframe_odd;
@@ -108,7 +110,17 @@ void Window::render(sf::RenderWindow& window, TileRenderer& tilerend) {
 
 			elapsedtime.restart();
 			sf::Int64 delaycalc = 0;
-			_engine.frame(inputManager.getInput());
+			
+			ActiveInputs ai = inputManager.getInput();
+			_engine.frame(ai);
+			if (!hide_cursor.load() && ai.getHideMouse()) {
+				//window.setMouseCursorVisible(false);
+				hide_cursor.store(true);
+			}
+			else if (hide_cursor.load() && !ai.getHideMouse()) {
+				//window.setMouseCursorVisible(true);
+				hide_cursor.store(false);
+			}
 
 			Log::update<sf::Int64>("input delay", elapsedtime.elapsedTime() - delaycalc);
 			delaycalc = elapsedtime.elapsedTime();
@@ -217,8 +229,17 @@ Window::Window(const std::size_t& _width, const std::size_t& _height, const OPT&
 	std::thread render_thread(&Window::render, this, std::ref(window), std::ref(tilerend));
 
 	sf::Event event;
+	bool is_mouse_hidden = false;
 	while (window.isOpen()&&!close_window) {
 		if (window.waitEvent(event)) {
+			if (!is_mouse_hidden && hide_cursor.load()) {
+				window.setMouseCursorVisible(false);
+				is_mouse_hidden = true;
+			}
+			else if (is_mouse_hidden && event.type==sf::Event::MouseMoved) {
+				window.setMouseCursorVisible(true);
+				is_mouse_hidden = false;
+			}
 			event_queue.push(event);
 		}
 	}
