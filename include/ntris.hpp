@@ -89,6 +89,7 @@ namespace ntris {
 	extern bool four_thirds;
 	constexpr float info_window_character_size = 8;
 	constexpr largest_uint MIN_DELAY_ERROR = 1000; 
+	constexpr std::size_t bucket_size = 200;
 	const std::string newline = { "\r\n" };
 	constexpr std::size_t max_string_length = 30;
 

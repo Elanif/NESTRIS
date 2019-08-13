@@ -2,146 +2,94 @@
 #include<cmath>
 #include"ConsoleManager.hpp"
 #include"Log.hpp"
-#include<chrono>
 #include<thread>
 #include<string>
 #include<limits>
 #include<iostream>
 #include"ntris.hpp"
 #include"ConfigReader.hpp"
-#define SLEEP_SFML //high resolution clock isn't very high resolution
-#define SLEEP_MICROSECONDS
+#include<thread>
+#include"MyClock.hpp"
 
-class MyClock {
-    #ifdef SLEEP_CX11
-    std::chrono::high_resolution_clock::time_point starting_time=std::chrono::high_resolution_clock::now();
-    #endif // SLEEP_CX11
-    #ifdef SLEEP_SFML
-    sf::Clock clock;
-    #endif // SLEEP_SFML
-    public:
-    largest_uint elapsedTime() {
-        #ifdef SLEEP_CX11
-            #ifdef SLEEP_MILLISECONDS
-                return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::high_resolution_clock::now()-starting_time).count();
-            #endif // SLEEP_MILLISECONDS
+class ConfigSaver {
+public:
+	bool _save_on_exit = true;
+	void dont_save_on_exit() {
+		_save_on_exit = false;
+	}
 
-            #ifdef SLEEP_MICROSECONDS
-                return std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now()-starting_time).count();
-            #endif // SLEEP_MICROSECONDS
-
-            #ifdef SLEEP_NANOSECONDS
-                return std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::high_resolution_clock::now()-starting_time).count();
-            #endif // SLEEP_NANOSECONDS
-        #endif // SLEEP_CX11
-
-        #ifdef SLEEP_SFML
-            #ifdef SLEEP_MILLISECONDS
-                return clock.getElapsedTime().asMilliseconds();
-            #endif // SLEEP_MILLISECONDS
-
-            #ifdef SLEEP_MICROSECONDS
-                return clock.getElapsedTime().asMicroseconds();
-            #endif // SLEEP_MICROSECONDS
-
-            #ifdef SLEEP_NANOSECONDS
-                return clock.getElapsedTime().asMicroseconds()/1000;
-            #endif // SLEEP_NANOSECONDS
-        #endif // SLEEP_SFML
-    }
-
-    void restart(){
-        #ifdef SLEEP_CX11
-        starting_time=std::chrono::high_resolution_clock::now();
-        #endif // SLEEP_CX11
-        #ifdef SLEEP_SFML
-        clock.restart();
-        #endif // SLEEP_SFML
-    }
+	bool setFourThirds() {
+		std::vector<bool> four_thirds = cfg.get<bool>("four_thirds");
+		if (four_thirds.size() < 1) return true;
+		if (four_thirds[0] == true) return true;
+		return false;
+	}
+	sf::Vector2<long double> setWindowScale(std::size_t const& width_pixels, std::size_t const& height_pixels, bool const& four_thirds) {
+		std::vector<double> window_scale = cfg.get<double>("window_scale");
+		sf::Vector2<long double> scale{ 1,1 };
+		if (window_scale.size() >= 2) {
+			scale.x = window_scale[0];
+			scale.y = window_scale[1];
+		}
+		if (four_thirds) {
+			scale.y = 3.L / 4.L * scale.x * width_pixels / height_pixels;
+		}
+		return scale;
+	}
+	sf::Vector2i setWindowPosition(std::size_t const& window_width, std::size_t const& window_height) {
+		std::vector<int> window_position = cfg.get<int>("window_position");
+		sf::Vector2i window_pos{ 0,0 };
+		if (window_position.size() < 2) {
+			window_position.resize(2);
+			std::size_t screen_width = sf::VideoMode::getDesktopMode().width;
+			std::size_t screen_height = sf::VideoMode::getDesktopMode().height;
+			if (window_width <= screen_width) {
+				window_pos.x = (screen_width - window_width) / 2;
+			}
+			if (window_height <= screen_height) {
+				window_pos.y = (screen_height - window_height) / 2;
+			}
+		}
+		else {
+			window_pos.x = window_position[0];
+			window_pos.y = window_position[1];
+		}
+		return window_pos;
+	}
+	void saveWindowScale() {
+		saveConfig("window_scale", ntris::window_scale);
+	}
+	void saveFourThirds() {
+		cfg.overwrite<bool>("four_thirds", std::vector<bool>(1,true));
+	}
+	void saveWindowPosition() {
+		saveConfig("window_position", ntris::window_position);
+	}
+	void save_on_exit() {
+		_save_on_exit = true;
+	}
+	ConfigSaver(ConfigReader& _cfg) :cfg(_cfg) {};
+	~ConfigSaver() {
+		if (_save_on_exit) {
+			saveFourThirds();
+			saveWindowScale();
+			saveWindowPosition();
+			cfg.save();
+		}
+	}
+private:
+	ConfigReader& cfg;
+	template<typename T>
+	void saveConfig(std::string const& name, sf::Vector2<T> vector) {
+		cfg.overwrite(name, std::vector<T>{vector.x, vector.y});
+	}
 };
 
-sf::Vector2<long double> Window::setWindowScale(ConfigReader& cfg, std::size_t const& width_pixels, std::size_t const& height_pixels, bool const& four_thirds) {
-	std::vector<double> window_scale = cfg.get<double>("window_scale");
-	sf::Vector2<long double> scale{ 1,1 };
-	if (window_scale.size() >= 2) {
-		scale.x = window_scale[0];
-		scale.y = window_scale[1];
-	}
-	if (four_thirds) {
-		scale.y = 3.L / 4.L * scale.x * width_pixels / height_pixels;
-	}
-	return scale;
-}
-
-bool Window::setFourThirds(ConfigReader& cfg) {
-	std::vector<bool> four_thirds = cfg.get<bool>("four_thirds");
-	if (four_thirds.size() < 1) return true;
-	if (four_thirds[0] == true) return true;
-	return false;
-}
-
-sf::Vector2i Window::setWindowPosition(ConfigReader& cfg, std::size_t const& window_width, std::size_t const& window_height) {
-	std::vector<int> window_position = cfg.get<int>("window_position");
-	sf::Vector2i window_pos{ 0,0 };
-	if (window_position.size() < 2) {
-		window_position.resize(2);
-		std::size_t screen_width = sf::VideoMode::getDesktopMode().width;
-		std::size_t screen_height = sf::VideoMode::getDesktopMode().height;
-		if (window_width <= screen_width) {
-			window_pos.x = (screen_width - window_width) / 2;
-		}
-		if (window_height <= screen_height) {
-			window_pos.y = (screen_height - window_height) / 2;
-		}
-	}
-	else {
-		window_pos.x = window_position[0];
-		window_pos.y = window_position[1];
-	}
-	return window_pos;
-}
-
-
-Window::Window(const std::size_t& _width, const std::size_t& _height, const OPT& optimized)
-{
-	ConsoleManager cm{};
-	ConfigReader cfg(std::string("settings/config.txt"));
-
-	std::pair<largest_uint, largest_uint>  tilesize = { ntris::tilesize.first, ntris::tilesize.second };
-	const sf::Vector3<std::size_t> extra_render(16, 16, 64);
-	TileRenderer tilerend(ntris::ntsc_tiles_x, ntris::ntsc_tiles_y, tilesize, TileRenderer::DRAWTEXTURE, extra_render);
-
-	ntris::four_thirds = setFourThirds(cfg);
-	ntris::window_scale = setWindowScale(cfg, tilerend.width_pixels, tilerend.height_pixels, ntris::four_thirds);
-
-	std::size_t window_width = tilerend.width_pixels * ntris::window_scale.x;
-	std::size_t window_height = tilerend.height_pixels * ntris::window_scale.y;
-
-	sf::RenderWindow window(sf::VideoMode(tilerend.width_pixels, tilerend.height_pixels), "Nestris");
-
-	ntris::window_position = setWindowPosition(cfg, window_width, window_height);
-
-	window.setPosition(ntris::window_position);
-
-	window.setSize(sf::Vector2u(window_width, window_height));
-
-	tilerend.load("texturesprite/sprites.txt");
-	//tilerend.load("texturesprite/sprites.txtupdated");
-
+void Window::render(sf::RenderWindow& window, TileRenderer& tilerend) {
+	ConsoleManager cm;
 	Engine _engine = Engine(tilerend.getTileContainer(), Engine::LEVELSELECT);
 
-	sf::Event event;
-
-	#ifdef SLEEP_MILLISECONDS
-		largest_uint partspersecond{ 1000 };
-	#endif // SLEEP_MILLISECONDS
-	#ifdef SLEEP_MICROSECONDS
-		largest_uint partspersecond{ 1000000 };
-	#endif // SLEEP_MICROSECONDS
-	#ifdef SLEEP_NANOSECONDS
-		largest_uint partspersecond = { 1000000000 };
-	#endif // SLEEP_NANOSECONDS
-
+	constexpr largest_uint partspersecond = MyClock::getPartsPerSecond();
 	largest_uint timeperframe_odd = (long double)(partspersecond) / ntris::ntsc_fps_odd;
 	largest_uint timeperframe_even = (long double)(partspersecond) / ntris::ntsc_fps_even;
 	bool odd_frame = false;
@@ -150,40 +98,41 @@ Window::Window(const std::size_t& _width, const std::size_t& _height, const OPT&
 	MyClock elapsedtime;
 	std::size_t counter = 0;
 
-    while (window.isOpen()) {
-        odd_frame=!odd_frame; //Compiler should create 2 different cycles
-        if (odd_frame) timeperframe=timeperframe_odd;
-        else timeperframe=timeperframe_even;
-        if (elapsedtime.elapsedTime()>=timeperframe) {
+	while (!close_window.load()&&window.isOpen()) {
+		odd_frame = !odd_frame; //Compiler should create 2 different cycles
+		if (odd_frame) timeperframe = timeperframe_odd;
+		else timeperframe = timeperframe_even;
+		if (elapsedtime.elapsedTime() >= timeperframe) {
 
-            if (elapsedtime.elapsedTime()>0) Log::update<long double>("fps",partspersecond/(long double)elapsedtime.elapsedTime());
+			if (elapsedtime.elapsedTime() > 0) Log::update<long double>("fps", partspersecond / (long double)elapsedtime.elapsedTime());
 
-            elapsedtime.restart();
-            sf::Int64 delaycalc=0;
-            _engine.frame(inputManager.getInput());
+			elapsedtime.restart();
+			sf::Int64 delaycalc = 0;
+			_engine.frame(inputManager.getInput());
 
-            Log::update<sf::Int64>("input delay",elapsedtime.elapsedTime()-delaycalc);
-            delaycalc=elapsedtime.elapsedTime();
+			Log::update<sf::Int64>("input delay", elapsedtime.elapsedTime() - delaycalc);
+			delaycalc = elapsedtime.elapsedTime();
 			//std::cout <<"input delay"<< elapsedtime.elapsedTime() - delaycalc << ntris::newline;
-            window.clear();//adds 15microseconds
-            tilerend.drawmod(window);
+			window.clear();//adds 15microseconds
+			tilerend.drawmod(window);
 
-            Log::update<sf::Int64>("draw delay",elapsedtime.elapsedTime()-delaycalc);
+			Log::update<sf::Int64>("draw delay", elapsedtime.elapsedTime() - delaycalc);
 			std::cout << elapsedtime.elapsedTime() - delaycalc << ntris::newline;
 			//std::cout << "draw delay"<<elapsedtime.elapsedTime() - delaycalc << ntris::newline;
-            delaycalc=elapsedtime.elapsedTime();
+			delaycalc = elapsedtime.elapsedTime();
 
-            window.display();
+			window.display();
 
-            Log::update<sf::Int64>("display delay",elapsedtime.elapsedTime()-delaycalc);
+			Log::update<sf::Int64>("display delay", elapsedtime.elapsedTime() - delaycalc);
 			//std::cout << "display delay"<<elapsedtime.elapsedTime() - delaycalc << ntris::newline;
 			delaycalc = elapsedtime.elapsedTime();
 
-            while (window.pollEvent(event))
-            {
+			while (event_queue.size()>0)
+			{
+				sf::Event event = event_queue.pop();
 				switch (event.type) {
 				case sf::Event::Closed:
-					window.close();
+					close_window.store(true);
 				break;
 				case sf::Event::KeyPressed:
 					if (event.key.code == sf::Keyboard::F1 && window.hasFocus()) {
@@ -192,226 +141,93 @@ Window::Window(const std::size_t& _width, const std::size_t& _height, const OPT&
 							window.requestFocus();
 					}
 				break;
+				case sf::Event::Resized:
+
+				break;
 				}
-				
-            }
+
+			}
 			cm.refresh();
-        }
-        else {
-            switch(optimized) {
-            case GENERAL:
-                general_delay_manager(timeperframe-elapsedtime.elapsedTime());
-                break;
-            case SMALLEST:
-                smallest_delay_manager(timeperframe-elapsedtime.elapsedTime());
-                break;
-            case SPAM:
-                spam_delay_manager(timeperframe-elapsedtime.elapsedTime());
-                break;
-            case FULL:
-                full_thread_delay_manager(timeperframe-elapsedtime.elapsedTime());
-                break;
-            case NOTHING:
-                nothing_delay_manager(0);
-                break;
-            case ARRAY:
-                array_delay_manager(timeperframe-elapsedtime.elapsedTime());
-                break;
-            case ARRAYLOG:
-                array_delay_manager_log(timeperframe-elapsedtime.elapsedTime());
-                break;
-            case ARRAYBUCKET:
-                array_delay_manager_bucket(timeperframe-elapsedtime.elapsedTime());
-                break;
-            default:
-                general_delay_manager(timeperframe-elapsedtime.elapsedTime());
-            }
-        }
-    }
-    Log::update<std::string>("system",std::string("Window terminating"));
-    cm.refresh(true);
+		}
+		else {
+			delay_manager->delay(timeperframe - elapsedtime.elapsedTime());
+		}
+	}
+
+	Log::update<std::string>("system", std::string("Window terminating"));
+	cm.refresh(true);
 	cm.close_info_window();
 }
 
-void Window::general_delay_manager(largest_uint target_delay) {
-    static largest_uint max_extra_delay=ntris::MIN_DELAY_ERROR;
-    if (target_delay<=max_extra_delay) return;
-    largest_uint real_delay=sleep_for_how_long(target_delay-max_extra_delay);
-    if (real_delay>target_delay) {
-        max_extra_delay=real_delay-target_delay+max_extra_delay;
-    }
-}
-
-void Window::smallest_delay_manager(largest_uint target_delay) {
-    static largest_uint max_extra_delay=ntris::MIN_DELAY_ERROR;
-    if (target_delay<=max_extra_delay) return;
-    largest_uint real_delay=sleep_for_how_long(target_delay-max_extra_delay);
-    if (real_delay>max_extra_delay) {
-        max_extra_delay=real_delay;
-    }
-}
-
-void Window::array_delay_manager(largest_uint target_delay) {
-    MyClock clock;
-	constexpr std::size_t max_delay_size{ 1000000 }; //todo maybe group delays together
-    static largest_uint arr_delay[max_delay_size]={ntris::MIN_DELAY_ERROR};
-    if (target_delay>=max_delay_size) target_delay=max_delay_size-1;
-    largest_uint reduced_delay=target_delay-clock.elapsedTime();
-    while (clock.elapsedTime()<target_delay&& reduced_delay<=arr_delay[reduced_delay]) {
-        reduced_delay=target_delay-clock.elapsedTime();
-    };
-    if (reduced_delay<=0) return;
-    largest_uint real_delay=sleep_for_how_long(reduced_delay-arr_delay[reduced_delay]);
-    if (real_delay>reduced_delay) {
-        arr_delay[reduced_delay]=real_delay-reduced_delay;
-    }
-}
-
-void Window::array_delay_manager_bucket(largest_uint target_delay) {
-    //MyClock clock;
-//    static largest_uint max_iterations=0;
-//    static largest_uint max_clock=0;
-//    static largest_uint sum_iterations=0;
-//    static largest_uint sum_clock=0;
-//    static largest_uint tot_iterations=0;
-    #ifdef SLEEP_MILLISECONDS
-	constexpr largest_uint partsperframe = largest_uint{ 1000 } / ntris::ntsc_fps;
-    #endif // SLEEP_MILLISECONDS
-    #ifdef SLEEP_MICROSECONDS
-    constexpr largest_uint partsperframe= largest_uint{ 1000000 } /ntris::ntsc_fps;
-    #endif // SLEEP_MICROSECONDS
-    #ifdef SLEEP_NANOSECONDS
-    constexpr largest_uint partsperframe= largest_uint{ 1000000000 } /ntris::ntsc_fps;
-    #endif // SLEEP_NANOSECONDS
-	constexpr largest_uint bucket_size{ 200 };
-    static largest_uint arr_delay[partsperframe/bucket_size+2]={1};
-    if (target_delay<=0) return;
-    if (target_delay>=partsperframe) target_delay=partsperframe;
-    auto bucket_finder = [&bucket_size](largest_uint index) {
-        return index/bucket_size;
-    };
-    //largest_uint counter=0;
-    //target_delay-=clock.elapsedTime();
-    while (target_delay>0 && target_delay<arr_delay[bucket_finder(target_delay)]) {
-        target_delay-=bucket_size;
-        //++counter;
-        //target_delay-=clock.elapsedTime();
-    }
-    /*if (counter>max_iterations) max_iterations=counter;
-    tot_iterations++;
-    sum_iterations+=counter;
-    sum_clock+=clock.elapsedTime();
-    if (clock.elapsedTime()>max_clock) max_clock=clock.elapsedTime();*/
-    using namespace std::string_literals;
-    //Log::update("system","max:"s+std::to_string(max_iterations)+"   avg iter:"+std::to_string((long double)sum_iterations/(long double)tot_iterations)+"   avg clock:"s+std::to_string((long double)sum_clock/(long double) tot_iterations)+ "   max clock:"s+std::to_string(max_clock));
-    if (target_delay<0) return;
-    largest_uint real_delay = sleep_for_how_long(bucket_finder(target_delay)*bucket_size-arr_delay[bucket_finder(target_delay)]);
-    if (real_delay>bucket_finder(target_delay)*bucket_size) arr_delay[bucket_finder(target_delay)]=real_delay-bucket_finder(target_delay)*bucket_size;
-}
-
-constexpr largest_uint log2(largest_uint _logarg) {
-	constexpr std::size_t max_bits = std::numeric_limits<unsigned long long>::digits;
-	for (std::size_t i = 0; i < max_bits && _logarg>0; ++i) {
-		_logarg <<= std::size_t{ 1 };
+Window::Window(const std::size_t& _width, const std::size_t& _height, const OPT& optimized)
+{
+	switch (optimized) {
+	case GENERAL:
+		delay_manager = std::make_unique<GeneralDelayManager>();
+		break;
+	case SMALLEST:
+		delay_manager = std::make_unique<SmallestDelayManager>();
+		break;
+	case SPAM:
+		delay_manager = std::make_unique<SpamDelayManager>();
+		break;
+	case FULL:
+		delay_manager = std::make_unique<FullThreadDelayManager>();
+		break;
+	case NOTHING:
+		delay_manager = std::make_unique<NothingDelayManager>();
+		break;
+	/*case ARRAY:
+		delay_manager = std::make_unique<ArrayDelayManager>();
+		break;*/
+	/*case ARRAYLOG:
+		delay_manager = std::make_unique<ArrayLogDelayManager>();
+		break;*/
+	/*case ARRAYBUCKET:
+		delay_manager = std::make_unique<BucketArrayDelayManager>();
+		break;*/
+	default:
+		delay_manager = std::make_unique<GeneralDelayManager>();
 	}
-	return _logarg;
+	ConfigReader cfg(std::string("settings/config.txt"));
+	ConfigSaver config_saver(cfg);
+
+	std::pair<largest_uint, largest_uint>  tilesize = { ntris::tilesize.first, ntris::tilesize.second };
+	const sf::Vector3<std::size_t> extra_render(16, 16, 64);
+	TileRenderer tilerend(ntris::ntsc_tiles_x, ntris::ntsc_tiles_y, tilesize, TileRenderer::DRAWTEXTURE, extra_render);
+
+	ntris::four_thirds = config_saver.setFourThirds();
+	ntris::window_scale = config_saver.setWindowScale(tilerend.width_pixels, tilerend.height_pixels, ntris::four_thirds);
+
+	std::size_t window_width = tilerend.width_pixels * ntris::window_scale.x;
+	std::size_t window_height = tilerend.height_pixels * ntris::window_scale.y;
+
+	sf::RenderWindow window(sf::VideoMode(tilerend.width_pixels, tilerend.height_pixels), "Nestris");
+
+	ntris::window_position = config_saver.setWindowPosition(window_width, window_height);
+
+	window.setPosition(ntris::window_position);
+
+	window.setSize(sf::Vector2u(window_width, window_height));
+
+	tilerend.load("texturesprite/sprites.txt");
+	//tilerend.load("texturesprite/sprites.txtupdated");
+
+	window.setActive(false);
+	std::thread render_thread(&Window::render, this, std::ref(window), std::ref(tilerend));
+
+	sf::Event event;
+	while (window.isOpen()&&!close_window) {
+		if (window.waitEvent(event)) {
+			event_queue.push(event);
+		}
+	}
+	if (render_thread.joinable())
+		render_thread.join();
+	window.setActive(true);
+	window.close();
 }
 
-
-void Window::array_delay_manager_log(largest_uint target_delay) {
-    #ifdef SLEEP_MILLISECONDS
-    constexpr unsigned long long partsperframe=1000/ntris::ntsc_fps;
-    #endif // SLEEP_MILLISECONDS
-    #ifdef SLEEP_MICROSECONDS
-    constexpr unsigned long long partsperframe=1000000/ntris::ntsc_fps;
-    #endif // SLEEP_MICROSECONDS
-    #ifdef SLEEP_NANOSECONDS
-    constexpr unsigned long long partsperframe=1000000000/ntris::ntsc_fps;
-    #endif // SLEEP_NANOSECONDS
-	constexpr std::size_t array_length = log2(partsperframe) + 1; //constexpr std::size_t array_length=std::ceil(std::log2(partsperframe)); //ceil isn't constexpr for some reason
-    static largest_uint arr_delay[array_length]={ntris::MIN_DELAY_ERROR};
-	constexpr largest_uint max_delay_allowed = largest_uint{ 1 } << array_length;
-    if (target_delay<=0) return;
-    std::size_t index=0;
-    std::size_t result_index=-1;
-    if (target_delay>max_delay_allowed) target_delay=max_delay_allowed;
-    unsigned long long t_delay=target_delay;
-    while (t_delay>0) {
-        if (arr_delay[index]<target_delay) result_index=index;
-        t_delay>>=1;
-        index++;
-    }
-    if (result_index>=array_length||result_index<0) return;
-    target_delay=largest_uint(1)<<result_index;
-    //Log::update("system", std::to_string(target_delay)+std::string("    "));
-    largest_uint real_delay=sleep_for_how_long(target_delay-arr_delay[result_index]);
-    if (real_delay>target_delay) arr_delay[result_index]=real_delay-target_delay;
-}
-
-void Window::spam_delay_manager(largest_uint target_delay) {
-    static largest_uint smallest_delay_possible=ntris::MIN_DELAY_ERROR;
-    MyClock clock;
-    largest_uint _late_time=clock.elapsedTime();
-    while(_late_time+smallest_delay_possible<target_delay) {
-        largest_uint _prev_time = _late_time;
-        sleep(1);
-        largest_uint _late_time=clock.elapsedTime();
-        if (_late_time-_prev_time>smallest_delay_possible)smallest_delay_possible=_late_time-_prev_time;
-    }
-}
-
-void Window::full_thread_delay_manager(largest_uint target_delay) {
-    static largest_uint smallesttimeunit=ntris::MIN_DELAY_ERROR;
-    MyClock clock;
-    largest_uint _last_time=clock.elapsedTime();
-    while(clock.elapsedTime()+smallesttimeunit<target_delay) {
-        largest_uint __temp=(clock.elapsedTime()-_last_time);
-        if (__temp>smallesttimeunit) smallesttimeunit=__temp;
-    };
-}
-
-void Window::nothing_delay_manager(largest_uint target_delay) {
-}
-
-largest_uint Window::sleep_for_how_long(largest_uint _delay) {
-    static MyClock clock;
-    clock.restart();
-    sleep(_delay);
-    return clock.elapsedTime();
-}
-void Window::sleep(largest_uint _delay) {
-    if (_delay<=0) return;
-    #ifdef SLEEP_CX11
-        #ifdef SLEEP_MILLISECONDS
-        std::this_thread::sleep_for(std::chrono::milliseconds(_delay));
-        return;
-        #endif
-        #ifdef SLEEP_MICROSECONDS
-        std::this_thread::sleep_for(std::chrono::microseconds(_delay));
-        return;
-        #endif
-        #ifdef SLEEP_NANOSECONDS
-        std::this_thread::sleep_for(std::chrono::nanoseconds(_delay));
-        return;
-    #endif
-    #else
-    // SLEEP_CX11
-        #ifdef SLEEP_SFML
-            #ifdef SLEEP_MILLISECONDS
-            sf::sleep(sf::milliseconds(_delay));
-            return;
-            #endif
-            #ifdef SLEEP_MICROSECONDS
-            sf::sleep(sf::microseconds(_delay));
-            return;
-            #endif
-            #ifdef SLEEP_NANOSECONDS
-            sf::sleep(sf::microseconds(_delay/1000+1));
-            return;
-            #endif // SLEEP_NANOSECONDS
-        #endif // SLEEP_SFML
-    #endif
-}
 
 /* data analysis
 largest_uint smallesttimeunit=largest_uint(0);

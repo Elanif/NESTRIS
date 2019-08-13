@@ -171,6 +171,7 @@
     <ClCompile Include="src\APU.cpp" />
     <ClCompile Include="src\ConfigReader.cpp" />
     <ClCompile Include="src\ConsoleManager.cpp" />
+    <ClCompile Include="src\DelayManager.cpp" />
     <ClCompile Include="src\Engine.cpp" />
     <ClCompile Include="src\Input.cpp" />
     <ClCompile Include="src\LevelLines.cpp" />
@@ -201,11 +202,13 @@
     <ClInclude Include="include\APU.hpp" />
     <ClInclude Include="include\ConfigReader.hpp" />
     <ClInclude Include="include\ConsoleManager.hpp" />
+    <ClInclude Include="include\DelayManager.hpp" />
     <ClInclude Include="include\Engine.hpp" />
     <ClInclude Include="include\Input.hpp" />
     <ClInclude Include="include\LevelLines.hpp" />
     <ClInclude Include="include\Log.hpp" />
     <ClInclude Include="include\MatrixContainer.hpp" />
+    <ClInclude Include="include\MyClock.hpp" />
     <ClInclude Include="include\ntris.hpp" />
     <ClInclude Include="include\OutputInfo.hpp" />
     <ClInclude Include="include\PFMatrix.hpp" />
@@ -216,6 +219,7 @@
     <ClInclude Include="include\RenderHighScore.hpp" />
     <ClInclude Include="include\RenderLevelSelect.hpp" />
     <ClInclude Include="include\RenderPlayField.hpp" />
+    <ClInclude Include="include\SafeQueue.hpp" />
     <ClInclude Include="include\Score.hpp" />
     <ClInclude Include="include\Sound.hpp" />
     <ClInclude Include="include\Sprite.hpp" />
