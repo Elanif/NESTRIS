@@ -196,6 +196,7 @@
     <ClCompile Include="src\TileContainer.cpp" />
     <ClCompile Include="src\TileRenderer.cpp" />
     <ClCompile Include="src\Window.cpp" />
+    <ClCompile Include="TextRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\ActiveInputs.hpp" />
@@ -225,6 +226,7 @@
     <ClInclude Include="include\Sprite.hpp" />
     <ClInclude Include="include\Statistics.hpp" />
     <ClInclude Include="include\TextFormatter.hpp" />
+    <ClInclude Include="include\TextRenderer.hpp" />
     <ClInclude Include="include\TextWriter.hpp" />
     <ClInclude Include="include\TileContainer.hpp" />
     <ClInclude Include="include\TileRenderer.hpp" />
