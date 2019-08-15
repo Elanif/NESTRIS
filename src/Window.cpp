@@ -129,7 +129,6 @@ void Window::render(sf::RenderWindow& window, TileRenderer& tilerend) {
 			tilerend.drawmod(window);
 
 			Log::update<sf::Int64>("draw delay", elapsedtime.elapsedTime() - delaycalc);
-			std::cout << elapsedtime.elapsedTime() - delaycalc << ntris::newline;
 			//std::cout << "draw delay"<<elapsedtime.elapsedTime() - delaycalc << ntris::newline;
 			delaycalc = elapsedtime.elapsedTime();
 

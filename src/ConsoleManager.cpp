@@ -161,7 +161,7 @@ void ConsoleManager::renderHOME(sf::Vector2f pos)
 		reset = true;
 	}
 	for (auto& info : Log::log_vector) {
-		std::string outputstring = info->print(reset);			
+		std::string outputstring = info->print_complete(reset);			
 		text_formatter.setString(outputstring);
 		text_formatter.setBoundaries({ ntris::ntsc_screen_width, ntris::ntsc_screen_height });
 		text_formatter.setPosition(pos);

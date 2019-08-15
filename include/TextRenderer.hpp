@@ -6,15 +6,14 @@
 
 class TextRenderer {
 public:
-	TextRenderer(sf::RenderTarget* _render_target, sf::Font* _font);
-	void setFont(sf::Font* _font);
-	void setRenderTarget(sf::RenderTarget* _render_target);
+	TextRenderer(sf::Font const* _font);
+	void setFont(sf::Font const* _font);
 	void addText(sf::Text const& text);
 	void clear();
-	void render();
+	void draw(sf::RenderTarget& render_target);
 	std::vector<sf::Text> const& getTexts() const;
 private:
 	std::shared_ptr<sf::RenderTarget> render_target;
-	std::shared_ptr<sf::Font> font;
+	std::shared_ptr<sf::Font const> font;
 	std::vector<sf::Text> text_vector;
 };

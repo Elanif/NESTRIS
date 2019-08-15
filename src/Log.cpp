@@ -32,6 +32,13 @@ std::string print_time(tm t, Duration fraction) {
 void Log::print_error(const std::string& error_string) {
 	print_error(error_string.c_str());
 }
+OutputInfo* Log::getOutputInfo(std::string const& name)
+{
+	if (log_map.find(name) != log_map.end()) {
+		return log_vector[log_map[name]].get();
+	}
+	return nullptr;
+}
 void Log::print_error(const char* error_string) {
 	auto clock = std::chrono::system_clock::now();
 	std::time_t current_time = std::chrono::system_clock::to_time_t(clock);

@@ -7,6 +7,7 @@
 #include<stack>
 #include<SFML/Graphics.hpp>
 #include"TextFormatter.hpp"
+#include"TextRenderer.hpp"
 
 class ConsoleManager : public sf::NonCopyable
 {

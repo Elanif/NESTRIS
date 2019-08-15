@@ -22,6 +22,7 @@ public:
 	static bool error_print;
 	static void print_error(const char* error_string);
 	static void print_error(const std::string& error_string);
+	static OutputInfo* getOutputInfo(std::string const& name);
 	static std::size_t add_value(std::string info, std::string unit);
 	static std::size_t add_value(std::unique_ptr<OutputInfo>&& outputinfo);
 	static std::vector<std::unique_ptr<OutputInfo> > log_vector;

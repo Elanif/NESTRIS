@@ -178,6 +178,7 @@
     <ClCompile Include="src\Log.cpp" />
     <ClCompile Include="src\MatrixContainer.cpp" />
     <ClCompile Include="src\ntris.cpp" />
+    <ClCompile Include="src\OptionsMenu.cpp" />
     <ClCompile Include="src\OutputInfo.cpp" />
     <ClCompile Include="src\PFMatrix.cpp" />
     <ClCompile Include="src\Piece.cpp" />
@@ -211,6 +212,7 @@
     <ClInclude Include="include\MatrixContainer.hpp" />
     <ClInclude Include="include\MyClock.hpp" />
     <ClInclude Include="include\ntris.hpp" />
+    <ClInclude Include="include\OptionsMenu.hpp" />
     <ClInclude Include="include\OutputInfo.hpp" />
     <ClInclude Include="include\PFMatrix.hpp" />
     <ClInclude Include="include\Piece.hpp" />
