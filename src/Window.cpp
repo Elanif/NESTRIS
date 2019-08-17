@@ -17,7 +17,9 @@ public:
 	void dont_save_on_exit() {
 		_save_on_exit = false;
 	}
-
+	void save_on_exit() {
+		_save_on_exit = true;
+	}
 	bool setFourThirds() {
 		std::vector<bool> four_thirds = cfg.get<bool>("four_thirds");
 		if (four_thirds.size() < 1) return true;
@@ -60,13 +62,10 @@ public:
 		saveConfig("window_scale", ntris::window_scale);
 	}
 	void saveFourThirds() {
-		cfg.overwrite<bool>("four_thirds", std::vector<bool>(1,true));
+		cfg.overwrite("four_thirds", std::vector<bool>(1,ntris::four_thirds));
 	}
 	void saveWindowPosition() {
 		saveConfig("window_position", ntris::window_position);
-	}
-	void save_on_exit() {
-		_save_on_exit = true;
 	}
 	ConfigSaver(ConfigReader& _cfg) :cfg(_cfg) {};
 	~ConfigSaver() {
@@ -114,17 +113,15 @@ void Window::render(sf::RenderWindow& window, TileRenderer& tilerend) {
 			ActiveInputs ai = inputManager.getInput();
 			_engine.frame(ai);
 			if (!hide_cursor.load() && ai.getHideMouse()) {
-				//window.setMouseCursorVisible(false);
 				hide_cursor.store(true);
 			}
 			else if (hide_cursor.load() && !ai.getHideMouse()) {
-				//window.setMouseCursorVisible(true);
 				hide_cursor.store(false);
 			}
 
-			Log::update<sf::Int64>("input delay", elapsedtime.elapsedTime() - delaycalc);
+			Log::update<sf::Int64>("processing delay", elapsedtime.elapsedTime() - delaycalc);
 			delaycalc = elapsedtime.elapsedTime();
-			//std::cout <<"input delay"<< elapsedtime.elapsedTime() - delaycalc << ntris::newline;
+			//std::cout <<"processing delay"<< elapsedtime.elapsedTime() - delaycalc << ntris::newline;
 			window.clear();//adds 15microseconds
 			tilerend.drawmod(window);
 
@@ -156,8 +153,8 @@ void Window::render(sf::RenderWindow& window, TileRenderer& tilerend) {
 
 				break;
 				}
-
 			}
+			ntris::window_position = window.getPosition();
 			cm.refresh();
 		}
 		else {
@@ -188,15 +185,15 @@ Window::Window(const std::size_t& _width, const std::size_t& _height, const OPT&
 	case NOTHING:
 		delay_manager = std::make_unique<NothingDelayManager>();
 		break;
-	/*case ARRAY:
+	case ARRAY:
 		delay_manager = std::make_unique<ArrayDelayManager>();
-		break;*/
-	/*case ARRAYLOG:
+		break;
+	case ARRAYLOG:
 		delay_manager = std::make_unique<ArrayLogDelayManager>();
-		break;*/
-	/*case ARRAYBUCKET:
+		break;
+	case ARRAYBUCKET:
 		delay_manager = std::make_unique<BucketArrayDelayManager>();
-		break;*/
+		break;
 	default:
 		delay_manager = std::make_unique<GeneralDelayManager>();
 	}
@@ -247,116 +244,3 @@ Window::Window(const std::size_t& _width, const std::size_t& _height, const OPT&
 	window.setActive(true);
 	window.close();
 }
-
-
-/* data analysis
-largest_uint smallesttimeunit=largest_uint(0);
-    largest_uint totaltimewaited=0;
-    sf::Clock onesecondinit;
-    sf::Clock elapsedtime=sf::Clock();
-    largest_uint testnumber=0;
-    std::vector<largest_uint> timetests;
-    while (onesecondinit.getElapsedTime()<sf::Time(sf::milliseconds(1000))) {
-        elapsedtime.restart();
-        sf::sleep(sf::microseconds(1));
-        largest_uint _timetemp=elapsedtime.getElapsedTime().asMicroseconds();
-        timetests.push_back(_timetemp);
-        //printf("%d ",(int)_timetemp);
-        totaltimewaited+= _timetemp;
-        if (_timetemp>smallesttimeunit)smallesttimeunit=_timetemp;
-        ++testnumber;
-    }
-    double mean=(double)totaltimewaited/(double)testnumber;
-    double variance=0;
-    for (largest_uint i=0; i<testnumber; ++i) {
-        variance+=(timetests[i]-mean)*(timetests[i]-mean);
-    }
-    variance/=(double)testnumber-1;
-    double sd=sqrt(variance);
-    printf("mean =%f, sd=%f, variance=%f, biggest hiccup=%d\n",mean,sd,variance,(int)smallesttimeunit);
-    */
-
-/* data renderer
-largest_uint datawidth;
-    window.clear();
-    for (datawidth=0; datawidth<_width;++datawidth) {
-        int rectheight=0;
-        sf::RectangleShape istogramma;
-        largest_uint widthtemp=smallesttimeunit/_width;
-        largest_uint left=datawidth*widthtemp;
-        largest_uint right=datawidth*(widthtemp+1);
-        for (std::size_t i=0; i<timetests.size(); ++i) {
-            if (timetests[i]>=left&&timetests[i]<right) {
-                rectheight++;
-            }
-        }
-        istogramma.setSize(sf::Vector2f(2,rectheight));
-        istogramma.setFillColor(sf::Color(244,244,244,244));
-        istogramma.move(sf::Vector2f(2*datawidth,0));
-        window.draw(istogramma);
-    }
-window.display();
-scanf("%d",&datawidth);
-*/
-
-/*
-Nes-like Graphics Emulator
-I'm working on a nes project and taking inspiration from the tutorials I tried to create a tilemap[hyperlink]. The problem is that nes tiles work like this:link. This means that each tile in the texture has a variable color and I couldn't think of a smart way to convert the texture to the color I want each time, it seems impossible with my sf::Color and sf::Texture. I decided to build an sf::Image, convert it to a texture and draw it each frame, which resulted in 4fps. I thought that updating the whole image every frame was the culprit, but even after removing that part in the program the fps only went up to ~10fps. I resolved to using textures and I had this idea: since creating a texture for each color (50 different colors on the NES, 4 colors per tile, hundreds of Sprites) is impossible, I thought of creating a dynamically updated texture that updates when a new tile/color combination is requested, managed with a hash map or a container that lets me find the required texture in O(1) time. The problem is that I couldn't find a way to dynamically update a texture. Afterwards I realized that there's probably a way to render from multiple textures, should I create a Sprite for each tile and
- tie it to its texture?
-Does anybody have a better idea?
-For reference the nes (ntsc at least)
-
-// NO DISTRIBUTION
-Window::Window(const std::size_t& _width, const std::size_t& _height, const bool& optimized)
-{
-    //initWindow(_width,_height);
-    //inputManager=initInput();
-    sf::RenderWindow window(sf::VideoMode(_width, _height), "Nestris");
-    TileRenderer tilerend(_width/8,_height/8);
-    tilerend.load("Sprites.txt");
-    Engine _engine= Engine(tilerend.getTileContainer(),10); //TODO change 10
-    sf::Event event;
-    largest_uint smallesttimeunit=largest_uint(0);
-    sf::Clock onesecondinit;
-    sf::Clock elapsedtime=sf::Clock();
-    while (onesecondinit.getElapsedTime()<sf::Time(sf::milliseconds(1000))) {
-        elapsedtime.restart();
-        sf::sleep(sf::microseconds(1));
-        largest_uint _timetemp = elapsedtime.getElapsedTime().asMicroseconds();
-        if (_timetemp>smallesttimeunit) smallesttimeunit=_timetemp;
-    }
-    largest_uint timeperframe=1000000./60.0988;
-    printf("%d\n",(int)smallesttimeunit);
-    elapsedtime.restart();
-    while (window.isOpen()) {
-        if (optimized) {
-            largest_uint sleeptime=timeperframe-elapsedtime.getElapsedTime().asMicroseconds();
-            sleeptime-=smallesttimeunit;
-            sf::sleep(sf::microseconds(sleeptime));
-        }
-        else {
-            largest_uint cycleduration=(timeperframe-elapsedtime.getElapsedTime().asMicroseconds())/smallesttimeunit;
-            for (largest_uint i=0; i<cycleduration; ++i)
-                sf::sleep(sf::microseconds(1));
-            /COMMENTSTARTif (timeperframe-elapsedtime.getElapsedTime().asMicroseconds()<smallesttimeunit)
-                sf::sleep(sf::microseconds(1));COMMENTEND/
-        }
-        if (elapsedtime.getElapsedTime().asMicroseconds()+largest_uint(1)>=timeperframe) {
-            printf("fps=%f\n",(double)largest_uint(1000000)/(double)elapsedtime.getElapsedTime().asMicroseconds());
-            elapsedtime.restart();
-            _engine.frame(inputManager.getInput());
-            //SFML update window
-            window.clear();
-            tilerend.drawmod(window, sf::RenderStates());
-            //window.draw(tilerend);
-            window.display();
-            while (window.pollEvent(event))
-            {
-                if (event.type == sf::Event::Closed)
-                    window.close();
-            }
-        }
-    }
-    printf("hello\n");
-}
-*/

@@ -26,7 +26,7 @@ RenderPlayField::RenderPlayField(TileContainer * _tilecont, const nes_ushort& _f
 
 }
 
-/**
+/** RESOLVED
 TODO implement the real rendering process:
 the blinking and rendering seem to be asynchronous
 with NO PAUSE: blinking starts (8-ntris::getframemod4()) frames after the frame when collision is detected
@@ -105,8 +105,8 @@ void RenderPlayField::render(const nes_ushort& _framecounter) {
     scorehandler.render(); //shown score and real score are handled internally by scorehandler for now
     //if it's clear lines time and !(by coincidence the first frame it fell the frame was dividible by 4)
     if (ntris::lineclearframecounter>0 && !firstframeis4 && ntris::getframemod4()==0) {
-        if (tetris) Sound::play(Sound::tetris);
-        else Sound::play(Sound::clear_line);
+		/*if (tetris) Sound::play(Sound::tetris);
+		else Sound::play(Sound::clear_line);*/
         ntris::lineclearframecounter--; //TODO pause interaction
         if (ntris::lineclearframecounter==0) ntris::updatingmatrix=5;
     }

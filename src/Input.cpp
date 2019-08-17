@@ -56,9 +56,9 @@ void Input::setup() {
 		}
 		//std::cout << "\n";
     }
-	keybinds.append("test","test"s);
+	/*keybinds.append("test","test"s);
 	keybinds.print();
-	keybinds.save();
+	keybinds.save();*/
 }
 
 bool Input::isActive(const input_union& _input_union) const {

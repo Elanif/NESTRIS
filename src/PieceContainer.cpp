@@ -93,7 +93,7 @@ void PieceContainer::inputManager(const ActiveInputs& _inputs, const PFMatrix& p
     }
     if (collision(pfmatrix,temppiece)) das=16;
     else {
-        if (piece_changed) Sound::play(Sound::move_piece);
+		/*if (piece_changed) Sound::play(Sound::move_piece);*/
         currentpiece=temppiece;
     }
     //ROTATE
@@ -108,8 +108,8 @@ void PieceContainer::inputManager(const ActiveInputs& _inputs, const PFMatrix& p
         temppiece.rotation=(temppiece.rotation-1)%4;
     }
     if (!collision(pfmatrix,temppiece)) {
+		/*if (piece_changed) Sound::play(Sound::rotate_piece);*/
         currentpiece=temppiece;
-        if (piece_changed) Sound::play(Sound::rotate_piece);
     }
 
     //ifnot holding down or have been holding down
@@ -123,7 +123,7 @@ void PieceContainer::inputManager(const ActiveInputs& _inputs, const PFMatrix& p
             ++temppiece.y;
             holddowncounter-=2;
             if (collision(pfmatrix,temppiece)) {
-                Sound::play(Sound::drop_piece);
+				/*Sound::play(Sound::drop_piece);*/
                 dropped_event=true;
                 lastdroppedpiece=currentpiece;
             }
@@ -134,7 +134,7 @@ void PieceContainer::inputManager(const ActiveInputs& _inputs, const PFMatrix& p
         ++temppiece.y;
         downcounter=0;
         if (collision(pfmatrix,temppiece)) {
-            Sound::play(Sound::drop_piece);
+			/*Sound::play(Sound::drop_piece);*/
             dropped_event=true;
             lastdroppedpiece=currentpiece;
         }

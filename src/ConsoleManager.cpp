@@ -3,6 +3,7 @@
 #include<Window.hpp>
 #include"TextFormatter.hpp"
 #include"Log.hpp"
+#include"OptionsMenu.hpp"
 
 void ConsoleManager::open_info_window() {
 	if (!info_window.isOpen()) {
@@ -40,10 +41,6 @@ void ConsoleManager::init()
 {
 	init_unlocked_tree_map();
 	info_window_font.loadFromFile("Roboto.ttf");
-	text_formatter.setCharacterSize(ntris::info_window_character_size);
-	text_formatter.setFillColor(sf::Color::White);
-	text_formatter.setFont(info_window_font);
-	text_formatter.calc_font_sizes();
 	//open_info_window();
 }
 
@@ -54,10 +51,13 @@ bool ConsoleManager::refresh(bool always_print) {
 		handle_menu(current_menu);
 		info_window.clear();
 		sf::Vector2f pos = render_menu(current_menu);
-		//sf::Vector2f pos{};
+		pos.x += info_window.getSize().x / 2.;
 		renderHOME(pos);
+		HomeMenu test_menu(info_window_font);
+		test_menu.render(info_window, 30);
 		info_window.display();
 	}
+
 	return info_window.isOpen();
 }
 
@@ -142,10 +142,9 @@ bool ConsoleManager::basic_handler(sf::Event const& event) {
 }
 
 sf::Vector2f ConsoleManager::render_menu(MENU const& menu) {
-	text_formatter.setString(text_entered);
-	text_formatter.setPosition({ 0,0 });
-	text_formatter.setBoundaries({ ntris::ntsc_screen_width, ntris::ntsc_screen_height / 10 });
-	sf::Text t = text_formatter.getFormattedText(getCharacterSize());
+	TextFormatter<char> text_formatter(info_window_font);
+	sf::Text t = text_formatter.getFormattedText(text_entered, getCharacterSize(), sf::Vector2f( info_window.getSize().x, info_window.getSize().y / 10 ));
+	t.setPosition({ 0,0 });
 	info_window.draw(t);
 	return { 0, text_formatter.getLastFormattedSize().y };
 }
@@ -153,6 +152,7 @@ sf::Vector2f ConsoleManager::render_menu(MENU const& menu) {
 
 void ConsoleManager::renderHOME(sf::Vector2f pos)
 {
+	TextFormatter<char> text_formatter(info_window_font);
 	static nes_uchar counter = 0;
 
 	bool reset = false;
@@ -162,14 +162,14 @@ void ConsoleManager::renderHOME(sf::Vector2f pos)
 	}
 	for (auto& info : Log::log_vector) {
 		std::string outputstring = info->print_complete(reset);			
-		text_formatter.setString(outputstring);
-		text_formatter.setBoundaries({ ntris::ntsc_screen_width, ntris::ntsc_screen_height });
-		text_formatter.setPosition(pos);
-		sf::Text t = text_formatter.getFormattedText(getCharacterSize());
+		sf::Text t = text_formatter.getFormattedText(outputstring, getCharacterSize(), sf::Vector2f( info_window.getSize().x, info_window.getSize().y / 10 ));
+		t.setPosition(pos);
+		t.setCharacterSize(30);
+		t.setFillColor(sf::Color::White);
+		t.setOutlineColor(sf::Color::White);
 		info_window.draw(t);
 		pos.y += text_formatter.getLastFormattedSize().y;
 	}
-	error_print = false;
 }
 
 ConsoleManager::~ConsoleManager() {

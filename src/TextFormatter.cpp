@@ -1,5 +1,6 @@
 #include"TextFormatter.hpp"
 #include<SFML/System/String.hpp>
+#include<iostream>
 
 // if (t1 of type T and t2 of typeT)&&(t1<=t2)&&(tm=(t1+t2)/2.) => (t1<=tm<=t2)&&((abs(t1-tm)<=min_dist)||(abs(t2-tm)<=mid_dist))
 // ternary_function:
@@ -45,7 +46,7 @@ T dicotomic_search(T const left_boundary, T const right_boundary, int(*ternary_f
 }
 //
 //template<typename CharType>
-//bool TextFormatter<CharType>::fitString()
+//bool TextFormatterOld<CharType>::fitString()
 //{
 //	sf::Text fitting_text;
 //	fitting_text.setCharacterSize(m_font_size);
@@ -55,7 +56,7 @@ T dicotomic_search(T const left_boundary, T const right_boundary, int(*ternary_f
 //
 //	m_string_vector.clear();
 //
-//	if (m_boundaries.width <= 0) {
+//	if (boundaries.width <= 0) {
 //		m_string_vector.push_back(m_string);
 //		return true;
 //	}
@@ -66,7 +67,7 @@ T dicotomic_search(T const left_boundary, T const right_boundary, int(*ternary_f
 //		for (std::size_t sub_str_it = 0; str_it+sub_str_it<m_string.length(); ++sub_str_it) {
 //			substr += m_string[str_it+sub_str_it];
 //			fitting_text.setString(substr);
-//			if (fitting_text.getGlobalBounds().width > m_boundaries.width) {
+//			if (fitting_text.getGlobalBounds().width > boundaries.width) {
 //				if (m_string.length() == 0) return false;
 //				m_string.erase(m_string.length() - 1, 1);
 //			}
@@ -78,31 +79,34 @@ T dicotomic_search(T const left_boundary, T const right_boundary, int(*ternary_f
 //}
 
 template<typename CharType>
-bool TextFormatter<CharType>::fitString(float const& character_size)
+sf::Text TextFormatter<CharType>::getFormattedText(std::string const& m_string, unsigned int const& character_size, sf::Vector2f const& boundaries, bool const& bold)
 {
-	if (!calculated) calc_font_sizes();
-	float text_size_multiplier = m_character_size/character_size;
+	sf::Text text_result("", m_font);
+	text_result.setCharacterSize(character_size);
+	if (bold) text_result.setStyle(sf::Text::Bold);
+	std::string formatted_string = "";
+	if (boundaries.x <= 0 || boundaries.y <= 0) {
+		text_result.setString(formatted_string);
 
-	if (m_boundaries.x <= 0 && m_boundaries.y<=0) {
-		m_formatted_string = m_string;
-		m_elaborated = true;
-		return true;
+		return text_result;
 	}
 
-	m_formatted_string = "";
 	float total_text_height = 0;
 	float total_text_width = 0;
 
 	for (std::size_t str_it = 0; str_it < m_string.length();) {
 
 		float text_width = 0;
-		float text_height = m_font->getLineSpacing(character_size);
+		float text_height = m_font.getLineSpacing(character_size);
 		std::size_t prev_it = str_it;
 
-		if (m_boundaries.y > 0 && (total_text_height + text_height > m_boundaries.y)) return false;
+		if (total_text_height + text_height > boundaries.y) {
+			text_result.setString(formatted_string);
+			return text_result;
+		}
 
 		for (; str_it< m_string.length();) {
-
+			
 			if (m_string[str_it] == '\r') {
 				str_it++;
 				if (str_it < m_string.length() && m_string[str_it] == '\n')
@@ -115,116 +119,46 @@ bool TextFormatter<CharType>::fitString(float const& character_size)
 			}
 
 			sf::Vector2f char_size = { 0,0 };
-			if (character_size_map.find(m_string[str_it])!=character_size_map.end()) char_size=character_size_map[m_string[str_it]] * text_size_multiplier;
-			text_width += char_size.x;
+
+			text_width += m_font.getGlyph(m_string[str_it], character_size, bold).advance;
 			//getKerning doesn't work
-			//if (str_it > prev_it) text_width += m_font->getKerning(m_formatted_string[m_formatted_string.length() - 1], m_string[str_it], character_size);
+			//if (str_it > prev_it) text_width += m_font->getKerning(formatted_string[formatted_string.length() - 1], m_string[str_it], character_size);
 			if (str_it > prev_it) {
-				std::string kerning_string{ m_formatted_string[m_formatted_string.length() - 1] };
-				kerning_string += m_string[str_it];
-				text_width += kerning_map[kerning_string] * text_size_multiplier;
+				text_width += m_font.getKerning(m_string[prev_it], m_string[str_it], character_size);
 			}
 
-			if (m_boundaries.x>0 && text_width > m_boundaries.x) {
+			if (text_width > boundaries.x) {
 
-				if (str_it==prev_it) return false;
-				
+				if (str_it == prev_it) {
+					text_result.setString(formatted_string);
+					return text_result;
+				}
 				break;
 			}
 			else {
-
-				//if (char_size.y > current_text_height) current_text_height = char_size.y;
-
-				//if (m_boundaries.y > 0 && (text_height + current_text_height > m_boundaries.y)) return false;
-
-				m_formatted_string += m_string[str_it];
+				formatted_string += m_string[str_it];
 
 				++str_it;
 			}
 		}
 		
 		if (str_it < m_string.length()) {
-			m_formatted_string += ntris::newline;
+			formatted_string += ntris::newline;
 		}
 
 		if (text_width > total_text_width) total_text_width = text_width;
 		total_text_height += text_height;
 	}
-	m_elaborated = true;
+
 	last_formatted_size = { total_text_width,total_text_height };
-	return true;
-}
+	text_result.setString(formatted_string);
 
-template<typename CharType>
-bool TextFormatter<CharType>::fitStringApprox(float const& character_size)
-{
-	if (m_boundaries.x <= 0) {
-		m_formatted_string = m_string;
-		m_elaborated = true;
-		return true;
-	}
-	m_formatted_string = m_string;
-	std::size_t char_width = m_boundaries.x / character_size*2.;
-	if (char_width == 0) {
-		m_elaborated = false;
-		return false;
-	}
-	for (std::size_t str_it = 0; str_it < m_string.length();) {
-		std::size_t prev_it = str_it;
-		std::size_t sub_str_it = 0;
-		if (str_it+char_width<m_string.length()) 
-			m_formatted_string.insert(str_it + char_width, ntris::newline);
-		str_it += char_width + 2;
-	}
-	m_elaborated = true;
-	return true;
-}
-
-
-template <typename CharType>
-sf::Text TextFormatter<CharType>::getFormattedText(float const& character_size) {
-	sf::Text t;
-	t.setCharacterSize(character_size);
-	t.setFillColor(m_fill_color);
-	t.setFont(*m_font);
-	fitString(character_size);
-	t.setString(m_formatted_string);
-	t.setPosition(m_position);
-	return t;
+	return text_result;
 }
 
 template <typename CharType>
-std::basic_string<CharType> TextFormatter<CharType>::getFormattedTextString() const {
-	return m_formatted_string;
-}
-
-template <typename CharType>
-void TextFormatter<CharType>::calc_font_sizes() {
-	if (!m_font) {
-		calculated = false;
-		return; 
-	}
-	max_character_height = 0;
-	sf::Text t;
-	t.setFont(*m_font);
-	t.setCharacterSize(m_character_size);
-	for (string_character _char = (string_character)(std::size_t{ 32 }); _char <= (string_character)(std::size_t{ 126 }); ++_char) {
-		t.setString(_char);
-		sf::Vector2f char_bounds = { t.getGlobalBounds().width, t.getGlobalBounds().height };
-		character_size_map[_char] = char_bounds;
-		if (char_bounds.y > max_character_height) max_character_height = char_bounds.y;
-	}
-
-	for (string_character _char_1 = (string_character)(std::size_t{ 32 }); _char_1 <= (string_character)(std::size_t{ 126 }); ++_char_1) {
-		for (string_character _char_2 = (string_character)(std::size_t{ 32 }); _char_2 <= (string_character)(std::size_t{ 126 }); ++_char_2) {
-			std::string kerning_string{ _char_1 };
-			kerning_string += _char_2;
-			t.setString(kerning_string);
-			sf::Vector2f char_bounds = { t.getGlobalBounds().width, t.getGlobalBounds().height };
-			kerning_map[kerning_string] = char_bounds.x - character_size_map[_char_1].x - character_size_map[_char_2].x;
-		}
-	}
-	calculated = true;
+sf::Vector2f TextFormatter<CharType>::getLastFormattedSize() const {
+	return last_formatted_size;
 }
 
 template class TextFormatter<char>;

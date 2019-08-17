@@ -329,6 +329,13 @@ template<typename T>
 void ConfigReader::append(char* name, T const& t) {
 	return append<T>(std::string(name), t);
 }
+template<>
+void ConfigReader::append(std::string const& name, bool const& t) {
+	if (t)
+		append(name, std::string("true"));
+	else
+		append(name, std::string("false"));
+}
 template<typename T>
 void ConfigReader::append(std::string const& name, T const& t) {
 	if (!is_loaded) return;
@@ -364,6 +371,15 @@ void ConfigReader::append(std::string const& name, T const& t) {
 template<typename T>
 void ConfigReader::overwrite(char* name, std::vector<T> const& t) {
 	return overwrite<T>(std::string(name), t);
+}
+template<>
+void ConfigReader::overwrite(std::string const& name, std::vector<bool> const& t) {
+	std::vector<std::string> string_vector;
+	for (const auto& i : t) {
+		if (i) string_vector.push_back(std::string("true"));
+		else string_vector.push_back(std::string("false"));
+	}
+	return overwrite<std::string>(std::string(name), string_vector);
 }
 template<typename T>
 void ConfigReader::overwrite(std::string const& name, std::vector<T> const& t) {

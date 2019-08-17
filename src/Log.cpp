@@ -5,7 +5,6 @@
 #include<Window.hpp>
 #include<sstream>
 #include<limits>
-#include"TextFormatter.hpp"
 
 template<typename ... Args>
 std::string string_format(const std::string& format, Args ... args)
@@ -54,7 +53,7 @@ void Log::print_error(const char* error_string) {
 template<typename T>
 void Log::update(std::string info, const T& t) {
 	if (log_map.find(info) == log_map.end()) {
-		print_error(std::string("No OutpufInfo of type ") + info + std::string(" found"));
+		print_error(std::string("No OutputInfo of type ") + info + std::string(" found"));
 	}
 	else {
 		log_vector[log_map[info]]->set_value(t);
@@ -133,7 +132,7 @@ void Log::init()
 	std::unique_ptr<OutputInfo>& fps = log_vector[add_value(std::move(_fps))];
 	fps->set_value(0);
 
-	std::unique_ptr<OutputInfo> _input(new OutputInfoLowI64("input delay", "microseconds", false));
+	std::unique_ptr<OutputInfo> _input(new OutputInfoLowI64("processing delay", "microseconds", false));
 	std::unique_ptr<OutputInfo>& input_delay = log_vector[add_value(std::move(_input))];
 	input_delay->set_value(0);
 
@@ -149,9 +148,10 @@ void Log::init()
 	std::unique_ptr<OutputInfo>& display_delay = log_vector[add_value(std::move(_display))];
 	display_delay->set_value(0);
 
-	std::unique_ptr<OutputInfo>& system = log_vector[add_value("system", "")];
+	std::unique_ptr<OutputInfo> _system(new OutputInfoError("system", 5));
+	std::unique_ptr<OutputInfo>& system = log_vector[add_value(std::move(_system))];
 	system->set_value("");
 
-	std::unique_ptr<OutputInfo> _error(new OutputInfoError("error", 8));
+	std::unique_ptr<OutputInfo> _error(new OutputInfoError("error", 5));
 	add_value(std::move(_error));
 }

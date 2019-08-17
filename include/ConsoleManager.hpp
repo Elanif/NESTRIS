@@ -8,6 +8,7 @@
 #include<SFML/Graphics.hpp>
 #include"TextFormatter.hpp"
 #include"TextRenderer.hpp"
+#include<unordered_map>
 
 class ConsoleManager : public sf::NonCopyable
 {
@@ -25,7 +26,6 @@ private:
 	float getCharacterSize();
 	sf::RenderWindow info_window{};
 	sf::Font info_window_font{};
-	TextFormatter<string_character> text_formatter;
 	enum MENU {
 		HOME,
 		SETTINGS

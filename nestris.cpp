@@ -5,19 +5,16 @@
 #include"TextWriter.hpp"
 #include<SFML/Window/Joystick.hpp>
 #include<cstdlib> 
-#include"Sound.hpp"
-#include"APU.hpp"
 #include<iostream>
 #include"Log.hpp"
 
-int main(int argc, char** args) {
+int WinMain(int argc, char** args) {
 	//std::cout.sync_with_stdio(false);
 	//std::cin.tie(nullptr);
     /*APU::init();
     APU::test();
     sf::sleep(sf::milliseconds(10000));*/
     TextWriter::init();
-    Sound::init();
 	Log::init();
     while(false) { //joystick testing
         sf::Joystick::update();
