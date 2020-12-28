@@ -9,7 +9,7 @@
 ### Why I created this project:
 - It's hard to find a ntsc nes and crt if you live in the EU and vice versa.
 - Crt's aren't healthy to watch, and they're very hard to move around.
-- The NES, its controllers, cartridges aren't on production anymore, so sooner or later most of the pieces scattered around the world will break (the NES classic is a shitty emulator).
+- The NES, its controllers, cartridges, aren't on production anymore, so sooner or later most of the pieces scattered around the world will break (the NES classic is a shitty emulator).
 - It's really easy to set up NESTRIS on any pc, no need to configure emulators or download illegal files (I guess this project is illegal tho).
 ### TO-DO list
 - Accuracy of the program must be checked for 1 frame discrepancies.
