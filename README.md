@@ -17,3 +17,4 @@
 - More game modes
 - Crt filter
 - Modding options?
+- Fullscreen option: fullscreen could reduce input lag by 1 frame
