@@ -1,3 +1,4 @@
-window_position=299,40
+window_position=1152,608
 window_scale=4.000000,3.428571
 four_thirds=true
+fullscreen=false

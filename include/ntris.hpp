@@ -79,7 +79,7 @@ namespace ntris {
     constexpr long double clock_divisor = 12.L;
     constexpr long double ntsc_fps_odd=color_subcarrier_frequency/clock_divisor/(341*262-1)*3;
     constexpr long double ntsc_fps_even=color_subcarrier_frequency/clock_divisor/(341*262)*3;
-    constexpr long double ntsc_fps=2.L/(1.L/ntsc_fps_even+1.L/ntsc_fps_odd);
+    //constexpr long double ntsc_fps=2.L/(1.L/ntsc_fps_even+1.L/ntsc_fps_odd);
 	constexpr std::size_t ntsc_screen_width = 256;
 	constexpr std::size_t ntsc_screen_height = 224;
 	constexpr std::size_t ntsc_tiles_x = 32;
@@ -87,6 +87,7 @@ namespace ntris {
 	extern sf::Vector2<long double> window_scale;
 	extern sf::Vector2i window_position;
 	extern bool four_thirds;
+	extern bool fullscreen;
 	constexpr float info_window_character_size = 8;
 	constexpr largest_uint MIN_DELAY_ERROR = 1000; 
 	constexpr std::size_t bucket_size = 200;

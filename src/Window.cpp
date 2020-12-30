@@ -26,6 +26,12 @@ public:
 		if (four_thirds[0] == true) return true;
 		return false;
 	}
+	bool setFullscreen() {
+		std::vector<bool> fullscreen = cfg.get<bool>("fullscreen");
+		if (fullscreen.size() < 1) return false;
+		if (fullscreen[0] == true) return true;
+		return false;
+	}
 	sf::Vector2<long double> setWindowScale(std::size_t const& width_pixels, std::size_t const& height_pixels, bool const& four_thirds) {
 		std::vector<double> window_scale = cfg.get<double>("window_scale");
 		sf::Vector2<long double> scale{ 1,1 };
@@ -62,7 +68,10 @@ public:
 		saveConfig("window_scale", ntris::window_scale);
 	}
 	void saveFourThirds() {
-		cfg.overwrite("four_thirds", std::vector<bool>(1,ntris::four_thirds));
+		cfg.overwrite("four_thirds", std::vector<bool>(1, ntris::four_thirds));
+	}
+	void saveFullscreen() {
+		cfg.overwrite("fullscreen", std::vector<bool>(1, ntris::fullscreen));
 	}
 	void saveWindowPosition() {
 		saveConfig("window_position", ntris::window_position);
@@ -70,6 +79,7 @@ public:
 	ConfigSaver(ConfigReader& _cfg) :cfg(_cfg) {};
 	~ConfigSaver() {
 		if (_save_on_exit) {
+			saveFullscreen();
 			saveFourThirds();
 			saveWindowScale();
 			saveWindowPosition();
@@ -142,19 +152,26 @@ void Window::render(sf::RenderWindow& window, TileRenderer& tilerend) {
 				case sf::Event::Closed:
 					close_window.store(true);
 				break;
-				case sf::Event::KeyPressed:
-					if (event.key.code == sf::Keyboard::F1 && window.hasFocus()) {
-						cm.toggle_info_window();
-						if (!cm.is_window_open())
-							window.requestFocus();
+				case sf::Event::KeyPressed: {
+					bool ctrl = sf::Keyboard::isKeyPressed(sf::Keyboard::LControl) || sf::Keyboard::isKeyPressed(sf::Keyboard::RControl);
+					if (window.hasFocus()) {
+						if (event.key.code == sf::Keyboard::F1) {
+							cm.toggle_info_window();
+							if (!cm.is_window_open())
+								window.requestFocus();
+						}
+						if ((event.key.code == sf::Keyboard::F && ctrl)/* || Input::getInput()*/) {
+
+						}
 					}
+				}
 				break;
 				case sf::Event::Resized:
 
 				break;
 				}
 			}
-			ntris::window_position = window.getPosition();
+			ntris::window_position = window.getPosition(); //move this out of the loop if it's slow
 			cm.refresh();
 		}
 		else {
@@ -205,11 +222,13 @@ Window::Window(const std::size_t& _width, const std::size_t& _height, const OPT&
 	TileRenderer tilerend(ntris::ntsc_tiles_x, ntris::ntsc_tiles_y, tilesize, TileRenderer::DRAWTEXTURE, extra_render);
 
 	ntris::four_thirds = config_saver.setFourThirds();
+	ntris::fullscreen = config_saver.setFullscreen();
 	ntris::window_scale = config_saver.setWindowScale(tilerend.width_pixels, tilerend.height_pixels, ntris::four_thirds);
 
 	std::size_t window_width = tilerend.width_pixels * ntris::window_scale.x;
 	std::size_t window_height = tilerend.height_pixels * ntris::window_scale.y;
 
+	/*sf::RenderWindow window(sf::VideoMode::getFullscreenModes()[0], "Nestris", sf::Style::Fullscreen);*/
 	sf::RenderWindow window(sf::VideoMode(tilerend.width_pixels, tilerend.height_pixels), "Nestris");
 
 	ntris::window_position = config_saver.setWindowPosition(window_width, window_height);

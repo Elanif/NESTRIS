@@ -20,6 +20,7 @@ namespace ntris {
 	nes_uchar shown_level = 0;
 
 	bool four_thirds = true;
+	bool fullscreen = false;
 
 	sf::Vector2<long double> window_scale{ 3,3 };
 	extern sf::Vector2i window_position{ 0,0 };
