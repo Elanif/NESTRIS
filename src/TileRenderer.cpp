@@ -263,7 +263,7 @@ std::size_t TileRenderer::add_or_find_texture(const tiletype & newtile, sf::Imag
 	return whereisthistexture;
 }
 
-void TileRenderer::renderExtraTiles(std::size_t offset, const decltype(tilecont.extra_tiles.x) & extra_tiles, const std::size_t max_extra) {
+void TileRenderer::renderExtraTiles(std::size_t offset, const decltype(tilecont.extra_tiles.x)& extra_tiles, const std::size_t max_extra) {
 	std::size_t extra_render_counter = 0;
 	for (const auto& i : extra_tiles) {
 		const ntris::triple& triple_it = std::get<1>(i);

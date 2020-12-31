@@ -22,3 +22,6 @@
 - Crt filter
 - Modding options?
 - Fullscreen option: fullscreen could reduce input lag by 1 frame
+- Implement this glitch: when you clear the top line it also clears the bottom line
+### meatfighter.com
+This project was only possible thanks to https://meatfighter.com/nintendotetrisai/

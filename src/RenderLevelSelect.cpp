@@ -41,6 +41,7 @@ void RenderLevelSelect::renderLevelSelect(const bool& _reload) {
     const std::size_t levelselecttilex=6+(lastrenderedlevel%5)*2;
     const std::size_t levelselecttiley=9+(lastrenderedlevel/5)*2;
 
+	//Yellow blinking square under level selection
     if (blink++%4!=0) {
         for (std::size_t i=0; i<2; ++i) {
             for (std::size_t j=0; j<2; ++j) {

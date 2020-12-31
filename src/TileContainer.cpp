@@ -3,6 +3,8 @@
 #include"Log.hpp"
 #include<string>
 #include<sstream>
+
+//lookup colors of tetriminoes from level 0 to 9
 unsigned char tiletype::colors[10][4]={
     {0x0D ,0x30 ,0x21 ,0x12},
     {0x0D ,0x30 ,0x29 ,0x1A},
@@ -57,7 +59,7 @@ void TileContainer::renderExtra(const std::size_t pixelx, const std::size_t pixe
         else {
             extra_tiles.y.insert(std::make_pair(priority,ntris::triple(pixelx,pixely,t)));
         }
-        for (const auto& i:t.palette_color) {
+        for (const auto& i:t.palette_color) { //this was intended for transparency purposes
             if (i==ntris::trnspr &&false) {
                 if (extra_tiles.x.size()>=extra_render.x) {
                     std::stringstream errorstream;

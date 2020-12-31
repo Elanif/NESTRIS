@@ -27,6 +27,7 @@ public:
 	};
 	Window(const std::size_t& width, const std::size_t& height, const OPT& optimized);
 	void render(sf::RenderWindow& window, TileRenderer& tilerend);
+	void toggle_fullscreen(sf::RenderWindow& window);
 private:
 	std::atomic<bool> close_window;
 	std::atomic<bool> hide_cursor;

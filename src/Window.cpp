@@ -161,7 +161,7 @@ void Window::render(sf::RenderWindow& window, TileRenderer& tilerend) {
 								window.requestFocus();
 						}
 						if ((event.key.code == sf::Keyboard::F && ctrl)/* || Input::getInput()*/) {
-
+							toggle_fullscreen(window);
 						}
 					}
 				}
@@ -171,7 +171,10 @@ void Window::render(sf::RenderWindow& window, TileRenderer& tilerend) {
 				break;
 				}
 			}
-			ntris::window_position = window.getPosition(); //move this out of the loop if it's slow
+			if (!ntris::fullscreen) {
+				ntris::window_position = window.getPosition(); //move this out of the loop if it's slow
+				//ntris::window_scale set
+			}
 			cm.refresh();
 		}
 		else {
@@ -262,4 +265,12 @@ Window::Window(const std::size_t& _width, const std::size_t& _height, const OPT&
 		render_thread.join();
 	window.setActive(true);
 	window.close();
+}
+
+
+void Window::toggle_fullscreen(sf::RenderWindow& window) {
+	ntris::fullscreen = !ntris::fullscreen;
+	if (ntris::fullscreen) {
+		//window.create()
+	}
 }
