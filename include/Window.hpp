@@ -29,6 +29,7 @@ public:
 	void render(sf::RenderWindow& window, TileRenderer& tilerend);
 	void toggle_fullscreen(sf::RenderWindow& window);
 private:
+	bool shader = false;
 	std::atomic<bool> close_window;
 	std::atomic<bool> hide_cursor;
 	Input inputManager;

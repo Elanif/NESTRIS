@@ -20,16 +20,22 @@ public:
 	void save_on_exit() {
 		_save_on_exit = true;
 	}
-	bool setFourThirds() {
+	bool getFourThirds() {
 		std::vector<bool> four_thirds = cfg.get<bool>("four_thirds");
 		if (four_thirds.size() < 1) return true;
 		if (four_thirds[0] == true) return true;
 		return false;
 	}
-	bool setFullscreen() {
+	bool getFullscreen() {
 		std::vector<bool> fullscreen = cfg.get<bool>("fullscreen");
 		if (fullscreen.size() < 1) return false;
 		if (fullscreen[0] == true) return true;
+		return false;
+	}
+	bool getShader() {
+		std::vector<bool> shader = cfg.get<bool>("shader");
+		if (shader.size() < 1) return false;
+		if (shader[0] == true) return true;
 		return false;
 	}
 	sf::Vector2<long double> setWindowScale(std::size_t const& width_pixels, std::size_t const& height_pixels, bool const& four_thirds) {
@@ -73,6 +79,9 @@ public:
 	void saveFullscreen() {
 		cfg.overwrite("fullscreen", std::vector<bool>(1, ntris::fullscreen));
 	}
+	void saveShader() {
+		cfg.overwrite("shader", std::vector<bool>(1, ntris::shader));
+	}
 	void saveWindowPosition() {
 		saveConfig("window_position", ntris::window_position);
 	}
@@ -108,7 +117,7 @@ void Window::render(sf::RenderWindow& window, TileRenderer& tilerend) {
 
 	MyClock elapsedtime;
 	std::size_t counter = 0;
-	
+
 	while (!close_window.load()&&window.isOpen()) {
 		odd_frame = !odd_frame; //Compiler should create 2 different cycles
 		if (odd_frame) timeperframe = timeperframe_odd;
@@ -133,6 +142,7 @@ void Window::render(sf::RenderWindow& window, TileRenderer& tilerend) {
 			delaycalc = elapsedtime.elapsedTime();
 			//std::cout <<"processing delay"<< elapsedtime.elapsedTime() - delaycalc << ntris::newline;
 			window.clear();//adds 15microseconds
+			
 			tilerend.drawmod(window);
 
 			Log::update<sf::Int64>("draw delay", elapsedtime.elapsedTime() - delaycalc);
@@ -224,8 +234,15 @@ Window::Window(const std::size_t& _width, const std::size_t& _height, const OPT&
 	const sf::Vector3<std::size_t> extra_render(16, 16, 64);
 	TileRenderer tilerend(ntris::ntsc_tiles_x, ntris::ntsc_tiles_y, tilesize, TileRenderer::DRAWTEXTURE, extra_render);
 
-	ntris::four_thirds = config_saver.setFourThirds();
-	ntris::fullscreen = config_saver.setFullscreen();
+	tilerend.load("texturesprite/sprites.txt");
+
+	ntris::shader = config_saver.getShader();
+	sf::Shader test_shader;
+	if (ntris::shader)
+		tilerend.set_shader("shaders/crt.glsl", sf::Shader::Fragment);
+
+	ntris::four_thirds = config_saver.getFourThirds();
+	ntris::fullscreen = config_saver.getFullscreen();
 	ntris::window_scale = config_saver.setWindowScale(tilerend.width_pixels, tilerend.height_pixels, ntris::four_thirds);
 
 	std::size_t window_width = tilerend.width_pixels * ntris::window_scale.x;
@@ -240,7 +257,6 @@ Window::Window(const std::size_t& _width, const std::size_t& _height, const OPT&
 
 	window.setSize(sf::Vector2u(window_width, window_height));
 
-	tilerend.load("texturesprite/sprites.txt");
 	//tilerend.load("texturesprite/sprites.txtupdated");
 
 	window.setActive(false);

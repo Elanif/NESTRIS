@@ -1,0 +1,39 @@
+2020-12-31 12:28:23.232 palette/YPbPr.pal palette couldn't be loaded, using default palette0
+2020-12-31 13:17:22.167 Couldn't load shader
+2020-12-31 13:18:07.813 Couldn't load shader
+2020-12-31 13:21:22.797 Couldn't load shader
+2020-12-31 13:21:56.975 #
+2020-12-31 13:21:56.976 Couldn't load shader
+2020-12-31 13:24:24.912 #version
+2020-12-31 13:24:24.912 130
+2020-12-31 13:24:24.966 Couldn't load shader
+2020-12-31 13:24:37.410 #version
+2020-12-31 13:24:37.411 130
+2020-12-31 13:24:37.456 Couldn't load shader
+2020-12-31 13:26:30.697 Couldn't load shader
+2020-12-31 13:33:35.371 Couldn't load shader
+2020-12-31 13:33:50.583 Couldn't load shader
+2020-12-31 13:35:50.959 Couldn't load shader
+2020-12-31 13:37:51.125 Couldn't load shader
+2020-12-31 13:38:04.131 Couldn't load shader
+2020-12-31 13:38:28.741 Couldn't load shader
+2020-12-31 13:38:40.877 Couldn't load shader
+2020-12-31 13:43:32.895 Couldn't load shader
+2020-12-31 13:53:09.471 Couldn't load shader
+2020-12-31 13:53:27.675 Couldn't load shader
+2020-12-31 13:55:37.650 Couldn't load shader
+2020-12-31 13:56:23.143 Couldn't load shader
+2020-12-31 13:57:14.256 Couldn't load shader
+2020-12-31 14:05:19.587 Couldn't load shader
+2020-12-31 14:06:06.753 Couldn't load shader
+2020-12-31 14:06:31.767 Couldn't load shader
+2020-12-31 14:07:57.125 Couldn't load shader
+2020-12-31 14:08:22.483 Couldn't load shader
+2020-12-31 14:09:42.158 Couldn't load shader
+2020-12-31 14:10:06.688 WTF
+2020-12-31 14:10:06.690 Couldn't load shader
+2020-12-31 14:10:26.418 WTF
+2020-12-31 14:10:26.418 Couldn't load shader
+2020-12-31 14:10:39.689 WTF
+2020-12-31 14:10:39.691 Couldn't load shader
+2020-12-31 14:11:14.433 Couldn't load shader

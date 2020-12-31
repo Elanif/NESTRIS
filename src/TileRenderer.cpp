@@ -312,8 +312,9 @@ void TileRenderer::drawtexture(sf::RenderTarget & target, sf::RenderStates state
 	renderExtraTiles(headline[1], tilecont.extra_tiles.y, extra_render.y);
 	renderExtraTiles(headline[3], tilecont.extra_tiles.z, extra_render.z);
 
-	states.transform *= getTransform();
+	//states.transform *= getTransform();
 	states.texture = &tiletexture;
+	if (shader_active) states.shader = &shader;
 	target.draw(verteximage, states);
 
 	for (std::size_t i = 0; i < 4 * tilecont.extra_tiles.x.size(); ++i) {
@@ -335,6 +336,28 @@ void TileRenderer::drawtexture(sf::RenderTarget & target, sf::RenderStates state
 	tilecont.extra_tiles.z.clear();
 
 	tilecont.resetupdated();
+}
+
+bool TileRenderer::set_shader(std::string const& path, sf::Shader::Type const& shader_type)
+{
+	shader_active = false;
+	if (!sf::Shader::isAvailable()) {
+		Log::update_error("This GPU doesn't support shaders");
+		return false;
+	}
+	{
+		std::ifstream test(path,std::ifstream::in);
+		if (!test.is_open()) {
+			Log::update_error("Couldn't open shader file");
+			return false;
+		}
+	}
+	if (!shader.loadFromFile(path, shader_type)) {
+		Log::update_error("Couldn't load shader");
+		return false;
+	}
+	shader_active = true;
+	return true;
 }
 
 void TileRenderer::drawvertex(sf::RenderTarget & target, sf::RenderStates states) {

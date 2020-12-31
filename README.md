@@ -15,13 +15,15 @@
 - Accuracy of the program must be checked for 1 frame discrepancies.
 - Console manager should be changed to a proper (hidable) window.
 - A real use interface on a separate window is needed for the settings, right now settings can only be changed through the settings.ini.
-- Quality of life
-- Pause (pausing invalidates a run)
+- Quality of life.
+- Pause (pausing invalidates a run).
 - Sound: I tried to understand how the nes sounds work, and while I got the basics I couldn't understand how to emulate sounds from a cartridge.
-- More game modes
-- Crt filter
+- More game modes.
 - Modding options?
-- Fullscreen option: fullscreen could reduce input lag by 1 frame
-- Implement this glitch: when you clear the top line it also clears the bottom line
+- Fullscreen option: fullscreen could reduce input lag by 1 frame.
+- Implement this glitch: when you clear the top line it also clears the bottom line.
+### Issues
+- the nes had a 4x16 color palette, I don't remember if I considered black as transparent, as in theory 0x1D should be the only transparent color, but when I changed it to opaque nothing changed.
+- If a shader loads correctly the whole screen becomes black.
 ### meatfighter.com
 This project was only possible thanks to https://meatfighter.com/nintendotetrisai/

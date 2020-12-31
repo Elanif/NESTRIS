@@ -21,6 +21,7 @@ namespace ntris {
 
 	bool four_thirds = true;
 	bool fullscreen = false;
+	bool shader = false;
 
 	sf::Vector2<long double> window_scale{ 3,3 };
 	extern sf::Vector2i window_position{ 0,0 };

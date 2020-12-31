@@ -88,10 +88,11 @@ namespace ntris {
 	extern sf::Vector2i window_position;
 	extern bool four_thirds;
 	extern bool fullscreen;
+	extern bool shader;
 	constexpr float info_window_character_size = 8;
 	constexpr largest_uint MIN_DELAY_ERROR = 1000; 
 	constexpr std::size_t bucket_size = 200;
-	const std::string newline = { "\r\n" };
+	const std::string newline = { "\r\n" }; //could change depending on the os
 	constexpr std::size_t max_string_length = 30;
 
     constexpr nes_uchar block_colors[10][4]={

@@ -56,6 +56,8 @@ public:
         DRAWTEXTURE,
     };
 
+	bool set_shader(std::string const& path, sf::Shader::Type const& shader_type);
+
 private:
 
     int drawmethod;
@@ -68,6 +70,8 @@ private:
     sf::Texture temptexclass;
     sf::Sprite tempspriteclass;
     sf::VertexArray verteximage;
+	sf::Shader shader;
+	bool shader_active = false;
 
 	//the max size of the 3 extra texture vectors, y is on bottom and z on top
     const sf::Vector3<std::size_t>& extra_render=sf::Vector3<std::size_t>();
