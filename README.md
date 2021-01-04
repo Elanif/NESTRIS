@@ -1,5 +1,3 @@
-![alt text](https://raw.githubusercontent.com/Elanif/NESTRIS/master/preview.png)
-
 # NESTRIS
 
 ## NESTRIS is a nes tetris clone that aims to be a perfect recreation in every competitive aspect, additionally it aims to lower the input delay to the lowest amount possible.
