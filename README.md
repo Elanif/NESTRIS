@@ -1,4 +1,4 @@
-![alt text](https://raw.githubusercontent.com/Elanif/NESTRIS/master/preview.png)
+![alt text](https://raw.githubusercontent.com/Elanif/NESTRIS/master/preview.png) 
 
 # NESTRIS
 
