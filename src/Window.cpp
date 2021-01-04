@@ -103,9 +103,7 @@ private:
 	}
 };
 
-void Window::render(sf::RenderWindow& window, TileRenderer& tilerend) {
-	close_window.store(false);
-	hide_cursor.store(false);
+void Window::render(TileRenderer& tilerend) {
 	ConsoleManager cm;
 	Engine _engine = Engine(tilerend.getTileContainer(), Engine::LEVELSELECT);
 
@@ -118,8 +116,8 @@ void Window::render(sf::RenderWindow& window, TileRenderer& tilerend) {
 	MyClock elapsedtime;
 	std::size_t counter = 0;
 
-	while (!close_window.load()&&window.isOpen()) {
-		odd_frame = !odd_frame; //Compiler should create 2 different cycles
+	while (!close_window.load()&&isWindowOpen()) {
+		odd_frame = !odd_frame; //Would be more efficient to have 2 cycles, but is it needed?
 		if (odd_frame) timeperframe = timeperframe_odd;
 		else timeperframe = timeperframe_even;
 		if (elapsedtime.elapsedTime() >= timeperframe) {
@@ -141,21 +139,23 @@ void Window::render(sf::RenderWindow& window, TileRenderer& tilerend) {
 			Log::update<sf::Int64>("processing delay", elapsedtime.elapsedTime() - delaycalc);
 			delaycalc = elapsedtime.elapsedTime();
 			//std::cout <<"processing delay"<< elapsedtime.elapsedTime() - delaycalc << ntris::newline;
-			window.clear();//adds 15microseconds
-			
-			tilerend.drawmod(window);
+			{
+				std::lock_guard<std::mutex> fullscreen_lock(window_mutex);
+				window.clear();//there are ways to avoid this but it only adds 15 microseconds
 
-			Log::update<sf::Int64>("draw delay", elapsedtime.elapsedTime() - delaycalc);
-			//std::cout << "draw delay"<<elapsedtime.elapsedTime() - delaycalc << ntris::newline;
-			delaycalc = elapsedtime.elapsedTime();
+				tilerend.drawmod(window);
 
-			window.display();
+				Log::update<sf::Int64>("draw delay", elapsedtime.elapsedTime() - delaycalc);
+				//std::cout << "draw delay"<<elapsedtime.elapsedTime() - delaycalc << ntris::newline;
+				delaycalc = elapsedtime.elapsedTime();
 
+				window.display();
+			}
 			Log::update<sf::Int64>("display delay", elapsedtime.elapsedTime() - delaycalc);
 			//std::cout << "display delay"<<elapsedtime.elapsedTime() - delaycalc << ntris::newline;
 			delaycalc = elapsedtime.elapsedTime();
 
-			while (event_queue.size()>0)
+			while (event_queue.size() > 0)
 			{
 				sf::Event event = event_queue.pop();
 				switch (event.type) {
@@ -164,6 +164,7 @@ void Window::render(sf::RenderWindow& window, TileRenderer& tilerend) {
 				break;
 				case sf::Event::KeyPressed: {
 					bool ctrl = sf::Keyboard::isKeyPressed(sf::Keyboard::LControl) || sf::Keyboard::isKeyPressed(sf::Keyboard::RControl);
+					std::lock_guard<std::mutex> fullscreen_lock(window_mutex);
 					if (window.hasFocus()) {
 						if (event.key.code == sf::Keyboard::F1) {
 							cm.toggle_info_window();
@@ -171,19 +172,19 @@ void Window::render(sf::RenderWindow& window, TileRenderer& tilerend) {
 								window.requestFocus();
 						}
 						if ((event.key.code == sf::Keyboard::F && ctrl)/* || Input::getInput()*/) {
-							toggle_fullscreen(window);
+							toggle_fullscreen.store(true);
 						}
 					}
 				}
 				break;
 				case sf::Event::Resized:
-
+					if (!fullscreen.load()) {
+						std::lock_guard<std::mutex> fullscreen_lock(window_mutex);
+						window_size_x.store(window.getSize().x);
+						window_size_y.store(window.getSize().y);
+					}
 				break;
 				}
-			}
-			if (!ntris::fullscreen) {
-				ntris::window_position = window.getPosition(); //move this out of the loop if it's slow
-				//ntris::window_scale set
 			}
 			cm.refresh();
 		}
@@ -191,14 +192,29 @@ void Window::render(sf::RenderWindow& window, TileRenderer& tilerend) {
 			delay_manager->delay(timeperframe - elapsedtime.elapsedTime());
 		}
 	}
-
+	if (!fullscreen.load()) {
+		std::lock_guard<std::mutex> fullscreen_lock(window_mutex);
+		ntris::window_position = window.getPosition();
+	}
 	Log::update<std::string>("system", std::string("Window terminating"));
 	cm.refresh(true);
 	cm.close_info_window();
 }
 
+bool Window::isWindowOpen()
+{
+	std::lock_guard<std::mutex> fullscreen_lock(window_mutex);
+	return window.isOpen();
+}
+
 Window::Window(const std::size_t& _width, const std::size_t& _height, const OPT& optimized)
 {
+	close_window.store(false);
+	hide_cursor.store(false);
+	toggle_fullscreen.store(false);
+	fullscreen.store(false);
+	window_size_x.store(1);
+	window_size_y.store(1);
 	switch (optimized) {
 	case GENERAL:
 		delay_manager = std::make_unique<GeneralDelayManager>();
@@ -237,19 +253,18 @@ Window::Window(const std::size_t& _width, const std::size_t& _height, const OPT&
 	tilerend.load("texturesprite/sprites.txt");
 
 	ntris::shader = config_saver.getShader();
-	sf::Shader test_shader;
 	if (ntris::shader)
 		tilerend.set_shader("shaders/crt.glsl", sf::Shader::Fragment);
 
 	ntris::four_thirds = config_saver.getFourThirds();
 	ntris::fullscreen = config_saver.getFullscreen();
+	fullscreen.store(ntris::fullscreen);
 	ntris::window_scale = config_saver.setWindowScale(tilerend.width_pixels, tilerend.height_pixels, ntris::four_thirds);
 
 	std::size_t window_width = tilerend.width_pixels * ntris::window_scale.x;
 	std::size_t window_height = tilerend.height_pixels * ntris::window_scale.y;
 
-	/*sf::RenderWindow window(sf::VideoMode::getFullscreenModes()[0], "Nestris", sf::Style::Fullscreen);*/
-	sf::RenderWindow window(sf::VideoMode(tilerend.width_pixels, tilerend.height_pixels), "Nestris");
+	window.create(sf::VideoMode(tilerend.width_pixels, tilerend.height_pixels), "NESTRIS");
 
 	ntris::window_position = config_saver.setWindowPosition(window_width, window_height);
 
@@ -257,14 +272,17 @@ Window::Window(const std::size_t& _width, const std::size_t& _height, const OPT&
 
 	window.setSize(sf::Vector2u(window_width, window_height));
 
+	window_view = window.getView();
 	//tilerend.load("texturesprite/sprites.txtupdated");
 
 	window.setActive(false);
-	std::thread render_thread(&Window::render, this, std::ref(window), std::ref(tilerend));
+	fullscreen.store(false);
+
+	std::thread render_thread(&Window::render, this, std::ref(tilerend));
 
 	sf::Event event;
 	bool is_mouse_hidden = false;
-	while (window.isOpen()&&!close_window) {
+	while (isWindowOpen()&&!close_window.load()) {
 		if (window.waitEvent(event)) {
 			if (!is_mouse_hidden && hide_cursor.load()) {
 				window.setMouseCursorVisible(false);
@@ -276,6 +294,10 @@ Window::Window(const std::size_t& _width, const std::size_t& _height, const OPT&
 			}
 			event_queue.push(event);
 		}
+		if (toggle_fullscreen.load()) {
+			toggle_fullscreen.store(false);
+			toggle_fullscreen_func();
+		}
 	}
 	if (render_thread.joinable())
 		render_thread.join();
@@ -284,9 +306,34 @@ Window::Window(const std::size_t& _width, const std::size_t& _height, const OPT&
 }
 
 
-void Window::toggle_fullscreen(sf::RenderWindow& window) {
-	ntris::fullscreen = !ntris::fullscreen;
-	if (ntris::fullscreen) {
-		//window.create()
+void Window::toggle_fullscreen_func() {
+	std::lock_guard fullscreen_lock(window_mutex);
+
+	if (fullscreen.load()) {
+		ntris::fullscreen = false;
+		fullscreen.store(false);
+		window.setActive();
+		window.clear();
+		window.close();
+		window.create(sf::VideoMode(window_size_x.load(), window_size_y.load()), "NESTRIS");
+		window.setView(window_view);
+		window.setActive(false);
+	}
+	else {
+		ntris::fullscreen = true;
+		fullscreen.store(true);
+		window.setActive();
+		window_view = window.getView();
+		window.clear();
+		window.close();
+		window.create(sf::VideoMode::getFullscreenModes()[0], "NESTRIS", sf::Style::Fullscreen);
+		sf::View fullscreen_view(sf::FloatRect(0,0,256, 224));
+		sf::Vector2f size = { window_view.getViewport().width,window_view.getViewport().height };
+		sf::Vector2f fullscreen_size = {(float) sf::VideoMode::getFullscreenModes()[0].width, (float)sf::VideoMode::getFullscreenModes()[0].height };
+		sf::Vector2f window_position = {(float) ntris::window_position.x+5, (float) ntris::window_position.y +30}; //Idk how to get the title bar height
+		fullscreen_view.setViewport(sf::FloatRect(window_position.x/fullscreen_size.x, window_position.y / fullscreen_size.y,window_size_x.load()/fullscreen_size.x, window_size_y.load() / fullscreen_size.y));
+		window.setView(fullscreen_view);
+		window.setActive(false);
 	}
 }
+		

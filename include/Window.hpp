@@ -26,15 +26,24 @@ public:
 		ARRAYBUCKET
 	};
 	Window(const std::size_t& width, const std::size_t& height, const OPT& optimized);
-	void render(sf::RenderWindow& window, TileRenderer& tilerend);
-	void toggle_fullscreen(sf::RenderWindow& window);
+	void render(TileRenderer& tilerend);
 private:
 	bool shader = false;
+	std::atomic<unsigned int> window_size_x;
+	std::atomic<unsigned int> window_size_y;
 	std::atomic<bool> close_window;
 	std::atomic<bool> hide_cursor;
+	std::atomic<bool> toggle_fullscreen;
+	std::atomic<bool> fullscreen;
 	Input inputManager;
 	std::unique_ptr<DelayManager> delay_manager;
 	SafeQueue<sf::Event> event_queue;
+	std::mutex window_mutex;
+	bool isWindowOpen();
+	sf::RenderWindow window;
+	void toggle_fullscreen_func();
+	sf::View window_view;
+
 };
 
 #endif

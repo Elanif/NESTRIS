@@ -314,7 +314,10 @@ void TileRenderer::drawtexture(sf::RenderTarget & target, sf::RenderStates state
 
 	//states.transform *= getTransform();
 	states.texture = &tiletexture;
-	if (shader_active) states.shader = &shader;
+	if (shader_active) {
+		shader.setUniform("rubyTexture", sf::Shader::CurrentTexture);
+		states.shader = &shader;
+	}
 	target.draw(verteximage, states);
 
 	for (std::size_t i = 0; i < 4 * tilecont.extra_tiles.x.size(); ++i) {

@@ -22,8 +22,10 @@
 - Modding options?
 - Fullscreen option: fullscreen could reduce input lag by 1 frame.
 - Implement this glitch: when you clear the top line it also clears the bottom line.
+- 2 Player mode
+- Statistics option: long piece drought, tetris %, etc.
 ### Issues
-- the nes had a 4x16 color palette, I don't remember if I considered black as transparent, as in theory 0x1D should be the only transparent color, but when I changed it to opaque nothing changed.
-- If a shader loads correctly the whole screen becomes black.
+- the nes had a 4x16 color palette, but sometimes black is considered transparent ("The first 2 colors of every entry are black and white. However, the first color is actually ignored; regardless of its value, it is treated as a transparent color through which the solid black background is exposed."). My program doesn't have a consistent way to handle this.
+- Do all the shader.setVariables things.
 ### meatfighter.com
 This project was only possible thanks to https://meatfighter.com/nintendotetrisai/

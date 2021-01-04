@@ -64,8 +64,8 @@ void PieceContainer::inputManager(const ActiveInputs& _inputs, const PFMatrix& p
         if (_inputs.getPress(ntris::Right)||_inputs.getPress(ntris::Left)||_inputs.getHold(ntris::Right)||_inputs.getHold(ntris::Left)) downinterrupted=true;
     }
     else {
-		static std::size_t tempcounter = 0;
-		Log::update<std::string>("system", std::string("iM") + ntris::to_string(tempcounter++));
+		/*static std::size_t tempcounter = 0;
+		Log::update<std::string>("system", std::string("iM") + ntris::to_string(tempcounter++));*/
         if (_inputs.getPress(ntris::Right)) {
             piece_changed=true;
             das=0;
