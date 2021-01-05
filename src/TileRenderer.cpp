@@ -34,6 +34,76 @@ constexpr std::size_t xytoi(const std::size_t & x, const std::size_t & y, const 
 constexpr std::size_t xytoi(const std::size_t & x, const std::size_t & y, const std::size_t & width, const std::size_t & height, const std::size_t & rectwidth, const std::size_t & rectheight) {
 	return x + y * width;
 }
+TileRenderer::TileRenderer() 
+	:tilecont(0, 0, {}),
+	width(0),
+	height(0),
+	drawmethod(0),
+	quadretti(NULL),
+	tilesize(0,0),
+	width_pixels(0),
+	height_pixels(0),
+	texturenumber(0),
+	extra_render({})
+{
+
+}
+
+void TileRenderer::create(const std::size_t& _width, const std::size_t& _height, std::pair<std::size_t, std::size_t> _tilesize, const int& _drawmethod, const sf::Vector3<std::size_t>& _extra_render) {
+	width = _width;
+	height = _height;
+	extra_render = _extra_render;
+	tilecont.create(width, height, extra_render);
+	drawmethod = _drawmethod;
+	if (quadretti) delete[] quadretti;
+	quadretti = NULL;
+	tilesize = _tilesize;
+	width_pixels = width * tilesize.first;
+	height_pixels = height * tilesize.second;
+	texturenumber = 0;
+	if (drawmethod == DRAWSPRITE) {
+		quadretti = new uint8container[width * height];
+		if (!temptexclass.create(width * tilesize.first, height * tilesize.first))
+			Log::update_error<std::string>(std::string("Failed to create texture for DRAWSPRITE render mode"));
+		tempspriteclass.setTexture(temptexclass, true);
+	}
+	else if (drawmethod == DRAWIMAGE) {
+		finalimageclass.create(width * tilesize.first, height * tilesize.second);
+		if (!temptexclass.loadFromImage(finalimageclass))
+			Log::update_error<std::string>(std::string("Failed to load texture for DRAWIMAGE render mode"));
+		tempspriteclass.setTexture(temptexclass, true);
+	}
+	else if (drawmethod == DRAWVERTEX) {
+		verteximage = sf::VertexArray(sf::Quads, width * height * 4 * tilesize.first * tilesize.second);
+		for (std::size_t i = 0; i < width * height * 4 * tilesize.first * tilesize.second; i += 4) {
+			verteximage[i].position = sf::Vector2f(itox(i / 4, width * tilesize.first, height * tilesize.second), itoy(i / 4, width * tilesize.first, height * tilesize.second));
+			verteximage[i + 1].position = sf::Vector2f(itox(i / 4, width * tilesize.first, height * tilesize.second) + 1, itoy(i / 4, width * tilesize.first, height * tilesize.second));
+			verteximage[i + 2].position = sf::Vector2f(itox(i / 4, width * tilesize.first, height * tilesize.second) + 1, itoy(i / 4, width * tilesize.first, height * tilesize.second) + 1);
+			verteximage[i + 3].position = sf::Vector2f(itox(i / 4, width * tilesize.first, height * tilesize.second), itoy(i / 4, width * tilesize.first, height * tilesize.second) + 1);
+			verteximage[i].color = verteximage[i + 1].color = verteximage[i + 2].color = verteximage[i + 3].color = sf::Color::Black;
+		}
+	}
+	else if (drawmethod == DRAWTEXTURE) { //TODO DYNAMICALLY CHOOSE SIZE && check if size<8
+		texturesize = sf::Texture::getMaximumSize() < 512 ? sf::Texture::getMaximumSize() : 512;
+		if (!tiletexture.create(texturesize, texturesize))
+			Log::update_error<std::string>(std::string("Failed to create texture for DRAWTEXTURE render mode"));
+		verteximage = sf::VertexArray(sf::Quads, width * height * 4 + (extra_render.x + extra_render.y + extra_render.z) * 4);
+		const std::size_t headline = 4 * (extra_render.x + extra_render.y);
+		for (std::size_t i = 0; i < width; ++i) {
+			for (std::size_t j = 0; j < height; ++j) {
+
+				sf::Vertex* quad = &verteximage[(i + j * width) * 4 + headline];
+
+				quad[0].position = sf::Vector2f(i * tilesize.first, j * tilesize.second);
+				quad[1].position = sf::Vector2f((i + 1) * tilesize.first, j * tilesize.second);
+				quad[2].position = sf::Vector2f((i + 1) * tilesize.first, (j + 1) * tilesize.second);
+				quad[3].position = sf::Vector2f(i * tilesize.first, (j + 1) * tilesize.second);
+			}
+		}
+	}
+}
+
+
 TileRenderer::TileRenderer(const std::size_t & _width, const std::size_t & _height, std::pair<std::size_t, std::size_t> _tilesize, const int& _drawmethod, const sf::Vector3<std::size_t> & _extra_render)
 	:tilecont(_width, _height, _extra_render),
 	width(_width),
@@ -163,7 +233,7 @@ bool TileRenderer::load(const std::string & tilefile) {
 			}
 		}
 	}
-	if (drawmethod == DRAWTEXTURE) add_frequent_textures(); //puts blocks and characters
+	if (drawmethod == DRAWTEXTURE) add_frequent_textures(); //puts blocks, characters, borders, stuff that you'd see in a normal gameplay
 	return true;
 }
 
@@ -361,6 +431,23 @@ bool TileRenderer::set_shader(std::string const& path, sf::Shader::Type const& s
 	}
 	shader_active = true;
 	return true;
+}
+
+std::size_t TileRenderer::getWidth() const
+{
+	return width;
+}
+std::size_t TileRenderer::getHeight() const
+{
+	return height;
+}
+std::size_t TileRenderer::getWidthPixels() const
+{
+	return width_pixels;
+}
+std::size_t TileRenderer::getHeightPixels() const
+{
+	return height_pixels;
 }
 
 void TileRenderer::drawvertex(sf::RenderTarget & target, sf::RenderStates states) {

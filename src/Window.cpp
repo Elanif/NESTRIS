@@ -248,7 +248,7 @@ Window::Window(const std::size_t& _width, const std::size_t& _height, const OPT&
 
 	std::pair<largest_uint, largest_uint>  tilesize = { ntris::tilesize.first, ntris::tilesize.second };
 	const sf::Vector3<std::size_t> extra_render(16, 16, 64);
-	TileRenderer tilerend(ntris::ntsc_tiles_x, ntris::ntsc_tiles_y, tilesize, TileRenderer::DRAWTEXTURE, extra_render);
+	tilerend.create(ntris::ntsc_tiles_x, ntris::ntsc_tiles_y, tilesize, TileRenderer::DRAWTEXTURE, extra_render);
 
 	tilerend.load("texturesprite/sprites.txt");
 
@@ -259,12 +259,12 @@ Window::Window(const std::size_t& _width, const std::size_t& _height, const OPT&
 	ntris::four_thirds = config_saver.getFourThirds();
 	ntris::fullscreen = config_saver.getFullscreen();
 	fullscreen.store(ntris::fullscreen);
-	ntris::window_scale = config_saver.setWindowScale(tilerend.width_pixels, tilerend.height_pixels, ntris::four_thirds);
+	ntris::window_scale = config_saver.setWindowScale(tilerend.getWidthPixels(), tilerend.getHeightPixels(), ntris::four_thirds);
 
-	std::size_t window_width = tilerend.width_pixels * ntris::window_scale.x;
-	std::size_t window_height = tilerend.height_pixels * ntris::window_scale.y;
+	std::size_t window_width = tilerend.getWidthPixels() * ntris::window_scale.x;
+	std::size_t window_height = tilerend.getHeightPixels() * ntris::window_scale.y;
 
-	window.create(sf::VideoMode(tilerend.width_pixels, tilerend.height_pixels), "NESTRIS");
+	window.create(sf::VideoMode(tilerend.getWidthPixels(), tilerend.getHeightPixels()), "NESTRIS");
 
 	ntris::window_position = config_saver.setWindowPosition(window_width, window_height);
 
@@ -316,6 +316,7 @@ void Window::toggle_fullscreen_func() {
 		window.clear();
 		window.close();
 		window.create(sf::VideoMode(window_size_x.load(), window_size_y.load()), "NESTRIS");
+		window.setPosition(ntris::window_position);
 		window.setView(window_view);
 		window.setActive(false);
 	}
@@ -323,11 +324,12 @@ void Window::toggle_fullscreen_func() {
 		ntris::fullscreen = true;
 		fullscreen.store(true);
 		window.setActive();
+		ntris::window_position = window.getPosition();
 		window_view = window.getView();
 		window.clear();
 		window.close();
 		window.create(sf::VideoMode::getFullscreenModes()[0], "NESTRIS", sf::Style::Fullscreen);
-		sf::View fullscreen_view(sf::FloatRect(0,0,256, 224));
+		sf::View fullscreen_view(sf::FloatRect(0,0,tilerend.getWidthPixels(), tilerend.getHeightPixels()));
 		sf::Vector2f size = { window_view.getViewport().width,window_view.getViewport().height };
 		sf::Vector2f fullscreen_size = {(float) sf::VideoMode::getFullscreenModes()[0].width, (float)sf::VideoMode::getFullscreenModes()[0].height };
 		sf::Vector2f window_position = {(float) ntris::window_position.x+5, (float) ntris::window_position.y +30}; //Idk how to get the title bar height

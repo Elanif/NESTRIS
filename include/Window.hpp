@@ -43,7 +43,7 @@ private:
 	sf::RenderWindow window;
 	void toggle_fullscreen_func();
 	sf::View window_view;
-
+	TileRenderer tilerend;
 };
 
 #endif

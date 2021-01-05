@@ -80,11 +80,22 @@ class TileContainer : sf::NonCopyable
 {
     private:
 		//sizes of the 3 extra render vectors (x y and z)
-        const sf::Vector3<std::size_t> extra_render=sf::Vector3<std::size_t>();
+        sf::Vector3<std::size_t> extra_render=sf::Vector3<std::size_t>();
+		//very ugly dynamic array of tiles
+		tiletype* tilegrid;
+		//tilecontainer width and height
+		std::size_t width, height;
+		//tiletype functions return when it's out of bounds
+		tiletype oob_error;
+		//very ugly dynamic array of the tiles that were updated
+		bool* _upd;
     public:
         //TODO make private some of these
 		//does what you expect
         void reset();
+
+		std::size_t getWidth() const { return width; };
+		std::size_t getHeight() const { return height; };
 
 		//vector of tiles that can be displayed on top of the original game tiles
         sf::Vector3<std::multimap<double, ntris::triple> > extra_tiles={{},{},{}};
@@ -111,16 +122,10 @@ class TileContainer : sf::NonCopyable
 		//constructor with width and height in tiles, and a 3d vector that contains the sizes of the extra_tiles
         TileContainer(const std::size_t& _width, const std::size_t& _height, const sf::Vector3<std::size_t>& _extra_render=sf::Vector3<std::size_t>());
 
+		void create(const std::size_t& _width, const std::size_t& _height, const sf::Vector3<std::size_t>& _extra_render);
+
         TileContainer();
         ~TileContainer();
-		//very ugly dynamic array of tiles
-        tiletype* tilegrid;
-		//tilecontainer width and height
-        std::size_t width, height;
-		//tiletype functions return when it's out of bounds
-        tiletype oob_error;
-		//very ugly dynamic array of the tiles that were updated
-        bool* _upd;
 };
 
 #endif // TILECONTAINER_H

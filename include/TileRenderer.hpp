@@ -15,24 +15,22 @@ class TileRenderer : public sf::Transformable, public sf::NonCopyable
 
     //bool load(const std::string& tileset, sf::Vector2u tileSize, const TileContainer& tiles, const nes_uchar& width, const nes_uchar& height)
 public:
-	/*constructs the array of tiles 
+	TileRenderer();
+	/*constructs the array of tiles
 	drawmethod: how the game is drawn texture is the best one
 	width and height: self explanatory
 	tilesize: width and height of tiles, 8x8 in the original game
 	extra_render: sizes of the e (x y and z) containers for tiles to be drawn on top or under the game
 	*/
+	/*EXTRA RENDERS ONLY WORK WITH DRAWTEXTURE, at this point I could probably delete all the other draw methods*/
     TileRenderer(const std::size_t& _width, const std::size_t& _height, std::pair<largest_uint, largest_uint> _tilesize, const int& _drawmethod, const sf::Vector3<std::size_t>& _extra_render=sf::Vector3<std::size_t>());
+    void create(const std::size_t& _width, const std::size_t& _height, std::pair<largest_uint, largest_uint> _tilesize, const int& _drawmethod, const sf::Vector3<std::size_t>& _extra_render=sf::Vector3<std::size_t>());
     ~TileRenderer();
 
 	//loads the sprites of the game, found at the bottom of the nes tetris cartridge
     bool load(const std::string& tilefile);
 
     TileContainer* getTileContainer();
-
-    const std::size_t width;
-    const std::size_t width_pixels; //width*tilesize.x
-    const std::size_t height;
-    const std::size_t height_pixels; //height*tilesize.y
 
 	//draw method, can't be const because of how textures are updated when drawing
     void drawmod(sf::RenderTarget& target, sf::RenderStates states = sf::RenderStates());
@@ -58,8 +56,12 @@ public:
 
 	bool set_shader(std::string const& path, sf::Shader::Type const& shader_type);
 
+	std::size_t getWidth() const;
+	std::size_t getHeight() const;
+	std::size_t getWidthPixels() const;
+	std::size_t getHeightPixels() const;
 private:
-
+	
     int drawmethod;
     std::vector<Sprite> spritevector;
     std::unordered_map<Sprite,std::size_t,std::hash<Sprite>,SpriteEqual> spritemap;
@@ -73,8 +75,20 @@ private:
 	sf::Shader shader;
 	bool shader_active = false;
 
+	//number of tiles in a row
+	std::size_t width;
+
+	//width in pixels (width*tilesize.first)
+	std::size_t width_pixels;
+
+	//number of tiles in a column
+	std::size_t height;
+
+	//height in pixels (height*tilesize.second)
+	std::size_t height_pixels; 
+
 	//the max size of the 3 extra texture vectors, y is on bottom and z on top
-    const sf::Vector3<std::size_t>& extra_render=sf::Vector3<std::size_t>();
+	sf::Vector3<std::size_t> extra_render{ 0,0,0 };
 
 	//the size of a tile, inconsistent with how I've treated this variable in the solution, since it's also in the ntris namespace
 	std::pair<std::size_t, std::size_t> tilesize{ 8,8 };

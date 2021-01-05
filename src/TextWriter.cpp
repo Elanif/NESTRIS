@@ -24,7 +24,7 @@ void TextWriter::init() {
 void TextWriter::write(const std::string& text, TileContainer *_tilecont, sf::Vector2u _position, nes_uchar color) {
     for (std::size_t i=0; i<text.length(); ++i) {
         const char ith_char=std::tolower(text[i]);
-        if (_position.x<_tilecont->width && _position.y<_tilecont->height) {
+        if (_position.x<_tilecont->getWidth() && _position.y<_tilecont->getHeight()) {
             _tilecont->at(_position.x,_position.y) = tiletype(char_lookup[(unsigned char)ith_char], 0x0d,color,color,color);
             _position.x++;
         }

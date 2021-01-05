@@ -105,6 +105,29 @@ TileContainer::TileContainer(const std::size_t& _width, const std::size_t& _heig
     }
 }
 
+void TileContainer::create(const std::size_t& _width, const std::size_t& _height, const sf::Vector3<std::size_t>& _extra_render) {
+	width = _width;
+	height = _height;
+	extra_render = _extra_render;
+	if (tilegrid)
+		delete[] tilegrid;
+	if (_upd) 
+		delete[] _upd;
+
+	if (_width * _height == 0) {
+		tilegrid = NULL;
+		_upd = NULL;
+	}
+	else {
+		tilegrid = new tiletype[width * height];
+		_upd = new bool[width * height];
+		for (std::size_t i = 0; i < width * height; ++i) {
+			tilegrid[i] = tiletype();
+			_upd[i] = true;
+		}
+	}
+}
+
 void TileContainer::reset() {
     if (tilegrid==NULL) return;
     for (std::size_t i=0; i<width*height; ++i) {
@@ -115,7 +138,7 @@ void TileContainer::reset() {
 }
 
 TileContainer::TileContainer()
-:tilegrid(NULL), height(0), width(0)
+:tilegrid(NULL), _upd(NULL), height(0), width(0)
 {}
 
 TileContainer::~TileContainer() {

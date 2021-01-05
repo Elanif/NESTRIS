@@ -7,6 +7,7 @@
 ### Some of its characteristics:
 - c++: I went for c++ since it's the language I know best and since it's known for its optimization.
 - delays: Playing on an original console with a crt yields 1/2 frame of lag from the crt, 2 frames lag built in the nes, plus controller lag. Playing on a normal emulator yields 4 frames of lag, plug monitor lag and controller lag. Retroarch's run ahead option reduces lag to 2 frames.
+- On my 144hz freesync monitor with a ps3 controller and Game Mode on I have 16-24ms of lag as shown in this video: https://youtu.be/AJSLQxP-hB4
 - fps: One of the reasons why I chose c++ over a web application is that I couldn't get a broswer game to have exactly 60.0988 fps at all times.
 ### Why I created this project:
 - It's hard to find a ntsc nes and crt if you live in the EU and vice versa.
