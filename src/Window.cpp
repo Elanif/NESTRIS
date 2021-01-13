@@ -11,6 +11,7 @@
 #include<thread>
 #include"MyClock.hpp"
 
+
 class ConfigSaver {
 public:
 	bool _save_on_exit = true;
@@ -313,7 +314,6 @@ void Window::toggle_fullscreen_func() {
 		ntris::fullscreen = false;
 		fullscreen.store(false);
 		window.setActive();
-		window.clear();
 		window.close();
 		window.create(sf::VideoMode(window_size_x.load(), window_size_y.load()), "NESTRIS");
 		window.setPosition(ntris::window_position);
@@ -326,7 +326,6 @@ void Window::toggle_fullscreen_func() {
 		window.setActive();
 		ntris::window_position = window.getPosition();
 		window_view = window.getView();
-		window.clear();
 		window.close();
 		window.create(sf::VideoMode::getFullscreenModes()[0], "NESTRIS", sf::Style::Fullscreen);
 		sf::View fullscreen_view(sf::FloatRect(0,0,tilerend.getWidthPixels(), tilerend.getHeightPixels()));

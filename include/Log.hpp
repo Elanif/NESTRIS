@@ -1,7 +1,7 @@
 #pragma once
 #ifndef LOG_H
 #define LOG_H
-#include<SFML/System/NonCopyable.hpp>
+#include"StaticClass.hpp"
 #include<string>
 #include<memory>
 #include<vector>
@@ -10,7 +10,7 @@
 #include<fstream>
 #include"ntris.hpp"
 
-class Log : public sf::NonCopyable {
+class Log : public StaticClass {
 public:
 	static void init();
 	template<class T>

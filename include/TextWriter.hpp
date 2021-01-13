@@ -1,10 +1,11 @@
 #ifndef TEXTWRITER_H
 #define TEXTWRITER_H
 #include"ntris.hpp"
+#include"StaticClass.hpp"
 #include<string>
 class TileContainer;
 
-class TextWriter
+class TextWriter : public StaticClass
 {
 public:
     static void init();

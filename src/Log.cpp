@@ -56,7 +56,7 @@ void Log::update(std::string info, const T& t) {
 		print_error(std::string("No OutputInfo of type ") + info + std::string(" found"));
 	}
 	else {
-		log_vector[log_map[info]]->set_value(t);
+		//log_vector[log_map[info]]->set_value(t);
 	}
 }
 template void Log::update(std::string info, const std::string& t);

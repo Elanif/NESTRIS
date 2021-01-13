@@ -2,11 +2,11 @@
 #ifndef RANDOM_H
 #define RANDOM_H
 #include"ntris.hpp"
+#include"StaticClass.hpp"
 
-class random
+class random : StaticClass
 {
     public:
-        random();
     static nes_ushort prng(const nes_ushort& value);
     static nes_ushort prng();
     static nes_ushort get();
