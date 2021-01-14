@@ -10,7 +10,7 @@
 #include"ConfigReader.hpp"
 #include<thread>
 #include"MyClock.hpp"
-
+#include"Audio.hpp"
 
 class ConfigSaver {
 public:
@@ -116,6 +116,9 @@ void Window::render(TileRenderer& tilerend) {
 
 	MyClock elapsedtime;
 	std::size_t counter = 0;
+	Audio audio;
+	audio.init();
+	audio.playMusic(1, false);
 
 	while (!close_window.load()&&isWindowOpen()) {
 		odd_frame = !odd_frame; //Would be more efficient to have 2 cycles, but is it needed?
