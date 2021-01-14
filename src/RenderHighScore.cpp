@@ -1,6 +1,7 @@
 #include"RenderHighScore.hpp"
 #include"TextWriter.hpp"
 #include<string>
+#include"Audio.hpp"
 
 RenderHighScore::RenderHighScore(TileContainer * _tilecont, const nes_ushort& _frameappearance)
 	:Renderer(_tilecont, _frameappearance),
@@ -10,7 +11,7 @@ RenderHighScore::RenderHighScore(TileContainer * _tilecont, const nes_ushort& _f
 
 }
 
-void RenderHighScore::update(const ActiveInputs& _input, const nes_ushort& _framecounter) {
+void RenderHighScore::update(const ActiveInputs& _input, const nes_ushort& _framecounter, Audio& _audio) {
     if (_input.getPress(ntris::Start)) submitted=true;
 }
 

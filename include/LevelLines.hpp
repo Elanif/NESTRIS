@@ -3,6 +3,7 @@
 #include"Renderer.hpp"
 #include"TileContainer.hpp"
 #include"ntris.hpp"
+#include"Audio.hpp"
 
 class LinesContainer {
 public:
@@ -55,7 +56,7 @@ class LevelLines : public Renderer //DOESN'T WORK LIKE THE NES AFTER LEVEL 137
         const nes_uchar& get_real_level() const;
         const nes_uchar& get_shown_level() const;
         void addlines(const nes_uchar& _clearedlines);
-        void render();
+        void render(Audio& _audio);
     private:
         LinesContainer lines{};
         LinesContainer linestemp{};

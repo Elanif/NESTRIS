@@ -11,24 +11,30 @@ RenderLevelSelect::RenderLevelSelect()
 {
 
 }
-int RenderLevelSelect::updateLevelSelect(const ActiveInputs& _input) {
+int RenderLevelSelect::updateLevelSelect(const ActiveInputs& _input, Audio & _audio) {
 //todo manage priorities
     unsigned int tempblink=blink;
     blink=0;
     if (_input.getPress(ntris::Start)) {
+        _audio.playMenuSelectShort();
         if (_input.getHold(ntris::A)&&!_input.getPress(ntris::A)) return currentlevel+10;//A has to be held 1 frame earlier
         return currentlevel;
     }
-    else if (_input.getPress(ntris::Left)) {
+    else 
+    if (_input.getPress(ntris::Left)) {
+        _audio.playMenuMove();
         if (currentlevel>0) --currentlevel;
     }
     else if (_input.getPress(ntris::Right)) {
+        _audio.playMenuMove();
         if (currentlevel<9) ++currentlevel;
     }
     else if (_input.getPress(ntris::Up)) {
+        _audio.playMenuMove();
         if (currentlevel>4) currentlevel-=5;
     }
     else if (_input.getPress(ntris::Down)) {
+        _audio.playMenuMove();
         if (currentlevel<5) currentlevel+=5;
     }
     else blink=tempblink;

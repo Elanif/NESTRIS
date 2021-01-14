@@ -8,6 +8,7 @@
 #include<utility>
 #include"ActiveInputs.hpp"
 #include"TileContainer.hpp"
+#include"Audio.hpp"
 
 
 class PieceContainer : public Renderer
@@ -19,7 +20,7 @@ public:
     /*Piece tryMove(const ActiveInputs& _inputs);
     Piece tryRotate(const ActiveInputs& _inputs);
     Piece tryDrop(const ActiveInputs& _inputs, const nes_uchar& _gravity);*/
-    void inputManager(const ActiveInputs& _inputs, const PFMatrix& pfmatrix, const nes_uchar& _gravity);
+    void inputManager(const ActiveInputs& _inputs, const PFMatrix& pfmatrix, const nes_uchar& _gravity, Audio& _audio);
     //void doMove(const bool& _collision);
     //void doRotate(const bool& _collision);
     //void doDrop();

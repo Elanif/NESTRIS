@@ -5,6 +5,7 @@
 #include<SFML/Graphics.hpp>
 #include"TileContainer.hpp"
 #include"Renderer.hpp"
+#include"Audio.hpp"
 
 class RenderLevelSelect : Renderer
 {
@@ -13,7 +14,7 @@ class RenderLevelSelect : Renderer
         RenderLevelSelect();
         int update(ActiveInputs* activeinputs);
         void renderLevelSelect(const bool& _reload);
-        int updateLevelSelect(const ActiveInputs& _input);
+        int updateLevelSelect(const ActiveInputs& _input, Audio & _audio);
     protected:
     private:
         void reload();

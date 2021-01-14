@@ -116,9 +116,9 @@ void Window::render(TileRenderer& tilerend) {
 
 	MyClock elapsedtime;
 	std::size_t counter = 0;
+
 	Audio audio;
 	audio.init();
-	audio.playMusic(1, false);
 
 	while (!close_window.load()&&isWindowOpen()) {
 		odd_frame = !odd_frame; //Would be more efficient to have 2 cycles, but is it needed?
@@ -132,7 +132,8 @@ void Window::render(TileRenderer& tilerend) {
 			sf::Int64 delaycalc = 0;
 			
 			ActiveInputs ai = inputManager.getInput();
-			_engine.frame(ai);
+
+			_engine.frame(ai,audio);
 			if (!hide_cursor.load() && ai.getHideMouse()) {
 				hide_cursor.store(true);
 			}

@@ -2,15 +2,20 @@
 #include"TextWriter.hpp"
 #include<string>
 LevelLines::LevelLines(TileContainer * _tilecont, const nes_ushort& _frameappearance, const nes_uchar& _level)
-    :Renderer(_tilecont, _frameappearance), real_level(_level), lines(0u)
+    :Renderer(_tilecont, _frameappearance), real_level(_level), shown_level(_level), lines(0u)
 {
     linestolevelup=(real_level+1)/16*100;
     if ((real_level+1)%16>=10) linestolevelup+=100;
     else linestolevelup+=((real_level+1)%16)*10;
 }
 
-void LevelLines::render() {
-    if (ntris::updatingmatrix<=0 && ntris::lineclearframecounter <=0) shown_level=real_level;
+void LevelLines::render(Audio& _audio) {
+    if (ntris::updatingmatrix <= 0 && ntris::lineclearframecounter <= 0) {
+        if (shown_level != real_level) {
+            _audio.playLevelUp();
+            shown_level = real_level;
+        }
+    }
     if (hidecounter>0) {
         --hidecounter;
         return;

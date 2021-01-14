@@ -10,6 +10,7 @@
 #include"LevelLines.hpp"
 #include"Statistics.hpp"
 #include"ntris.hpp"
+#include"Audio.hpp"
 
 //class Score; //todo fwd decl
 //class LevelLines;
@@ -18,8 +19,8 @@ class RenderPlayField : public Renderer
 {
     public:
         RenderPlayField(TileContainer* _tilecont, const nes_ushort& _frameappearance, nes_uchar _level);
-        void update(const ActiveInputs& _input, const nes_ushort& _framecounter) ;
-        void render(const nes_ushort& framecounter) ;
+        void update(const ActiveInputs& _input, const nes_ushort& _framecounter, Audio& _audio) ;
+        void render(const nes_ushort& framecounter, Audio& _audio) ;
         void resetPlayField(const nes_uchar& _level);
         void renderPlayField(const unsigned long long& framecounter);
         bool gameOver();
@@ -38,6 +39,7 @@ class RenderPlayField : public Renderer
         void renderimage(bool blink);
         void renderBackground(const nes_uchar& _color1, const nes_uchar& _color2);
         bool tetris;
+        bool tetris_sound_on = false;
 
         nes_uchar level;
         nes_uchar gravity[255];

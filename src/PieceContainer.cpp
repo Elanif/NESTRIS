@@ -37,35 +37,43 @@ bool PieceContainer::collision(const PFMatrix& _pfmatrix, const Piece& _piece) {
 }
 
 //TODO change nes_uchar in slower game modes
-void PieceContainer::inputManager(const ActiveInputs& _inputs, const PFMatrix& pfmatrix, const nes_uchar& _gravity) {
+void PieceContainer::inputManager(const ActiveInputs& _inputs, const PFMatrix& pfmatrix, const nes_uchar& _gravity, Audio& _audio) {
     dropped_event=false;
     bool piece_changed=false;
+    //96 frames of ARE when the game starts
     if (init_delay>0) {
         init_delay--; //TODO before or after, frame discrepancy?
     }
+    //Select hides the next piece
     if (_inputs.getPress(ntris::Select)) hidenextpiece=!hidenextpiece;
+    //if sleepcounter>0 the piececontainer wont work for sleepcounter frames
     if (sleepcounter>0) {
         --sleepcounter;
         return;
     }
+    //if the lines are being cleared, or the matrix is being shifted down, or ARE>0, the piececontainer sleeps
     if (ntris::lineclearframecounter>0||ntris::updatingmatrix>0||ntris::ARE>0) return; //TODO 1 frame error? updating>1?
+    //downcounter is how many frames passed since gravity pushed the piece down
     ++downcounter;
     //MOVE
     if (!_inputs.getHold(ntris::Down)) {
+        //resets how many frames down has been held
         holddowncounter=holddownpoints=0;
     }
     Piece temppiece=currentpiece;
     if (_inputs.getPress(ntris::Down)) {
+        //holding down stops working if left or right are pressed
         downinterrupted=false;
+        //forces the piece to fall down during the beginning of the game
         init_delay=0;
     }
     if (_inputs.getHold(ntris::Down)) {
+        //redudant?
         init_delay=0;
+        //interrupts holding down
         if (_inputs.getPress(ntris::Right)||_inputs.getPress(ntris::Left)||_inputs.getHold(ntris::Right)||_inputs.getHold(ntris::Left)) downinterrupted=true;
     }
     else {
-		/*static std::size_t tempcounter = 0;
-		Log::update<std::string>("system", std::string("iM") + ntris::to_string(tempcounter++));*/
         if (_inputs.getPress(ntris::Right)) {
             piece_changed=true;
             das=0;
@@ -95,7 +103,8 @@ void PieceContainer::inputManager(const ActiveInputs& _inputs, const PFMatrix& p
     }
     if (collision(pfmatrix,temppiece)) das=16;
     else {
-		/*if (piece_changed) Sound::play(Sound::move_piece);*/
+        if (piece_changed)
+            _audio.playPieceMove(); //HAS TO BE PLAYED BEFORE PLAYPIECEROTATE BECAUSE IF A PIECE IS ROTATED AND MOVE IN THE SAME FRAME THIS SOUND DOESNT PLAY
         currentpiece=temppiece;
     }
     //ROTATE
@@ -110,7 +119,8 @@ void PieceContainer::inputManager(const ActiveInputs& _inputs, const PFMatrix& p
         temppiece.rotation=(temppiece.rotation-1)%4;
     }
     if (!collision(pfmatrix,temppiece)) {
-		/*if (piece_changed) Sound::play(Sound::rotate_piece);*/
+        if (piece_changed)
+            _audio.playPieceRotate(); //HAS TO BE PLAYED AFTER PLAYPIECEMOVE BECAUSE IF A PIECE IS ROTATED AND MOVE IN THE SAME FRAME THIS SOUND TAKES PRIORITY
         currentpiece=temppiece;
     }
 
@@ -125,7 +135,6 @@ void PieceContainer::inputManager(const ActiveInputs& _inputs, const PFMatrix& p
             ++temppiece.y;
             holddowncounter-=2;
             if (collision(pfmatrix,temppiece)) {
-				/*Sound::play(Sound::drop_piece);*/
                 dropped_event=true;
                 lastdroppedpiece=currentpiece;
             }
@@ -136,13 +145,13 @@ void PieceContainer::inputManager(const ActiveInputs& _inputs, const PFMatrix& p
         ++temppiece.y;
         downcounter=0;
         if (collision(pfmatrix,temppiece)) {
-			/*Sound::play(Sound::drop_piece);*/
             dropped_event=true;
             lastdroppedpiece=currentpiece;
         }
         else currentpiece=temppiece;
     }
-	//Log::update<std::string>("system", std::string("das=") + std::to_string(das));
+    if (dropped_event)
+        _audio.playPieceDrop();
 }
 
 const Piece& PieceContainer::getPiece() const{

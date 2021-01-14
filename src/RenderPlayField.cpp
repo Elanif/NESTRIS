@@ -42,9 +42,8 @@ then blinking starts
 when blinking is done the matrix updates correctly
 */
 
-void RenderPlayField::update(const ActiveInputs& _input, const nes_ushort& _framecounter) {
-    //printf("renderplayfield::update\n");
-    piecehandler.inputManager(_input, matrixhandler.getMatrix(), gravity[levellineshandler.get_real_level()]);
+void RenderPlayField::update(const ActiveInputs& _input, const nes_ushort& _framecounter, Audio& _audio) {
+    piecehandler.inputManager(_input, matrixhandler.getMatrix(), gravity[levellineshandler.get_real_level()], _audio);
 
     if (piecehandler.spawned_event) {
         statisticshandler.incrementPiece(piecehandler.getPiece().piecetype);
@@ -52,8 +51,10 @@ void RenderPlayField::update(const ActiveInputs& _input, const nes_ushort& _fram
     }
 
     if (piecehandler.dropped_event) {
+        piecehandler.dropped_event = false;
         nes_uchar linescleared=matrixhandler.lockpiece(piecehandler.lastdroppedpiece,_framecounter);
         if (linescleared) {
+            _audio.playClearLines();
             levellineshandler.addlines(linescleared);
             ntris::lineclearframecounter=5; //deletes the columns starting from the middle, 5 times, once every fram%4==0
             ntris::updatingmatrix=0; //this is updaetd later
@@ -64,7 +65,6 @@ void RenderPlayField::update(const ActiveInputs& _input, const nes_ushort& _fram
         scorehandler.softdrop(piecehandler.holddownpoints);
 
         piecehandler.lockpiece();
-        piecehandler.dropped_event=false;
 
         if (linescleared) {
             ntris::lineclearframecounter=5;
@@ -76,29 +76,40 @@ void RenderPlayField::update(const ActiveInputs& _input, const nes_ushort& _fram
         }
         if (linescleared>=4) {
             tetris=true;
+            tetris_sound_on = false;
         }
     }
 }
 
 
-void RenderPlayField::render(const nes_ushort& _framecounter) {
+void RenderPlayField::render(const nes_ushort& _framecounter, Audio& _audio) {
     piecehandler.spawned_event=false;
     //renderimage(false); more optimization to be done
     if (ntris::lineclearframecounter>0) {
         if (tetris) {
             if (ntris::getframemod4()==0&&!firstframeis4){
                 renderimage(true);
+                if (!tetris_sound_on) {
+                    tetris_sound_on = true;
+                    _audio.playTetris();
+                }
             }
             else if (playfield_blink) {
                 renderimage(false);
             }
+            /*if (ntris::lineclearframecounter <= 3) {
+                if (!tetris_sound_on) {
+                    tetris_sound_on = true;
+                    _audio.playTetris();
+                }
+            }*/
         }
     }
     else if (tetris) {
         tetris=false;
         if (playfield_blink) renderimage(false);
     }
-    levellineshandler.render();
+    levellineshandler.render(_audio);
     matrixhandler.render(levellineshandler.get_shown_level()); //the matrix color updates after its done clearing lines
     piecehandler.render(_framecounter,levellineshandler.get_shown_level()); //same thing for piecehandler
     statisticshandler.render(levellineshandler.get_shown_level()); //same thing

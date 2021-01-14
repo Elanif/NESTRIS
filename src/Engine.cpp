@@ -3,6 +3,7 @@
 #include"random.hpp"
 #include"Log.hpp"
 #include<string>
+
 Engine::Engine(TileContainer* _tilecont, const MenuType& _startingmenu):
 tilecont(_tilecont),
 currentmenu(_startingmenu),
@@ -17,7 +18,7 @@ RHS(_tilecont, framecounter)
 }
 
 
-void Engine::frame(const ActiveInputs& _inputs) {
+void Engine::frame(const ActiveInputs& _inputs, Audio & _audio) {
     ++framecounter;
     ntris::incframe();
     random::prng();
@@ -26,7 +27,7 @@ void Engine::frame(const ActiveInputs& _inputs) {
     case LEVELSELECT:
         RLS.renderLevelSelect(levelselectreload);
         levelselectreload=false;
-        levelselect=RLS.updateLevelSelect(_inputs);
+        levelselect=RLS.updateLevelSelect(_inputs, _audio);
         if (levelselect>=0) {
             currentmenu=PLAYFIELD;
             RPF.resetPlayField(levelselect);
@@ -35,16 +36,17 @@ void Engine::frame(const ActiveInputs& _inputs) {
 
     case PLAYFIELD:
 
-        RPF.update(_inputs, framecounter);
-        RPF.render(framecounter);
+        RPF.update(_inputs, framecounter, _audio);
+        RPF.render(framecounter, _audio);
         if (RPF.gameOver()) {
+            _audio.playTopOut();
             RHS.resetHighScore(RPF.matrixhandler, RPF.piecehandler, RPF.scorehandler, RPF.levellineshandler, RPF.statisticshandler);
             currentmenu=HIGHSCORE;
         }
         break;
 
     case HIGHSCORE:
-        RHS.update(_inputs, framecounter);
+        RHS.update(_inputs, framecounter, _audio);
         RHS.render(framecounter);
         if (RHS.submitted) {
             currentmenu=LEVELSELECT;
@@ -54,7 +56,7 @@ void Engine::frame(const ActiveInputs& _inputs) {
         break;
 
     default:
-        Log::update_error("ERROR default frame case in switch");
+        Log::update_error("ERROR default frame case in engine::frame switch");
         break;
     }
 }

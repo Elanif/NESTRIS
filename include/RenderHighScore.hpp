@@ -8,12 +8,13 @@
 #include"Statistics.hpp"
 #include"ActiveInputs.hpp"
 #include"MatrixContainer.hpp"
+#include"Audio.hpp"
 
 class RenderHighScore : public Renderer
 {
     public:
         RenderHighScore(TileContainer* _tilecont, const nes_ushort& _frameappearance);
-        void update(const ActiveInputs& _input, const nes_ushort& _framecounter) ;
+        void update(const ActiveInputs& _input, const nes_ushort& _framecounter, Audio& _audio) ;
         void render(const nes_ushort& framecounter) ;
         bool submitted=false;
         //TODO is there a faster way to do this?

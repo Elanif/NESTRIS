@@ -10,6 +10,7 @@
 #include"RenderLevelSelect.hpp"
 #include"RenderPlayField.hpp"
 #include"RenderHighScore.hpp"
+#include"Audio.hpp"
 
 class Engine
 {
@@ -20,7 +21,7 @@ class Engine
             HIGHSCORE,
         };
         Engine(TileContainer* _tilecont, const MenuType& _startingmenu);
-        void frame(const ActiveInputs& _inputs);
+        void frame(const ActiveInputs& _inputs, Audio & _audio);
     protected:
     private:
         TileContainer* tilecont;
