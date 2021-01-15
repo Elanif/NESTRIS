@@ -6,6 +6,9 @@
 
 void Audio::init()
 {
+	sfx.setVolume(50.f);
+	music_theme.setVolume(50.f);
+
 	using namespace std::string_literals;
 	if (!menu_move.loadFromFile("sounds/12sq1.wav"))
 		Log::update_error("Couldn't load 12sq1.wav - menu_move");
