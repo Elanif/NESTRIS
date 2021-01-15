@@ -35,6 +35,7 @@ public:
 	nes_uchar holddownpoints{ 0 };
 
     bool gameOver(const PFMatrix& pfmatrix);
+    nes_uchar getDrought() const;
     bool dropped_event=false;
     bool spawned_event=false;
 
@@ -55,8 +56,11 @@ private:
 	nes_uchar downcounter{ 0 };
 	nes_uchar holddowncounter{ 0 };
 	nes_uchar init_delay{ 96 };
+    nes_uchar current_drought{ 0 };
+    nes_uchar max_drought{ 0 };
     Piece currentpiece, nextpiece, shown_nextpiece;
 
+    //T J Z O S L I
     static nes_uchar spawn_table[7];
 };
 #endif // PIECE_H

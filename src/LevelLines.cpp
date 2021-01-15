@@ -1,8 +1,9 @@
 #include"LevelLines.hpp"
 #include"TextWriter.hpp"
 #include<string>
-LevelLines::LevelLines(TileContainer * _tilecont, const nes_ushort& _frameappearance, const nes_uchar& _level)
-    :Renderer(_tilecont, _frameappearance), real_level(_level), shown_level(_level), lines(0u)
+#include"Log.hpp"
+LevelLines::LevelLines(TileContainer* _tilecont, const nes_ushort& _frameappearance, const nes_uchar& _level)
+    :Renderer(_tilecont, _frameappearance), starting_level(_level), real_level(_level), shown_level(_level), lines(0u)
 {
     linestolevelup=(real_level+1)/16*100;
     if ((real_level+1)%16>=10) linestolevelup+=100;
@@ -44,6 +45,18 @@ const nes_uchar& LevelLines::get_shown_level() const {
     return shown_level;
 }
 
+const nes_uchar& LevelLines::get_starting_level() const {
+    return starting_level;
+}
+
+nes_uchar LevelLines::getTetrisPercentage() const
+{
+    if (total_lines_cleared == 0) return 0;
+    nes_uchar tetris_percentage = (nes_uchar)(((long double)tetris_lines_cleared*100) / ((long double)total_lines_cleared));
+    Log::update_error(std::string(ntris::to_string(tetris_percentage)));
+    return tetris_percentage;
+}
+
 void LevelLines::addlines(const nes_uchar& _clearedlines) {
     linestemp=lines;
     shown_level=real_level;
@@ -52,6 +65,10 @@ void LevelLines::addlines(const nes_uchar& _clearedlines) {
         ++real_level;
         linestolevelup+=10;
     }
+    if (_clearedlines >= 4) {
+        tetris_lines_cleared += _clearedlines;
+    }
+    total_lines_cleared += _clearedlines;
 }
 
 nes_uchar LevelLines::level_hex[256]={

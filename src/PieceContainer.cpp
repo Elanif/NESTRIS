@@ -192,6 +192,18 @@ void PieceContainer::render(const nes_ushort& _framecounter, const nes_uchar& _l
 void PieceContainer::spawnPiece() {
     spawned_event=true;
     currentpiece=nextpiece;
+
+    if (current_drought <= 254) {
+        if (currentpiece.piecetype != -1 && currentpiece.piecetype != 6) {
+            current_drought++;
+        }
+        else if (currentpiece.piecetype == 6) {
+            current_drought = 0;
+        }
+    }
+    if (current_drought > max_drought)
+        max_drought = current_drought;
+
     nes_uchar spawnID=spawn_table[nextpiece.piecetype]; //creates a piece next to nextpiece
     ++spawncount;
     nes_uchar index=random::prng()>>8;
@@ -240,5 +252,8 @@ void PieceContainer::lockpiece() {
     downinterrupted=true; //TODO where to put this
 }
 
+nes_uchar PieceContainer::getDrought() const {
+    return max_drought;
+}
 //TODO change in bigger game modes
 nes_uchar PieceContainer::spawn_table[7]={0x02,0x07,0x08,0x0A,0x0B,0x0E,0x12};

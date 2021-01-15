@@ -11,6 +11,7 @@
 #include"Statistics.hpp"
 #include"ntris.hpp"
 #include"Audio.hpp"
+#include"GameplayContainer.hpp"
 
 //class Score; //todo fwd decl
 //class LevelLines;
@@ -19,22 +20,10 @@ class RenderPlayField : public Renderer
 {
     public:
         RenderPlayField(TileContainer* _tilecont, const nes_ushort& _frameappearance, nes_uchar _level);
-        void update(const ActiveInputs& _input, const nes_ushort& _framecounter, Audio& _audio) ;
-        void render(const nes_ushort& framecounter, Audio& _audio) ;
+        void update(const ActiveInputs& _input, const nes_ushort& _framecounter, GameplayContainer& _gameplay_container, Audio& _audio) ;
+        void render(const nes_ushort& framecounter, GameplayContainer& _gameplay_container, Audio& _audio) ;
         void resetPlayField(const nes_uchar& _level);
-        void renderPlayField(const unsigned long long& framecounter);
         bool gameOver();
-        ScoreContainer getScore();
-
-        MatrixContainer matrixhandler;
-
-        PieceContainer piecehandler;
-
-        Score scorehandler;
-
-        LevelLines levellineshandler;
-
-        Statistics statisticshandler;
     private:
         void renderimage(bool blink);
         void renderBackground(const nes_uchar& _color1, const nes_uchar& _color2);

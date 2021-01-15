@@ -11,6 +11,7 @@
 #include"RenderPlayField.hpp"
 #include"RenderHighScore.hpp"
 #include"Audio.hpp"
+#include"GameplayContainer.hpp"
 
 class Engine
 {
@@ -24,6 +25,8 @@ class Engine
         void frame(const ActiveInputs& _inputs, Audio & _audio);
     protected:
     private:
+
+        GameplayContainer gameplay_container;
         TileContainer* tilecont;
         MenuType currentmenu;
 
@@ -32,11 +35,11 @@ class Engine
         RenderHighScore RHS;
 
         //levelselect
-        int levelselect;
-        bool levelselectreload;
+        int levelselect = 0;
+        bool levelselectreload = 0;
 
         //game
-        unsigned long long framecounter;
+        unsigned long long framecounter = 0;
         //statistics
         int piececount[7];
 

@@ -2,21 +2,26 @@
 #include"TextWriter.hpp"
 #include<sstream>
 #include<iomanip>
+#include"Log.hpp"
 
 Score::Score(TileContainer *_tilecont, const nes_ushort& _frameappearance)
 :Renderer(_tilecont, _frameappearance),
 maxout(true)
 {
     nes_uchar scorearray[3]={0x00,0x00,0x01};
-    topscores[0]=ScoreContainer(scorearray);
-    topscores[1]=ScoreContainer(5000u);
-    topscores[2]=ScoreContainer(1000u);
+    top_scores.insert(std::pair(10000u, ScoreContainer(10000u)));
+    top_scores.insert(std::pair(5000u, ScoreContainer(5000u)));
+    top_scores.insert(std::pair(1000u, ScoreContainer(1000u)));
 }
 
 Score::Score(TileContainer *_tilecont, const nes_ushort& _frameappearance, const bool& _maxout)
 :Score(_tilecont,_frameappearance)
 {
     maxout=false;
+    nes_uchar scorearray[3] = { 0x00,0x00,0x01 };
+    top_scores.insert(std::pair(10000u, ScoreContainer(scorearray)));
+    top_scores.insert(std::pair(5000u, ScoreContainer(scorearray)));
+    top_scores.insert(std::pair(1000u, ScoreContainer(scorearray)));
 }
 
 void Score::render() {
@@ -27,15 +32,23 @@ void Score::render() {
     else {
         using namespace std::string_literals;
         if (ntris::lineclearframecounter>0) {
-            TextWriter::write(topscores[0].getScoreString(),tilecont,{ntris::topscorex,ntris::topscorey}); //these 2 lines
+            TextWriter::write(top_scores.begin()->second.getScoreString(),tilecont,{ntris::topscorex,ntris::topscorey}); //these 2 lines
             TextWriter::write(scoretemp.getScoreString(),tilecont,{ntris::scorex,ntris::scorey}); //are useless right now
         }
         else {
             scoretemp=score;
-            TextWriter::write(topscores[0].getScoreString(),tilecont,{ntris::topscorex,ntris::topscorey});
+            TextWriter::write(top_scores.begin()->second.getScoreString(),tilecont,{ntris::topscorex,ntris::topscorey});
             TextWriter::write(score.getScoreString(),tilecont,{ntris::scorex,ntris::scorey});
         }
     }
+}
+
+void Score::storeScore()
+{
+    unsigned int real_score = score.realscore();
+    top_scores.insert(std::pair(real_score, score));
+    Log::update_error(ntris::to_string(top_scores.begin()->first));
+    score = ScoreContainer(0u);
 }
 
 

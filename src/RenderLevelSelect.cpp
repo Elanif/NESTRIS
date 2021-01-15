@@ -1,5 +1,7 @@
 #include"RenderLevelSelect.hpp"
 #include<cstdio>
+#include"TextWriter.hpp"
+#include"TileContainer.hpp"
 RenderLevelSelect::RenderLevelSelect(TileContainer *_tilecont, const std::size_t& _frameappearance, const std::size_t& _currentlevel):
 Renderer(_tilecont,_frameappearance),
 currentlevel(_currentlevel)
@@ -11,13 +13,14 @@ RenderLevelSelect::RenderLevelSelect()
 {
 
 }
-int RenderLevelSelect::updateLevelSelect(const ActiveInputs& _input, Audio & _audio) {
+int RenderLevelSelect::updateLevelSelect(const ActiveInputs& _input, GameplayContainer& _gameplay_container, Audio & _audio) {
 //todo manage priorities
     unsigned int tempblink=blink;
     blink=0;
     if (_input.getPress(ntris::Start)) {
         _audio.playMenuSelectShort();
-        if (_input.getHold(ntris::A)&&!_input.getPress(ntris::A)) return currentlevel+10;//A has to be held 1 frame earlier
+        if (_input.getHold(ntris::A) && !_input.getPress(ntris::A)) return currentlevel + 10;//A has to be held 1 frame earlier
+        if (_input.getHold(ntris::Select) && !_input.getPress(ntris::Select)) return currentlevel + 20;//A has to be held 1 frame earlier
         return currentlevel;
     }
     else 
@@ -56,7 +59,11 @@ void RenderLevelSelect::renderLevelSelect(const bool& _reload) {
         }
     }
     lastrenderedlevel=currentlevel;
-
+    /*for (std::size_t i = 0; i < 16; ++i) {
+        for (std::size_t j = 0; j < 16; ++j) {
+            tilecont->at(i, j) = tiletype((j) * 16+i, 0x0d, 0x30, 0X30, 0x30);
+        }
+    }*/
 }
 
 void RenderLevelSelect::reload() {

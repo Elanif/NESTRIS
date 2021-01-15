@@ -55,14 +55,19 @@ class LevelLines : public Renderer //DOESN'T WORK LIKE THE NES AFTER LEVEL 137
         LevelLines(TileContainer * _tilecont, const nes_ushort& _frameappearance, const nes_uchar& _level);
         const nes_uchar& get_real_level() const;
         const nes_uchar& get_shown_level() const;
+        const nes_uchar& get_starting_level() const;
+        nes_uchar getTetrisPercentage() const;
         void addlines(const nes_uchar& _clearedlines);
         void render(Audio& _audio);
     private:
         LinesContainer lines{};
         LinesContainer linestemp{};
+        nes_uchar starting_level = 0;
         nes_uchar real_level=0;
         nes_uchar shown_level=0;
         nes_ushort linestolevelup=0;
+        std::size_t total_lines_cleared=0;
+        std::size_t tetris_lines_cleared=0;
         static nes_uchar level_hex[256]; //TODO
 };
 

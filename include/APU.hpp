@@ -12,7 +12,6 @@ class APU
         static sf::SoundBuffer square_buffer;
         static sf::Sound sound;
     protected:
-
     private:
 };
 

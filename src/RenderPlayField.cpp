@@ -7,12 +7,7 @@
 #include"Sound.hpp"
 RenderPlayField::RenderPlayField(TileContainer * _tilecont, const nes_ushort& _frameappearance, nes_uchar _level)
 	:Renderer(_tilecont, _frameappearance),
-	level(_level),
-	piecehandler(_tilecont, frameappearance),
-	matrixhandler(_tilecont, frameappearance),
-	scorehandler(_tilecont, frameappearance, true),
-	levellineshandler(_tilecont, frameappearance, _level),
-	statisticshandler(_tilecont, frameappearance, _level)
+	level(_level)
 {
     init_assets();
 
@@ -42,29 +37,29 @@ then blinking starts
 when blinking is done the matrix updates correctly
 */
 
-void RenderPlayField::update(const ActiveInputs& _input, const nes_ushort& _framecounter, Audio& _audio) {
-    piecehandler.inputManager(_input, matrixhandler.getMatrix(), gravity[levellineshandler.get_real_level()], _audio);
+void RenderPlayField::update(const ActiveInputs& _input, const nes_ushort& _framecounter, GameplayContainer& _gameplay_container, Audio& _audio) {
+    _gameplay_container.piecehandler.inputManager(_input, _gameplay_container.matrixhandler.getMatrix(), gravity[_gameplay_container.levellineshandler.get_real_level()], _audio);
 
-    if (piecehandler.spawned_event) {
-        statisticshandler.incrementPiece(piecehandler.getPiece().piecetype);
-        game_over=piecehandler.gameOver(matrixhandler.getMatrix());
+    if (_gameplay_container.piecehandler.spawned_event) {
+        _gameplay_container.statisticshandler.incrementPiece(_gameplay_container.piecehandler.getPiece().piecetype);
+        game_over= _gameplay_container.piecehandler.gameOver(_gameplay_container.matrixhandler.getMatrix());
     }
 
-    if (piecehandler.dropped_event) {
-        piecehandler.dropped_event = false;
-        nes_uchar linescleared=matrixhandler.lockpiece(piecehandler.lastdroppedpiece,_framecounter);
+    if (_gameplay_container.piecehandler.dropped_event) { 
+        _gameplay_container.piecehandler.dropped_event = false;
+        nes_uchar linescleared= _gameplay_container.matrixhandler.lockpiece(_gameplay_container.piecehandler.lastdroppedpiece,_framecounter);
         if (linescleared) {
             _audio.playClearLines();
-            levellineshandler.addlines(linescleared);
+            _gameplay_container.levellineshandler.addlines(linescleared);
             ntris::lineclearframecounter=5; //deletes the columns starting from the middle, 5 times, once every fram%4==0
             ntris::updatingmatrix=0; //this is updaetd later
             //then it updates the vram of the matrix, it takes 5 frames of copying from top to bottom
         }
 
-        scorehandler.lineclear(levellineshandler.get_real_level(),linescleared); //points are calculated with the real level
-        scorehandler.softdrop(piecehandler.holddownpoints);
+        _gameplay_container.scorehandler.lineclear(_gameplay_container.levellineshandler.get_real_level(),linescleared); //points are calculated with the real level
+        _gameplay_container.scorehandler.softdrop(_gameplay_container.piecehandler.holddownpoints);
 
-        piecehandler.lockpiece();
+        _gameplay_container.piecehandler.lockpiece();
 
         if (linescleared) {
             ntris::lineclearframecounter=5;
@@ -72,7 +67,7 @@ void RenderPlayField::update(const ActiveInputs& _input, const nes_ushort& _fram
             else firstframeis4=false;
         }
         else {
-            ntris::ARE=20-((piecehandler.lastdroppedpiece.y+3)/4)*2; //TODO find true formula
+            ntris::ARE=20-((_gameplay_container.piecehandler.lastdroppedpiece.y+3)/4)*2; //TODO find true formula
         }
         if (linescleared>=4) {
             tetris=true;
@@ -82,8 +77,8 @@ void RenderPlayField::update(const ActiveInputs& _input, const nes_ushort& _fram
 }
 
 
-void RenderPlayField::render(const nes_ushort& _framecounter, Audio& _audio) {
-    piecehandler.spawned_event=false;
+void RenderPlayField::render(const nes_ushort& _framecounter, GameplayContainer& _gameplay_container, Audio& _audio) {
+    _gameplay_container.piecehandler.spawned_event=false;
     //renderimage(false); more optimization to be done
     if (ntris::lineclearframecounter>0) {
         if (tetris) {
@@ -109,11 +104,11 @@ void RenderPlayField::render(const nes_ushort& _framecounter, Audio& _audio) {
         tetris=false;
         if (playfield_blink) renderimage(false);
     }
-    levellineshandler.render(_audio);
-    matrixhandler.render(levellineshandler.get_shown_level()); //the matrix color updates after its done clearing lines
-    piecehandler.render(_framecounter,levellineshandler.get_shown_level()); //same thing for piecehandler
-    statisticshandler.render(levellineshandler.get_shown_level()); //same thing
-    scorehandler.render(); //shown score and real score are handled internally by scorehandler for now
+    _gameplay_container.levellineshandler.render(_audio);
+    _gameplay_container.matrixhandler.render(_gameplay_container.levellineshandler.get_shown_level()); //the matrix color updates after its done clearing lines
+    _gameplay_container.piecehandler.render(_framecounter, _gameplay_container.levellineshandler.get_shown_level()); //same thing for piecehandler
+    _gameplay_container.statisticshandler.render(_gameplay_container.levellineshandler.get_shown_level()); //same thing
+    _gameplay_container.scorehandler.render(); //shown score and real score are handled internally by scorehandler for now
     //if it's clear lines time and !(by coincidence the first frame it fell the frame was dividible by 4)
     if (ntris::lineclearframecounter>0 && !firstframeis4 && ntris::getframemod4()==0) {
 		/*if (tetris) Sound::play(Sound::tetris);
@@ -123,37 +118,24 @@ void RenderPlayField::render(const nes_ushort& _framecounter, Audio& _audio) {
     }
     else if (ntris::updatingmatrix>0) { //doesnt happen in the same frame as lineclearedframecounter--
         --ntris::updatingmatrix;
-        if (ntris::updatingmatrix==0) piecehandler.spawnPiece();//if it's the last frame of the 5-frame matrix update it spawns a new piece for the next frame, [frame discrepancy?]
+        if (ntris::updatingmatrix==0) _gameplay_container.piecehandler.spawnPiece();//if it's the last frame of the 5-frame matrix update it spawns a new piece for the next frame, [frame discrepancy?]
     }
     firstframeis4=false;
     if (ntris::ARE>0) { // if entry delay>0 //should this be in render or update?
         ntris::ARE--;
         if (ntris::ARE==0) {
-            piecehandler.spawnPiece();//if it's the last entry delay frame it spawns a new piece for the next frame, [frame discrepancy?]
-            piecehandler.spawned_event=true;
+            _gameplay_container.piecehandler.spawnPiece();//if it's the last entry delay frame it spawns a new piece for the next frame, [frame discrepancy?]
+            _gameplay_container.piecehandler.spawned_event=true;
         }
     }
 }
 
 void RenderPlayField::resetPlayField(const nes_uchar& _level){
-    //todo next piece
-    level=_level;
-    tilecont->reset();
     renderimage(false);
-    piecehandler = PieceContainer(tilecont, frameappearance);
-    matrixhandler = MatrixContainer(tilecont, frameappearance);
-    scorehandler = Score(tilecont, frameappearance, true);
-    levellineshandler = LevelLines(tilecont, frameappearance, _level);
-    statisticshandler = Statistics(tilecont, frameappearance, _level);
-    statisticshandler.render(true);
 }
 
 bool RenderPlayField::gameOver() {
     return game_over;
-}
-
-ScoreContainer RenderPlayField::getScore() {
-    return scorehandler.getScore();
 }
 
 void RenderPlayField::renderimage(bool blink) {

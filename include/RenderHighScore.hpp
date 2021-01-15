@@ -9,27 +9,22 @@
 #include"ActiveInputs.hpp"
 #include"MatrixContainer.hpp"
 #include"Audio.hpp"
+#include"GameplayContainer.hpp"
 
 class RenderHighScore : public Renderer
 {
     public:
         RenderHighScore(TileContainer* _tilecont, const nes_ushort& _frameappearance);
-        void update(const ActiveInputs& _input, const nes_ushort& _framecounter, Audio& _audio) ;
-        void render(const nes_ushort& framecounter) ;
+        void update(const ActiveInputs& _input, const nes_ushort& _framecounter, GameplayContainer& _gameplay_container, Audio& _audio) ;
+        void render(const nes_ushort& framecounter, GameplayContainer& _gameplay_container) ;
         bool submitted=false;
         //TODO is there a faster way to do this?
-        void resetHighScore(const MatrixContainer& _matrixhandler, const PieceContainer& _piecehandler, const Score& _scorehandler, const LevelLines& _levellineshandler, const Statistics& _statisticshandler);
+        //void resetHighScore(const MatrixContainer& _matrixhandler, const PieceContainer& _piecehandler, const Score& _scorehandler, const LevelLines& _levellineshandler, const Statistics& _statisticshandler);
 
     private:
-        MatrixContainer matrixhandler;
-
-        PieceContainer piecehandler;
-
-        Score scorehandler;
-
-        LevelLines levellineshandler;
-
-        Statistics statisticshandler;
+        void renderCornice();
+        void praise(GameplayContainer& _gameplay_container);
+        void renderStatistics(GameplayContainer& _gameplay_container);
 };
 
 #endif // RENDERHIGHSCORE_H

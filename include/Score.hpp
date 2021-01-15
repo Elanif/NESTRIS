@@ -5,6 +5,7 @@
 #include"Renderer.hpp"
 #include"ntris.hpp"
 #include"TileContainer.hpp"
+#include<map>
 
 class ScoreContainer {
 public:
@@ -51,6 +52,7 @@ class Score : public Renderer
         void softdrop(nes_uchar);
         void lineclear(const nes_uchar& level, const nes_uchar& linescleared) ; //TODO var type
         void render();
+        void storeScore();
 
         ScoreContainer getScore();
     protected:
@@ -63,7 +65,7 @@ class Score : public Renderer
         void lastdigitcheck();
         ScoreContainer score;
         ScoreContainer scoretemp;
-        ScoreContainer topscores[3]={};
+        std::multimap<unsigned int, ScoreContainer> top_scores;
 		static nes_uchar pointsarray[10];
 
 };

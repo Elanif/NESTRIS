@@ -6,15 +6,15 @@
 #include"TileContainer.hpp"
 #include"Renderer.hpp"
 #include"Audio.hpp"
+#include"GameplayContainer.hpp"
 
 class RenderLevelSelect : Renderer
 {
     public:
         RenderLevelSelect(TileContainer* _tilecont, const std::size_t& _frameappearance, const std::size_t& _currentlevel);
         RenderLevelSelect();
-        int update(ActiveInputs* activeinputs);
         void renderLevelSelect(const bool& _reload);
-        int updateLevelSelect(const ActiveInputs& _input, Audio & _audio);
+        int updateLevelSelect(const ActiveInputs& _input, GameplayContainer& _gameplay_container, Audio & _audio);
     protected:
     private:
         void reload();

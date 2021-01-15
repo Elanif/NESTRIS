@@ -169,11 +169,13 @@
       <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4267;4244</DisableSpecificWarnings>
     </ClCompile>
     <ClCompile Include="src\ActiveInputs.cpp" />
+    <ClCompile Include="src\APU.cpp" />
     <ClCompile Include="src\Audio.cpp" />
     <ClCompile Include="src\ConfigReader.cpp" />
     <ClCompile Include="src\ConsoleManager.cpp" />
     <ClCompile Include="src\DelayManager.cpp" />
     <ClCompile Include="src\Engine.cpp" />
+    <ClCompile Include="src\GameplayContainer.cpp" />
     <ClCompile Include="src\Input.cpp" />
     <ClCompile Include="src\LevelLines.cpp" />
     <ClCompile Include="src\Log.cpp" />
@@ -193,6 +195,7 @@
     <ClCompile Include="src\RenderLevelSelect.cpp" />
     <ClCompile Include="src\RenderPlayField.cpp" />
     <ClCompile Include="src\Score.cpp" />
+    <ClCompile Include="src\Sound.cpp" />
     <ClCompile Include="src\Sprite.cpp" />
     <ClCompile Include="src\Statistics.cpp" />
     <ClCompile Include="src\TextFormatter.cpp" />
@@ -204,11 +207,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\ActiveInputs.hpp" />
+    <ClInclude Include="include\APU.hpp" />
     <ClInclude Include="include\Audio.hpp" />
     <ClInclude Include="include\ConfigReader.hpp" />
     <ClInclude Include="include\ConsoleManager.hpp" />
     <ClInclude Include="include\DelayManager.hpp" />
     <ClInclude Include="include\Engine.hpp" />
+    <ClInclude Include="include\GameplayContainer.hpp" />
     <ClInclude Include="include\Input.hpp" />
     <ClInclude Include="include\LevelLines.hpp" />
     <ClInclude Include="include\Log.hpp" />
@@ -227,6 +232,7 @@
     <ClInclude Include="include\RenderPlayField.hpp" />
     <ClInclude Include="include\SafeQueue.hpp" />
     <ClInclude Include="include\Score.hpp" />
+    <ClInclude Include="include\Sound.hpp" />
     <ClInclude Include="include\Sprite.hpp" />
     <ClInclude Include="include\StaticClass.hpp" />
     <ClInclude Include="include\Statistics.hpp" />
@@ -236,6 +242,9 @@
     <ClInclude Include="include\TileContainer.hpp" />
     <ClInclude Include="include\TileRenderer.hpp" />
     <ClInclude Include="include\Window.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="openal32.dll" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

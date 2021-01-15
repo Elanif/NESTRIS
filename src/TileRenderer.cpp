@@ -201,6 +201,18 @@ bool TileRenderer::load(const std::string & tilefile) {
 		return false;
 	}
 	std::size_t spritenumber = spritevector.size();
+	//loads the sprites and puts them into a map, if a sprite is equal to a previous sprite, it isn't inserted into the map
+	//this is problematic because it makes it hard to manually select a tile from TLP (tile layer pro)
+	//changing map to multimap would mean changing all the rendering functions all over the project
+	//use TileDetector (can be found in my github) to manually select a tile
+	//or 
+	/*
+	* for (std::size_t i = 0; i < 16; ++i) {
+        for (std::size_t j = 0; j < 16; ++j) {
+            tilecont->at(i, j) = tiletype((j+<<number>>) * 16+ i, 0x0d, 0x30, 0X16, 0x12);
+        }
+    }
+	*/
 	while (!spritefile.eof()) {
 		std::size_t characters = 0;
 		Sprite newsprite;
