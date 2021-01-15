@@ -106,7 +106,7 @@ private:
 
 void Window::render(TileRenderer& tilerend) {
 	ConsoleManager cm;
-	Engine _engine = Engine(tilerend.getTileContainer(), Engine::LEVELSELECT);
+	Engine _engine = Engine(tilerend.getTileContainer(), Engine::GAMEMODESELECT);
 
 	constexpr largest_uint partspersecond = MyClock::getPartsPerSecond();
 	largest_uint timeperframe_odd = (long double)(partspersecond) / ntris::ntsc_fps_odd;

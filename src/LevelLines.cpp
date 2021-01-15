@@ -49,11 +49,15 @@ const nes_uchar& LevelLines::get_starting_level() const {
     return starting_level;
 }
 
+unsigned int LevelLines::getLines() const
+{
+    return lines.reallines();
+}
+
 nes_uchar LevelLines::getTetrisPercentage() const
 {
     if (total_lines_cleared == 0) return 0;
     nes_uchar tetris_percentage = (nes_uchar)(((long double)tetris_lines_cleared*100) / ((long double)total_lines_cleared));
-    Log::update_error(std::string(ntris::to_string(tetris_percentage)));
     return tetris_percentage;
 }
 

@@ -10,6 +10,7 @@
 #include"RenderLevelSelect.hpp"
 #include"RenderPlayField.hpp"
 #include"RenderHighScore.hpp"
+#include"RenderGameModeSelect.hpp"
 #include"Audio.hpp"
 #include"GameplayContainer.hpp"
 
@@ -17,6 +18,7 @@ class Engine
 {
     public:
         enum MenuType {
+            GAMEMODESELECT,
             LEVELSELECT,
             PLAYFIELD,
             HIGHSCORE,
@@ -33,10 +35,12 @@ class Engine
         RenderLevelSelect RLS;
         RenderPlayField RPF;
         RenderHighScore RHS;
+        RenderGameModeSelect RGMS;
 
         //levelselect
         int levelselect = 0;
-        bool levelselectreload = 0;
+        bool levelselectreload = true;
+        bool game_mode_select_reload = true;
 
         //game
         unsigned long long framecounter = 0;

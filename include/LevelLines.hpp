@@ -56,6 +56,7 @@ class LevelLines : public Renderer //DOESN'T WORK LIKE THE NES AFTER LEVEL 137
         const nes_uchar& get_real_level() const;
         const nes_uchar& get_shown_level() const;
         const nes_uchar& get_starting_level() const;
+        unsigned int getLines() const;
         nes_uchar getTetrisPercentage() const;
         void addlines(const nes_uchar& _clearedlines);
         void render(Audio& _audio);

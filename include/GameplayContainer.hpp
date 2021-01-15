@@ -19,5 +19,8 @@ public:
     LevelLines levellineshandler;
 
     Statistics statisticshandler;
+
+    std::size_t music_theme=1;
+    std::size_t game_type=0;
 };
 

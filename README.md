@@ -27,12 +27,13 @@
 - Implement this glitch that is in the original game: when you clear the top line it also clears the bottom line.
 - 2 Player mode
 - Statistics option: long piece drought, tetris %, etc.
-- Add custom tiles for symbols like ":" "%"
 ### Issues
 - the nes had a 4x16 color palette, but sometimes black is considered transparent ("The first 2 colors of every entry are black and white. However, the first color is actually ignored; regardless of its value, it is treated as a transparent color through which the solid black background is exposed."). My program doesn't have a consistent way to handle this.
 - Do all the shader.setVariables things.
 - A well done separate window with configurations, usable with a controller too.
-- Holding down the down button will give points even if you started holding down before the piece spawned (start a level 19 game and hold down for 10 seconds to see)
+- ~~Holding down the down button will give points even if you started holding down before the piece spawned (start a level 19 game and hold down for 10 seconds to see)~~ fixed 
+- Add custom tiles for symbols like ":" "%"
+- Fast theme music should play once the playfield reaches a certain height
 ### meatfighter.com
 This project was only possible thanks to https://meatfighter.com/nintendotetrisai/
 

@@ -4,7 +4,6 @@
 #include"random.hpp"
 #include<cstdio>
 #include<sstream>
-#include"Sound.hpp"
 
 PieceContainer::PieceContainer(TileContainer * _tilecont, const nes_ushort& _frameappearance)
 :Renderer(_tilecont, _frameappearance),
@@ -190,6 +189,7 @@ void PieceContainer::render(const nes_ushort& _framecounter, const nes_uchar& _l
 
 //TODO can keep unsigned char, unless we decide to add many pieces
 void PieceContainer::spawnPiece() {
+    //holddownpoints = 0; //in RenderPlayField for now
     spawned_event=true;
     currentpiece=nextpiece;
 

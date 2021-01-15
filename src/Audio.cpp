@@ -166,12 +166,17 @@ bool Audio::check_if_tetris()
 }
 void Audio::playMusic(std::size_t const& _theme_number, bool const& _fast)
 {
+	if (_theme_number < 0 || _theme_number>3) return;
+	if (current_theme == _theme_number && is_music_playing &&_fast==music_fast) return;
 	using namespace std::string_literals;
 	current_theme = _theme_number;
 	music_fast = _fast;
 	if (_theme_number == 0) {
-		stopMusic();
+		is_music_playing = false;
+		stopMusic(); 
+		return;
 	}
+	is_music_playing = true;
 	if (!_fast) {
 		std::string music_theme_src = "sounds/music theme "s + ntris::to_string(_theme_number) + ".ogg"s;
 		if (!music_theme.openFromFile(music_theme_src))

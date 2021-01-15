@@ -169,7 +169,6 @@
       <DisableSpecificWarnings Condition="'$(Configuration)|$(Platform)'=='Release|x64'">4267;4244</DisableSpecificWarnings>
     </ClCompile>
     <ClCompile Include="src\ActiveInputs.cpp" />
-    <ClCompile Include="src\APU.cpp" />
     <ClCompile Include="src\Audio.cpp" />
     <ClCompile Include="src\ConfigReader.cpp" />
     <ClCompile Include="src\ConsoleManager.cpp" />
@@ -191,11 +190,11 @@
     <ClCompile Include="src\PieceContainer.cpp" />
     <ClCompile Include="src\random.cpp" />
     <ClCompile Include="src\Renderer.cpp" />
+    <ClCompile Include="src\RenderGameModeSelect.cpp" />
     <ClCompile Include="src\RenderHighScore.cpp" />
     <ClCompile Include="src\RenderLevelSelect.cpp" />
     <ClCompile Include="src\RenderPlayField.cpp" />
     <ClCompile Include="src\Score.cpp" />
-    <ClCompile Include="src\Sound.cpp" />
     <ClCompile Include="src\Sprite.cpp" />
     <ClCompile Include="src\Statistics.cpp" />
     <ClCompile Include="src\TextFormatter.cpp" />
@@ -207,7 +206,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\ActiveInputs.hpp" />
-    <ClInclude Include="include\APU.hpp" />
     <ClInclude Include="include\Audio.hpp" />
     <ClInclude Include="include\ConfigReader.hpp" />
     <ClInclude Include="include\ConsoleManager.hpp" />
@@ -227,12 +225,12 @@
     <ClInclude Include="include\PieceContainer.hpp" />
     <ClInclude Include="include\random.hpp" />
     <ClInclude Include="include\Renderer.hpp" />
+    <ClInclude Include="include\RenderGameModeSelect.hpp" />
     <ClInclude Include="include\RenderHighScore.hpp" />
     <ClInclude Include="include\RenderLevelSelect.hpp" />
     <ClInclude Include="include\RenderPlayField.hpp" />
     <ClInclude Include="include\SafeQueue.hpp" />
     <ClInclude Include="include\Score.hpp" />
-    <ClInclude Include="include\Sound.hpp" />
     <ClInclude Include="include\Sprite.hpp" />
     <ClInclude Include="include\StaticClass.hpp" />
     <ClInclude Include="include\Statistics.hpp" />

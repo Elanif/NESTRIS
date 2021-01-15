@@ -22,6 +22,7 @@ void TextWriter::init() {
     char_lookup[(unsigned char)'\'']=39;
     char_lookup[(unsigned char)':'] = 103; //260
     char_lookup[(unsigned char)'%'] = 83; 
+    char_lookup[(unsigned char)'»'] = 620;
 }
 void TextWriter::write(const std::string& text, TileContainer *_tilecont, sf::Vector2u _position, nes_uchar color) {
     for (std::size_t i=0; i<text.length(); ++i) {

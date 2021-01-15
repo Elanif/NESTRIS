@@ -30,7 +30,7 @@ public:
 	void playLevelUp(); //plays as soon as the last 2 columns of blocks at the edges are done being erased, interrupting tetris sound
 	void playTetris(); //the tetris sound is 4~ frames of clear lines, 6~ frames of square, 8 frames of the beginning of the tetris sound, and then the whole tetris sound
 						//maybe the first x~ frames of noise depend on the frame mod 4
-						//for now I'll use an edited one
+						//for now I'll play clear lines then when frame mod4 == 0 I'll play an edit of 6~frames of square,8 of tetris, remaining of tetris
 	void playClearLines();
 	void playMenuMove();
 	void playMenuSelect(); 

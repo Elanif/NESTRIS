@@ -4,7 +4,6 @@
 #include<cstdio>
 #include"TextWriter.hpp"
 #include<string>
-#include"Sound.hpp"
 RenderPlayField::RenderPlayField(TileContainer * _tilecont, const nes_ushort& _frameappearance, nes_uchar _level)
 	:Renderer(_tilecont, _frameappearance),
 	level(_level)
@@ -58,7 +57,7 @@ void RenderPlayField::update(const ActiveInputs& _input, const nes_ushort& _fram
 
         _gameplay_container.scorehandler.lineclear(_gameplay_container.levellineshandler.get_real_level(),linescleared); //points are calculated with the real level
         _gameplay_container.scorehandler.softdrop(_gameplay_container.piecehandler.holddownpoints);
-
+        _gameplay_container.piecehandler.holddownpoints = 0; //maybe put this in an appropriate function
         _gameplay_container.piecehandler.lockpiece();
 
         if (linescleared) {
@@ -108,7 +107,7 @@ void RenderPlayField::render(const nes_ushort& _framecounter, GameplayContainer&
     _gameplay_container.matrixhandler.render(_gameplay_container.levellineshandler.get_shown_level()); //the matrix color updates after its done clearing lines
     _gameplay_container.piecehandler.render(_framecounter, _gameplay_container.levellineshandler.get_shown_level()); //same thing for piecehandler
     _gameplay_container.statisticshandler.render(_gameplay_container.levellineshandler.get_shown_level()); //same thing
-    _gameplay_container.scorehandler.render(); //shown score and real score are handled internally by scorehandler for now
+    _gameplay_container.scorehandler.renderInGameScores(); //shown score and real score are handled internally by scorehandler for now
     //if it's clear lines time and !(by coincidence the first frame it fell the frame was dividible by 4)
     if (ntris::lineclearframecounter>0 && !firstframeis4 && ntris::getframemod4()==0) {
 		/*if (tetris) Sound::play(Sound::tetris);
@@ -130,7 +129,13 @@ void RenderPlayField::render(const nes_ushort& _framecounter, GameplayContainer&
     }
 }
 
-void RenderPlayField::resetPlayField(const nes_uchar& _level){
+void RenderPlayField::resetPlayField(const nes_uchar& _level_select, GameplayContainer& _gameplay_container, nes_ushort const& _framecounter){
+    //should these be moved into resetPlayingField?
+    tilecont->reset();
+    _gameplay_container.piecehandler = PieceContainer(tilecont, _framecounter);
+    _gameplay_container.matrixhandler = MatrixContainer(tilecont, _framecounter);
+    _gameplay_container.levellineshandler = LevelLines(tilecont, _framecounter, _level_select);
+    _gameplay_container.statisticshandler = Statistics(tilecont, _framecounter, _level_select);
     renderimage(false);
 }
 

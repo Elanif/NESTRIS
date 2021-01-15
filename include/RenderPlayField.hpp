@@ -22,7 +22,7 @@ class RenderPlayField : public Renderer
         RenderPlayField(TileContainer* _tilecont, const nes_ushort& _frameappearance, nes_uchar _level);
         void update(const ActiveInputs& _input, const nes_ushort& _framecounter, GameplayContainer& _gameplay_container, Audio& _audio) ;
         void render(const nes_ushort& framecounter, GameplayContainer& _gameplay_container, Audio& _audio) ;
-        void resetPlayField(const nes_uchar& _level);
+        void resetPlayField(const nes_uchar& _level_select, GameplayContainer& _gameplay_container, const nes_ushort& _framecounter);
         bool gameOver();
     private:
         void renderimage(bool blink);

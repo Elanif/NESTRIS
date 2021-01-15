@@ -3,7 +3,6 @@
 #include<vector>
 #include<utility>
 #include<cstdio>
-#include"Sound.hpp"
 
 MatrixContainer::MatrixContainer(TileContainer * _tilecont, const nes_ushort& _frameappearance)
     :Renderer(_tilecont, _frameappearance)
