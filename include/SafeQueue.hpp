@@ -1,24 +1,31 @@
 #pragma once
 #include<queue>
 #include<mutex>
-
+#include<optional>
 template<class T>
 class SafeQueue {
 private:
 	std::queue<T> q;
 	std::mutex m;
-	std::size_t _size = 0;
 public:
 	SafeQueue() :
 		q()
 	{}
 	std::size_t size() {
 		std::unique_lock<std::mutex> lock(m);
-		return _size;
+		return q.size();
+	}
+	std::optional<T> pop_if_not_empty() {
+		std::unique_lock<std::mutex> lock(m);
+		if (q.size() > 0) {
+			T _result = q.front();
+			q.pop();
+			return std::optional<T>{_result};
+		}
+		return {};
 	}
 	T pop() {
 		std::unique_lock<std::mutex> lock(m);
-		--_size;
 		T front = q.front();
 		q.pop();
 		return front;
@@ -26,6 +33,5 @@ public:
 	void push(T element) {
 		std::unique_lock<std::mutex> lock(m);
 		q.push(element);
-		++_size;
 	}
 };

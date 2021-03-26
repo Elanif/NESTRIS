@@ -15,6 +15,7 @@ gameplay_container(_tilecont, framecounter)
 {
     framecounter=0;
     Log::update<std::string>("system",std::string("Engine init"));
+    gameplay_container.music_theme = ntris::default_music_theme;
 }
 
 

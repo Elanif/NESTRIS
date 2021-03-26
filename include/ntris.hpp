@@ -94,6 +94,7 @@ namespace ntris {
 	constexpr std::size_t bucket_size = 200;
 	const std::string newline = { "\r\n" }; //could change depending on the os
 	constexpr std::size_t max_string_length = 30;
+    extern std::size_t default_music_theme;
 
     constexpr nes_uchar block_colors[10][4]={
     {0x0D ,0x30 ,0x21 ,0x12},

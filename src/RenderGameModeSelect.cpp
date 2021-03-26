@@ -71,6 +71,7 @@ void RenderGameModeSelect::updateGameModeSelect(const ActiveInputs& _input, Game
 		if (_gameplay_container.music_theme < 4)
 			_gameplay_container.music_theme++;
 	}
+	ntris::default_music_theme = _gameplay_container.music_theme;
 }
 
 bool RenderGameModeSelect::getSelectedEvent()

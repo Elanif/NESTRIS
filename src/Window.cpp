@@ -21,6 +21,11 @@ public:
 	void save_on_exit() {
 		_save_on_exit = true;
 	}
+	std::size_t getDefaultMusicTheme() {
+		std::vector<std::size_t> default_music_theme = cfg.get<std::size_t>("default_music_theme");
+		if (default_music_theme.size() < 1) return 4;
+		else return default_music_theme[0];
+	}
 	bool getFourThirds() {
 		std::vector<bool> four_thirds = cfg.get<bool>("four_thirds");
 		if (four_thirds.size() < 1) return true;
@@ -86,6 +91,11 @@ public:
 	void saveWindowPosition() {
 		saveConfig("window_position", ntris::window_position);
 	}
+	void saveDefaultMusicTheme() {
+		std::vector<std::size_t> theme;
+		theme.push_back(ntris::default_music_theme);
+		cfg.overwrite("default_music_theme", theme);
+	}
 	ConfigSaver(ConfigReader& _cfg) :cfg(_cfg) {};
 	~ConfigSaver() {
 		if (_save_on_exit) {
@@ -93,6 +103,7 @@ public:
 			saveFourThirds();
 			saveWindowScale();
 			saveWindowPosition();
+			saveDefaultMusicTheme();
 			cfg.save();
 		}
 	}
@@ -119,6 +130,8 @@ void Window::render(TileRenderer& tilerend) {
 
 	Audio audio;
 	audio.init();
+
+	window.setActive();
 
 	while (!close_window.load()&&isWindowOpen()) {
 		odd_frame = !odd_frame; //Would be more efficient to have 2 cycles, but is it needed?
@@ -160,10 +173,10 @@ void Window::render(TileRenderer& tilerend) {
 			//std::cout << "display delay"<<elapsedtime.elapsedTime() - delaycalc << ntris::newline;
 			delaycalc = elapsedtime.elapsedTime();
 
-			while (event_queue.size() > 0)
+			while (auto event=event_queue.pop_if_not_empty())
 			{
-				sf::Event event = event_queue.pop();
-				switch (event.type) {
+				//sf::Event event = event_queue.pop();
+				switch (event->type) {
 				case sf::Event::Closed:
 					close_window.store(true);
 				break;
@@ -171,12 +184,12 @@ void Window::render(TileRenderer& tilerend) {
 					bool ctrl = sf::Keyboard::isKeyPressed(sf::Keyboard::LControl) || sf::Keyboard::isKeyPressed(sf::Keyboard::RControl);
 					std::lock_guard<std::mutex> fullscreen_lock(window_mutex);
 					if (window.hasFocus()) {
-						if (event.key.code == sf::Keyboard::F1) {
+						if (event->key.code == sf::Keyboard::F1) {
 							cm.toggle_info_window();
 							if (!cm.is_window_open())
 								window.requestFocus();
 						}
-						if ((event.key.code == sf::Keyboard::F && ctrl)/* || Input::getInput()*/) {
+						if ((event->key.code == sf::Keyboard::F && ctrl)/* || Input::getInput()*/) {
 							toggle_fullscreen.store(true);
 						}
 					}
@@ -282,6 +295,8 @@ Window::Window(const std::size_t& _width, const std::size_t& _height, const OPT&
 
 	window.setActive(false);
 	fullscreen.store(false);
+
+	ntris::default_music_theme = config_saver.getDefaultMusicTheme();
 
 	std::thread render_thread(&Window::render, this, std::ref(tilerend));
 

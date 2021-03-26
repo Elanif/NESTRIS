@@ -23,6 +23,8 @@ namespace ntris {
 	bool fullscreen = false;
 	bool shader = false;
 
+	std::size_t default_music_theme = 0;
+
 	sf::Vector2<long double> window_scale{ 3,3 };
 	extern sf::Vector2i window_position{ 0,0 };
 
