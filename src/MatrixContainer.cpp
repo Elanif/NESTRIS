@@ -7,9 +7,9 @@
 MatrixContainer::MatrixContainer(TileContainer * _tilecont, const nes_ushort& _frameappearance)
     :Renderer(_tilecont, _frameappearance)
 {
-    for (int i=0; i<9;++i) {
-        for (int j=10; j<22; ++j) {
-            //matrix(i,j)=1; //staring wtih a tetris
+    for (int row = ntris::array_height- ntris::garbage; row < ntris::array_height; row++) {
+        for (int column = 0; column < ntris::array_width; column++) {
+            matrix(column, row) = ntris::garbage_color;
         }
     }
 }
@@ -23,7 +23,7 @@ void MatrixContainer::render(const nes_uchar& _level) {
         --hidecounter;
         return;
     }
-    if (ntris::lineclearframecounter>0) {    //TODO how does pause interact with the clear animation?
+    if (ntris::lineclearframecounter>0) {  
         if (ntris::getframemod4()==0) {
 			//Sound::play(Sound::clear_line); MOVED TO RENDERPLAYFIELD
             for (std::size_t i=0; i<linescleared; ++i ){
@@ -91,10 +91,15 @@ nes_uchar MatrixContainer::clearlines() {
     linescleared=0;
     for (std::size_t row=0; row<22; ++row) {
         bool clearedline=true;
-        for (std::size_t column=0; column<10; ++column) {
-            if (matrix(column,row)==0) {
-                clearedline=false;
-                column=10;
+        std::size_t rows_from_the_bottom = ntris::array_height - row -1;
+        if (rows_from_the_bottom < ntris::garbage)
+            clearedline = false;
+        else {
+            for (std::size_t column = 0; column < 10; ++column) {
+                if (matrix(column, row) == 0) {
+                    clearedline = false;
+                    break;
+                }
             }
         }
         whichlines[row]=clearedline;

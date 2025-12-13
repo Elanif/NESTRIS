@@ -187,6 +187,44 @@ void PieceContainer::render(const nes_ushort& _framecounter, const nes_uchar& _l
     }
 }
 
+nes_uchar PieceContainer::determineSpawnPieceType(bool increaseSpawnCount) {
+    nes_uchar spawnID = spawn_table[nextpiece.piecetype]; //creates a piece next to nextpiece
+    if (increaseSpawnCount)
+        ++spawncount;
+    nes_uchar index = random::prng() >> 8;
+    index += spawncount;
+    index &= 7;
+    nes_uchar newSpawnID;
+    if (index != 7) {
+        newSpawnID = spawn_table[index];
+        if (newSpawnID == spawnID) {
+            random::prng();
+            index = random::prng() >> 8;
+            index &= 7;
+            index += spawnID;
+            index %= 7;
+            newSpawnID = spawn_table[index];
+        }
+    }
+    else {
+        random::prng();
+        index = random::prng() >> 8;
+        index &= 7;
+        index += spawnID;
+        index %= 7;
+        newSpawnID = spawn_table[index];
+    }
+    spawnID = newSpawnID;
+    nes_uchar realID = 0;
+    for (std::size_t i = 0; i < 7; ++i) {
+        if (spawn_table[i] == spawnID) {
+            realID = i;
+            break;
+        }
+    }
+    return realID;
+}
+
 //TODO can keep unsigned char, unless we decide to add many pieces
 void PieceContainer::spawnPiece() {
     //holddownpoints = 0; //in RenderPlayField for now
@@ -204,40 +242,10 @@ void PieceContainer::spawnPiece() {
     if (current_drought > max_drought)
         max_drought = current_drought;
 
-    nes_uchar spawnID=spawn_table[nextpiece.piecetype]; //creates a piece next to nextpiece
-    ++spawncount;
-    nes_uchar index=random::prng()>>8;
-    index+=spawncount;
-    index&=7;
-    nes_uchar newSpawnID;
-    if (index!=7) {
-        newSpawnID = spawn_table[index];
-        if (newSpawnID == spawnID) {
-            random::prng();
-            index=random::prng()>>8;
-            index&=7;
-            index+=spawnID;
-            index%=7;
-            newSpawnID = spawn_table[index];
-        }
+    nextpiece.piecetype=determineSpawnPieceType();
+    while (ntris::no_i && nextpiece.piecetype == 6) {
+        nextpiece.piecetype= determineSpawnPieceType(false);
     }
-    else {
-        random::prng();
-        index=random::prng()>>8;
-        index&=7;
-        index+=spawnID;
-        index%=7;
-        newSpawnID = spawn_table[index];
-    }
-    spawnID = newSpawnID;
-    nes_uchar realID=0;
-    for (std::size_t i=0; i<7;++i) {
-        if (spawn_table[i]==spawnID) {
-            realID=i;
-            break;
-        }
-    }
-    nextpiece.piecetype=realID;
     downcounter=holddowncounter=0;
 }
 bool PieceContainer::gameOver(const PFMatrix& pfmatrix) {

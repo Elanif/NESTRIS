@@ -5,3 +5,5 @@ fullscreen=false
 shader=false
 default_music_theme
 default_music_theme=4
+garbage=0
+no_i=false

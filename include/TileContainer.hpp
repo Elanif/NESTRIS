@@ -34,9 +34,14 @@ class tiletype {
             palette_color[3]=colors[modlevel][2];
             break;
         case 3:
-            tilenumber=679;
-            palette_color[2]=colors[modlevel][2];
-            palette_color[3]=colors[modlevel][3];
+            tilenumber = 679;
+            palette_color[2] = colors[modlevel][2];
+            palette_color[3] = colors[modlevel][3];
+            break;
+        case ntris::garbage_color:
+            tilenumber = 679;
+            palette_color[2] = colors[10][2];
+            palette_color[3] = colors[10][3];
             break;
         default:
             tilenumber=0;
@@ -58,7 +63,7 @@ class tiletype {
         return (this->tilenumber==t2.tilenumber)&&(this->palette_color[0]==t2.palette_color[0])&&(this->palette_color[1]==t2.palette_color[1])&&(this->palette_color[2]==t2.palette_color[2])&&(this->palette_color[3]==t2.palette_color[3]);
     }
 
-    static unsigned char colors[10][4]; //the colors for levels 0 to 9
+    static unsigned char colors[11][4]; //the colors for levels 0 to 9
 };
 
 //hash for tiles, used in the unordered map for lookup of textures

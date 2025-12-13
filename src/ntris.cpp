@@ -22,6 +22,8 @@ namespace ntris {
 	bool four_thirds = true;
 	bool fullscreen = false;
 	bool shader = false;
+	bool no_i = false;
+	nes_uchar garbage = 0;
 
 	std::size_t default_music_theme = 0;
 

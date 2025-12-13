@@ -44,6 +44,17 @@ public:
 		if (shader[0] == true) return true;
 		return false;
 	}
+	bool getNoI() {
+		std::vector<bool> no_i = cfg.get<bool>("no_i");
+		if (no_i.size() < 1) return false;
+		return no_i[0];
+	}
+	int getGarbage() {
+		std::vector<int> garbage = cfg.get<int>("garbage");
+		if (garbage.size() < 1) return 0;
+		return garbage[0];
+	}
+
 	sf::Vector2<long double> setWindowScale(std::size_t const& width_pixels, std::size_t const& height_pixels, bool const& four_thirds) {
 		std::vector<double> window_scale = cfg.get<double>("window_scale");
 		sf::Vector2<long double> scale{ 1,1 };
@@ -276,6 +287,8 @@ Window::Window(const std::size_t& _width, const std::size_t& _height, const OPT&
 
 	ntris::four_thirds = config_saver.getFourThirds();
 	ntris::fullscreen = config_saver.getFullscreen();
+	ntris::no_i = config_saver.getNoI();
+	ntris::garbage = config_saver.getGarbage();
 	fullscreen.store(ntris::fullscreen);
 	ntris::window_scale = config_saver.setWindowScale(tilerend.getWidthPixels(), tilerend.getHeightPixels(), ntris::four_thirds);
 

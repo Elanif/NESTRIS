@@ -26,6 +26,7 @@ public:
     //void doDrop();
     void lockpiece();
     void spawnPiece();
+    nes_uchar determineSpawnPieceType(bool increaseSpawnCount = true);
 
     const Piece& getPiece() const;
     void render(const nes_ushort& _framecounter, const nes_uchar& _level);
