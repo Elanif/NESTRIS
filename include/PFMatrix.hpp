@@ -8,8 +8,8 @@
 
 class PFMatrix {
 public:
-    static bool inbounds(const std::size_t& column, const std::size_t& row) {return column>=0 && column<10 && row>=0 && row<22;}
-    static bool visible(const std::size_t& column, const std::size_t& row) {return column>=0 && column<10 && row>=2 && row<22;}
+    static bool inbounds(const std::size_t& column, const std::size_t& row) {return column>=0 && column<10 && row>=0 && row<ntris::array_height;} 
+    static bool visible(const std::size_t& column, const std::size_t& row) {return column>=0 && column<10 && row>=2 && row< ntris::array_height;}
     nes_uchar& operator()(const std::size_t& column, const std::size_t& row){
         if (inbounds(column,row)) return matrix[column][row];
 		std::stringstream error_stream;

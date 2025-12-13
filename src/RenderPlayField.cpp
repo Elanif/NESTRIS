@@ -66,7 +66,7 @@ void RenderPlayField::update(const ActiveInputs& _input, const nes_ushort& _fram
             else firstframeis4=false;
         }
         else {
-            ntris::ARE=20-((_gameplay_container.piecehandler.lastdroppedpiece.y+3)/4)*2; //TODO find true formula
+            ntris::ARE=20-(_gameplay_container.piecehandler.lastdroppedpiece.y/4)*2; //on emu at 2 lowest rows it's 10 ARE and for every group of 4 rows you go up it takes 2 more frames
         }
         if (linescleared>=4) {
             tetris=true;

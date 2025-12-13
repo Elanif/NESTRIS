@@ -54,6 +54,8 @@ namespace ntris {
     extern nes_uchar ARE;
     extern nes_uchar real_level; //level that sometimes isn't shown e.g. while lines are being cleared
     extern nes_uchar shown_level; //level that is shown by the game
+    extern nes_uchar garbage;
+    constexpr nes_uchar garbage_color = 4;
     constexpr std::size_t playfieldx=12;
     constexpr std::size_t playfieldy=5;
     const sf::Vector2u nextpiece_coords[7]={{204,112},{204,112},{204,112},{208,112},{204,112},{204,112},{208,112}};
@@ -84,11 +86,14 @@ namespace ntris {
 	constexpr std::size_t ntsc_screen_height = 224;
 	constexpr std::size_t ntsc_tiles_x = 32;
 	constexpr std::size_t ntsc_tiles_y = 28;
+    constexpr std::size_t array_height = 22; //TODO replace 22
+    constexpr std::size_t array_width = 10; //TODO replace 10
 	extern sf::Vector2<long double> window_scale;
 	extern sf::Vector2i window_position;
 	extern bool four_thirds;
 	extern bool fullscreen;
-	extern bool shader;
+    extern bool shader;
+    extern bool no_i;
 	constexpr float info_window_character_size = 8;
 	constexpr largest_uint MIN_DELAY_ERROR = 1000; 
 	constexpr std::size_t bucket_size = 200;

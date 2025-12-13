@@ -21,7 +21,7 @@ class MatrixContainer : public Renderer
     protected:
 
     private:
-		nes_uchar linesclearedarray[22]{ 0 };
+		nes_uchar linesclearedarray[ntris::array_height]{ 0 };
 		nes_uchar linescleared{ 0 };
         PFMatrix newmatrix;
         PFMatrix matrix;
