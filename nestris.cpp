@@ -8,7 +8,11 @@
 #include<iostream>
 #include"Log.hpp"
 
+#ifdef _WIN32
 int WinMain(int argc, char** args) {
+#else
+int main(int argc, char** args) {
+#endif
 	//std::cout.sync_with_stdio(false);
 	//std::cin.tie(nullptr);
     /*APU::init();

@@ -539,8 +539,6 @@ template void ConfigReader::overwrite(char* name, std::vector<int> const&);
 template void ConfigReader::overwrite(const std::string& name, std::vector<int> const&);
 template void ConfigReader::overwrite(char* name, std::vector<std::size_t> const&);
 template void ConfigReader::overwrite(const std::string& name, std::vector<std::size_t> const&);
-template void ConfigReader::overwrite(char* name, std::vector<std::size_t> const&);
-template void ConfigReader::overwrite(const std::string& name, std::vector<std::size_t> const&);
 //template void ConfigReader::overwrite(char* name, std::vector<unsigned int> const&);
 //template void ConfigReader::overwrite(const std::string& name, std::vector<unsigned int> const&);
 template void ConfigReader::overwrite(char* name, std::vector<char> const&);

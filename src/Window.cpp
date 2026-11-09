@@ -142,8 +142,6 @@ void Window::render(TileRenderer& tilerend) {
 	Audio audio;
 	audio.init();
 
-	window.setActive();
-
 	while (!close_window.load()&&isWindowOpen()) {
 		odd_frame = !odd_frame; //Would be more efficient to have 2 cycles, but is it needed?
 		if (odd_frame) timeperframe = timeperframe_odd;
@@ -170,6 +168,8 @@ void Window::render(TileRenderer& tilerend) {
 			//std::cout <<"processing delay"<< elapsedtime.elapsedTime() - delaycalc << ntris::newline;
 			{
 				std::lock_guard<std::mutex> fullscreen_lock(window_mutex);
+				// GLX: a context may only be current in one thread, so hold it only while drawing
+				window.setActive(true);
 				window.clear();//there are ways to avoid this but it only adds 15 microseconds
 
 				tilerend.drawmod(window);
@@ -179,6 +179,7 @@ void Window::render(TileRenderer& tilerend) {
 				delaycalc = elapsedtime.elapsedTime();
 
 				window.display();
+				window.setActive(false);
 			}
 			Log::update<sf::Int64>("display delay", elapsedtime.elapsedTime() - delaycalc);
 			//std::cout << "display delay"<<elapsedtime.elapsedTime() - delaycalc << ntris::newline;
@@ -369,4 +370,4 @@ void Window::toggle_fullscreen_func() {
 		window.setActive(false);
 	}
 }
-		
+		
