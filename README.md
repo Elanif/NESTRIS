@@ -40,3 +40,8 @@ This project was only possible thanks to https://meatfighter.com/nintendotetrisa
 
 ### Instructions
 - Hold down SELECT when selecting the level to start at level + 20
+
+### Building on Linux
+Install SFML 2.5 or 2.6 development files (e.g. `sudo dnf install SFML-devel` on Fedora, `sudo apt install libsfml-dev` on Debian/Ubuntu), then run `make` in the repository root and start `./nestris` from that same directory.
+
+Gamepad axis numbering and directions often differ on Linux (for example, the D-pad's `PovY` axis may be inverted compared to Windows). If a controller input is mapped wrong, adjust `settings/keybinds.ini`, e.g. swap `JOYSTICK_PovY+` and `JOYSTICK_PovY-` for `up_button` and `down_button`.
